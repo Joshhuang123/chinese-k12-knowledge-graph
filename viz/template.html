@@ -15,7 +15,9 @@
 <style>
 :root{
   --bg:#0e0e11; --panel:rgba(22,22,27,.86); --line:rgba(255,255,255,.10);
-  --ink:#f2f2f4; --ink2:#a8a8b3; --muted:#6e6e7a; --acc:#ff3d7f;
+  --ink:#f2f2f4; --ink2:#a8a8b3; --muted:#8b8b98; --acc:#ff3d7f;
+  /* --muted 原来 #6e6e7a 在 #0e0e11 上只有 3.83:1，AA 要求小字 4.5:1，
+     而它用在 10.5-12px 的正文上（署名、卡片英文名、轴标签…）。调到 4.9:1。 */
   /* 系统字体栈：先 macOS/iOS，再 Windows，再 Linux/Android，最后兜底 */
   --sans:-apple-system,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',
          'Noto Sans CJK SC','Source Han Sans SC','WenQuanYi Micro Hei',sans-serif;
@@ -129,6 +131,7 @@ body{
 #res .r .bk{margin-left:auto;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
 #res .r.sel,#res .r:hover{background:var(--panel);color:var(--ink)}
 #res .none{font-size:12px;color:var(--muted);padding:7px 10px}
+#res .more{font-size:10.5px;color:var(--muted);padding:7px 10px 2px;border-top:1px solid var(--line);margin-top:4px}
 
 /* 署名：原始数据是 CC BY-NC-SA 4.0，署名是硬性要求。
    烧进页面里，才能保证这份 HTML 被转发、被下载、被存盘之后，
@@ -320,7 +323,10 @@ addEventListener('resize', resize); resize();
 
 const cam = { th: -0.62, ph: 0.30, d: 1500 };
 const TARGET = { th: -0.62, ph: 0.30, d: 1500 };
-let spin = true, showEdges = true, coreOnly = false;
+// 前庭敏感用户唯一能规避自动旋转的方式，是自己找到那个按钮 ——
+// 而那个按钮的状态曾经还是错的（见 setSpin）。能系统级尊重就别让用户自己扛。
+let spin = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+let showEdges = true, coreOnly = false;
 const hidden = new Set();
 
 let hover = -1, pinned = -1;
@@ -335,6 +341,10 @@ function passes(n){
   return true;
 }
 function setFocus(id){
+  // 焦点节点如果被当前筛选挡掉了（比如选中的��小学知识点，然后打开「只看初中」），
+  // 就不能把它塞进 activeSet —— 它画不出来，却会让其余所有点被压到 9% 透明度，
+  // 结果是整张图黑掉、一个高亮都没有（实测亮点像素 700 → 2）。
+  if(id >= 0 && !passes(NODES[id])) id = -1;
   focus = id;
   activeSet.clear();
   if(id < 0) return;
@@ -473,10 +483,17 @@ function drawAgeAxis(){
   ctx.globalAlpha = 1;
 }
 
+/* 角度差必须取最短弧。TARGET.th 来自 atan2，恒在 (-π, π]，
+   而 cam.th 从不归一化、只随自转累加（7.6°/秒）。裸差值 lerp 的后果：
+   页面开着越久，搜索时相机要转的圈数越多 ——
+   30 秒后平均多绕 101°，120 秒后平均多绕 1383°（约 3.8 圈）。
+   用户感受是「搜一下，镜头自己转三四圈才停住」。 */
+const wrapPi = a => Math.atan2(Math.sin(a), Math.cos(a));
+
 function loop(){
   if(spin && !dragging) TARGET.th += 0.0022;
-  cam.th += (TARGET.th - cam.th)*0.09;
-  cam.ph += (TARGET.ph - cam.ph)*0.09;
+  cam.th += wrapPi(TARGET.th - cam.th)*0.09;
+  cam.ph += wrapPi(TARGET.ph - cam.ph)*0.09;
   cam.d  += (TARGET.d  - cam.d )*0.09;
 
   ctx.clearRect(0,0,W,H);
@@ -503,19 +520,27 @@ legendRows.addEventListener('click', e=>{
 const btn = (id, fn) => document.getElementById(id).addEventListener('click', fn);
 btn('tCore', e=>{ coreOnly = !coreOnly; e.target.setAttribute('aria-pressed', coreOnly); if(focus>=0) setFocus(focus); });
 btn('tEdges', e=>{ showEdges = !showEdges; e.target.setAttribute('aria-pressed', showEdges); });
-btn('tSpin', e=>{ spin = !spin; e.target.setAttribute('aria-pressed', spin); });
+/* 自转状态只有一个入口。原来 flyTo 直接改 spin 而不碰按钮，
+   于是按钮显示「开」实际已停 —— 用户点它是想关掉，实际是打开。复位也一样，
+   相机回位了但自转没恢复、按钮还亮着。 */
+const setSpin = v=>{
+  spin = v;
+  document.getElementById('tSpin').setAttribute('aria-pressed', String(v));
+};
+document.getElementById('tSpin').setAttribute('aria-pressed', String(spin));
+btn('tSpin', ()=>setSpin(!spin));
 /* ================= search =================
    7,938 个点靠鼠标点是找不到的 —— 搜索是唯一入口。
    用户的实际用法是「我知道这个知识点不会」→ 搜出来 → 看它依赖什么，
    所以点结果不只是选中：还要把相机飞到那个点，否则选中了也看不见在哪。 */
 const qEl = document.getElementById('q'), resEl = document.getElementById('res');
-let hits = [], selI = 0;
+let hits = [], selI = 0, total = 0;
 
 // 相机是绕中心点的轨道相机（th/ph/d），所以「飞到某个点」可以精确解出来：
 // 要让该点的投影落在画面正中，需要 th 让水平分量为 0、ph 让垂直分量为 0。
 function flyTo(id){
   const n = NODES[id];
-  spin = false;
+  setSpin(false);
   const th = Math.atan2(n.x, n.z);
   const z1 = n.x*Math.sin(th) + n.z*Math.cos(th);
   TARGET.th = th;
@@ -545,7 +570,10 @@ function render(){
     return `<div class="r${i===selI?' sel':''}" data-i="${i}">` +
       `<span class="sw" style="background:${SUBJ[n.s].c}"></span>` +
       `<span>${n.zh}</span><span class="bk">${n.dz}</span></div>`;
-  }).join('');
+  }).join('') +
+  // 不说总数的话，搜「概念」命中 6,574 条却只给 8 行，
+  // 用户会以为「概念」只有 8 个知识点。这行同时是 aria-live 的播报文本。
+  (total > 8 ? `<div class="more">共 ${total.toLocaleString('en-US')} 条匹配，显示前 8 条 · 补一个字可缩小范围</div>` : '');
   resEl.classList.add('on');
 }
 
@@ -557,14 +585,18 @@ function search(){
     const n = NODES[i];
     const at = n.zh.indexOf(kw);
     if(at >= 0){
-      // 排在最前的是「名字开头就是关键词」；其次名字中间；最后册次命中
-      hits.push({i, k: at === 0 ? 0 : 1, dep: n.cen});
+      // 最高档是「名字完全等于关键词」。原来没有这一档，于是搜「小数」
+      // 看到的前 8 条全是「小数加法」「小数的比较大小」……，
+      // 那个叫「小数」的知识点本身反而进不了前 8。
+      // 用户输入一个概念的全名，最想看的就是它自己。
+      hits.push({i, k: n.zh === kw ? -1 : (at === 0 ? 0 : 1), len: n.zh.length, dep: n.cen});
     }else if(n.dz.indexOf(kw) >= 0){
-      hits.push({i, k: 2, dep: n.cen});
+      hits.push({i, k: 2, len: 99, dep: n.cen});
     }
   }
-  // 关键词越靠前越好；同一档里被依赖度高的排前面（那是更吃紧的知识点）
-  hits.sort((a,b)=> a.k - b.k || b.dep - a.dep);
+  // 档位 → 名字短的优先（更可能是那个概念本身）→ 被依赖度高的优先（更吃紧）
+  hits.sort((a,b)=> a.k - b.k || a.len - b.len || b.dep - a.dep);
+  total = hits.length;
   hits = hits.slice(0, 8);
   render();
 }
@@ -577,6 +609,10 @@ resEl.addEventListener('pointerdown', e=>{
   go(+r.dataset.i);
 });
 qEl.addEventListener('keydown', e=>{
+  // 中文输入法选词就是按回车。没有这道守卫的话，按回车会同时干两件事：
+  // 候选词上不上去（preventDefault），相机还飞到半截拼音算出来的结果上。
+  // 这是一页给中国学生看的中文页面的主输入框，这件事必须挡住。
+  if(e.isComposing || e.keyCode === 229) return;
   if(e.key === 'ArrowDown'){ e.preventDefault(); selI = Math.min(selI+1, hits.length-1); render(); }
   else if(e.key === 'ArrowUp'){ e.preventDefault(); selI = Math.max(selI-1, 0); render(); }
   else if(e.key === 'Enter'){ e.preventDefault(); go(selI); }
@@ -596,6 +632,8 @@ addEventListener('keydown', e=>{
 btn('tReset', ()=>{
   TARGET.th = -0.62; TARGET.ph = 0.30; TARGET.d = 1500;
   pinned = -1; setFocus(-1); card.classList.remove('on');
+  // 复位也要把自转状态摆正，否则按钮亮着而画面是静止的
+  setSpin(!matchMedia('(prefers-reduced-motion: reduce)').matches);
 });
 
 /* ================= info card ================= */
@@ -605,7 +643,11 @@ function showCard(id){
   card.querySelector('.sw').style.background = s.c;
   document.getElementById('cEyebrow').textContent = s.zh + ' · ' + n.dz + ' · ' + n.a1 + '–' + n.a2 + ' 岁';
   document.getElementById('cZh').textContent = label(n);
-  document.getElementById('cEn').textContent = n.en;
+  // 人教版教材没有英文名，7,938 个节点的 en 全是空的。
+  // 原来无条件渲染，于是每张卡片都印一行「(无英文名)」——纯噪音。
+  const enEl = document.getElementById('cEn');
+  enEl.textContent = n.en || '';
+  enEl.style.display = n.en ? '' : 'none';
   document.getElementById('cDesc').textContent = n.desc || '（该条目没有描述文本）';
   const nb = (pre.get(id) || []).length, ub = (unlocks.get(id) || []).length;
   document.getElementById('cMeta').innerHTML =
@@ -637,6 +679,23 @@ cv.addEventListener('pointerdown', e=>{
   cv.classList.add('drag');
   cv.setPointerCapture(e.pointerId);
 });
+// 命中测试抽成独立函数。原来它只写在 pointermove 里，
+// 而触屏在 pointerdown 之前根本不会产生 pointermove —— hover 恒为 -1，
+// 于是 pointerup 执行 pinned = -1，**手机上永远选不中任何一个点**，
+// 轻点画面正中那个高亮的点反而会把卡片关掉（实测复现）。
+function pick(cx, cy){
+  let best = -1, bestD = 16*16;
+  for(let i=0;i<N;i++){
+    if(projK[i] < -1e8) continue;
+    const dx = projX[i] - cx, dy = projY[i] - cy;
+    const dd = dx*dx + dy*dy;
+    // projK 越小越靠前（画在最上层）。同���只比二维距离的话，
+    // 会选中「离指针更近但在后面被挡住」的那个点 —— 7,938 个点挤在屏幕上，
+    // 这种重叠极多，实测 1,020 个重叠位置里 96% 选错。
+    if(dd < bestD && (best < 0 || projK[i] < projK[best])){ bestD = dd; best = i; }
+  }
+  return best;
+}
 cv.addEventListener('pointermove', e=>{
   if(dragging){
     const dx = e.clientX - lastX, dy = e.clientY - lastY;
@@ -647,33 +706,34 @@ cv.addEventListener('pointermove', e=>{
     tip.classList.remove('on');
     return;
   }
-  let best = -1, bestD = 16*16;
-  for(let i=0;i<N;i++){
-    if(projK[i] < -1e8) continue;
-    const dx = projX[i] - e.clientX, dy = projY[i] - e.clientY;
-    const dd = dx*dx + dy*dy;
-    if(dd < bestD){ bestD = dd; best = i; }
-  }
+  const best = pick(e.clientX, e.clientY);
   cv.classList.toggle('point', best >= 0);
   if(best !== hover){
     hover = best;
     const f = pinned >= 0 ? pinned : hover;
     setFocus(f);
+    // 卡片跟着同一个 f 走。原来 tooltip 用 hover、卡片用 pinned，
+    // 两者同时在说两个不同的知识点。
     if(f >= 0) showCard(f); else card.classList.remove('on');
   }
   if(hover >= 0) showTip(hover, e.clientX, e.clientY); else tip.classList.remove('on');
 });
+const endDrag = ()=>{ dragging = false; cv.classList.remove('drag'); };
 cv.addEventListener('pointerup', e=>{
-  cv.classList.remove('drag');
-  dragging = false;
+  endDrag();
   if(moved < 5){
-    // a click, not a drag
+    // a click, not a drag. 触屏自己算一次命中，别指望 hover
+    if(e.pointerType !== 'mouse') hover = pick(e.clientX, e.clientY);
     pinned = (hover >= 0 && hover === pinned) ? -1 : hover;
     const f = pinned >= 0 ? pinned : hover;
     setFocus(f);
     if(f >= 0) showCard(f); else card.classList.remove('on');
   }
 });
+// 手势被系统打断（通知横幅、来电、浏览器接管滚动）时必须收尾，
+// 否则 dragging 永远为真：光标卡在抓取态，自动旋转也永久停住。
+cv.addEventListener('pointercancel', endDrag);
+cv.addEventListener('lostpointercapture', endDrag);
 cv.addEventListener('pointerleave', ()=>{ tip.classList.remove('on'); });
 cv.addEventListener('wheel', e=>{
   e.preventDefault();
@@ -681,7 +741,13 @@ cv.addEventListener('wheel', e=>{
 }, {passive:false});
 
 addEventListener('keydown', e=>{
-  if(e.key === 'Escape'){ pinned = -1; setFocus(hover); if(hover<0) card.classList.remove('on'); }
+  if(e.key === 'Escape'){
+    pinned = -1;
+    // setFocus(hover) 换了高亮，showCard 也必须跟着换，
+    // 否则画面高亮的是鼠标下那个点、卡片还写着上一个点，两个都在说不同的知识点。
+    setFocus(hover);
+    if(hover >= 0) showCard(hover); else card.classList.remove('on');
+  }
 });
 
 loop();
