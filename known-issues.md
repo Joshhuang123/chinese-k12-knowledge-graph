@@ -83,7 +83,7 @@ Skill 的每一个动词都建立在 Concept 之上。概念在先，技能在�
 
 **现象**：`name` 字段是空字符串。官方原件 `data/raw/global_KG/nodes.json` 里同样为空，不是我们丢的。
 
-**不是孤立的悬空点**——它们被引用了 14 次：
+**不是孤立的悬空点**——它们被引用了 **16** 次：
 
 | 节点 | 引用 |
 |---|---|
@@ -96,9 +96,61 @@ Skill 的每一个动词都建立在 Concept 之上。概念在先，技能在�
 
 **推测**：这些是教材里没有标题的练习栏（「做一做」「练习」这类），抽取时正文抓到了、栏目标题没抓到，所以节点建出来了但名字空着。
 
-**建议改法**：用被测概念 + 册次回填名字，例如「6和7的加减法（一上·练习）」。**不要直接删**——删了这 14 条 `tests_concept` / `tests_skill` / `appears_in` 边就全成了悬空边。
+**建议改法**：用被测概念 + 册次回填名字，例如「6和7的加减法（一上·练习）」。**不要直接删**——删了这 **16** 条 `tests_concept` / `tests_skill` / `appears_in` 边就全成了悬空边。
 
 **当前处置**：不进画面。`build_viz.py` 只画 Concept 和 Skill，Exercise 本来就不画，所以这条不影响可视化。
+
+---
+
+## ISSUE-04　属种关系成环：「元素周期表」⇄「元素周期律」⇄「元素周期系」
+
+**位置**：`chemistry_9a_rjb_cpt188` → `chemistry_bx1_rjb_cpt213` → `chemistry_xzxbx2_rjb_cpt28` → 回到起点
+
+**现象**：三条 `is_a` 边构成一个环。
+「元素周期表」is_a「元素周期律」，「元素周期律」is_a「元素周期系」，「元素周期系」is_a「元素周期表」。
+
+**为什么是硬错误**：`is_a` 是严格层级关系——A is_a B 意味着 B 是 A 的一种，
+反向就意味着 A 是 B 的一种。成环在语义上不可能成立，**不像 `relates_to`
+那种对称关系成环无意义**。
+
+**在原件里**：三条边在 `data/raw/global_KG/edges.json` 逐条确认存在，不是我们归一化造出来的。
+
+**为什么之前没发现**：`validate.py` 原来只对 `prerequisites_for` 查环。
+实测各边型的环数：
+
+| 边型 | 边数 | 环 | 是否该报警 |
+|---|---|---|---|
+| `prerequisites_for` | 3,703 | 2 | 是（已在查） |
+| `is_a` | 1,895 | **1** | 是（**漏了**） |
+| `relates_to` | 2,174 | 17 | 否——语义对称，成环无意义 |
+| `leads_to` / `verifies` / `tests_concept` / `tests_skill` / `is_part_of` / `appears_in` | — | 0 | — |
+
+**当前处置**：`validate.py` 已补 `IS_A_CYCLE` 检查，归入硬错误。
+
+---
+
+## ISSUE-05　`global_KG/` 从未被读入，静默丢掉 187 条跨学科边
+
+**现象**：`data/raw/global_KG/edges.json` 有 **23,278** 条边，
+`data/normalized/graph.json` 只有 **23,091** 条，差 **187** 条。
+
+**丢的是什么**：全部是 `leads_to`，全部是**数学某章 → 物理某章**的跨学科进阶线，
+例如 `math_7a_rjb_ch3 → physics_bx1_rjb_ch2`。
+四个 `subject_specific_KG` 文件里跨学科边数为 0，所以不是被过滤掉的，
+而是**整条输入源根本没进管线**：`src/normalize.py` 的 `RAW` 指向
+`subject_specific_KG`，`data/raw/global_KG/` 没有任何代码打开过。
+
+**为什么危险**：`report.json` 的 `rawEdgeSchemas` 只统计 subject_specific，
+这 187 条的差集在报告里**完全不可见**。三处文档（`README.md` 写 global_KG
+23,278 / 合计 23,091，`known-issues.md` 写 23,278）把两个数字并列印出来，
+却没有任何一处解释这个差。
+
+**为什么还没修**：修起来有个已知的坑——`bookRank` 的命名空间跨学科不统一。
+`normalize.py` 的 `BOOKS` 里物理九年级是 `'9'`（rank 17），而数学/化学的
+九上是 `'9a'`（rank 18），也就是说**物理九年级会排在数学九上之前**；
+另外 `bx2`（必修二）和 `xzxbx1`（选必一）都被映射成 `grade=11`。
+这 187 条边一进来，`bookReversed` 就会开始误报。
+所以要先抽一层「册次映射」出来，再补读——不能直接加一行读文件了事。
 
 ---
 

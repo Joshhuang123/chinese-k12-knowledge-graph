@@ -77,6 +77,24 @@ def main():
                            " → ".join(name_of(x, nodes_by_id) for x in c)))
     info.append(("PREREQ_DAG", f"先修边 {sum(len(v) for v in prereq.values())} 条，环 {len(cycles)} 个"))
 
+    # ── 硬错误 1b：is_a（属种关系）成环 ──
+    # is_a 是严格层级：A 是 B 的种，那 B 就不可能是 A 的种，成环必错。
+    # 原来只查 prerequisites_for，漏掉了这一类。实测真的漏了一个：
+    # 元素周期表 → 元素周期律 → 元素周期系 → 元素周期表。
+    #
+    # deliberately 不查 relates_to：它是「相关」语义，本身对称，
+    # 成环没有语义错误（实测 17 个环，全是这种）。
+    isA = defaultdict(list)
+    for e in edges:
+        if e["type"] == "is_a":
+            isA[e["from"]].append(e["to"])
+    isa_cycles = find_cycles(nodes_by_id, isA)
+    if isa_cycles:
+        for c in isa_cycles[:20]:
+            errors.append(("IS_A_CYCLE",
+                           " → ".join(name_of(x, nodes_by_id) for x in c)))
+    info.append(("IS_A_DAG", f"属种边 {sum(len(v) for v in isA.values())} 条，环 {len(isa_cycles)} 个"))
+
     # ── 硬错误 2：悬空边 ──
     dangling = [e for e in edges if e["from"] not in nodes_by_id or e["to"] not in nodes_by_id]
     if dangling:

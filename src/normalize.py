@@ -190,17 +190,26 @@ def main():
     print(f"{'学科':<12}{'节点':>7}{'边':>7}{'册次':>6}{'先修边':>8}{'带出处':>8}{'跨册':>7}{'册次倒挂':>9}")
     print("-" * 78)
     tn = te = tp = 0
+    all_books = set()
     for s, r in report.items():
         tn += r["nodes"]; te += r["edges"]; tp += r["prereqEdges"]
+        all_books |= set(r["books"])
         print(f"{SUBJECT_ZH[s]:<12}{r['nodes']:>7}{r['edges']:>7}{len(r['books']):>6}"
               f"{r['prereqEdges']:>8}{r['prereqWithEvidence']:>8}{r['prereqCrossBook']:>7}"
               f"{r['prereqBookReversed']:>9}")
     print("-" * 78)
-    print(f"{'合计':<12}{tn:>7}{te:>7}{48:>6}{tp:>8}")
+    # 册次别再写死 48：48 是各学科册次相加，跨学科共用的册次代码被重复计了
+    # （必修一/必修二/选必一二三 四科共用）。真正不同的教材只有 25 本。
+    # 两个数都对，口径不同，所以两个都打出来，免得再被当成「册次就是 48」。
+    tb = sum(len(r["books"]) for r in report.values())
+    print(f"{'合计':<12}{tn:>7}{te:>7}{tb:>6}{tp:>8}   ← 册次是各学科相加")
+    print(f"{'(去重)':<12}{'':>7}{'':>7}{len(all_books):>6}{'':>8}   ← 实际不同的教材本数")
     print()
-    print("原始边 schema 拆分:", {k: v for k, v in
-          Counter({s: d["rawEdgeSchemas"].get("schema_A", 0) for s, d in report.items()}
-                  ).items() if k != "dropped_no_endpoint"})
+    # 原来这里想过滤掉 dropped_no_endpoint，但那个 Counter 的 key 是学科名，
+    # 永远不等于 'dropped_no_endpoint' —— 过滤器形同虚设，真丢了边也不会提示。
+    # 改成直接从 schema 计数里取，不再假装在过滤。
+    print("原始边 schema 拆分:", {k: sum(d["rawEdgeSchemas"].get(k, 0) for d in report.values())
+                                   for k in ("schema_A", "schema_B", "schema_C", "schema_D")})
     print(f"输出: {OUT/'graph.json'}")
     print(f"      {(OUT/'graph.json').stat().st_size/1024/1024:.1f} MB")
 

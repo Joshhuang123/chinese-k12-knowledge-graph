@@ -248,13 +248,44 @@ console.log('\n[9] 跨学段抽检：锥形从底到顶都要能飞准');
   ok(locked >= 5, `${locked}/${probes.length} 个节点成功飞正`, details.join('\n      '));
 }
 
-console.log('\n[10] 窄屏隐藏搜索框（设计如此，不算 bug）');
-await page.setViewport({ width: 420, height: 860, deviceScaleFactor: 1 });
-await sleep(300);
-ok(await page.evaluate(() => getComputedStyle(document.getElementById('find')).display === 'none'),
-   '≤900px 时 #find 隐藏');
-await page.setViewport({ width: 1600, height: 1000, deviceScaleFactor: 1 });
-await sleep(300);
+console.log('\n[10] 窄屏必须保留搜索，且不能被底部抽屉压住署名');
+{
+  // 这条断言原来写的是「≤900px 时 #find 隐藏」——它锁定的正是一个错误行为。
+  // 当时给的理由是「触屏没键盘」，那句话是错的：点输入框会拉起软键盘。
+  // 实测 iPhone 13 上标题区只占 242×149，下面空着 450px，空间从来不是问题；
+  // 而 7,938 个点，窄屏用户除了搜索没有任何办法找到知识点。
+  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
+  await page.reload({ waitUntil: 'load' });
+  await sleep(1200);
+
+  ok(await page.evaluate(() => getComputedStyle(document.getElementById('find')).display !== 'none'),
+     '390px 宽时搜索框仍然可见');
+  const fs = await page.evaluate(() => parseFloat(getComputedStyle(document.getElementById('q')).fontSize));
+  ok(fs >= 16, `输入框字号 ${fs}px ≥ 16px（iOS 更小会强制放大整页）`);
+
+  await page.tap('#q');
+  await page.type('#q', '元素周期律', { delay: 15 });
+  await sleep(350);
+  const n = await page.evaluate(() => document.querySelectorAll('#res .r').length);
+  ok(n > 0, `触摸输入出结果 ${n} 条`);
+  const rh = await page.evaluate(() => Math.round(Math.min(...[...document.querySelectorAll('#res .r')].map(e => e.getBoundingClientRect().height))));
+  ok(rh >= 44, `结果条目高度 ${rh}px ≥ 44px（Apple HIG 的触控下限）`);
+
+  await (await page.$('#res .r')).tap();
+  await sleep(1600);
+  const g = await page.evaluate(() => {
+    const c = document.getElementById('card').getBoundingClientRect();
+    const a = document.getElementById('attr').getBoundingClientRect();
+    // 署名现在跟着标题走，判据是它不能落在卡片区域里
+    const overlaps = !(a.bottom <= c.top || a.top >= c.bottom);
+    return { cTop: Math.round(c.top), cBot: Math.round(c.bottom), aTop: Math.round(a.top),
+             aBot: Math.round(a.bottom), overlaps, vh: innerHeight };
+  });
+  ok(g.cBot <= g.vh + 1, `详情卡完整在视口内（${g.cTop}~${g.cBot} / ${g.vh}）`);
+  ok(!g.overlaps, `署名（${g.aTop}~${g.aBot}）没被卡片（${g.cTop}~${g.cBot}）盖住`);
+  await page.setViewport({ width: 1600, height: 1000, deviceScaleFactor: 1 });
+  await sleep(300);
+}
 
 console.log('\n[11] 搜索过程中没有新的脚本报错');
 ok(errors.length === 0, '全程零 JS 错误', errors.slice(0, 5).join('\n      '));
