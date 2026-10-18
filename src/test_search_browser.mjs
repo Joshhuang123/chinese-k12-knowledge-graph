@@ -92,6 +92,55 @@ console.log(`页面已开：${PAGE}\n`);
 console.log('[1] 页面无脚本错误');
 ok(errors.length === 0, '没有 JS 报错 / 控制台错误', errors.slice(0, 3).join('\n      '));
 
+console.log('\n[1b] 页面自洽：标题里的数字必须是真实规模');
+{
+  // 这条是被真抓出来的：模板 <title> 原来写死「1,590 个知识点」——
+  // 那是 Marble 的规模，我们是 7,938。已经上线了才发现。
+  // 根因是硬编码数字会漂移，所以在这加一道守卫。
+  const meta = await page.evaluate(() => {
+    const N = JSON.parse(document.getElementById('data').textContent).nodes.length;
+    return { N, title: document.title, icon: document.querySelector('link[rel="icon"]')?.href || '' };
+  });
+  const want = meta.N.toLocaleString('en-US');
+  ok(meta.title.includes(want), `标题含真实节点数 ${want}`, meta.title);
+  ok(!/1,590|1,127|5,255/.test(meta.title), '标题里没有别的项目的遗留数字', meta.title);
+  ok(meta.icon.startsWith('data:image/svg+xml'), 'favicon 内联（单文件自包含，不会 404）');
+}
+
+console.log('\n[1c] 无外部资源请求（file:// 之外的引用一律不许有）');
+{
+  const ext = [];
+  page.on('request', r => { const u = r.url(); if (!u.startsWith('file:') && !u.startsWith('data:')) ext.push(u); });
+  await page.reload({ waitUntil: 'load' });
+  await sleep(1500);
+  ok(ext.length === 0, `没有引用任何外部文件${ext.length ? '：' + ext.slice(0, 3).join(', ') : ''}`,
+     ext.slice(0, 3).join('\n      '));
+}
+
+console.log('\n[1d] 标题字形必须是无衬线（不能悄悄变成宋体）');
+{
+  // 量字宽没用——CJK 全角，width 一律相同。改用像素指纹：
+  // 同一句话分别按 sans-serif 和 serif 渲染，比对灰度指纹。
+  const res = await page.evaluate(() => {
+    const T = '中国的孩子在学什么。';
+    const cv = document.createElement('canvas'); cv.width = 700; cv.height = 90;
+    const g = cv.getContext('2d');
+    const fp = s => {
+      g.clearRect(0, 0, 700, 90);
+      g.fillStyle = '#000'; g.fillRect(0, 0, 700, 90);
+      g.font = '400 60px ' + s; g.fillStyle = '#fff'; g.textBaseline = 'top';
+      g.fillText(T, 4, 4);
+      const d = g.getImageData(0, 0, 700, 90).data;
+      let h = 0; for (let i = 0; i < d.length; i += 4) h = (h * 31 + d[i]) | 0;
+      return h;
+    };
+    const h1 = getComputedStyle(document.querySelector('#head h1')).fontFamily;
+    return { sans: fp('sans-serif'), serif: fp('serif'), actual: fp(h1), h1 };
+  });
+  ok(res.sans !== res.serif, '基准成立：sans-serif 与 serif 在本页确实渲染成不同字形');
+  ok(res.actual === res.sans, 'h1 渲染结果与 sans-serif 一致（不是宋体）', res.h1);
+}
+
 console.log('\n[2] 搜索框存在且可聚焦');
 await page.click('#q');
 ok(await page.evaluate(() => document.activeElement.id === 'q'), '点击后焦点在输入框');
