@@ -172,6 +172,9 @@ def commit_meta_of(sha):
     return meta["author"], meta["committer"], msg.decode("utf-8")
 
 
+_blob_done = set()
+
+
 def push_commit(sha, label):
     """把单个 commit 连同它需要的所有 blob/tree 原样传上去，逐个校验 SHA。
 
@@ -203,11 +206,17 @@ def push_commit(sha, label):
                                  cwd=BASE, capture_output=True).stdout
         if hashlib.sha1(b"blob %d\0" % len(content) + content).hexdigest() != blob:
             sys.exit(f"{path} 从对象库读出的内容与 blob SHA 对不上，中止")
+        # blob 是内容寻址的：同一个 SHA 传第二次只会原样返回。
+        # 补齐 6 个历史提交时相邻提交绝大多数文件没变，去重能把上百次
+        # blob 请求压到二十几次。远端已有与否不用查，重复上传是无害的。
+        if blob in _blob_done:
+            continue
         res = gh("POST", f"{API}/git/blobs",
                  {"content": base64.b64encode(content).decode(),
                   "encoding": "base64"})
         if res["sha"] != blob:
             sys.exit(f"{path} blob 不一致: API {res['sha'][:10]} vs 本地 {blob[:10]}")
+        _blob_done.add(blob)
 
     tree = gh("POST", f"{API}/git/trees",
               {"base_tree": None,
