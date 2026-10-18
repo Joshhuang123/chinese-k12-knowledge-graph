@@ -13,6 +13,7 @@ API，GitHub 算出来的 SHA 就跟本地 git 算出来的一模一样。本地
 跑:  python3 src/push_via_api.py
 """
 import base64
+import hashlib
 import datetime as dt
 import json
 import pathlib
@@ -186,13 +187,23 @@ def push_commit(sha, label):
         entries.append((mode, path, blob))
     local_tree = git("rev-parse", f"{sha}^{{tree}}")
 
+    head_blob = {p: b for _m, p, b in
+                 (l.split("\t", 1)[0].split() + [l.split("\t", 1)[1]]
+                  for l in git_path("ls-tree", "-r", "HEAD").splitlines())}
+
     for mode, path, blob in entries:
-        # 工作区被改过就停：推上去会和本地分叉，而分叉在 github.com 不通时
-        # 本地还拉不回来，等于把仓库搞成两套真相
-        if git_path("hash-object", "--", path) != blob:
+        # 只有 HEAD 那一份才拿工作区比对：补齐历史提交时传的是当时的
+        # 内容，工作区对应的是 HEAD，拿它去比旧提交必然不等。
+        # （原来只推 HEAD 时这个检查是对的，多提交之后就成了误报。）
+        if blob == head_blob.get(path) and git_path("hash-object", "--", path) != blob:
             sys.exit(f"{path} 工作区内容与 HEAD 不一致，先提交或还原再推")
+        # 内容从 git 对象库直接读，不碰工作区
+        content = subprocess.run(["git", "cat-file", "blob", blob],
+                                 cwd=BASE, capture_output=True).stdout
+        if hashlib.sha1(b"blob %d\0" % len(content) + content).hexdigest() != blob:
+            sys.exit(f"{path} 从对象库读出的内容与 blob SHA 对不上，中止")
         res = gh("POST", f"{API}/git/blobs",
-                 {"content": base64.b64encode((BASE / path).read_bytes()).decode(),
+                 {"content": base64.b64encode(content).decode(),
                   "encoding": "base64"})
         if res["sha"] != blob:
             sys.exit(f"{path} blob 不一致: API {res['sha'][:10]} vs 本地 {blob[:10]}")
