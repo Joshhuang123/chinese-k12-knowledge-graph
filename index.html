@@ -111,6 +111,27 @@ body{
 /* ---- hint ---- */
 #hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
 
+/* 只给读屏用：视觉上藏起来，但仍留在无障碍树里。
+   不能用 display:none / visibility:hidden —— 那会把内容从无障碍树里摘掉，
+   正好和「让读屏读到」的目标相反。 */
+.sr{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);
+  white-space:nowrap;border:0;
+}
+/* 图例从 div 改成 button 之后要抹掉浏览器默认样式。
+   这不只是为了好看：button 默认 focus ring 在暗背景上几乎看不见，
+   而键盘用户能不能看见自己在哪，是无障碍的底线而不是美观问题。 */
+#legend button.row{
+  appearance:none;-webkit-appearance:none;background:none;border:0;
+  font:inherit;color:inherit;text-align:left;width:100%;
+}
+#legend button.row:focus-visible,
+#find input:focus-visible,
+#tools .btn:focus-visible{
+  outline:2px solid var(--acc);outline-offset:3px;border-radius:6px;
+}
+
 /* ---- search ---- */
 /* 7,938 个点，靠鼠标点是找不到的。搜索是唯一入口。
    放在标题区下方：标题 → 简介 → 数字 → 搜框，读下来就是一条线。 */
@@ -121,7 +142,7 @@ body{
 }
 #find input:focus{outline:none;border-color:var(--ink2)}
 #find input::placeholder{color:var(--muted)}
-#res{margin-top:6px;display:none}
+#res{margin-top:6px;display:none;list-style:none;margin-bottom:0;padding:0}
 #res.on{display:block}
 #res .r{
   display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:7px;cursor:pointer;
@@ -209,9 +230,20 @@ body{
   <p>下面这根锥形从小学一年级长到高中——越往上，概念越大越抽象。</p>
   <div class="count">共 <b>7,938</b> 个知识点，其中 <b>2,655</b> 个属于初中</div>
   <div id="find">
-    <input id="q" placeholder="搜知识点：输入名字或册次，如「小数」「五上」" autocomplete="off" spellcheck="false">
-    <div id="res"></div>
+    <!-- combobox 按 ARIA 1.2 的写法：焦点始终留在输入框里，
+         用 aria-activedescendant 指向当前选中项 —— 正好就是现有的
+         ↑↓ + Enter 逻辑，所以 JS 几乎不用改，只是补标记。 -->
+    <label class="sr" for="q">搜知识点：按名字或册次，输入后用上下方向键选择，回车跳转</label>
+    <input id="q" role="combobox" aria-expanded="false" aria-controls="res"
+           aria-autocomplete="list" aria-activedescendant=""
+           placeholder="搜知识点：输入名字或册次，如「小数」「五上」"
+           autocomplete="off" spellcheck="false">
+    <ul id="res" role="listbox" aria-label="搜索结果"></ul>
   </div>
+  <!-- 常驻的播报区。live region 必须在内容变化「之前」就存在于 DOM 里，
+       而且不能藏在 display:none 的容器里（#res 收起时就是 none），
+       所以单独放一个永远在的。 -->
+  <div class="sr" id="say" role="status" aria-live="polite" aria-atomic="true"></div>
   <!-- 署名放进 #head：窄屏时详情卡是贴底抽屉，会盖住原先浮在
        bottom:162px 的署名（实测叠在卡片标题上）。跟着标题走就永远不冲突。
        #head 是 pointer-events:none，而 pointer-events 会继承，
@@ -531,16 +563,29 @@ function loop(){
 
 /* ================= legend ================= */
 const legendRows = document.getElementById('legendRows');
+/* 学科筛选原来是 <div> + click：键盘和读屏完全够不着，
+   实测无障碍树里 Tab 能到的只有 4 个工具栏按钮、搜索框和源码链接。
+   换成 <button> 之后，键盘可达和「已开/已关」的播报一次拿到两个 ——
+   这不是只对读屏用户有意义，纯键盘用户也受益。 */
 legendRows.innerHTML = SUBJ.map((s,i)=>
-  `<div class="row on" data-s="${i}"><span class="sw" style="background:${s.c}"></span><span>${s.zh}</span><span class="n">${s.n}</span></div>`
+  `<button type="button" class="row on" data-s="${i}" aria-pressed="true">` +
+  `<span class="sw" style="background:${s.c}"></span>` +
+  `<span>${s.zh}</span><span class="n">${s.n}</span></button>`
 ).join('');
 legendRows.addEventListener('click', e=>{
   const r = e.target.closest('.row'); if(!r) return;
   const s = +r.dataset.s;
-  if(hidden.has(s)){ hidden.delete(s); r.classList.add('on'); r.classList.remove('off'); }
+  // 先记住「点之前是不是隐藏着」，再决定往哪边翻。
+  // 我第一版写成 `const on = hidden.has(s); if(!on){ hidden.delete(s) }`——
+  // 那是「没隐藏就从 hidden 里删」，空操作，点一下什么都不会发生。
+  // 回归测试第 10 项抓到后才改对。
+  const wasHidden = hidden.has(s);
+  if(wasHidden){ hidden.delete(s); r.classList.add('on'); r.classList.remove('off'); }
   else { hidden.add(s); r.classList.remove('on'); r.classList.add('off'); }
+  r.setAttribute('aria-pressed', String(wasHidden));   // wasHidden=真 → 现在是显示出来的
   setFocus(pinned >= 0 ? pinned : hover);   // 图例开关必须重算焦点，否则高亮会停在被藏起来的那一类上
   markDirty();
+  say(`${SUBJ[s].zh}${wasHidden ? '已显示' : '已隐藏'}`);
 });
 
 /* ================= toolbar ================= */
@@ -562,7 +607,16 @@ btn('tSpin', ()=>setSpin(!spin));
    用户的实际用法是「我知道这个知识点不会」→ 搜出来 → 看它依赖什么，
    所以点结果不只是选中：还要把相机飞到那个点，否则选中了也看不见在哪。 */
 const qEl = document.getElementById('q'), resEl = document.getElementById('res');
+const sayEl = document.getElementById('say');
 let hits = [], selI = 0, total = 0;
+// 往 live region 写播报文案。内容不变时不重写 ——
+// 重复写同样的字符串，部分读屏会当成新消息再念一遍。
+let lastSaid = '';
+const say = msg=>{
+  if(!msg || msg === lastSaid) return;
+  lastSaid = msg;
+  sayEl.textContent = msg;
+};
 
 // 相机是绕中心点的轨道相机（th/ph/d），所以「飞到某个点」可以精确解出来：
 // 要让该点的投影落在画面正中，需要 th 让水平分量为 0、ph 让垂直分量为 0。
@@ -584,25 +638,42 @@ function go(i){
   setFocus(id);
   showCard(id);
   resEl.classList.remove('on');
+  qEl.setAttribute('aria-expanded', 'false');
+  qEl.removeAttribute('aria-activedescendant');
   qEl.blur();
+  // 键盘用户按下回车之后焦点被移走了，不播报就等于「什么都没发生」
+  const n = NODES[id];
+  say(`已选中 ${n.zh}，${SUBJ[n.s].zh} ${n.dz}`);
 }
 
 function render(){
+  const kw = qEl.value.trim();
   if(!hits.length){
-    resEl.innerHTML = qEl.value.trim() ? '<div class="none">没有匹配的知识点</div>' : '';
-    resEl.classList.toggle('on', !!qEl.value.trim());
+    resEl.innerHTML = kw ? '<li class="none" role="presentation">没有匹配的知识点</li>' : '';
+    resEl.classList.toggle('on', !!kw);
+    qEl.setAttribute('aria-expanded', String(!!kw));
+    qEl.removeAttribute('aria-activedescendant');
+    if(kw) say(`没有匹配「${kw}」的知识点`);
     return;
   }
   resEl.innerHTML = hits.map((h,i)=>{
     const n = NODES[h.i];
-    return `<div class="r${i===selI?' sel':''}" data-i="${i}">` +
+    // role=option + aria-selected，配上输入框上的 aria-activedescendant，
+    // 焦点不用离开输入框，读屏也能知道「现在选中的是第几条」
+    return `<li class="r${i===selI?' sel':''}" role="option" id="r-${i}" ` +
+      `aria-selected="${i===selI}" data-i="${i}">` +
       `<span class="sw" style="background:${SUBJ[n.s].c}"></span>` +
-      `<span>${n.zh}</span><span class="bk">${n.dz}</span></div>`;
+      `<span>${n.zh}</span><span class="bk">${n.dz}</span></li>`;
   }).join('') +
-  // 不说总数的话，搜「概念」命中 6,574 条却只给 8 行，
-  // 用户会以为「概念」只有 8 个知识点。这行同时是 aria-live 的播报文本。
-  (total > 8 ? `<div class="more">共 ${total.toLocaleString('en-US')} 条匹配，显示前 8 条 · 补一个字可缩小范围</div>` : '');
+  // 视觉上的计数。对读屏是冗余的（下面 say() 会单独播），
+  // 所以标 aria-hidden 避免同一件事念两遍。
+  (total > 8 ? `<li class="more" aria-hidden="true" role="presentation">共 ${total.toLocaleString('en-US')} 条匹配，显示前 8 条 · 补一个字可缩小范围</li>` : '');
   resEl.classList.add('on');
+  qEl.setAttribute('aria-expanded', 'true');
+  qEl.setAttribute('aria-activedescendant', 'r-' + selI);
+  say(total > 8
+    ? `找到 ${total.toLocaleString('en-US')} 个知识点，当前第 ${selI+1} 个：${NODES[hits[selI].i].zh}`
+    : `找到 ${total} 个知识点：${NODES[hits[selI].i].zh}`);
 }
 
 function search(){

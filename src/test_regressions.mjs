@@ -263,6 +263,71 @@ console.log('\n【9】静止时不再空转，但任何状态变化都必须重�
   await p.close();
 }
 
+console.log('\n【10】无障碍：学科开关键盘可达，搜索框有正式名称与播报');
+{
+  const { p } = await fresh();
+  const cdp = await p.createCDPSession();
+  await cdp.send('Accessibility.enable');
+  const ax = async () => (await cdp.send('Accessibility.getFullAXTree')).nodes;
+
+  // ① 学科筛选原来是 <div>+click，键盘和读屏都够不着。
+  //    换成 <button> 之后 Tab 能到、aria-pressed 会变。
+  const nodes = await ax();
+  const focusable = nodes.filter(n => n.properties?.some(x => x.name === 'focusable' && x.value?.value === true));
+  const legendBtns = focusable.filter(n => n.role?.value === 'button'
+    && /数学|物理|化学|生物/.test(n.name?.value || ''));
+  ok(legendBtns.length === 4, `四个学科开关都在 Tab 顺序里（实测 ${legendBtns.length} 个）`);
+
+  await p.evaluate(() => document.querySelectorAll('#legend button.row')[0].click());
+  await sleep(300);
+  const pressed = await p.evaluate(() => document.querySelectorAll('#legend button.row')[0].getAttribute('aria-pressed'));
+  ok(pressed === 'false', `点一下 aria-pressed 如实变 false（实际 ${pressed}）`);
+  const said = await p.evaluate(() => document.getElementById('say').textContent);
+  ok(/数学已隐藏/.test(said), `开关状态会被播报（"${said}"）`);
+  await p.evaluate(() => document.querySelectorAll('#legend button.row')[0].click());
+  await sleep(300);
+
+  // ② 搜索框：combobox + 正式 label（不是靠 placeholder 顶名）
+  const combo = (await ax()).find(n => n.role?.value === 'combobox');
+  ok(!!combo, '搜索框在 AX 树里是 combobox');
+  ok(/搜知识点/.test(combo?.name?.value || ''), `combobox 有正式无障碍名（"${combo?.name?.value}"）`);
+
+  // ③ 方向键要同步 aria-activedescendant 和 aria-selected
+  await p.click('#q'); await p.type('#q', '小数', { delay: 15 }); await sleep(350);
+  const s1 = await p.evaluate(() => ({
+    expanded: document.getElementById('q').getAttribute('aria-expanded'),
+    active: document.getElementById('q').getAttribute('aria-activedescendant'),
+    sel: [...document.querySelectorAll('#res [role=option]')].map(e => e.getAttribute('aria-selected')),
+    say: document.getElementById('say').textContent,
+  }));
+  ok(s1.expanded === 'true', '有结果时 aria-expanded=true');
+  ok(s1.active === 'r-0' && s1.sel[0] === 'true', '默认选中第 1 条且 activedescendant 指对了');
+  ok(/找到 \d+ 个知识点/.test(s1.say), `命中数会被播报（"${s1.say}"）`);
+  await p.keyboard.press('ArrowDown'); await sleep(200);
+  const s2 = await p.evaluate(() => ({
+    active: document.getElementById('q').getAttribute('aria-activedescendant'),
+    sel: [...document.querySelectorAll('#res [role=option]')].map(e => e.getAttribute('aria-selected')),
+  }));
+  ok(s2.active === 'r-1' && s2.sel[1] === 'true' && s2.sel[0] === 'false',
+     '↓ 之后 activedescendant 和 aria-selected 一起移到第 2 条');
+
+  const after = await ax();
+  ok(after.filter(n => n.role?.value === 'listbox').length === 1
+     && after.filter(n => n.role?.value === 'option').length === 8,
+     'AX 树里有 1 个 listbox + 8 个 option');
+
+  // 回车跳转后焦点被移走，必须播报，否则键盘用户以为没反应
+  await p.keyboard.press('Enter'); await sleep(1200);
+  const s3 = await p.evaluate(() => ({
+    expanded: document.getElementById('q').getAttribute('aria-expanded'),
+    active: document.getElementById('q').getAttribute('aria-activedescendant'),
+    say: document.getElementById('say').textContent,
+  }));
+  ok(s3.expanded === 'false' && !s3.active, '跳转后 aria-expanded 复位、activedescendant 清空');
+  ok(/已选中/.test(s3.say), `跳转结果会被播报（"${s3.say}"）`);
+  await p.close();
+}
+
 await browser.close();
 console.log(`\n${'='.repeat(52)}\n通过 ${pass}，失败 ${fail}`);
 process.exit(fail ? 1 : 0);
