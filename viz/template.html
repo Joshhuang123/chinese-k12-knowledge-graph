@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>全世界孩子在学什么 · 1,590 个知识点的前置关系图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0e11; --panel:rgba(22,22,27,.86); --line:rgba(255,255,255,.10);
+  --ink:#f2f2f4; --ink2:#a8a8b3; --muted:#6e6e7a; --acc:#ff3d7f;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);overflow:hidden;
+  font-family:'Outfit','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;
+  font-size:14px;line-height:1.55;letter-spacing:.005em;
+}
+.mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab}
+#c.drag{cursor:grabbing}
+#c.point{cursor:pointer}
+
+/* vignette so the cloud sits in space */
+#vig{position:fixed;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 62% 58% at 50% 46%,transparent 40%,rgba(0,0,0,.72) 100%)}
+
+.ui{position:fixed;z-index:10}
+
+/* ---- masthead ---- */
+#head{top:34px;left:38px;max-width:400px;pointer-events:none}
+#head .eyebrow{
+  font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:9px;margin-bottom:18px;
+}
+#head .eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--acc)}
+#head h1{
+  font-family:'DM Serif Display',Georgia,serif;font-weight:400;
+  font-size:clamp(34px,5.4vw,60px);line-height:1.06;letter-spacing:-.015em;margin:0 0 16px;
+}
+#head h1 em{font-style:normal;color:var(--acc)}
+#head p{color:var(--ink2);font-size:13.5px;margin:0 0 6px;max-width:34ch}
+#head .count{color:var(--muted);font-size:12px;margin-top:14px}
+#head .count b{color:var(--ink);font-weight:500}
+
+/* ---- legend ---- */
+#legend{bottom:34px;left:38px;pointer-events:auto}
+#legend .t{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:11px}
+#legend .row{
+  display:flex;align-items:center;gap:9px;padding:3.5px 0;cursor:pointer;
+  font-size:13px;color:var(--ink2);transition:color .15s;user-select:none;
+}
+#legend .row:hover{color:var(--ink)}
+#legend .row.off{opacity:.32}
+#legend .row .sw{width:8px;height:8px;border-radius:50%;flex:none;transition:box-shadow .15s}
+#legend .row.on .sw{box-shadow:0 0 0 3px rgba(255,255,255,.10)}
+#legend .row .n{margin-left:auto;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ---- toolbar ---- */
+#tools{top:34px;right:38px;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;max-width:300px}
+.btn{
+  font-family:inherit;font-size:12.5px;padding:6px 12px;border-radius:8px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);color:var(--ink2);
+  backdrop-filter:blur(8px);transition:all .16s;white-space:nowrap;
+}
+.btn:hover{border-color:rgba(255,255,255,.28);color:var(--ink)}
+.btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e;font-weight:500}
+
+/* ---- info card ---- */
+#card{
+  top:50%;right:38px;transform:translateY(-50%);width:296px;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:17px 18px;backdrop-filter:blur(14px);opacity:0;pointer-events:none;
+  transition:opacity .2s;box-shadow:0 12px 40px rgba(0,0,0,.5);
+}
+#card.on{opacity:1;pointer-events:auto}
+#card .eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;
+  display:flex;align-items:center;gap:7px}
+#card .eyebrow .sw{width:7px;height:7px;border-radius:50%;flex:none}
+#card h2{font-size:18px;font-weight:600;margin:0 0 3px;line-height:1.3;letter-spacing:-.01em}
+#card .en{font-size:11.5px;color:var(--muted);margin:0 0 11px;line-height:1.4}
+#card .desc{font-size:12.5px;color:var(--ink2);line-height:1.55;margin:0 0 12px}
+#card .meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+#card .meta span{
+  font-size:10.5px;padding:2.5px 8px;border-radius:5px;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--ink2);
+}
+#card .meta span.hi{background:rgba(255,61,127,.14);border-color:rgba(255,61,127,.34);color:#ff8ab5}
+#card .chain{font-size:11.5px;color:var(--muted);line-height:1.5;border-top:1px solid var(--line);padding-top:11px}
+#card .chain b{color:var(--acc);font-weight:500}
+
+/* ---- hint ---- */
+#hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
+#hint kbd{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:1px 5px;border-radius:4px;
+  background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink2);
+}
+
+/* ---- tooltip ---- */
+#tip{
+  position:fixed;z-index:20;pointer-events:none;opacity:0;transition:opacity .12s;
+  background:rgba(14,14,17,.95);border:1px solid var(--line);border-radius:8px;
+  padding:7px 10px;font-size:12px;white-space:nowrap;backdrop-filter:blur(8px);
+  box-shadow:0 6px 22px rgba(0,0,0,.55);
+}
+#tip.on{opacity:1}
+#tip .t-zh{font-weight:500}
+#tip .t-en{font-size:10.5px;color:var(--muted);margin-top:1px}
+
+@media(max-width:900px){
+  #head{top:20px;left:20px;max-width:62%}
+  #head h1{font-size:30px}
+  #head p{display:none}
+  #tools{top:auto;bottom:20px;right:20px;max-width:180px}
+  #legend{bottom:20px;left:20px}
+  #legend .row{font-size:11.5px;padding:2px 0}
+  #hint{display:none}
+  #card{right:12px;left:12px;width:auto;top:auto;bottom:78px;transform:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<div id="vig"></div>
+
+<div class="ui" id="head">
+  <div class="eyebrow"><span class="dot"></span>美英课程标准 · __N_TOPIC__ 个知识点 · __N_EDGE__ 条前置关系</div>
+  <h1>全世界孩子<br>在<em>学什么</em>。</h1>
+  <p>每一个点是一个可以单独教的最小概念。颜色是学科，高度是年龄，<b>一根根连线就是一个知识点必须先掌握什么</b>。</p>
+  <p>下面这根锥形从 4 岁长到 15 岁——越往上，概念越大越抽象。</p>
+  <div class="count">共 <b>__N_TOPIC__</b> 个知识点，其中 <b>__N_CORE__</b> 个属于 9–10 岁核心</div>
+</div>
+
+<div class="ui" id="tools">
+  <button class="btn" id="tCore" aria-pressed="false">只看 9–10 岁</button>
+  <button class="btn" id="tEdges" aria-pressed="true">显示连线</button>
+  <button class="btn" id="tSpin" aria-pressed="true">自动旋转</button>
+  <button class="btn" id="tReset">复位</button>
+</div>
+
+<div class="ui" id="legend">
+  <div class="t">学科 · 点击开关</div>
+  <div id="legendRows"></div>
+</div>
+
+<div class="ui" id="card">
+  <div class="eyebrow"><span class="sw"></span><span id="cEyebrow"></span></div>
+  <h2 id="cZh"></h2>
+  <p class="en mono" id="cEn"></p>
+  <p class="desc" id="cDesc"></p>
+  <div class="meta" id="cMeta"></div>
+  <div class="chain" id="cChain"></div>
+</div>
+
+<div class="ui" id="hint">
+  拖拽旋转 · 滚轮缩放 · 悬停高亮<br>
+  <kbd>Esc</kbd> 取消选中
+</div>
+
+<div id="tip"><div class="t-zh"></div><div class="t-en mono"></div></div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+const D = JSON.parse(document.getElementById('data').textContent);
+const SUBJ = D.subjects, ACC = D.acc;
+const N = D.nodes.length;
+
+// ---- expand compact arrays into objects ----
+const NODES = D.nodes.map(a => ({
+  i:a[0], zh:a[1], en:a[2], s:a[3], dz:a[4], de:a[5],
+  a1:a[6], a2:a[7], cen:a[8], core:a[9], desc:a[10], evn:a[11]
+}));
+const label = n => n.zh || n.en;
+
+/* ================= layout: cone, height = age ================= */
+const byAge = new Map();
+for(const n of NODES){ if(!byAge.has(n.a1)) byAge.set(n.a1, []); byAge.get(n.a1).push(n); }
+const AGES = [...byAge.keys()].sort((x,y)=>x-y);
+const A0 = AGES[0], A1 = AGES[AGES.length-1];
+const GOLDEN = Math.PI * (3 - Math.sqrt(5));
+const LAYER_GAP = 58;
+
+AGES.forEach((age, li) => {
+  const list = byAge.get(age);
+  const t = (age - A0) / (A1 - A0);           // 0 bottom -> 1 top
+  const layerR = 52 + t * 250;                // cone flares with age
+  list.forEach((n, i) => {
+    const r = layerR * Math.sqrt((i + 0.5) / list.length);
+    const th = i * GOLDEN + n.s * 0.62;
+    n.x = Math.cos(th) * r;
+    n.z = Math.sin(th) * r;
+    n.y = (li - (AGES.length-1)/2) * LAYER_GAP;
+  });
+});
+
+/* ================= adjacency ================= */
+const pre = new Map(), unlocks = new Map();
+for(const [t,p] of D.edges){
+  if(!pre.has(t)) pre.set(t, []); pre.get(t).push(p);
+  if(!unlocks.has(p)) unlocks.set(p, []); unlocks.get(p).push(t);
+}
+function traceBack(root, cap){
+  const seen = new Set([root]); const out = []; let q = [root];
+  while(q.length && out.length < cap){
+    const nx = [];
+    for(const id of q){
+      for(const p of (pre.get(id) || [])){
+        if(seen.has(p)) continue;
+        seen.add(p); out.push(p); nx.push(p);
+        if(out.length >= cap) break;
+      }
+      if(out.length >= cap) break;
+    }
+    q = nx;
+  }
+  return out;
+}
+
+/* ================= canvas ================= */
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+let W=0, H=0, DPR=1;
+function resize(){
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W*DPR; cv.height = H*DPR;
+  cv.style.width = W+'px'; cv.style.height = H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+addEventListener('resize', resize); resize();
+
+const cam = { th: -0.62, ph: 0.30, d: 1500 };
+const TARGET = { th: -0.62, ph: 0.30, d: 1500 };
+let spin = true, showEdges = true, coreOnly = false;
+const hidden = new Set();
+
+let hover = -1, pinned = -1;
+let focus = -1;
+const activeSet = new Set();
+let projX = new Float32Array(N), projY = new Float32Array(N), projK = new Float32Array(N);
+let order = new Int32Array(N);
+
+function passes(n){
+  if(coreOnly && !n.core) return false;
+  if(hidden.has(n.s)) return false;
+  return true;
+}
+function setFocus(id){
+  focus = id;
+  activeSet.clear();
+  if(id < 0) return;
+  activeSet.add(id);
+  for(const p of traceBack(id, 70)) if(passes(NODES[p])) activeSet.add(p);
+  for(const u of (unlocks.get(id) || [])) if(passes(NODES[u])) activeSet.add(u);
+}
+
+const CX = () => W * 0.5, CY = () => H * 0.5;
+
+function project(){
+  const cosT = Math.cos(cam.th), sinT = Math.sin(cam.th);
+  const cosP = Math.cos(cam.ph), sinP = Math.sin(cam.ph);
+  const cx = CX(), cy = CY(), d = cam.d;
+  let m = 0;
+  for(let i=0;i<N;i++){
+    const n = NODES[i];
+    if(!passes(n)){ projK[i] = -1e9; order[m++] = i; continue; }
+    const x1 = n.x*cosT - n.z*sinT;
+    const z1 = n.x*sinT + n.z*cosT;
+    const y1 = n.y*cosP - z1*sinP;
+    const z2 = n.y*sinP + z1*cosP;
+    const k  = d / (d - z2);
+    projX[i] = cx + x1*k;
+    projY[i] = cy - y1*k;
+    projK[i] = k;
+    order[m++] = i;
+  }
+  // far first (larger k = farther)
+  const arr = Array.prototype.slice.call(order.subarray(0,m));
+  arr.sort((a,b)=>projK[b]-projK[a]);
+  for(let i=0;i<m;i++) order[i]=arr[i];
+  return m;
+}
+
+function drawEdges(){
+  const BUCKETS = 4;
+  const paths = [[],[],[],[]];
+  for(let e=0;e<D.edges.length;e++){
+    const [t,p] = D.edges[e];
+    if(projK[t] < -1e8 || projK[p] < -1e8) continue;
+    const on = activeSet.size ? (activeSet.has(t) && activeSet.has(p)) : false;
+    if(activeSet.size && !on) continue;
+    const kk = (projK[t] + projK[p]) / 2;
+    let b = Math.floor((1.9 - kk) * 1.9);
+    if(b<0) b=0; if(b>BUCKETS-1) b=BUCKETS-1;
+    paths[b].push(t, p);
+  }
+  for(let b=0;b<BUCKETS;b++){
+    const arr = paths[b]; if(!arr.length) continue;
+    const fade = (b+1)/(BUCKETS+1);   // bucket 0 = nearest = strongest
+    ctx.beginPath();
+    for(let i=0;i<arr.length;i+=2){
+      const t = arr[i], p = arr[i+1];
+      ctx.moveTo(projX[p], projY[p]);
+      ctx.lineTo(projX[t], projY[t]);
+    }
+    ctx.strokeStyle = activeSet.size
+      ? 'rgba(255,61,127,.55)'
+      : 'rgba(190,190,210,' + (0.055 * fade + 0.012).toFixed(3) + ')';
+    ctx.lineWidth = activeSet.size ? 1.1 : 0.5 + fade*0.5;
+    ctx.stroke();
+  }
+}
+
+function drawNodes(m){
+  for(let i=0;i<m;i++){
+    const idx = order[i];
+    const n = NODES[idx];
+    if(projK[idx] < -1e8) continue;
+    const k = projK[idx];
+    const on = activeSet.size ? activeSet.has(idx) : false;
+
+    // perspective: near nodes bigger and brighter, far ones smaller and faded
+    let r = (1.5 + n.cen*7.5) / k * 0.52;
+    if(r < 0.45) continue;
+
+    let fill, alpha;
+    if(activeSet.size && !on){
+      // keep the rest of the cloud as a faint backdrop instead of hiding it
+      ctx.globalAlpha = 0.09;
+      ctx.fillStyle = SUBJ[n.s].c;
+      ctx.beginPath(); ctx.arc(projX[idx], projY[idx], r, 0, 6.2832); ctx.fill();
+      continue;
+    }
+    if(activeSet.size){
+      if(idx === focus){ fill = '#ffffff'; alpha = 1; r = Math.max(r, 3.4); }
+      else { fill = ACC; alpha = Math.min(1, 0.55 + (1.9 - k) * 0.26); }
+    }else{
+      fill = SUBJ[n.s].c;
+      alpha = Math.max(0.10, Math.min(0.80, 0.52 - (k - 1) * 0.30));
+    }
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = fill;
+    ctx.beginPath();
+    ctx.arc(projX[idx], projY[idx], r, 0, 6.2832);
+    ctx.fill();
+
+    if(idx === focus){
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = ACC; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(projX[idx], projY[idx], r+5, 0, 6.2832); ctx.stroke();
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawAgeAxis(){
+  ctx.save();
+  ctx.font = '500 9.5px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const cosT = Math.cos(cam.th), sinT = Math.sin(cam.th);
+  const cosP = Math.cos(cam.ph), sinP = Math.sin(cam.ph);
+  const d = cam.d, cx = CX(), cy = CY();
+  const R = 318;
+  AGES.forEach((age, li) => {
+    const y = (li - (AGES.length-1)/2) * LAYER_GAP;
+    // park each label on the ellipse edge nearest the viewer
+    const bx = -R*cosT, bz = -R*sinT;
+    const z1 = bx*sinT + bz*cosT;
+    const y1 = y*cosP - z1*sinP;
+    const z2 = y*sinP + z1*cosP;
+    const k = d/(d-z2);
+    const sx = cx + bx*k, sy = cy - y1*k;
+    // skip labels that would land outside the viewport
+    if(sx > 70 && sx < W-70 && sy > 24 && sy < H-24){
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = 'rgba(255,255,255,.13)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.arc(cx, sy, R*k, 0, 6.2832); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,.34)';
+      ctx.fillText('age ' + age, sx, sy);
+    }
+  });
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+function loop(){
+  if(spin && !dragging) TARGET.th += 0.0022;
+  cam.th += (TARGET.th - cam.th)*0.09;
+  cam.ph += (TARGET.ph - cam.ph)*0.09;
+  cam.d  += (TARGET.d  - cam.d )*0.09;
+
+  ctx.clearRect(0,0,W,H);
+  const m = project();
+  drawAgeAxis();
+  if(showEdges) drawEdges();
+  drawNodes(m);
+  requestAnimationFrame(loop);
+}
+
+/* ================= legend ================= */
+const legendRows = document.getElementById('legendRows');
+legendRows.innerHTML = SUBJ.map((s,i)=>
+  `<div class="row on" data-s="${i}"><span class="sw" style="background:${s.c}"></span><span>${s.zh}</span><span class="n">${s.n}</span></div>`
+).join('');
+legendRows.addEventListener('click', e=>{
+  const r = e.target.closest('.row'); if(!r) return;
+  const s = +r.dataset.s;
+  if(hidden.has(s)){ hidden.delete(s); r.classList.add('on'); r.classList.remove('off'); }
+  else { hidden.add(s); r.classList.remove('on'); r.classList.add('off'); }
+});
+
+/* ================= toolbar ================= */
+const btn = (id, fn) => document.getElementById(id).addEventListener('click', fn);
+btn('tCore', e=>{ coreOnly = !coreOnly; e.target.setAttribute('aria-pressed', coreOnly); if(focus>=0) setFocus(focus); });
+btn('tEdges', e=>{ showEdges = !showEdges; e.target.setAttribute('aria-pressed', showEdges); });
+btn('tSpin', e=>{ spin = !spin; e.target.setAttribute('aria-pressed', spin); });
+btn('tReset', ()=>{
+  TARGET.th = -0.62; TARGET.ph = 0.30; TARGET.d = 1500;
+  pinned = -1; setFocus(-1); card.classList.remove('on');
+});
+
+/* ================= info card ================= */
+const card = document.getElementById('card');
+function showCard(id){
+  const n = NODES[id], s = SUBJ[n.s];
+  card.querySelector('.sw').style.background = s.c;
+  document.getElementById('cEyebrow').textContent = s.zh + ' · ' + n.dz + ' · ' + n.a1 + '–' + n.a2 + ' 岁';
+  document.getElementById('cZh').textContent = label(n);
+  document.getElementById('cEn').textContent = n.en;
+  document.getElementById('cDesc').textContent = n.desc || '（该条目没有描述文本）';
+  const nb = (pre.get(id) || []).length, ub = (unlocks.get(id) || []).length;
+  document.getElementById('cMeta').innerHTML =
+    (n.core ? '<span class="hi">9–10 岁核心</span>' : '<span>低年级基础</span>') +
+    '<span>' + n.evn + ' 条掌握证据</span><span>重要度 ' + n.cen.toFixed(3) + '</span>';
+  document.getElementById('cChain').innerHTML =
+    '学它之前要先掌握 <b>' + nb + '</b> 个知识点，学完解锁 <b>' + ub + '</b> 个。<br>图中高亮的是向前追溯最多 70 个的前置链。';
+  card.classList.add('on');
+}
+
+/* ================= tooltip ================= */
+const tip = document.getElementById('tip');
+function showTip(id, mx, my){
+  const n = NODES[id];
+  tip.querySelector('.t-zh').textContent = label(n);
+  tip.querySelector('.t-en').textContent = n.zh ? n.en : '';
+  tip.classList.add('on');
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.min(mx + 16, innerWidth - w - 10) + 'px';
+  tip.style.top  = Math.max(10, my - h - 12) + 'px';
+}
+
+/* ================= interaction ================= */
+let dragging = false, lastX = 0, lastY = 0, moved = 0;
+
+cv.addEventListener('pointerdown', e=>{
+  dragging = true; moved = 0;
+  lastX = e.clientX; lastY = e.clientY;
+  cv.classList.add('drag');
+  cv.setPointerCapture(e.pointerId);
+});
+cv.addEventListener('pointermove', e=>{
+  if(dragging){
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    moved += Math.abs(dx) + Math.abs(dy);
+    TARGET.th += dx * 0.005;
+    TARGET.ph = Math.max(-1.35, Math.min(1.35, TARGET.ph + dy * 0.005));
+    lastX = e.clientX; lastY = e.clientY;
+    tip.classList.remove('on');
+    return;
+  }
+  let best = -1, bestD = 16*16;
+  for(let i=0;i<N;i++){
+    if(projK[i] < -1e8) continue;
+    const dx = projX[i] - e.clientX, dy = projY[i] - e.clientY;
+    const dd = dx*dx + dy*dy;
+    if(dd < bestD){ bestD = dd; best = i; }
+  }
+  cv.classList.toggle('point', best >= 0);
+  if(best !== hover){
+    hover = best;
+    const f = pinned >= 0 ? pinned : hover;
+    setFocus(f);
+    if(f >= 0) showCard(f); else card.classList.remove('on');
+  }
+  if(hover >= 0) showTip(hover, e.clientX, e.clientY); else tip.classList.remove('on');
+});
+cv.addEventListener('pointerup', e=>{
+  cv.classList.remove('drag');
+  dragging = false;
+  if(moved < 5){
+    // a click, not a drag
+    pinned = (hover >= 0 && hover === pinned) ? -1 : hover;
+    const f = pinned >= 0 ? pinned : hover;
+    setFocus(f);
+    if(f >= 0) showCard(f); else card.classList.remove('on');
+  }
+});
+cv.addEventListener('pointerleave', ()=>{ tip.classList.remove('on'); });
+cv.addEventListener('wheel', e=>{
+  e.preventDefault();
+  TARGET.d = Math.max(520, Math.min(3400, TARGET.d + e.deltaY * 1.6));
+}, {passive:false});
+
+addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){ pinned = -1; setFocus(hover); if(hover<0) card.classList.remove('on'); }
+});
+
+loop();
+})();
+</script>
+</body>
+</html>
