@@ -319,7 +319,7 @@ function resize(){
   cv.style.width = W+'px'; cv.style.height = H+'px';
   ctx.setTransform(DPR,0,0,DPR,0,0);
 }
-addEventListener('resize', resize); resize();
+addEventListener('resize', ()=>{ resize(); markDirty(); }); resize();
 
 const cam = { th: -0.62, ph: 0.30, d: 1500 };
 const TARGET = { th: -0.62, ph: 0.30, d: 1500 };
@@ -334,6 +334,16 @@ let focus = -1;
 const activeSet = new Set();
 let projX = new Float32Array(N), projY = new Float32Array(N), projK = new Float32Array(N);
 let order = new Int32Array(N);
+const orderArr = [];      // 复用：见 project() 末尾的说明
+
+/* 静止时整帧跳过。
+   原来不管画面动不动，每帧都重算 7,938 个点的透视投影并重新排序 ——
+   实测自转关掉、相机停稳之后，主线程仍占 31.8%。对一个「放在那里看」
+   的页面来说，那是一直在烧电。 */
+let dirty = true;
+const markDirty = ()=>{ dirty = true; };
+// 相机已经收敛到目标的程度：再画下去和上一帧一模一样
+const CAM_EPS = 1e-4;
 
 function passes(n){
   if(coreOnly && !n.core) return false;
@@ -341,6 +351,7 @@ function passes(n){
   return true;
 }
 function setFocus(id){
+  markDirty();
   // 焦点节点如果被当前筛选挡掉了（比如选中的��小学知识点，然后打开「只看初中」），
   // 就不能把它塞进 activeSet —— 它画不出来，却会让其余所有点被压到 9% 透明度，
   // 结果是整张图黑掉、一个高亮都没有（实测亮点像素 700 → 2）。
@@ -374,9 +385,13 @@ function project(){
     order[m++] = i;
   }
   // far first (larger k = farther)
-  const arr = Array.prototype.slice.call(order.subarray(0,m));
-  arr.sort((a,b)=>projK[b]-projK[a]);
-  for(let i=0;i<m;i++) order[i]=arr[i];
+  // 原来每帧 Array.prototype.slice.call() 把 7,938 个 int 装箱成一个新数组：
+  // 一次约 63 KB，60fps 下每秒 3.8 MB 垃圾，手机上会持续触发 GC。
+  // 复用同一个数组，长度按可见点数截断即可。
+  orderArr.length = m;
+  for(let i=0;i<m;i++) orderArr[i] = order[i];
+  orderArr.sort((a,b)=>projK[b]-projK[a]);
+  for(let i=0;i<m;i++) order[i] = orderArr[i];
   return m;
 }
 
@@ -497,11 +512,20 @@ function loop(){
   cam.ph += wrapPi(TARGET.ph - cam.ph)*0.09;
   cam.d  += (TARGET.d  - cam.d )*0.09;
 
-  ctx.clearRect(0,0,W,H);
-  const m = project();
-  drawAgeAxis();
-  if(showEdges) drawEdges();
-  drawNodes(m);
+  // 相机还在动就得画；完全不动且没有待处理的变更就整帧跳过。
+  const moving = Math.abs(wrapPi(TARGET.th - cam.th)) > CAM_EPS
+              || Math.abs(wrapPi(TARGET.ph - cam.ph)) > CAM_EPS
+              || Math.abs(TARGET.d  - cam.d ) > CAM_EPS * 100;
+  if(moving) dirty = true;
+
+  if(dirty){
+    dirty = false;
+    ctx.clearRect(0,0,W,H);
+    const m = project();
+    drawAgeAxis();
+    if(showEdges) drawEdges();
+    drawNodes(m);
+  }
   requestAnimationFrame(loop);
 }
 
@@ -515,17 +539,20 @@ legendRows.addEventListener('click', e=>{
   const s = +r.dataset.s;
   if(hidden.has(s)){ hidden.delete(s); r.classList.add('on'); r.classList.remove('off'); }
   else { hidden.add(s); r.classList.remove('on'); r.classList.add('off'); }
+  setFocus(pinned >= 0 ? pinned : hover);   // 图例开关必须重算焦点，否则高亮会停在被藏起来的那一类上
+  markDirty();
 });
 
 /* ================= toolbar ================= */
 const btn = (id, fn) => document.getElementById(id).addEventListener('click', fn);
-btn('tCore', e=>{ coreOnly = !coreOnly; e.target.setAttribute('aria-pressed', coreOnly); if(focus>=0) setFocus(focus); });
-btn('tEdges', e=>{ showEdges = !showEdges; e.target.setAttribute('aria-pressed', showEdges); });
+btn('tCore', e=>{ coreOnly = !coreOnly; e.target.setAttribute('aria-pressed', coreOnly); if(focus>=0) setFocus(focus); markDirty(); });
+btn('tEdges', e=>{ showEdges = !showEdges; e.target.setAttribute('aria-pressed', showEdges); markDirty(); });
 /* 自转状态只有一个入口。原来 flyTo 直接改 spin 而不碰按钮，
    于是按钮显示「开」实际已停 —— 用户点它是想关掉，实际是打开。复位也一样，
    相机回位了但自转没恢复、按钮还亮着。 */
 const setSpin = v=>{
   spin = v;
+  if(v) markDirty();
   document.getElementById('tSpin').setAttribute('aria-pressed', String(v));
 };
 document.getElementById('tSpin').setAttribute('aria-pressed', String(spin));

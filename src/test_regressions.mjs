@@ -226,6 +226,43 @@ console.log('\n【8】手势被打断后不能卡在抓取态');
   await p.close();
 }
 
+console.log('\n【9】静止时不再空转，但任何状态变化都必须重绘');
+{
+  const { p } = await fresh();
+  const cdp = await p.createCDPSession();
+  await cdp.send('Performance.enable');
+  const g = async k => (await cdp.send('Performance.getMetrics')).metrics.find(x => x.name === k)?.value ?? 0;
+
+  // 关掉自转，等相机停稳
+  await p.click('#tSpin'); await sleep(2500);
+  const t0 = await g('TaskDuration');
+  await sleep(5000);
+  const t1 = await g('TaskDuration');
+  const idle = (t1 - t0) / 5 * 100;
+  ok(idle < 8, `静止 5 秒主线程占用 ${idle.toFixed(1)}%（修之前 31.8%，每帧都在重算 7,938 个点）`);
+
+  // 但「跳过重绘」绝不能变成「该重绘时不重绘」——三个入口各验一次
+  const bright = () => p.evaluate(() => {
+    const cv = document.getElementById('c'), g2 = cv.getContext('2d');
+    const d = g2.getImageData(0, 0, cv.width, cv.height).data;
+    let n = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 60 && (d[i] > 180 || d[i + 1] > 150)) n++;
+    return n;
+  });
+  await p.click('#q'); await p.type('#q', '小数', { delay: 15 }); await sleep(300);
+  await p.keyboard.press('Enter'); await sleep(1500);
+  const f0 = await bright();
+  await p.click('#tCore'); await sleep(800);
+  ok(Math.abs((await bright()) - f0) > f0 * 0.15, '点「只看初中」确实重绘了');
+  await p.evaluate(() => document.querySelectorAll('#legend .row')[0].click()); await sleep(800);
+  const f1 = await bright();
+  ok(Math.abs(f1 - f0) > f0 * 0.15, '点图例隐藏一科确实重绘了');
+  const sz0 = await p.evaluate(() => document.getElementById('c').width);
+  await p.setViewport({ width: 1100, height: 800 }); await sleep(800);
+  ok(await p.evaluate(() => document.getElementById('c').width) !== sz0, '改窗口尺寸确实重算了画布');
+  await p.close();
+}
+
 await browser.close();
 console.log(`\n${'='.repeat(52)}\n通过 ${pass}，失败 ${fail}`);
 process.exit(fail ? 1 : 0);
