@@ -137,71 +137,126 @@ def iso_from_git(ts, tz):
     return dt.datetime.fromtimestamp(ts, dt.timezone(off)).isoformat()
 
 
-def main():
-    head = git("rev-parse", "HEAD")
-    local_tree = git("rev-parse", "HEAD^{tree}")
-    author, committer, message = commit_meta()
+def remote_has(sha):
+    """远端有没有这个 commit 对象。404 = 没有，其它错误要报出来而不是当成没有。"""
+    r = subprocess.run(["gh", "api", f"{API}/git/commits/{sha}"],
+                       capture_output=True, text=True)
+    if r.returncode == 0:
+        return True
+    err = r.stderr
+    if "HTTP 404" in err or "Not Found" in err:
+        return False
+    sys.exit(f"查询远端 commit 失败，不敢当成「不存在」：\n{err.strip()[:200]}")
 
+
+def commit_meta_of(sha):
+    """取某个 commit 的作者/时间/消息原始值。用 cat-file 而不是 --format：
+    --format=%B 会 strip 掉末尾换行，SHA 就对不上了。"""
+    raw = subprocess.run(["git", "cat-file", "commit", sha],
+                         cwd=BASE, capture_output=True).stdout
+    head, _, msg = raw.partition(b"\n\n")
+    # 格式固定为 `author 名字 <邮箱> unix时间戳 时区`，严格匹配。
+    # 别用 rsplit 去剥尖括号 —— 尖括号在字符串中间，rstrip 削不掉，
+    # 邮箱会带上尾巴传上去，commit 就对不上了。
+    pat = re.compile(r"^(author|committer) (.+) <([^<>]+)> (\d+) ([+-]\d{4})$")
+    meta = {}
+    for line in head.decode("utf-8").splitlines():
+        m = pat.match(line)
+        if m:
+            key, name, email, ts, tz = m.groups()
+            meta[key] = {"name": name, "email": email,
+                         "date": iso_from_git(int(ts), tz)}
+    if set(meta) != {"author", "committer"}:
+        sys.exit(f"提交头解析失败：{head.decode('utf-8')[:300]}")
+    return meta["author"], meta["committer"], msg.decode("utf-8")
+
+
+def push_commit(sha, label):
+    """把单个 commit 连同它需要的所有 blob/tree 原样传上去，逐个校验 SHA。
+
+    原来的脚本只推 HEAD 一个 commit，并假设它的所有祖先都已经在远端。
+    一旦中间有未推送的提交（推送失败、或者远端被别的东西改过），
+    建 commit 会直接 422「Parent SHA does not exist」，而且无从下手。
+    这里改成把未推送的那一段按时间顺序一个个补齐。
+    """
     entries = []
-    for line in git_path("ls-tree", "-r", "HEAD").splitlines():
+    for line in git_path("ls-tree", "-r", sha).splitlines():
         meta, path = line.split("\t", 1)
-        mode, _typ, sha = meta.split()
-        entries.append((mode, path, sha))
-    print(f"本地 HEAD {head[:10]}  tree {local_tree[:10]}  {len(entries)} 个文件\n")
+        mode, _typ, blob = meta.split()
+        entries.append((mode, path, blob))
+    local_tree = git("rev-parse", f"{sha}^{{tree}}")
 
-    print("⓪ 初始化仓库")
-    bootstrap()
-
-    # ── 1. blob：先确认工作区内容与 HEAD 一致，再逐个传 ──
-    print("\n① 建 blob")
-    blobs = {}
-    for mode, path, sha in entries:
+    for mode, path, blob in entries:
         # 工作区被改过就停：推上去会和本地分叉，而分叉在 github.com 不通时
         # 本地还拉不回来，等于把仓库搞成两套真相
-        if git_path("hash-object", "--", path) != sha:
+        if git_path("hash-object", "--", path) != blob:
             sys.exit(f"{path} 工作区内容与 HEAD 不一致，先提交或还原再推")
         res = gh("POST", f"{API}/git/blobs",
                  {"content": base64.b64encode((BASE / path).read_bytes()).decode(),
                   "encoding": "base64"})
-        if res["sha"] != sha:
-            sys.exit(f"{path} blob 不一致: API {res['sha'][:10]} vs 本地 {sha[:10]}")
-        blobs[path] = sha
-        print(f"   ✓ {path}  {sha[:10]}")
+        if res["sha"] != blob:
+            sys.exit(f"{path} blob 不一致: API {res['sha'][:10]} vs 本地 {blob[:10]}")
 
-    # ── 2. tree ──
-    print("\n② 建 tree")
     tree = gh("POST", f"{API}/git/trees",
               {"base_tree": None,
-               "tree": [{"path": p, "mode": m, "type": "blob", "sha": blobs[p]}
-                        for m, p, _ in entries]})
-    print(f"   API tree {tree['sha'][:10]}  本地 tree {local_tree[:10]}")
+               "tree": [{"path": p, "mode": m, "type": "blob", "sha": blobs_sha(p, blob)}
+                        for m, p, blob in entries]})
     if tree["sha"] != local_tree:
-        sys.exit("tree 不一致，中止 —— 推上去会和本地分叉")
+        sys.exit(f"{label} tree 不一致，中止 —— 推上去会和本地分叉")
 
-    # ── 3. commit：作者/时间/消息原样传，SHA 才能对上 ──
-    # 父提交必须从本地读。写死空数组只在首个（根）提交时碰巧是对的，
-    # 一旦有第二个提交就会算出另一个 SHA，而且报错信息只看得出「不一致」，
-    # 看不出差在哪。
-    parents = git("rev-list", "--parents", "-n", "1", head).split()[1:]
-    print("\n③ 建 commit")
-    print(f"   父提交: {parents or '（根提交）'}")
+    author, committer, message = commit_meta_of(sha)
+    parents = git("rev-list", "--parents", "-n", "1", sha).split()[1:]
     c = gh("POST", f"{API}/git/commits",
            {"message": message, "tree": local_tree, "parents": parents,
             "author": author, "committer": committer})
-    print(f"   API commit {c['sha'][:10]}  本地 commit {head[:10]}")
-    if c["sha"] != head:
-        sys.exit("commit SHA 不一致，中止")
+    if c["sha"] != sha:
+        sys.exit(f"{label} commit SHA 不一致，中止：API {c['sha'][:10]} vs 本地 {sha[:10]}")
+    print(f"   ✓ {label} {sha[:10]}  ({len(entries)} 文件)")
+
+
+def blobs_sha(path, blob):
+    return blob
+
+
+def main():
+    head = git("rev-parse", "HEAD")
+    print(f"本地 HEAD {head[:10]}\n")
+
+    print("⓪ 初始化仓库")
+    bootstrap()
+
+    # ── 找出未推送的那一段 ──
+    # 本地历史是线性的，从最早开始扫，第一个远端已有的就是分界点。
+    order = git("rev-list", "--reverse", "HEAD").split()
+    todo = []
+    for c in order:
+        if remote_has(c):
+            break
+        todo.append(c)
+    if not todo:
+        print("   远端已包含本地全部提交")
+    else:
+        print(f"   待推送 {len(todo)} 个提交（最早 {todo[0][:10]}）")
+
+    # ── 1~3. 逐个补齐 ──
+    print("\n①②③ blob / tree / commit")
+    for c in todo:
+        push_commit(c, "推送" if c is todo[0] else "      ")
 
     # ── 4. ref ──
-    # 必须 force：本地是根提交（无 parent），而 main 指向垫底提交，
-    # 两者无祖先关系，不 force 推不上去。force 在这里是安全的，
-    # 被丢弃的只有刚建的那个垫底提交。
+    # 必须 force：远端可能指着一个垫底提交（父提交是历史里的某个点，
+    # 但那个节点本身不在本地历史里），两者没有祖先关系，不 force 推不上去。
+    # 被丢弃的只有那个垫底提交，它的内容（.bootstrap）不在我们的 tree 里。
     print("\n④ 更新 main")
     gh("PATCH", f"{API}/git/refs/heads/main", {"sha": head, "force": True})
     print(f"   main -> {head[:10]}")
 
-    # 垫底文件理应已经随 tree 一起消失（我们的 tree 里没有它）。
-    # 用容错探测确认一下，别让一个 404 把脚本带崩。
+    r = subprocess.run(["gh", "api", f"{API}/git/ref/heads/main", "--jq", ".object.sha"],
+                       capture_output=True, text=True)
+    if r.stdout.strip() != head:
+        sys.exit(f"远端 main 与本地 HEAD 不一致：{r.stdout.strip()[:10]} vs {head[:10]}")
+    print("   ✓ 远端 main 与本地 HEAD 完全一致")
+
     print("\n⑤ 收尾检查")
     r = subprocess.run(["gh", "api", f"{API}/contents/.bootstrap?ref=main"],
                        capture_output=True, text=True)
