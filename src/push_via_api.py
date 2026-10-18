@@ -227,12 +227,15 @@ def main():
 
     # ── 找出未推送的那一段 ──
     # 本地历史是线性的，从最早开始扫，第一个远端已有的就是分界点。
+    # 线性历史：最老的那一批一定在远端，往前扫到第一个「远端没有」的为止，
+    # 从那儿往后的全是要补的。条件写成「远端有就停」是反的 ——
+    # 那样会在根提交上立刻跳出，todo 永远是空。
     order = git("rev-list", "--reverse", "HEAD").split()
     todo = []
     for c in order:
-        if remote_has(c):
+        if not remote_has(c):
+            todo = order[order.index(c):]
             break
-        todo.append(c)
     if not todo:
         print("   远端已包含本地全部提交")
     else:
