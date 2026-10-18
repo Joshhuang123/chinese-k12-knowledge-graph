@@ -187,9 +187,10 @@ def push_commit(sha, label):
         entries.append((mode, path, blob))
     local_tree = git("rev-parse", f"{sha}^{{tree}}")
 
-    head_blob = {p: b for _m, p, b in
-                 (l.split("\t", 1)[0].split() + [l.split("\t", 1)[1]]
-                  for l in git_path("ls-tree", "-r", "HEAD").splitlines())}
+    head_blob = {}
+    for line in git_path("ls-tree", "-r", "HEAD").splitlines():
+        meta, hpath = line.split("\t", 1)
+        head_blob[hpath] = meta.split()[2]
 
     for mode, path, blob in entries:
         # 只有 HEAD 那一份才拿工作区比对：补齐历史提交时传的是当时的
