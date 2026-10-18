@@ -62,14 +62,32 @@ def bootstrap():
 
     这个垫底提交在最后 main 指向本地 commit 之后就成了不可达对象，
     会被 GitHub 回收，不留在历史里。它只是开锁用的，不是内容。
+
+    判据必须是「仓库有没有提交」，**不能**是「.bootstrap 文件在不在」。
+    原来用后者：而成功的推送恰恰会把 .bootstrap 从 main 上移除，
+    于是仓库推过一次之后，判据必然为假 → 每次推送都误判成空仓库 →
+    又垫一个。若后续 force-update 恰好失败（网络抖动），
+    main 就卡在那个垫底提交上，SHA 和本地对不上、历史凭空多一个节点。
+    实际踩过：EOF + 401 两次失败后，main 停在 df1af335(bootstrap)，
+    而本地 HEAD 是别的 SHA。
     """
-    # 幂等：垫底文件已存在就跳过。重复 PUT 一个已存在的文件不带 sha 会报 422，
-    # 那是「文件已存在」而不是「初始化失败」，别把它当成错误。
-    chk = subprocess.run(["gh", "api", f"{API}/contents/.bootstrap"],
-                         capture_output=True, text=True)
-    if chk.returncode == 0:
-        print("   垫底文件已存在，跳过初始化")
-        return
+    # 查仓库有没有 commit。有就直接跳过初始化。
+    # 注意 gh api 的选项必须放在端点**之前**，写成 endpoint --jq x -F y=1
+    # 会被 gh 误解析（实测返回空串），然后被当成「仓库为空」去垫底 —— 比不判断更糟。
+    chk = subprocess.run(
+        ["gh", "api", f"{API}/commits?per_page=1", "--jq", "length"],
+        capture_output=True, text=True)
+    out = chk.stdout.strip()
+    if chk.returncode == 0 and out.isdigit():
+        if int(out) > 0:
+            print("   仓库已有提交，跳过初始化")
+            return
+    else:
+        # 判据本身没跑出结果时，绝不能默认「那就垫一个」。
+        # 查不到 ≠ 空仓库，垫底是有副作用的写操作。
+        err = chk.stderr.strip().replace("\n", " ")[:200]
+        sys.exit(f"判断仓库是否为空时没有得到可解析的结果（stdout={out!r}）"
+                 f"，不敢继续：\n{err or '(无 stderr)'}")
     r = subprocess.run(
         ["gh", "api", "--method", "PUT", f"{API}/contents/.bootstrap",
          "-f", "message=bootstrap", "-f", "content=Ym9vdHN0cmFwCg=="],
