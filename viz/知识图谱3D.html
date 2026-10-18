@@ -94,6 +94,13 @@ body{
 
 /* ---- hint ---- */
 #hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
+/* 署名：原始数据是 CC BY-NC-SA 4.0，署名是硬性要求。
+   烧进页面里，才能保证这份 HTML 被转发、被下载、被存盘之后，
+   署名跟着数据一起走 —— 而不是只留在仓库的 README 上。 */
+#attr{bottom:192px;left:38px;font-size:10.5px;color:var(--muted);line-height:1.9;max-width:300px}
+#attr b{color:var(--ink2);font-weight:600}
+#attr a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
+#attr a:hover{color:var(--ink);border-bottom-color:var(--ink2)}
 #hint kbd{
   font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:1px 5px;border-radius:4px;
   background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink2);
@@ -117,6 +124,7 @@ body{
   #tools{top:auto;bottom:20px;right:20px;max-width:180px}
   #legend{bottom:20px;left:20px}
   #legend .row{font-size:11.5px;padding:2px 0}
+  #attr{bottom:162px;left:20px;font-size:9.5px;max-width:210px;line-height:1.8}
   #hint{display:none}
   #card{right:12px;left:12px;width:auto;top:auto;bottom:78px;transform:none}
 }
@@ -159,6 +167,12 @@ body{
 <div class="ui" id="hint">
   拖拽旋转 · 滚轮缩放 · 悬停高亮<br>
   <kbd>Esc</kbd> 取消选中
+</div>
+
+<div class="ui" id="attr">
+  <b>数据</b> K12-KGraph · 北京大学 PKU-DCAI<br>
+  arXiv:2605.09635 · CC BY-NC-SA 4.0<br>
+  <b>可视化与校验</b> 本项目自建 · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
 </div>
 
 <div id="tip"><div class="t-zh"></div><div class="t-en mono"></div></div>

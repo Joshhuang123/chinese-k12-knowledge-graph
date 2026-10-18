@@ -20,6 +20,9 @@ BASE = pathlib.Path(__file__).resolve().parent.parent
 GRAPH = BASE / "data" / "normalized" / "graph.json"
 TPL = BASE / "viz" / "template.html"
 OUT = BASE / "viz" / "知识图谱3D.html"
+# 同一份内容再出一份到根目录：GitHub Pages 只能把 index.html 当站点首页，
+# 而中文文件名在 URL 里要百分号编码，当入口不好用。
+INDEX = BASE / "index.html"
 
 SUBJECTS = [                       # 顺序即颜色数组下标，必须与 payload.subjects 一致
     ("math", "数学", "#4d8dff"),
@@ -179,11 +182,13 @@ def main():
                 .replace("__N_CORE__", f"{payload['core']:,}"))
 
     OUT.write_text(html, encoding="utf-8")
+    INDEX.write_text(html, encoding="utf-8")
 
     print(f"节点 {len(payload_nodes):,} | 边 {len(payload_edges):,} | 剪掉的环边 {dropped}")
     dist = "、".join("{} {}".format(s["zh"], s["n"]) for s in subjects)
     print(f"学科分布: {dist}")
-    print(f"输出 {OUT}  ({OUT.stat().st_size/1024:.0f} KB)")
+    print(f"输出 {OUT.relative_to(BASE)}  ({OUT.stat().st_size/1024:.0f} KB)")
+    print(f"     {INDEX.relative_to(BASE)}  (GitHub Pages 入口，内容相同)")
 
 
 if __name__ == "__main__":

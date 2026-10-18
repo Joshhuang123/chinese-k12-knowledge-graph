@@ -13,6 +13,7 @@ data/normalized/
 viz/rec/
 
 # ── 特意入库的（不要忽略）──
+#   index.html            GitHub Pages 站点首页（与下面内容相同）
 #   viz/知识图谱3D.html   成品页，1.9 MB 单文件
 #   viz/录屏.mp4          6 秒演示
 #   viz/知识图谱3D.png    截图
