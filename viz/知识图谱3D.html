@@ -94,6 +94,28 @@ body{
 
 /* ---- hint ---- */
 #hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
+
+/* ---- search ---- */
+/* 7,938 个点，靠鼠标点是找不到的。搜索是唯一入口。
+   放在标题区下方：标题 → 简介 → 数字 → 搜框，读下来就是一条线。 */
+#find{margin-top:20px;max-width:310px;pointer-events:auto;position:relative}
+#find input{
+  width:100%;font-family:inherit;font-size:13px;padding:8px 12px;border-radius:8px;
+  background:var(--panel);border:1px solid var(--line);color:var(--ink);backdrop-filter:blur(8px);
+}
+#find input:focus{outline:none;border-color:var(--ink2)}
+#find input::placeholder{color:var(--muted)}
+#res{margin-top:6px;display:none}
+#res.on{display:block}
+#res .r{
+  display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:7px;cursor:pointer;
+  font-size:12.5px;color:var(--ink2);
+}
+#res .r .sw{width:7px;height:7px;border-radius:50%;flex:none}
+#res .r .bk{margin-left:auto;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+#res .r.sel,#res .r:hover{background:var(--panel);color:var(--ink)}
+#res .none{font-size:12px;color:var(--muted);padding:7px 10px}
+
 /* 署名：原始数据是 CC BY-NC-SA 4.0，署名是硬性要求。
    烧进页面里，才能保证这份 HTML 被转发、被下载、被存盘之后，
    署名跟着数据一起走 —— 而不是只留在仓库的 README 上。 */
@@ -121,6 +143,7 @@ body{
   #head{top:20px;left:20px;max-width:62%}
   #head h1{font-size:30px}
   #head p{display:none}
+  #find{display:none}          /* 窄屏：标题区已挤，且触屏没键盘 */
   #tools{top:auto;bottom:20px;right:20px;max-width:180px}
   #legend{bottom:20px;left:20px}
   #legend .row{font-size:11.5px;padding:2px 0}
@@ -141,6 +164,10 @@ body{
   <p>每一个点是一个可以单独教的最小概念。颜色是学科，高度是年级，<b>一根根连线就是一个知识点必须先掌握什么</b>。</p>
   <p>下面这根锥形从小学一年级长到高中——越往上，概念越大越抽象。</p>
   <div class="count">共 <b>7,938</b> 个知识点，其中 <b>2,655</b> 个属于初中</div>
+  <div id="find">
+    <input id="q" placeholder="搜知识点：输入名字或册次，如「小数」「五上」" autocomplete="off" spellcheck="false">
+    <div id="res"></div>
+  </div>
 </div>
 
 <div class="ui" id="tools">
@@ -166,7 +193,7 @@ body{
 
 <div class="ui" id="hint">
   拖拽旋转 · 滚轮缩放 · 悬停高亮<br>
-  <kbd>Esc</kbd> 取消选中
+  <kbd>/</kbd> 搜知识点 · <kbd>↑↓</kbd> 选择 · <kbd>Esc</kbd> 取消
 </div>
 
 <div class="ui" id="attr">
@@ -434,6 +461,95 @@ const btn = (id, fn) => document.getElementById(id).addEventListener('click', fn
 btn('tCore', e=>{ coreOnly = !coreOnly; e.target.setAttribute('aria-pressed', coreOnly); if(focus>=0) setFocus(focus); });
 btn('tEdges', e=>{ showEdges = !showEdges; e.target.setAttribute('aria-pressed', showEdges); });
 btn('tSpin', e=>{ spin = !spin; e.target.setAttribute('aria-pressed', spin); });
+/* ================= search =================
+   7,938 个点靠鼠标点是找不到的 —— 搜索是唯一入口。
+   用户的实际用法是「我知道这个知识点不会」→ 搜出来 → 看它依赖什么，
+   所以点结果不只是选中：还要把相机飞到那个点，否则选中了也看不见在哪。 */
+const qEl = document.getElementById('q'), resEl = document.getElementById('res');
+let hits = [], selI = 0;
+
+// 相机是绕中心点的轨道相机（th/ph/d），所以「飞到某个点」可以精确解出来：
+// 要让该点的投影落在画面正中，需要 th 让水平分量为 0、ph 让垂直分量为 0。
+function flyTo(id){
+  const n = NODES[id];
+  spin = false;
+  const th = Math.atan2(n.x, n.z);
+  const z1 = n.x*Math.sin(th) + n.z*Math.cos(th);
+  TARGET.th = th;
+  TARGET.ph = Math.atan2(n.y, z1 || 1e-3);
+  TARGET.d  = 520;
+}
+
+function go(i){
+  if(i < 0 || i >= hits.length) return;
+  const id = hits[i].i;
+  pinned = id;
+  flyTo(id);
+  setFocus(id);
+  showCard(id);
+  resEl.classList.remove('on');
+  qEl.blur();
+}
+
+function render(){
+  if(!hits.length){
+    resEl.innerHTML = qEl.value.trim() ? '<div class="none">没有匹配的知识点</div>' : '';
+    resEl.classList.toggle('on', !!qEl.value.trim());
+    return;
+  }
+  resEl.innerHTML = hits.map((h,i)=>{
+    const n = NODES[h.i];
+    return `<div class="r${i===selI?' sel':''}" data-i="${i}">` +
+      `<span class="sw" style="background:${SUBJ[n.s].c}"></span>` +
+      `<span>${n.zh}</span><span class="bk">${n.dz}</span></div>`;
+  }).join('');
+  resEl.classList.add('on');
+}
+
+function search(){
+  const kw = qEl.value.trim();
+  selI = 0; hits = [];
+  if(!kw){ resEl.innerHTML=''; resEl.classList.remove('on'); return; }
+  for(let i=0;i<N;i++){
+    const n = NODES[i];
+    const at = n.zh.indexOf(kw);
+    if(at >= 0){
+      // 排在最前的是「名字开头就是关键词」；其次名字中间；最后册次命中
+      hits.push({i, k: at === 0 ? 0 : 1, dep: n.cen});
+    }else if(n.dz.indexOf(kw) >= 0){
+      hits.push({i, k: 2, dep: n.cen});
+    }
+  }
+  // 关键词越靠前越好；同一档里被依赖度高的排前面（那是更吃紧的知识点）
+  hits.sort((a,b)=> a.k - b.k || b.dep - a.dep);
+  hits = hits.slice(0, 8);
+  render();
+}
+
+qEl.addEventListener('input', search);
+qEl.addEventListener('focus', ()=>{ if(hits.length) resEl.classList.add('on'); });
+resEl.addEventListener('mousedown', e=>{
+  const r = e.target.closest('.r'); if(!r) return;
+  e.preventDefault();            // 别让 input 先失焦把结果框收掉
+  go(+r.dataset.i);
+});
+qEl.addEventListener('keydown', e=>{
+  if(e.key === 'ArrowDown'){ e.preventDefault(); selI = Math.min(selI+1, hits.length-1); render(); }
+  else if(e.key === 'ArrowUp'){ e.preventDefault(); selI = Math.max(selI-1, 0); render(); }
+  else if(e.key === 'Enter'){ e.preventDefault(); go(selI); }
+  else if(e.key === 'Escape'){ resEl.classList.remove('on'); qEl.blur(); }
+});
+// 点画布空白处关掉结果，但别抢了输入框里正在打的字
+document.addEventListener('pointerdown', e=>{
+  if(!qEl.contains(e.target) && !resEl.contains(e.target)) resEl.classList.remove('on');
+});
+// 按 / 快速聚焦搜索框 —— 找东西是这一页的主要用途，不该藏在鼠标路径上
+addEventListener('keydown', e=>{
+  if(e.key === '/' && document.activeElement !== qEl){
+    e.preventDefault(); qEl.focus(); qEl.select();
+  }
+});
+
 btn('tReset', ()=>{
   TARGET.th = -0.62; TARGET.ph = 0.30; TARGET.d = 1500;
   pinned = -1; setFocus(-1); card.classList.remove('on');
