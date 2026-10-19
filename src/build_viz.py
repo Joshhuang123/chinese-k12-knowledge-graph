@@ -42,14 +42,28 @@ LABEL_ZH = {
     "Experiment": "实验", "Section": "节", "Chapter": "章", "Book": "册",
 }
 # 只画概念与技能。习题/实验/节/章/册是容器或素材，10,685 → 7,938，画面才读得动。
-KEEP = {"Concept", "Skill"}
+# **Experiment 要画出来。**
+# 原来只有 Concept/Skill，652 个 Experiment 节点从来没上过画布 ——
+# 页面上的「中国的孩子在学什么」漏了 8% 的知识点。
+#
+# 而这 652 个不是孤岛垃圾：**464 条边涉及它们**（上游 286 + 模型 178），
+# 全是物理/化学/生物的**方法链**关键环节：
+#     「使用刻度尺测量长度」→「测量物体运动的平均速度」
+#     「正确使用温度计的方法」→「用温度计测量水的温度」
+#     「二力平衡」→「测量滑动摩擦力」
+#     「用排水法测量不规则固体体积」→「测量小石块密度」
+#
+# 剩下 406 个确实没有任何先修边 —— 但那正是「0 前置节点」这个问题
+# 的一部分，**画出来才能看见**。藏起来只会让 69.6% 这个数字好看。
+KEEP = {"Concept", "Skill", "Experiment"}
 
 # 先修边的来源。页面上每条边都要标出来是哪来的 ——
 # 「上游数据集标的」和「我们用模型重建的」可信度完全不同，
 # 混着显示等于让推测冒充数据。
-SRC = {"dataset": 0, "model": 1, "l0": 2, "derived": 3, "intro": 4}
+SRC = {"dataset": 0, "model": 1, "l0": 2, "derived": 3, "intro": 4,
+       "fix": 5}
 SRC_ZH = {0: "上游", 1: "模型重建", 2: "能力底座", 3: "自建概念",
-          4: "教材引入路径"}
+          4: "教材引入路径", 5: "已修正"}
 
 # 年级 → 视觉层（小学 1-6，初中 7-9，高中 10-12）
 GRADE = {"小学": range(1, 7), "初中": range(7, 10), "高中": range(10, 13)}
@@ -272,6 +286,41 @@ def main():
             seq_slot(n["id"]),                 # 14 → 它所属的单元在 CNS 里的下标
         ])
 
+    # ── 已裁决的修正（A 档双证据）──────────────────────────
+    # M3 逐条裁决 341 条争议边，96.5% 是上游错。
+    # A 档 19 条有**两条独立证据**（模型 dispute + 教材顺序倒挂），
+    # 可以直接改：反向的加一条反向边，删除的就剔掉。
+    #
+    # **上游数据本身不动**（data/raw/ 只读，铁律）——
+    # 改的是**页面用的派生边集**，每一笔记在 fixes 字段里，来路清楚。
+    FIX = BASE / "data" / "normalized" / "confirmed-wrong.json"
+    fixes = []
+    if FIX.exists():
+        for v in json.loads(FIX.read_text(encoding="utf-8"))["verdicts"]:
+            fixes.append(v)
+    fixed_del, fixed_rev = set(), []
+    for v in fixes:
+        if v["action"] == "删除":
+            fixed_del.add((v["from"], v["to"]))
+        elif v["action"] == "反向":
+            fixed_rev.append(v)
+    if fixed_del or fixed_rev:
+        # 从 prereq 里剔掉要改的边（按 node id → 下标）
+        for u in list(prereq):
+            for v in list(prereq[u]):
+                if (nodes[u]["id"], nodes[v]["id"]) in fixed_del:
+                    prereq[u].discard(v)
+                    edge_src.pop((nodes[u]["id"], nodes[v]["id"]), None)
+        # 反向的：加入 to→from
+        for v in fixed_rev:
+            a, b = idx.get(v["to"]), idx.get(v["from"])
+            if a is None or b is None:
+                continue
+            prereq[a].add(b)
+            edge_src[(v["to"], v["from"])] = SRC["fix"]
+        print(f"  已按裁决修正 {len(fixed_del) + len(fixed_rev)} 条上游边"
+              f"（删除 {len(fixed_del)} · 反向 {len(fixed_rev)}）")
+
     # ── 可疑上游边标记 ──────────────────────────────────────
     # 267 条上游先修边（7.2%）跟教材顺序倒挂、或把下位概念当前置。
     # **不删**（上游数据只读，铁律是不静默改），
@@ -314,7 +363,7 @@ def main():
                # 硬塞进去会让 16 个能力的定义挤掉别的东西。
                "abi": [[n["id"], n["name"], n.get("definition", ""), n.get("blocks", ""),
                         n.get("core", "")] for n in self_l0.values()],
-               "srczh": [SRC_ZH[i] for i in range(5)],
+               "srczh": [SRC_ZH[i] for i in range(6)],
                "selfbuilt": {"nodes": len(self_nodes), "edges": len(self_edges)}}
 
     blob = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")

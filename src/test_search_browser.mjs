@@ -21,6 +21,7 @@
  * Chrome 路径可用 CHROME 环境变量覆盖（默认是 macOS 的安装位置）。
  */
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -97,12 +98,28 @@ console.log('\n[1b] 页面自洽：标题里的数字必须是真实规模');
   // 这条是被真抓出来的：模板 <title> 原来写死「1,590 个知识点」——
   // 那是 Marble 的规模，我们是 7,938。已经上线了才发现。
   // 根因是硬编码数字会漂移，所以在这加一道守卫。
+  //
+  // **判据后来收紧了。** 原来只查「标题里有画布点数」，
+  // 但画布上多出来的 68 个是我们补的 L0 能力节点和 derived 概念 ——
+  // 「中国的孩子在学什么 · 8,006 个知识点」把它们算成了教材知识点。
+  // 现在标题用**教材知识点数**（上游 Concept/Skill/Experiment），
+  // 而这个数**由测试自己从 graph.json 数出来**，不看页面给的数 ——
+  // 页面自己报一个数再拿来跟它自己比，等于没测。
   const meta = await page.evaluate(() => {
-    const N = JSON.parse(document.getElementById('data').textContent).nodes.length;
-    return { N, title: document.title, icon: document.querySelector('link[rel="icon"]')?.href || '' };
+    const D = JSON.parse(document.getElementById('data').textContent);
+    return { N: D.nodes.length, total: D.total, title: document.title,
+             icon: document.querySelector('link[rel="icon"]')?.href || '' };
   });
-  const want = meta.N.toLocaleString('en-US');
-  ok(meta.title.includes(want), `标题含真实节点数 ${want}`, meta.title);
+  const g = JSON.parse(readFileSync(resolve(BASE, 'data/normalized/graph.json'), 'utf8'));
+  const upstream = g.nodes.filter(n =>
+    ['Concept', 'Skill', 'Experiment'].includes(n.label)).length;
+  ok(meta.total === upstream,
+     `payload.total（${meta.total}）等于 graph.json 里的上游知识点数（${upstream}）`,
+     `total=${meta.total} upstream=${upstream}`);
+  const want = upstream.toLocaleString('en-US');
+  ok(meta.title.includes(want),
+     `标题含教材知识点数 ${want}（不是画布点数 ${meta.N.toLocaleString('en-US')}）`,
+     meta.title);
   ok(!/1,590|1,127|5,255/.test(meta.title), '标题里没有别的项目的遗留数字', meta.title);
   ok(meta.icon.startsWith('data:image/svg+xml'), 'favicon 内联（单文件自包含，不会 404）');
 }

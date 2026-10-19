@@ -5,6 +5,7 @@
  * 跑法见文件末尾，跑法和 test_search_browser.mjs 一样。
  */
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -359,9 +360,13 @@ console.log('\n【11】卡片要列出前后依赖的名字，而且能点进去
       allHaveJump: deps.every(e => /^[0-9]+$/.test(e.dataset.jump || '')),
     };
   });
+  // 后继从 4 变 6 是**对的**：Experiment 节点上画布之后，
+  // 「闭合电路欧姆定律」多了 2 个实验类后继（实验节点的上游是它）。
+  // 原来 652 个 Experiment 节点从来没画出来过，
+  // 物理的「方法链」在页面上是断的。
   ok(c.pre.rows.length === 4, `前置列了 4 条（实际 ${c.pre.rows.length}）`);
-  ok(c.post.rows.length === 4, `后继列了 4 条（实际 ${c.post.rows.length}）`);
-  ok(c.pre.n === '4' && c.post.n === '4', `两个小标题都带上了计数（${c.pre.label}${c.pre.n} / ${c.post.label}${c.post.n}）`);
+  ok(c.post.rows.length === 6, `后继列了 6 条（实际 ${c.post.rows.length}）`);
+  ok(c.pre.n === '4' && c.post.n === '6', `两个小标题都带上了计数（${c.pre.label}${c.pre.n} / ${c.post.label}${c.post.n}）`);
   ok(!c.anyDigitArrow, '箭头是 ◀/▶ 而不是 0/1/2/3');
   ok(c.allButtons && c.allHaveJump, '每一项都是真 button 且带跳转目标（键盘可达）');
   ok(c.cts.join(',') === 'pre,post,ord,chp,sup,sub',
@@ -610,17 +615,24 @@ console.log('\n【17】教材顺序链：每个知识点都要能顺着单元往
     };
   });
   const SB = raw.selfbuilt ? raw.selfbuilt.nodes : 0;
-  ok(raw.drawn === 7938 + SB,
-     `画布上 ${7938 + SB} 个点 = 上游 7,938 知识点 + 自建 ${SB}（实际 ${raw.drawn}）`);
-  ok(raw.withUnit === 7938,
-     `上游那 7,938 个知识点仍 100% 落在教材序列的某个单元上（${raw.withUnit}/7938）`);
+  // **上游知识点数自己数，别写死。**
+  // 原来写死 7938（只有 Concept+Skill），加了 Experiment 之后变成 8590 ——
+  // 写死的数字会漂，测试就变成「守着一个过时的数」。
+  // 自己从 graph.json 数，才知道页面报的是不是真的。
+  const gfile = JSON.parse(readFileSync(resolve(BASE, 'data/normalized/graph.json'), 'utf8'));
+  const UP = gfile.nodes.filter(n =>
+    ['Concept', 'Skill', 'Experiment'].includes(n.label)).length;
+  ok(raw.drawn === UP + SB,
+     `画布上 ${UP + SB} 个点 = 上游 ${UP} 知识点 + 自建 ${SB}（实际 ${raw.drawn}）`);
+  ok(raw.withUnit === UP,
+     `上游那 ${UP} 个知识点仍 100% 落在教材序列的某个单元上（${raw.withUnit}/${UP}）`);
   ok(raw.drawn - raw.withUnit === SB,
      `自建的 ${SB} 个节点不落在任何一册里 —— L0 能力不属于任何一册，这是定义`);
   /* 首页那句「共 N 个知识点」不能把自建的能力节点算进去 ——
      能力不是知识点，把两者相加是偷换概念。画布上的点数另算。 */
-  ok(raw.kpTotal === 7938, `首页写的知识点数仍是上游的 7,938（实际 ${raw.kpTotal}）`);
-  ok(raw.drawn === 7938 + SB,
-     `画布上画了 ${raw.drawn} 个点 = 7,938 知识点 + ${SB} 自建`);
+  ok(raw.kpTotal === UP, `首页写的知识点数仍是上游的 ${UP}（实际 ${raw.kpTotal}）`);
+  ok(raw.drawn === UP + SB,
+     `画布上画了 ${raw.drawn} 个点 = ${UP} 知识点 + ${SB} 自建`);
   ok(raw.clickable >= raw.units * 0.8,
      `单元表 ${raw.units} 个，其中 ${raw.clickable} 个能点到具体知识点`);
 
