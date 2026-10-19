@@ -40,6 +40,7 @@ import collections
 import json
 import pathlib
 import re
+import os
 import sys
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
@@ -162,17 +163,50 @@ class KG:
 
     def leads_to_chapters(self, nid):
         """leads_to 标出来的前置章 —— 少但权威，是上游手工标的。"""
-        n = self.nodes[nid]
         out = []
         for e in self.outb.get(nid, []):
             t = self.nodes.get(e["to"])
             if t and t["label"] == "Chapter":
                 out.append(t)
-        # 概念层没有 leads_to，就从它所属的章上找入边
-        if not out:
-            u = self.nodes[nid]
-            for e in self.inb.get(nid, []):
-                pass
+        return out
+
+    def overlay_model_edges(self, path=None):
+        """把模型重建的先修边叠进来，用于对比「补了之后定位能力变了多少」。
+
+        叠进来的边一律打 source="model"，**不许跟数据集的边混在一起统计**：
+        混了就分不清「图谱本来就知道」和「我们自己补的」，
+        而这两件事的可信度完全不一样。
+        只收 resolved 里的 new / dup（已经解析到具体节点的那部分），
+        队列里那些没落位的边不在这里 —— 它们连边是什么都还不知道。
+        """
+        path = path or (BASE / "data" / "normalized" / "lmm-merged.json")
+        if not os.path.exists(path):
+            return 0
+        d = json.load(open(path, encoding="utf-8"))
+        added = 0
+        for r in d.get("resolved", []):
+            if r["kind"] != "new":          # dup 本来就有，叠了没意义
+                continue
+            e = {"from": r["from"], "to": r["to"], "type": "prerequisites_for",
+                 "fromName": r["fromName"], "toName": r["toName"],
+                 "evidence": r.get("why") or "", "source": "model"}
+            self.inb[r["to"]].append(e)
+            self.outb[r["from"]].append(e)
+            added += 1
+        self.model_edges = added
+        return added
+
+    def prereq_of(self, nid, only=None):
+        """→ [(节点, 边)]，only='dataset' 时只看数据集自己的边。"""
+        out = []
+        for e in self.inb.get(nid, []):
+            if e["type"] != "prerequisites_for":
+                continue
+            if only == "dataset" and e.get("source") == "model":
+                continue
+            n = self.nodes.get(e["from"])
+            if n:
+                out.append((n, e))
         return out
 
 
@@ -181,9 +215,14 @@ def main():
     ap.add_argument("concept", nargs="?", help="概念名")
     ap.add_argument("--id", help="直接给节点 id")
     ap.add_argument("--explain", action="store_true", help="打印判定依据")
+    ap.add_argument("--model", action="store_true",
+                    help="叠加模型重建的先修边（来源会单独标注，不跟数据集混算）")
     args = ap.parse_args()
 
     kg = KG()
+    if args.model:
+        n = kg.overlay_model_edges()
+        print(f"[已叠加模型重建的先修边 {n} 条，来源标记 model]\n")
     node = kg.nodes[args.id] if args.id else (kg.find(args.concept) if args.concept else None)
     if node is None:
         ap.error("给个概念名或者 --id（已登记子知识表的概念：" + "、".join(SUBKNOWLEDGE) + "）")
