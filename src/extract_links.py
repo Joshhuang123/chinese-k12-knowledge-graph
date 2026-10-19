@@ -219,7 +219,7 @@ def main():
     # 图谱里的节点叫「二次函数 y = ax^2 的图象」，正则化后才对得上，
     # 但中间隔着 PDF 的假名（狔犪狓），靠名字匹配很脆。
     # 图谱本来就知道「哪个概念属于哪一节」，直接用它。
-    sec_kids = {}
+    sec_kids, chap_kids = {}, {}
     for e in g["edges"]:
         if e["type"] == "appears_in":
             tgt = g["nodes"][[n["id"] for n in g["nodes"]].index(e["to"])] \
@@ -230,6 +230,8 @@ def main():
             t = node_by_id.get(e["to"], {})
             if t.get("label") == "Section":
                 sec_kids.setdefault(e["to"], []).append(e["from"])
+            elif t.get("label") == "Chapter":
+                chap_kids.setdefault(e["to"], []).append(e["from"])
 
     # 图谱已有的边
     have = set()
@@ -260,6 +262,12 @@ def main():
                     for sid, kids in sec_kids.items():
                         if want0 in sid and sid.split("_")[1] == BOOK.get(book, book):
                             sec_ids |= set(kids)
+                    # **小学的知识点直接挂在 Chapter 上，没有 Section。**
+                    # order.py 的注释里写了这件事（小学 819 条 appears_in 指向
+                    # Chapter，初中/高中才指向 Section），我这次只查 Section，
+                    # 于是小学 11 次「本节没对上 Section」全丢了。
+                    chap_node = f"math_{book}_rjb_ch{chap0}"
+                    sec_ids |= set(chap_kids.get(chap_node, ()))
                     pre_raw = re.sub(r"[的了是在，,。．\s]+$", "", pre_raw)
                     pre_raw = TAIL_NOISE.sub("", pre_raw).strip()
                     if not pre_raw or len(pre_raw) > 24:
@@ -358,6 +366,11 @@ def main():
     print("=" * 60)
     print(f"抽出 {len(uniq)} 条教材明说的引入路径")
     print(f"  图谱里已有这条边 : {len(uniq) - len(miss)}")
+    # 丢在哪一头 —— 召回低的时候先看这个，别瞎改
+    if stats:
+        print("  丢失原因：")
+        for k, v in sorted(stats.items(), key=lambda kv: -kv[1]):
+            print(f"    {v:4}  {k}")
     print(f"  **图谱里缺这条边** : {len(miss)}")
     print()
     by_tag = Counter(r["pattern"] for r in miss)

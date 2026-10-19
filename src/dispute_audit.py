@@ -58,7 +58,10 @@ def classify(text):
 
 def load_disputes():
     out = []
-    for f in sorted(glob.glob(str(LMM / "math-*.json"))):
+    # **不要只读 math-*。** 非数学的盲测也产出 dispute，
+    # 而且生物 7 条、化学 1 条，说的都是「组成部分当前置」——
+    # 跟数学发现的 ISSUE-12 是同一族，独立验证。
+    for f in sorted(glob.glob(str(LMM / "*.json"))):
         for it in json.load(open(f, encoding="utf-8")):
             for d in it.get("dispute", []):
                 out.append((it["id"], d))

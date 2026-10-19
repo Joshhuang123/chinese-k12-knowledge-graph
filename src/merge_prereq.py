@@ -100,6 +100,26 @@ def main():
                     stat["ability"] += 1
                     if st in AUTO and ix.node_of[tid]["label"] not in ("Concept", "Skill"):
                         st = "NEW"
+                    # **模型会把知识标成 ability。** 实测 61 次：
+                    # 「比例运算」17、「四则运算」4、「营养成分」3、「光屏」3、
+                    # 「电子间排斥能」「有机基团」「电导率」……
+                    # 这些是**知识**不是能力，模型只是归类错了。
+                    # 走 L0 队列它们永远连不上任何节点 —— 白丢。
+                    #
+                    # 所以 ability 归不进 L0 时，**再当知识试一次**：
+                    # 能落位就当知识接上（type 标回 knowledge），
+                    # 落不了才真的进 L0 建设队列。
+                    if st not in AUTO:
+                        st2, tid2, c2, how2 = ix.resolve(
+                            p.get("name"), prefer_book=tgt.get("book"))
+                        if st2 in AUTO and tid2 != nid and \
+                                ix.node_of[tid2]["label"] in ("Concept", "Skill"):
+                            stat["ability_but_knowledge"] += 1
+                            ptype = "knowledge"
+                            st, tid, cands, how = st2, tid2, c2, how2
+                            by_type["ability"] -= 1
+                            by_type["knowledge"] += 1
+                            continue
                     queue.append({
                         "kind": "ABILITY", "target": nid, "targetName": tgt["name"],
                         "book": tgt["bookZh"], "type": ptype,
