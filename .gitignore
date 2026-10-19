@@ -37,3 +37,7 @@ viz/rec/
 __pycache__/
 *.pyc
 .venv/
+
+# ── 盲测模型产出（派生产物）──
+# docs/lmm-protocol.md 里说的模型输出片。跑法见 src/make_batches.py
+data/lmm-out/
