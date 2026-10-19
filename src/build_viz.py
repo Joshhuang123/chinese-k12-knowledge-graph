@@ -272,8 +272,29 @@ def main():
             seq_slot(n["id"]),                 # 14 → 它所属的单元在 CNS 里的下标
         ])
 
-    payload_edges = [[b, a, edge_src.get((nodes[a]["id"], nodes[b]["id"]), 0)]
-                     for a, bs in prereq.items() for b in bs]   # [后继, 先修, 来源]
+    # ── 可疑上游边标记 ──────────────────────────────────────
+    # 267 条上游先修边（7.2%）跟教材顺序倒挂、或把下位概念当前置。
+    # **不删**（上游数据只读，铁律是不静默改），
+    # 但要在页面上标出来 —— 否则用户拿一条可能反了的边去推「我卡在哪」。
+    # 0 无 / 1 疑似（命中 1 条规则）/ 2 确认可疑（命中 ≥2 条规则）
+    SUSPECT = BASE / "data" / "normalized" / "suspect-edges.json"
+    suspect = {}
+    if SUSPECT.exists():
+        for r in json.loads(SUSPECT.read_text(encoding="utf-8")):
+            suspect[(r["from"], r["to"])] = r["level"]
+    # prereq 的键是**前置**、值是**后继**（prereq[前置] = {后继}），
+    # 所以可疑边的 key 应该是 (前置id, 后继id) = (nodes[a], nodes[b])。
+    # 方向写反的话一条都匹配不上，n_sus 恒为 0 —— 而且不报错。
+    n_sus = sum(1 for k, v in suspect.items()
+                if any((nodes[a]["id"], nodes[b]["id"]) == k
+                       for a, bs in prereq.items() for b in bs))
+    if n_sus:
+        print(f"  可疑上游边 {n_sus} 条已打标记（不删，只标）")
+
+    payload_edges = [[b, a,
+                      edge_src.get((nodes[a]["id"], nodes[b]["id"]), 0),
+                      suspect.get((nodes[a]["id"], nodes[b]["id"]), 0)]
+                     for a, bs in prereq.items() for b in bs]   # [后继, 先修, 来源, 可疑]
 
     by_subject = defaultdict(int)
     for n in nodes:
@@ -345,7 +366,14 @@ def main():
     # 7,938 个节点全是空的，于是每张卡片都印一行字。现在模板里空就是空、不渲染。
 
     # ── 占位符：最后替换 ──
-    html = (html.replace("__N_TOPIC__", f"{len(payload_nodes):,}")
+    # **__N_TOPIC__ 用 payload.total（只数上游的知识点），不是画布点数。**
+    # 画布上多出来的 68 个是我们补的 L0 能力节点和 derived 概念，
+    # 标题写「中国的孩子在学什么 · 8,006 个知识点」会把它们算成教材知识点 ——
+    # 「中国的孩子在学什么」这句话里的「孩子」指的是教材里的知识点。
+    # 数字拆成两个：教材知识点数 + 我们补的节点数。
+    n_self = len(payload_nodes) - payload["total"]
+    html = (html.replace("__N_TOPIC__", f"{payload['total']:,}")
+                .replace("__N_SELF__", f"{n_self:,}")
                 .replace("__N_EDGE__", f"{len(payload_edges):,}")
                 .replace("__N_CORE__", f"{payload['core']:,}"))
 

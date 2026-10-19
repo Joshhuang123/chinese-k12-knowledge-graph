@@ -146,6 +146,9 @@ body{
    「在八年级下册，我们学习了一次函数的概念…像研究一次函数一样，
    现在我们来研究二次函数的图象和性质」）。绿到发青，跟前三档都不同色。 */
 #card .chain .dep .sg4{color:#6ee7b7;background:rgba(110,231,183,.11);border-color:rgba(110,231,183,.3)}
+/* 可疑边：橙红，跟「上游」徽标区分开 —— 上游是来源，可疑是可信度 */
+#card .chain .dep .sus1{color:#ff9d6b;background:rgba(255,157,107,.12);border-color:rgba(255,157,107,.32)}
+#card .chain .dep .sus2{color:#ff7a7a;background:rgba(255,122,122,.14);border-color:rgba(255,122,122,.38)}
 #card .chain .dep .t{flex:1;min-width:0}
 /* 最长的知识点名字有 39 个字，必须允许折行而不是溢出或截断 */
 #card .chain .dep .t{overflow-wrap:anywhere}
@@ -283,7 +286,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   <h1>全世界孩子<br>在<em>学什么</em>。</h1>
   <p>每一个点是一个可以单独教的最小概念。颜色是学科，高度是年龄，<b>一根根连线就是一个知识点必须先掌握什么</b>。</p>
   <p>下面这根锥形从 4 岁长到 15 岁——越往上，概念越大越抽象。</p>
-  <div class="count">共 <b>__N_TOPIC__</b> 个知识点，其中 <b>__N_CORE__</b> 个属于 9–10 岁核心</div>
+  <div class="count">共 <b>__N_TOPIC__</b> 个知识点（另有 <b>__N_SELF__</b> 个我们补的能力节点与自建概念），其中 <b>__N_CORE__</b> 个属于 9–10 岁核心</div>
   <div id="find">
     <!-- combobox 按 ARIA 1.2 的写法：焦点始终留在输入框里，
          用 aria-activedescendant 指向当前选中项 —— 正好就是现有的
@@ -404,9 +407,9 @@ AGES.forEach((age, li) => {
 /* ================= adjacency ================= */
 const pre = new Map(), unlocks = new Map();
 for(const e of D.edges){
-  const t = e[0], p = e[1], src = e[2] || 0;
-  if(!pre.has(t)) pre.set(t, []); pre.get(t).push([p, src]);
-  if(!unlocks.has(p)) unlocks.set(p, []); unlocks.get(p).push([t, src]);
+  const t = e[0], p = e[1], src = e[2] || 0, sus = e[3] || 0;
+  if(!pre.has(t)) pre.set(t, []); pre.get(t).push([p, src, sus]);
+  if(!unlocks.has(p)) unlocks.set(p, []); unlocks.get(p).push([t, src, sus]);
 }
 /* is_a 的方向是「具体 → 一般」：「二次函数 y=a(x-h)²+k」is_a「二次函数」。
    原先页面只画 prerequisites_for，is_a 那 1,895 条边整条被丢在门外，
@@ -887,12 +890,20 @@ function showCard(id){
      2 能力底座 / 3 自建概念 / 4 教材引入路径。 */
   const srcTag = src => src ? '<span class="sg sg' + src + '">' +
       esc((D.srczh && D.srczh[src]) || '') + '</span>' : '';
+  /* 可疑边徽标。上游 3703 条先修边里有 267 条（7.2%）跟教材顺序倒挂，
+     或者把「三角形的高」这种下位概念当成了「三角形」的前置。
+     这些边**不删**（上游数据只读），但得标出来 ——
+     否则用户拿一条可能反了的边去推「我卡在哪」，结论就建在沙上。 */
+  const susTag = sus => sus ? '<span class="sg sus' + sus + '" title="' +
+      (sus >= 2 ? '这条前置边有多处可疑：跟教材顺序矛盾，或把下位概念当前置'
+                 : '这条前置边跟教材顺序矛盾') + '">可疑</span>' : '';
   const depRow = (x, arrow) => {
-    const jid = Array.isArray(x) ? x[0] : x, src = Array.isArray(x) ? x[1] : 0;
+    const jid = Array.isArray(x) ? x[0] : x, src = Array.isArray(x) ? x[1] : 0,
+          sus = Array.isArray(x) ? (x[2] || 0) : 0;
     return '<button type="button" class="dep" data-jump="' + jid + '">' +
       '<span class="ar">' + arrow + '</span>' +
       '<span class="t">' + esc(label(NODES[jid])) + '</span>' +
-      srcTag(src) +
+      srcTag(src) + susTag(sus) +
       '<span class="bk">' + esc(NODES[jid].dz) + '</span>' +
     '</button>';
   };
