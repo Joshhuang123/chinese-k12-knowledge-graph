@@ -304,6 +304,13 @@ def main():
             fixed_del.add((v["from"], v["to"]))
         elif v["action"] == "反向":
             fixed_rev.append(v)
+            # **反向的也必须剔掉原边。**
+            # 原来只加了 to→from，没删 from→to ——
+            # 结果同一对节点同时出现在「前置」和「后继」里：
+            # 「三角形的高」的卡片上，「三角形」既是它的前置（已修正）
+            # 又是它的后继（原来的坏边，还带着「可疑」标记）。
+            # 一眼就看出矛盾：它既是因又是果。
+            fixed_del.add((v["from"], v["to"]))
     if fixed_del or fixed_rev:
         # 从 prereq 里剔掉要改的边（按 node id → 下标）
         for u in list(prereq):

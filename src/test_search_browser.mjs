@@ -255,6 +255,38 @@ ok(await page.evaluate(() => document.getElementById('res').textContent.includes
 ok(await page.evaluate(() => !document.getElementById('card').classList.contains('on')),
    '搜不到时把上一个节点的卡片收掉（别残留）');
 
+console.log('\n[8a] 已修正的边不能同时出现在前置和后继');
+{
+  // 「三角形的高」的上游边原来是「三角形的高 → 三角形」（方向反了）。
+  // 修正成「三角形 → 三角形的高」时，**只加了反向边，没删原边**，
+  // 结果同一对节点在卡片上同时出现在「要先会」和「学会后能学」两栏里 ——
+  // 它既是因又是果，一眼就看出矛盾。
+  await page.evaluate(() => { document.getElementById('q').value = ''; });
+  await page.type('#q', '三角形的高', { delay: 20 });
+  await sleep(300);
+  await page.keyboard.press('Enter');
+  await sleep(1500);
+  const dup = await page.evaluate(() => {
+    // **`.ct[data-b="pre"]` 是标题，行是它的兄弟，不是后代。**
+    // 用后代选择器 `.ct[data-b="pre"] .dep` 一个都取不到 ——
+    // 断言恒为「无重叠」，判别力为零，撤掉修复也不会红。
+    const names = sel => {
+      const t = document.querySelector(`#cChain .ct[data-b="${sel}"]`);
+      const out = [];
+      let el = t && t.nextElementSibling;
+      while (el && !el.classList.contains('ct')) {
+        out.push(...[...el.querySelectorAll('.dep .t')].map(e => e.textContent.trim()));
+        el = el.nextElementSibling;
+      }
+      return out;
+    };
+    const pre = names('pre'), post = names('post');
+    return { pre, post, both: pre.filter(x => post.includes(x)) };
+  });
+  ok(dup.both.length === 0,
+     `前置与后继里没有同一个节点（重叠：${dup.both.join('、') || '无'}）`);
+}
+
 console.log('\n[8b] 别名能搜到 + 教材里更早的排前面');
 {
   // 别名：L0 能力的别名（「观察力」「生活经验」「规范操作」…）
