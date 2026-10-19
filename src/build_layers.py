@@ -38,6 +38,10 @@ OUT = BASE / "data" / "normalized" / "selfbuilt-edges.json"
 NOT_CONCEPTS = {"摆一摆", "动手操作", "观察和发现规律", "分类与整理"}
 
 
+SUBJ_ZH = {"math": "数学", "physics": "物理", "chemistry": "化学",
+           "biology": "生物", "common": "通用"}
+
+
 def main():
     g = json.loads(GRAPH.read_text())
     nodes = {n["id"]: n for n in g["nodes"]}
@@ -54,9 +58,21 @@ def main():
 
     # ── L0 能力节点 ────────────────────────────────────────
     for a in tax["abilities"]:
+        # **能力按学科分桶。**
+        # 现有 16 个是按人教版**数学**核心素养手排的，非数学学科的能力需求
+        # 是另一套：抽样盲测里化学的 ability 前置有 24 条「规范操作」、
+        # 18 条「安全意识」，生物有「观察力」，这些在 16 个数学能力里
+        # 都没有对应桶（命中率只有 78%，数学是 100%）。
+        # subject="common" 的能力各科都能用，其余是某科专用。
+        a_subj = a.get("subject", "common")
         out_nodes.append({
             "id": a["id"], "name": a["name"], "label": "Ability",
+            # 画布分组仍用 math（跟 derived 自建概念一致），
+            # 学科分桶的信息放在 scope 字段。
+            # 能力**不属于任何单一学科**，之前标 math 只是画布分组的需要，
+            # 学科分布统计里自建节点本来就不计入（「能力底座 0」是对的）。
             "subject": "math", "subjectZh": "数学",
+            "scope": a_subj,               # common / 具体学科
             "book": "", "bookZh": "—", "stage": "能力底座",
             "definition": a["def"], "blocks": a["blocks"],
             "core": a.get("core", ""), "aliases": a["aliases"],
@@ -89,7 +105,10 @@ def main():
 
     # ── L0 → 知识点 ────────────────────────────────────────
     # 从原始批次里重读，因为 lmm-merged.json 只留了 queue 的样本
-    for f in sorted((BASE / "data" / "lmm-out").glob("math-*.json")):
+    # **不要只读 math-*.json** —— 非数学的盲测结果也要接上，
+    # 否则非数学的能力边一条都建不出来（数学 415 条，非数学 419 条，
+    # 占了四成）。
+    for f in sorted((BASE / "data" / "lmm-out").glob("*.json")):
         for row in json.loads(f.read_text()):
             tgt = row.get("id")
             if tgt not in nodes:

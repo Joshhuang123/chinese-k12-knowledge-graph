@@ -104,6 +104,40 @@ def main():
         prereq[a].add(b)
         edge_src[(e["from"], e["to"])] = SRC[e["source"]]
 
+    # ── 先处理「双向边对」，再跑环检测 ────────────────────────
+    # 上游 3703 条边里有 84 条跟自建边**方向相反**（ISSUE-09 那 38 条
+    # 已逐条确认是上游错；非数学新增的 46 条待审）。
+    #
+    # 以前这些边交给下面的环检测「回边直接丢弃」——
+    # **丢哪条取决于遍历顺序，是随机的**。同一份数据两次构建可能留不同的边。
+    # 现在改成**按来源优先级确定性地丢**：
+    #   intro（有教材原文） > derived（自建概念） > model（有 why 理由） > upstream
+    # 上游排最后是有依据的：ISSUE-09 逐条看过 38 条，**模型那边全对**，
+    # 上游的「证据」往往只是正文里的一句话（ISSUE-09 的原话）。
+    #
+    # 丢掉的边要记进 conflicts，不能默默消失。
+    pair_drop, pair_log = set(), []
+    for u in list(prereq):
+        for v in list(prereq[u]):
+            if (v, u) in prereq and (u, v) not in pair_drop:
+                su = edge_src.get((u, v), 0)
+                sv = edge_src.get((v, u), 0)
+                if su == sv:
+                    continue          # 同来源，不在这里判
+                # 数字小 = 优先级高
+                loser = (u, v) if su > sv else (v, u)
+                winner = (v, u) if loser == (u, v) else (u, v)
+                pair_drop.add(loser)
+                pair_log.append({
+                    "kept": list(winner), "dropped": list(loser),
+                    "keptSrc": min(su, sv), "droppedSrc": max(su, sv),
+                })
+    for u, v in pair_drop:
+        prereq[u].discard(v)
+    if pair_log:
+        print(f"  双向边对 {len(pair_log)} 组，按来源优先级各丢 1 条"
+              f"（intro>derived>model>upstream）")
+
     # 环检测并剪枝：回边直接丢弃（先把要删的边收集完，再统一改集合，
     # 不能一边迭代一边改 —— 会 RuntimeError: Set changed size during iteration）
     color, to_drop = {}, set()

@@ -69,6 +69,7 @@ BASE = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 from nameindex import NameIndex, core as core_of   # noqa: E402
+from books import RANK   # noqa: E402
 
 GRAPH = BASE / "data" / "normalized" / "graph.json"
 CACHE = BASE / "data" / "pdf-cache"
@@ -104,6 +105,10 @@ PATS = [
     (r"(?:前|上)面我们(?:已经)?(?:学习|学|认识|研究)(?:过|了)?了?([^。．.；;\n]{2,24})", "前面学过"),
     (r"我们(?:已经|以前|还|曾经)?(?:学习|学|认识|研究|知道)(?:过|了)?了?([^，,;；。．.；\n]{2,24})", "我们学过…"),
 ]
+
+# 册次码 → 文件名册码（跟 verify_order 同一套）
+BOOK = {"bx1": "m1", "bx2": "m2",
+        "xzxbx1": "x1", "xzxbx2": "x2", "xzxbx3": "x3"}
 
 # 名字里常见的「的X」后缀，抽取时剥掉 —— 「一次函数的概念」→ 「一次函数」
 TAIL_NOISE = re.compile(
@@ -152,6 +157,54 @@ def sections(text):
     return [best[k] for k in sorted(best, key=lambda x: [int(p) for p in x.split(".")])]
 
 
+# 「我们学过 X」里的 X 经常不是干净的单个概念名：
+#     我们学过 整数加法的运算律          → 图谱里叫「加法运算律」
+#     我们学过 加法交换律、结合律        → 两个概念
+#     我们学过 有理数的加、减、乘、除和乘方运算  → 四个概念
+#     我们学过 最基本的方程———一元一次方程  → 破折号分隔
+# 直接整句去 resolve，54 次命中里 50 次解析不到。
+#
+# 切分策略：按顿号/逗号/和/与/以及/破折号切，逐段再剥尾部「的X」，
+# 取**第一个能解析**的。
+SPLIT = re.compile(r"[、，,和与及以及\-—－:：;；]+")
+
+
+def candidates_of(raw):
+    """把一句捕获文本拆成可能的概念名候选，按优先级排。"""
+    raw = raw.strip().strip("：:；;，,。．.、 ")
+    out, seen = [], set()
+    for piece in SPLIT.split(raw):
+        piece = piece.strip()
+        if not piece or len(piece) > 20:
+            continue
+        for v in (piece, TAIL_NOISE.sub("", piece).strip()):
+            if v and len(v) >= 2 and v not in seen:
+                seen.add(v)
+                out.append(v)
+    # 整句也作为一个候选（「整数加法的运算律」这种整体就是节点名的）
+    if raw and len(raw) <= 20 and raw not in seen:
+        out.insert(0, raw)
+    return out
+
+
+def resolve_loose(idx, raw):
+    """宽松解析一个教材提到的概念名 → (node_id 或 None, 用的哪一档, 原样候选)。
+
+    CONTAIN 档**只在唯一候选时接受**。
+    nameindex 自己不把 CONTAIN 当结论（「表内乘法」⊃「乘法」），
+    那是因为连边时指错比不指更糟；这里同样。
+    但「教材提到的一个词」要落到图谱节点上，CONTAIN 是唯一出路 ——
+    所以只在**没有歧义**时用：候选唯一，或最长候选比次长候选明显更具体。
+    """
+    for cand in candidates_of(raw):
+        st, nid, cands, how = idx.resolve(cand)
+        if nid is not None:
+            return nid, st, cand
+        if st.startswith("CONTAIN") and len(cands) == 1:
+            return cands[0], "CONTAIN_UNIQUE", cand
+    return None, "NONE", raw
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--show", type=int, default=0)
@@ -177,11 +230,6 @@ def main():
             t = node_by_id.get(e["to"], {})
             if t.get("label") == "Section":
                 sec_kids.setdefault(e["to"], []).append(e["from"])
-
-    # 册次码 → 文件名册码（跟 verify_order 同一套）
-    BOOK = {"bx1": "m1", "bx2": "m2",
-            "xzxbx1": "x1", "xzxbx2": "x2", "xzxbx3": "x3"}
-    subj_of = {"math": "math"}
 
     # 图谱已有的边
     have = set()
@@ -216,10 +264,11 @@ def main():
                     pre_raw = TAIL_NOISE.sub("", pre_raw).strip()
                     if not pre_raw or len(pre_raw) > 24:
                         continue
-                    st, pid, cands, how = idx.resolve(pre_raw)
+                    pid, how, matched = resolve_loose(idx, pre_raw)
                     if pid is None:
                         stats[f"{tag}/名字解析不到"] += 1
                         continue
+                    stats[f"{tag}/前置OK({how})"] += 1
                     # 后继 = 本节（按章号定位 Section）名下的概念节点
                     # 后继 = 本节标题对应的那个知识点。
                     # 早先用「整章的所有概念」当后继，54 条候选里一大半是牵强的
@@ -254,12 +303,34 @@ def main():
                         stats[f"{tag}/本节没对上 Section"] += 1
                         continue
                     for tid in posts:
+                        # **倒挂的直接扔掉**：前置的教材位置不能晚于后继。
+                        # 「全等三角形」(八上) →「角的平分线」(七上) 这种
+                        # 出现了 3 条 —— 回指句是真的，但切分切错了段
+                        # （原句里两个概念挨着，匹配到了后一个）。
+                        # 引入路径讲的是「先学 A 再学 B」，位置反了就自相矛盾。
+                        na_, nb_ = idx.node_of.get(pid, {}), idx.node_of.get(tid, {})
+                        ra, rb = na_.get("book"), nb_.get("book")
+                        if ra and rb and RANK.get(ra, 0) > RANK.get(rb, 0):
+                            stats[f"{tag}/倒挂丢弃"] += 1
+                            continue
+                        # **下位当前置的排除掉**。
+                        # 8a 14.3 原文说「我们学过因式分解」，指向的是
+                        # 「识别多项式结构进行因式分解」—— 后者包含前者，
+                        # 是**具体化**不是前置。学「因式分解」不需要先会
+                        # 「识别多项式结构进行因式分解」。
+                        # 这跟 ISSUE-12 是同一族判据（前置名含后继名的反面）。
+                        pn = re.sub(r"[\s，,。．.、（）()]+", "", na_.get("name", ""))
+                        qn = re.sub(r"[\s，,。．.、（）()]+", "", nb_.get("name", ""))
+                        if len(pn) >= 2 and pn in qn and pn != qn:
+                            stats[f"{tag}/下位当前置丢弃"] += 1
+                            continue
                         exists = (pid, tid) in have
                         stats[f"{tag}/{'已有边' if exists else '缺边'}"] += 1
                         rows.append({
                             "book": book, "section": secno, "title": sectitle,
                             "pattern": tag,
-                            "preText": pre_raw, "preId": pid,
+                            "preText": pre_raw, "preMatched": matched,
+                        "preHow": how, "preId": pid,
                             "preName": idx.node_of[pid].get("name", pid),
                             "preBook": idx.node_of[pid].get("bookZh") or
                                       idx.node_of[pid].get("book", ""),

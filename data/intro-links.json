@@ -1,26 +1,165 @@
 {
-  "_comment": "教材「引入路径」边：教材原文自己声明的前置关系。\n\n跟另外两类的区别：\n  - 模型边问的是「概念逻辑上的硬前置」，跨度大（51% 跨 5 个以上教材单元）\n  - 引入路径是教材**教学序列上的中间站**，跨度小（相邻节）\n  - 缺了这一类，学生会卡在「我该先补哪一章」上\n\n**每一条都必须有教材原文**。没有原文的不进这个文件 ——\n宁可少建，不建没根据的边。\n\n字段：\n  from / to   节点 id\n  evidence    教材原文（可回查）\n  source      出处（册 + 节号）\n  status      confirmed（已核原文）| pending（待人工确认，不建边）\n",
-  "links": [
-    {
-      "from": "math_8b_rjb_cpt50",
-      "to": "math_9a_rjb_cpt16",
-      "evidence": "在八年级下册，我们学习了一次函数的概念，研究了它的图象和性质。像研究一次函数一样，现在我们来研究二次函数的图象和性质。",
-      "source": "人教九上 22.1.2 二次函数 y=ax² 的图象和性质（开头第一句）",
-      "status": "confirmed"
-    },
-    {
-      "from": "math_8b_rjb_cpt50",
-      "to": "math_9a_rjb_cpt25",
-      "evidence": "以前我们从一次函数的角度看一元一次方程，认识了一次函数与一元一次方程的联系。本节我们从二次函数的角度看一元二次方程，认识二次函数与一元二次方程的联系。",
-      "source": "人教九上 22.2 二次函数与一元二次方程（开头第一句）",
-      "status": "confirmed"
-    },
-    {
-      "from": "math_8a_rjb_cpt49",
-      "to": "math_9a_rjb_cpt24",
-      "evidence": null,
-      "source": "人教九上 22.1.2 用「关于 y 轴的对称点」讲抛物线对称性，轴对称在八上 15.1 学过 —— 但教材没有明说回指，证据是间接的",
-      "status": "pending"
-    }
-  ]
+ "_comment": "教材「引入路径」边：教材原文自己声明的前置关系。人工确认后才建边。\n\n  - 跟模型边区别：模型边问「概念逻辑上的硬前置」，跨度大（51% 跨 5+ 个教材单元）；\n    引入路径是「教学序列上的中间站」，跨度小，连接相邻单元。\n  - 每条都必须有教材原文（evidence 字段可回查）。\n  - status 只有 confirmed 才会被 build_layers.py 建边。\n  - 自动候选由 src/extract_links.py 产出（data/normalized/intro-links-auto.json），\n    人工在这份文件里确认。两份不要混。\n",
+ "links": [
+  {
+   "from": "math_7a_rjb_cpt1",
+   "to": "math_7a_rjb_cpt6",
+   "evidence": "在小学;我们学过正数及0的加法运算.引入负数后;怎样进行加法运算呢？ 实际问题中;有时也会遇到与负数有关的加法运算.例如;在本章引言中; 把收入记作",
+   "source": "人教7a 1.3.1 有理数的加法（我们学过…）",
+   "match": "EXACT",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_7a_rjb_cpt1",
+   "to": "math_7a_rjb_cpt13",
+   "evidence": "在小学;我们学过正数及0的加法运算.引入负数后;怎样进行加法运算呢？ 实际问题中;有时也会遇到与负数有关的加法运算.例如;在本章引言中; 把收入记作",
+   "source": "人教7a 1.3.1 有理数的加法（我们学过…）",
+   "match": "EXACT",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_2a_rjb_cpt38",
+   "to": "math_7a_rjb_cpt6",
+   "evidence": "释 5＋(－3)＝2;(－5)＋(－3)＝－8的意义. 我们以前学过加法交换律、结合律;在有理数的加法中它们还适用吗？ \u0012 计算 30＋(－20); (－20)＋30.",
+   "source": "人教7a 1.3.1 有理数的加法（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_2a_rjb_cpt38",
+   "to": "math_7a_rjb_cpt13",
+   "evidence": "释 5＋(－3)＝2;(－5)＋(－3)＝－8的意义. 我们以前学过加法交换律、结合律;在有理数的加法中它们还适用吗？ \u0012 计算 30＋(－20); (－20)＋30.",
+   "source": "人教7a 1.3.1 有理数的加法（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_7a_rjb_cpt23",
+   "to": "math_7a_rjb_cpt29",
+   "evidence": "以;有理数可用狇狆 (狆;狇是整数;狇≠0)表示. 本章我们研究了有理数的加、减、乘、除和乘方运算.实际上;与负数有 关的运算;我们都借助绝对值;将它们转化为正数之间的运算.数轴不仅能直 观表示数;而且还能帮助我们理解",
+   "source": "人教7a 1.5.3 近似数（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_5a_rjb_cpt21",
+   "to": "math_7a_rjb_cpt29",
+   "evidence": "怎样表示？冻 土地段与非冻土地段相差多少千米？ 在小学;我们学过用字母表示数;知道可以用字 母或含有字母的式子表示数和数量关系;这样的式子 在数学中有重要作用.在本章;我们将学习整式及其 加减运算",
+   "source": "人教7a 1.5.3 近似数（我们学过…）",
+   "match": "EXACT",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_1b_rjb_cpt1",
+   "to": "math_8a_rjb_cpt14",
+   "evidence": "图11.31 我们学过三角形.类似地;在平面内;由一些线段首尾顺次相接组成的封 闭图形叫做多边形 (ｐｏｌｙｇｏｎ). 多边形按组成它的线段的条",
+   "source": "人教8a 11.3.1 多边形（我们学过…）",
+   "match": "EXACT",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_8a_rjb_cpt24",
+   "to": "math_8a_rjb_skl4",
+   "evidence": "\u0018\u0011\u0012 \b \u0017\u0011\u0012 二、回顾与思考 本章我们学习了全等三角形的性质和判定方法.如果两个三角形全等;那 么它们的对应元素 (对应的边、角等)都相等;这就是全等三角形的性质,判 定三角形全等的条件是",
+   "source": "人教8a 12.3 角的平分线的性质（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_8a_rjb_cpt24",
+   "to": "math_8a_rjb_cpt33",
+   "evidence": "\u0018\u0011\u0012 \b \u0017\u0011\u0012 二、回顾与思考 本章我们学习了全等三角形的性质和判定方法.如果两个三角形全等;那 么它们的对应元素 (对应的边、角等)都相等;这就是全等三角形的性质,判 定三角形全等的条件是",
+   "source": "人教8a 12.3 角的平分线的性质（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_7a_rjb_cpt57",
+   "to": "math_8a_rjb_cpt48",
+   "evidence": "能举出一些例子吗？成轴对 称的图形有什么特点？ 2. 在我们学过的几何图形中;有哪些是轴对称图形？它们的对称轴与这个 图形有怎样的位置关系？ 3. 对于成轴对称的两个图形;对应点所连线段与对称",
+   "source": "人教8a 13.4 课题学习 最短路径问题（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_7a_rjb_cpt50",
+   "to": "math_8a_rjb_cpt57",
+   "evidence": "运用乘法公式计算;有时要在式子中添括号.在第二章中;我们学过去括 号法则;即 犪＋(犫＋犮)＝犪＋犫＋犮,",
+   "source": "人教8a 14.2.2 完全平方公式（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_8a_rjb_cpt76",
+   "to": "math_8a_rjb_cpt75",
+   "evidence": "方程叫做分式方程 (ｆｒａｃｔｉｏｎａｌｅｑｕａｔｉｏｎ).我们以前学习的方程都是整式方程;它们的未知数不在 分母中. \u0013 如何解分式方程①？ 我们已经熟悉一元一次方程等整式方程的解法;但是",
+   "source": "人教8a 15.3 分式方程（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_8a_rjb_cpt76",
+   "to": "math_8a_rjb_cpt78",
+   "evidence": "方程叫做分式方程 (ｆｒａｃｔｉｏｎａｌｅｑｕａｔｉｏｎ).我们以前学习的方程都是整式方程;它们的未知数不在 分母中. \u0013 如何解分式方程①？ 我们已经熟悉一元一次方程等整式方程的解法;但是",
+   "source": "人教8a 15.3 分式方程（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_8a_rjb_cpt76",
+   "to": "math_8a_rjb_skl16",
+   "evidence": "方程叫做分式方程 (ｆｒａｃｔｉｏｎａｌｅｑｕａｔｉｏｎ).我们以前学习的方程都是整式方程;它们的未知数不在 分母中. \u0013 如何解分式方程①？ 我们已经熟悉一元一次方程等整式方程的解法;但是",
+   "source": "人教8a 15.3 分式方程（我们学过…）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_8b_rjb_cpt50",
+   "to": "math_9a_rjb_cpt16",
+   "evidence": "在八年级下册;我们学习了一次函数的概念;研究了它的图象和性质.像 研究一次函数一样;现在我们来研究二次函数的图象和性质.结合图象讨论性 质是数形结合地研究函数",
+   "source": "人教9a 22.1.2 二次函数狔＝犪狓2 的图象和性质（明说年级）",
+   "match": "EXACT",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_8b_rjb_cpt50",
+   "to": "math_9a_rjb_cpt1",
+   "evidence": "以前我们从一次函数的角度看一元一次方程;认识了一次函数与一元一次 方程的联系.本节我们从二次函数的角度看一元二次方程;认识二次函数与一 元二",
+   "source": "人教9a 22.2 二次函数与一元二次方程（以前从…角度）",
+   "match": "EXACT",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_8b_rjb_cpt50",
+   "to": "math_9a_rjb_cpt25",
+   "evidence": "以前我们从一次函数的角度看一元一次方程;认识了一次函数与一元一次 方程的联系.本节我们从二次函数的角度看一元二次方程;认识二次函数与一 元二",
+   "source": "人教9a 22.2 二次函数与一元二次方程（以前从…角度）",
+   "match": "EXACT",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_2b_rjb_cpt13",
+   "to": "math_9a_rjb_cpt36",
+   "evidence": "前面我们研究了旋转及其性质;现在研究一类特殊的旋转———中心对称及 其性质. \u0013 (1)如图23.21;把其中一个图案绕点犗",
+   "source": "人教9a 23.2.1 中心对称（前面学过）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_2b_rjb_cpt13",
+   "to": "math_9a_rjb_cpt33",
+   "evidence": "前面我们研究了旋转及其性质;现在研究一类特殊的旋转———中心对称及 其性质. \u0013 (1)如图23.21;把其中一个图案绕点犗",
+   "source": "人教9a 23.2.1 中心对称（前面学过）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  },
+  {
+   "from": "math_2b_rjb_cpt13",
+   "to": "math_9a_rjb_cpt35",
+   "evidence": "前面我们研究了旋转及其性质;现在研究一类特殊的旋转———中心对称及 其性质. \u0013 (1)如图23.21;把其中一个图案绕点犗",
+   "source": "人教9a 23.2.1 中心对称（前面学过）",
+   "match": "CONTAIN_UNIQUE",
+   "status": "confirmed"
+  }
+ ]
 }
