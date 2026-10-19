@@ -19,6 +19,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from books import rank           # noqa: E402  册次排序，跟归一化层共用一套口径
+from order import Order           # noqa: E402  教材顺序推导，与 sweep_math.py 共用一份
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
 GRAPH = BASE / "data" / "normalized" / "graph.json"
@@ -106,141 +107,56 @@ def main():
     # 概念层没记 ≠ 没有前置。页面不能拿「数据集没说」冒充「它没有」。
     node_of = {n["id"]: n for n in raw_nodes}
 
-    chapter_of = {}
-    for e in raw_edges:
-        if e["type"] == "is_part_of" and node_of.get(e["from"], {}).get("label") == "Section":
-            chapter_of[e["from"]] = e["to"]
+    # 教材顺序 / 章归属 / 章级 leads_to 的推导全部搬到 src/order.py。
+    # 原来这段在这里，sweep_math.py 又自己写了一份，结果两边对不上 ——
+    # sweep 只按节点 id 里的 _chNN 正则找位置，concept 的 id 是
+    # math_1a_rjb_cpt1，正则匹配不上，于是算出「11.7% 能定位」，
+    # 这里算出「100%」。两份实现各错各的，比一份实现错更难查。
+    node_ix = {n['id']: i for i, n in enumerate(nodes)}
+    order = Order(raw_nodes, raw_edges, clickable=set(node_ix))
+    chapter_of_node = order.chapter_of_node
+    appears_of = order.appears_of
+    chap_pre, chap_next = order.chap_pre, order.chap_next
+    container_of = order.container_of
 
-    # appears_in 有两种指向，差别只在一个 label 上：
-    #   初中/高中 → Section（8,125 条），再 is_part_of 上溯到 Chapter；
-    #   **小学 → 直接指 Chapter（819 条）**。
-    # 第一版只认前者，于是 782 个小学知识点里有 742 个拿不到教材顺序，
-    # 卡片上「教材里排在它前面的章」整栏是空的 —— 而小学章其实有 69 条
-    # leads_to，数据一直都在，是我们没接上。
-    chapter_of_node = defaultdict(list)
-    appears_of = defaultdict(list)      # 容器 → 属于它的知识点（appears_in 的反向）
-    for e in raw_edges:
-        if e["type"] != "appears_in":
-            continue
-        tgt = node_of.get(e["to"], {})
-        if tgt.get("label") == "Section":
-            ch = chapter_of.get(e["to"])
-            if ch:
-                chapter_of_node[e["from"]].append(ch)
-            appears_of[e["to"]].append(e["from"])
-        elif tgt.get("label") == "Chapter":
-            chapter_of_node[e["from"]].append(e["to"])
-            appears_of[e["to"]].append(e["from"])
-
-    # leads_to 只有章与章之间才是「教材顺序」，混进节/册会得到一堆噪音
-    chap_pre, chap_next = defaultdict(list), defaultdict(list)
-    for e in raw_edges:
-        if e["type"] != "leads_to":
-            continue
-        if node_of.get(e["from"], {}).get("label") != "Chapter" or \
-           node_of.get(e["to"], {}).get("label") != "Chapter":
-            continue
-        chap_pre[e["to"]].append(e)
-        chap_next[e["from"]].append(e)
-
-    # 同一个章会被几百个知识点引用，节点槽位里只存下标
+    # 槽位懒分配：第一次用到某个章时才占位。两种分配方式渲染结果完全一样
+    # （页面只按槽位取名字），懒分配把章号压在 0~230 而不是按教材序的 0~870，
+    # payload 小 38 KB。确定性不依赖这个顺序 —— 节点遍历顺序本身是稳定的。
     chs, ch_ix = [], {}
-
     def ch_slot(cid):
         if cid not in ch_ix:
-            c = node_of[cid]
             ch_ix[cid] = len(chs)
+            c = node_of[cid]
             chs.append([c["name"], c["bookZh"]])
         return ch_ix[cid]
 
-    # ── 教材顺序链：从节点 id 直接推，不依赖任何外部数据源 ────────────
-    # 609 个 Section 全部带 _chNN_sMM，264 个 Chapter 带 _chNN，
-    # 配上 books.py 的册序，完整教学顺序就写在 id 里。
-    #
-    # 已经用人教社官方 PDF 的目录逐册核对过（见 src/verify_order.py）：
-    # 数学一上「准备课→位置→5以内→认识图形（一）→6~10→11~20→认识钟表→
-    # 20以内的进位加法→总复习」、四下、九上、物理八下、化学必修一全部吻合。
-    #
-    # **顺序 ≠ 先修**：教材把 A 排在 B 前面，不等于学 B 必须先会 A。
-    # 页面文案因此叫「教材顺序」，不叫「前置」——两者不能混。
-    seq_key = {}
-    for n in raw_nodes:
-        m = re.search(r"_ch(\d+)(?:_s(\d+))?$", n["id"])
-        if m:
-            seq_key[n["id"]] = (int(m.group(1)), int(m.group(2) or 0))
-
-    # 每个学科按 (册序, ch, s) 排成一个总序列
-    order_by_subject = defaultdict(list)
-    for n in raw_nodes:
-        if n["label"] not in ("Section", "Chapter") or n["id"] not in seq_key:
-            continue
-        ch, s = seq_key[n["id"]]
-        order_by_subject[n["subject"]].append((rank(n["book"]), ch, s, n["id"]))
-    for v in order_by_subject.values():
-        v.sort(key=lambda x: (x[0], x[1], x[2]))
-
-    # 容器在序列中的位置 → 全局表；每个容器记住「里面第一个可点的概念」
-    cns, cn_pos = [], {}
     # 学科下标必须跟 SUBJECTS 同一套（math=0、physics=1…）。
     # 原来写的是 enumerate(sorted(...))，那是**字母序**
     # （biology=0、chemistry=1、math=2、physics=3）。两边各自自洽所以没出事，
     # 但任何按 SUBJECTS 索引去读 cns[gi][2] 的新代码都会静默取错学科 ——
     # 数学的单元会当成化学。是个雷，先埋掉。
-    for sub, lst in order_by_subject.items():
-        si = [s[0] for s in SUBJECTS].index(sub)
-        for pos, (_, _, _, cid) in enumerate(lst):
-            cn_pos[cid] = (len(cns), pos, len(lst), si)
-            cns.append([None, None, None, None])       # 先占位，下面填
-    node_ix = {n["id"]: i for i, n in enumerate(nodes)}
-    # 每个容器记住「里面第一个可点的概念」。按 cn_pos 的自然顺序扫，
-    # 命中的第一个就是教材顺序最靠前的那个容器 —— 与下面 container_of
-    # 取「最靠前的容器」是同一套口径（这里不能反过来依赖 container_of）。
+    cns, cn_pos = [], {}
+    sub_ix = {s[0]: i for i, s in enumerate(SUBJECTS)}
+    for uid, usub, ubookZh, _uname, _upos, _utot in order.units:
+        cn_pos[uid] = (len(cns), order.cn_pos[uid][1], order.cn_pos[uid][2], sub_ix[usub])
+        cns.append([None, None, None, None])       # 先占位，下面填
+    # 每个容器记住「里面第一个可点的概念」。order 里存的是 node id，
+    # 这里要的是 payload 里的下标。
     first_concept = {}
-    for cid in cn_pos:
-        for nid in appears_of.get(cid, ()):
-            if nid in node_ix and cid not in first_concept:
-                first_concept[cid] = node_ix[nid]
+    for cid, nid in order.first_concept.items():
+        if nid in node_ix:
+            first_concept[cid] = node_ix[nid]
     for cid, (gi, _, _, si) in cn_pos.items():
         c = node_of[cid]
         cns[gi] = [c["name"], c["bookZh"], si, first_concept.get(cid, -1)]
 
-    # 概念 → 它所属的容器（Section 或 Chapter）。一个概念可能出现在多个容器里，
-    # 取全局表里最靠前的那个，保证同一个概念在页面上位置唯一且稳定。
-    container_of = defaultdict(list)
-    for cid in cn_pos:
-        for nid in appears_of.get(cid, ()):
-            container_of[nid].append(cid)
-    for v in container_of.values():
-        v.sort(key=lambda c: cn_pos[c][0])
-
     def seq_slot(nid):
-        """它属于教材序列里的哪个单元。
-
-        优先挑**有可点概念**的那个容器，不是编号最小的那个。
-        初中/高中概念挂在 Section 上（「第一节 二次函数的图象和性质」），
-        Chapter 层自己一个概念都没有 —— 按编号最小挑的话，每个知识点
-        都会落在那个点不动的章上，「下一单元」按钮点了没反应。
-        """
-        cs = container_of.get(nid) or []
-        if not cs:
-            return -1
-        withconcept = [c for c in cs if first_concept.get(c, -1) >= 0]
-        return cn_pos[(withconcept or cs)[0]][0]
+        return order.seq_slot(nid)
 
     def book_order(nid):
-        """→ (leads_to 标为前置的章, leads_to 指向的后续章)，都是 CHS 的下标。
+        pre_, next_ = order.book_order(nid)
+        return ([ch_slot(x) for x in pre_], [ch_slot(x) for x in next_])
 
-        必须用 chapter_of_node 上溯到 Chapter，不能用 container_of ——
-        后者对初中/高中给的是 Section，而 chap_pre 是按 Chapter 建的键，
-        直接拿 Section 去查会一个都查不到（第一版就这么写的，
-        7,510 掉到 569，全库 95% 的知识点凭空丢掉前置章）。
-        """
-        chs_ = chapter_of_node.get(nid) or []
-        if not chs_:
-            return [], []
-        ch = chs_[0]
-        return ([ch_slot(e["from"]) for e in chap_pre.get(ch, ())],
-                [ch_slot(e["to"]) for e in chap_next.get(ch, ())])
 
     # is_a 的方向：具体 → 一般（「二次函数 y=a(x-h)²+k」is_a「二次函数」）。
     # 数据里有 3 个 is_a 环（已记 ISSUE 并上报上游），展示前先去重，

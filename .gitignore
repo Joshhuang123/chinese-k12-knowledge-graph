@@ -17,6 +17,11 @@ data/normalized/
 # 需要时跑 `python3 src/verify_order.py --fetch` 重新拉。
 data/pdf-cache/
 
+# ── 盲测批次（派生产物）──
+# src/make_batches.py 从 graph.json 切出来的模型输入片，760 KB。
+# 切法随时会改，固化的是脚本不是片。要跑先 python3 src/make_batches.py
+data/lmm-batches/
+
 # ── 录制的中间产物 ──
 viz/rec/
 
