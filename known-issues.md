@@ -474,7 +474,7 @@ known-issues 里那条「组级精确率 0.5%」的规律，在这条边上又�
 ## 复现
 
 ```bash
-cd ~/Documents/01_工作_确石智能/项目/中文知识图谱/
+cd ~/Documents/个人/项目/中文知识图谱/
 python3 src/normalize.py     # 原件 → data/normalized/graph.json
 python3 src/validate.py      # → data/normalized/validation.json（当前会 exit 1）
 python3 src/build_viz.py     # → viz/知识图谱3D.html（渲染前自动剪掉 2 条环边）
@@ -490,3 +490,53 @@ for e in ed:
     if e['type']=='prerequisites_for' and {'chemistry_xzxbx2_rjb_cpt100','chemistry_xzxbx2_rjb_cpt108'}=={e['source'],e['target']}:
         print(e)"
 ```
+
+---
+
+## ISSUE-09　先修边有 38 条方向是反的，证据只是正文里的一句话
+
+### 现象
+
+用模型重建的先修边（2,928 条）去核对上游已记的边，发现 **38 条**跟上游方向相反。
+上游记的是 A → B，模型独立给出的是 B → A。逐条看过，**模型那边是对的**：
+
+```
+上游：对数函数 → 对数函数的定义域与值域
+     证据：「一般地，函数 y = log_a x 的定义域是 (0, +∞)」
+模型：对数函数的定义域与值域 → 对数函数
+     理由：不知道对数函数的定义域和值域，就没法谈它的性质
+```
+
+上面那句证据根本没说「要先懂定义域才懂对数函数」，它只是正文里恰好出现的
+一句话。跟 ISSUE-07（数位与计数单位的前置是轴对称）一模一样的毛病：
+**证据被当成了「这条边为什么存在」的说明，实际它只证明这条边附近有这句话。**
+
+涉及的概念集中在高中：对数函数、三角函数的单调性、极值、导数与单调性的关系、
+一元线性回归模型与随机误差。
+
+### 为什么没直接剪掉
+
+`build_viz.py` 剪环边时留哪条**取决于遍历顺序**——也就是说「对」和「错」
+谁活下来是随机的。这种情况下默默剪掉等于把判断藏起来。
+
+所以全部记进 `data/normalized/selfbuilt-edges.json` 的 `conflicts` 字段，
+页面上按「上游优先」显示（上游是已发表的数据集，本项目不静默改它），
+但账记在这里，等人来判。
+
+### 复现
+
+```bash
+python3 src/merge_prereq.py     # 解析 + 记冲突
+python3 src/build_layers.py     # 输出 conflicts
+python3 -c "
+import json
+c=json.load(open('data/normalized/selfbuilt-edges.json'))['conflicts']
+for x in c[:5]:
+    print(x['upstream']['from'],'→',x['upstream']['to'],'|',x['upstream']['evidence'][:40])"
+```
+
+### 与 ISSUE-01~07 的关系
+
+第七种形态。前六种都是「边本身该不该存在」，这一种是「边存在但方向反了」。
+共同点是**证据字段不能证明边的语义**——校验层现有四种规则都抓不到，
+因为四条边本身格式都合法。要抓这类错，只能拿**独立的第二个来源**对撞。
