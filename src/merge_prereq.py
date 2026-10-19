@@ -48,9 +48,13 @@ def main():
         if e["type"] == "prerequisites_for":
             existing.add((e["from"], e["to"]))
 
-    batches = sorted(BATCH_DIR.glob("math-*.json"))
-    outs = sorted(OUT_DIR.glob("math-*.json"))
-    done = {p.stem.split("-")[1] for p in outs}
+    # **不要硬编码 math-*。** 数学只是第一个跑完的学科，
+    # 物理/化学/生物的批次文件名是 `physics-01.json` 这种。
+    # 原来只认 math-*.json，模型边只接了数学的 1898 个知识点，
+    # 非数学跑完的 6692 个会被静默丢掉 —— 报告上看着像「跑完了」。
+    batches = sorted(BATCH_DIR.glob("*.json"))
+    outs = sorted(OUT_DIR.glob("*.json"))
+    done = {p.stem for p in outs}
 
     stat = Counter()
     by_type = Counter()
@@ -60,9 +64,13 @@ def main():
     disputes = []
 
     for op in outs:
-        bn = op.stem.split("-")[1]
+        bn = op.stem
         rows = json.loads(op.read_text())
-        batch = {r["id"]: r for r in json.loads((BATCH_DIR / f"math-{bn}.json").read_text())}
+        bpath = BATCH_DIR / f"{bn}.json"
+        if not bpath.exists():
+            stat["NO_BATCH"] += 1
+            continue
+        batch = {r["id"]: r for r in json.loads(bpath.read_text())}
         seen_ids = set()
         for row in rows:
             nid = row.get("id")
