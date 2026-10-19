@@ -181,7 +181,13 @@ def main():
 
     # 容器在序列中的位置 → 全局表；每个容器记住「里面第一个可点的概念」
     cns, cn_pos = [], {}
-    for si, (sub, lst) in enumerate(sorted(order_by_subject.items())):
+    # 学科下标必须跟 SUBJECTS 同一套（math=0、physics=1…）。
+    # 原来写的是 enumerate(sorted(...))，那是**字母序**
+    # （biology=0、chemistry=1、math=2、physics=3）。两边各自自洽所以没出事，
+    # 但任何按 SUBJECTS 索引去读 cns[gi][2] 的新代码都会静默取错学科 ——
+    # 数学的单元会当成化学。是个雷，先埋掉。
+    for sub, lst in order_by_subject.items():
+        si = [s[0] for s in SUBJECTS].index(sub)
         for pos, (_, _, _, cid) in enumerate(lst):
             cn_pos[cid] = (len(cns), pos, len(lst), si)
             cns.append([None, None, None, None])       # 先占位，下面填
