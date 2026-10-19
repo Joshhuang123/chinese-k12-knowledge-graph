@@ -48,12 +48,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--books", help="逗号分隔，如 7b,8b")
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--prefix", default="rjb-math",
+                    help="文件名前缀。化学九下/生物七下是扫描件，"
+                         "但文件名是 rjb-chem-9b / rjb-bio-7b，不是 rjb-math-*")
     args = ap.parse_args()
     books = args.books.split(",") if args.books else SCANNED
 
     for bk in books:
-        pdf = CACHE / f"rjb-math-{bk}.pdf"
-        txt = CACHE / f"rjb-math-{bk}.ocr.txt"
+        pdf = CACHE / f"{args.prefix}-{bk}.pdf"
+        txt = CACHE / f"{args.prefix}-{bk}.ocr.txt"
         if txt.exists() and not args.force:
             print(f"  {bk} 已有 OCR（{txt.stat().st_size//1024} KB），跳过")
             continue

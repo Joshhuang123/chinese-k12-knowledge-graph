@@ -209,6 +209,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--show", type=int, default=0)
     ap.add_argument("--out")
+    ap.add_argument("--glob", default="rjb-math-*.txt",
+                    help="扫哪些 PDF 的文本层。化学/生物是 rjb-chem-*.txt / rjb-bio-*.txt")
     args = ap.parse_args()
 
     g = json.load(open(GRAPH, encoding="utf-8"))
@@ -241,10 +243,17 @@ def main():
 
     rows = []
     stats = Counter()
-    for pdf in sorted(CACHE.glob("rjb-math-*.txt")):
+    # **不要只扫 rjb-math-*.txt。** 引入路径检测对化学/生物同样适用，
+    # 而它们的教材文件名是 rjb-chem-9b / rjb-bio-7a。
+    # 册次码 → 学科前缀的映射（跟 verify_order 的 FILE 表同源）。
+    for pdf in sorted(CACHE.glob(args.glob)):
         if pdf.name.endswith(".ocr.txt"):
             continue
         book = pdf.stem.replace("rjb-math-", "")
+        for pre in ("rjb-chem-", "rjb-bio-", "rjb-phys-"):
+            if pdf.stem.startswith(pre):
+                book = pdf.stem.replace(pre, "")
+                break
         text = fw2half(pdf.read_text(encoding="utf-8", errors="replace"))
         for secno, sectitle, body in sections(text):
             b = fw2half(body)
