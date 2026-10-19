@@ -44,6 +44,11 @@ TAIL = re.compile(r"(?:的)?(?:知识|方法|技能|概念|内容|意义|原理)
 # 接到一个章节标题上 —— 看起来接上了，其实什么都没说。
 INDEXABLE = {"Concept", "Skill", "Method", "Theory", "Property"}
 
+# 只有这四档能自动连边。CONTAIN 明确不行：
+# 中文复合词分不清「同义词」和「限定语不同的新概念」（表内乘法 vs 乘法），
+# 比例又分不开，只能给人判断。
+AUTO = {"EXACT", "NORM", "CORE", "TAIL"}
+
 
 def norm(s):
     """NFKC + 去书次后缀 + 去空白标点。

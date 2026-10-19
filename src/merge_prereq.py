@@ -34,7 +34,7 @@ OUT = BASE / "data" / "normalized" / "lmm-merged.json"
 
 # 只有这四档能自动定位。CONTAIN 明确不行：
 # 中文复合词分不清「同义词」和「限定语不同的新概念」（表内乘法 vs 乘法）。
-AUTO = {"EXACT", "NORM", "CORE", "TAIL"}
+AUTO = nameindex.AUTO
 
 
 def main():
