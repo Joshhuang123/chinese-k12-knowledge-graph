@@ -19,6 +19,16 @@
 
 改动原件的正确路径是给上游提 issue，不是自己悄悄修。
 
+**已上报（2026-10-19）**，上游仓库 [`haolpku/K12-KGraph`](https://github.com/haolpku/K12-KGraph)：
+
+| 上游 issue | 内容 | 对应本文件 |
+|---|---|---|
+| [#8](https://github.com/haolpku/K12-KGraph/issues/8) | `is_a` / `prerequisites_for` 各存在环，与论文 §10.2 的 DAG 检查描述不符 | ISSUE-01 / 02 / 04 |
+| [#9](https://github.com/haolpku/K12-KGraph/issues/9) | 一上数学 6 个习题节点 `name` 为空，但被引用 16 次 | ISSUE-03 |
+
+> 草稿原文存在 `docs/issue-1-dag-cycles.md` 和 `docs/issue-2-empty-nodes.md`，
+> 复现脚本在两处都有，纯标准库、只依赖官方发布文件。
+
 ---
 
 ## ISSUE-01　互为前置：「极性分子」⇄「相似相溶规律」
@@ -126,6 +136,7 @@ Skill 的每一个动词都建立在 Concept 之上。概念在先，技能在�
 | `leads_to` / `verifies` / `tests_concept` / `tests_skill` / `is_part_of` / `appears_in` | — | 0 | — |
 
 **当前处置**：`validate.py` 已补 `IS_A_CYCLE` 检查，归入硬错误。
+已并入上游 [#8](https://github.com/haolpku/K12-KGraph/issues/8) 上报。
 
 ---
 

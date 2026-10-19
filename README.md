@@ -23,7 +23,9 @@
 - 「极性分子」说学「相似相溶规律」前要先会它，反过来也这么说 —— 逻辑上不可能同时成立
 - 「化学键能量变化与反应热」和「根据键能估算反应热」互为前置
 
-这两组边都在官方 `global_KG/edges.json` 里，不是我们归一化造出来的。K12-KGraph 的论文里写了 `DAG validation`，但这两个环漏过去了。
+这些边都在官方 `global_KG/edges.json` 里，不是我们归一化造出来的。K12-KGraph 的论文 §10.2 明确写了 `is_a` 和 `prerequisites_for` 两个子图都做过 DAG 检查并「yielding valid DAGs」，但实际有 3 个环（`prerequisites_for` 两个二元环、`is_a` 一个三元环）。
+
+**已向上游上报**：[#8 环](https://github.com/haolpku/K12-KGraph/issues/8)、[#9 空名节点](https://github.com/haolpku/K12-KGraph/issues/9)。
 
 **校验本身也需要被校验** —— 这是这个项目真正的立足点。详见 [`known-issues.md`](known-issues.md)，包括我们自己的校验层出过的 bug。
 
@@ -114,7 +116,7 @@ python3 src/build_viz.py     # → viz/知识图谱3D.html
 
 只想到成品页，直接 `open viz/知识图谱3D.html` 就行。
 
-**注意 `validate.py` 现在会 exit 1**，这是对的——两个环还没修（要修得去改上游）。
+**注意 `validate.py` 现在会 exit 1**，这是对的——3 个环还在数据里。修得去改上游，已上报 [issue #8](https://github.com/haolpku/K12-KGraph/issues/8)。
 
 ---
 

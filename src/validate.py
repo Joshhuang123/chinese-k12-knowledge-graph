@@ -41,7 +41,12 @@ def find_cycles(nodes_by_id, prereq):
         color[u] = 1                      # 1 = 在栈中
         for v in prereq.get(u, ()):
             if color.get(v) == 1:
-                cycles.append(path + [u, v])
+                # 只取环本身。直接 path + [u, v] 会把「走进环的那段路径」
+                # 也算成环的一部分 —— 2 个节点的二元环会被打印成 6 个节点。
+                # 报给上游时这个差别很要紧：把问题说得比实际严重，
+                # 会让人怀疑整份报告的严谨度。
+                i = path.index(v)
+                cycles.append(path[i:] + [u, v])
             elif color.get(v) is None:
                 dfs(v, path + [u])
         color[u] = 2                      # 2 = 已完成
