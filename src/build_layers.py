@@ -225,7 +225,14 @@ def main():
     print(f"  去重掉        {stat['dedup']:>4} 条")
     print(f"  合计          {len(uniq):>4} 条")
     if stat.get("ability_unmapped"):
-        print(f"  ⚠ 有 {stat['ability_unmapped']} 次能力前置没能归入 L0")
+        # **这多数不是「漏了」，是「模型把知识标成了能力」。**
+        # 全量跑完后的 328 次未归入里，排在前面的是「比例运算」「图像识读」
+        # 「光屏」「小磁针」「椭圆」—— 这些是**知识**，模型归类错了。
+        # merge_prereq 已经处理过：ability 归不进 L0 时再当知识试一次，
+        # 能落位的走 model 边（已计入 model_edges）。
+        # 这里报的只是「没有对应 L0 桶的次数」。
+        print(f"  ⚠ 有 {stat['ability_unmapped']} 次能力前置没能归入 L0"
+              f"（多是模型把知识标成了能力，merge_prereq 已回退成知识边处理）")
     bysrc = Counter(e["source"] for e in uniq)
     print(f"\n  按来源：{dict(bysrc)}")
     if stat["conflicts"]:

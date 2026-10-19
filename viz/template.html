@@ -76,7 +76,15 @@ body{
 #legend .row .n{margin-left:auto;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* ---- toolbar ---- */
-#tools{top:34px;right:38px;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;max-width:300px}
+#tools{top:34px;right:38px;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;max-width:300px;
+  /* **工具栏必须在详情卡片之上。**
+     卡片是 top:50% + translateY(-50%) 垂直居中的，内容越长顶得越高。
+     全量数据后卡片内容从「前置 4 条」变成「前置 5 条 + 后继 6 条」，
+     卡片顶部伸到 y=49，正好压住 y=34-65 的工具栏 ——
+     elementsFromPoint 的命中栈实测是
+        eyebrow(卡片里的) → card → tReset → tools
+     真机上「复位」「自动旋转」就点不到了。 */
+  z-index:20}
 .btn{
   font-family:inherit;font-size:12.5px;padding:6px 12px;border-radius:8px;cursor:pointer;
   background:var(--panel);border:1px solid var(--line);color:var(--ink2);
@@ -93,7 +101,9 @@ body{
   transition:opacity .2s;box-shadow:0 12px 40px rgba(0,0,0,.5);
   /* 依赖从 2 栏加到 6 栏（先修/后继/教材顺序前后章/上下位），
      内容最长的知识点卡片会高过视口。不给上界就顶出屏幕顶部。 */
-  max-height:calc(100vh - 40px);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  /* 上界收 100px，给右上角工具栏留出位置（工具栏 z-index 更高，但
+     卡片不该视觉上压上去）。 */
+  max-height:calc(100vh - 140px);overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 #card.on{opacity:1;pointer-events:auto}
 #card .eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;

@@ -85,10 +85,13 @@ def main():
         name_f, name_t = nf.get("name", ""), nt.get("name", "")
         hits = []
         bf, bt = nf.get("book"), nt.get("book")
-        if bf and bt and RANK.get(bf, 0) > RANK.get(bt, 0):
+        # **册序倒挂和教材顺序倒挂是同一条规则**（都基于 RANK 册序），
+        # 分成两条记会让「命中 ≥2 条规则」这个门槛失效 ——
+        # 一条规则被数了两遍，凭空凑出双证据。
+        # 真正的独立证据只有两类：**教材顺序** 和 **名字的字面结构**。
+        if (bf and bt and RANK.get(bf, 0) > RANK.get(bt, 0)) or \
+                (f, t) in reversed_pairs:
             hits.append("册序倒挂")
-        if (f, t) in reversed_pairs:
-            hits.append("教材顺序倒挂")
         a, b = norm(name_f), norm(name_t)
         if len(b) >= 2 and b in a and a != b:
             hits.append("下位当前置")
@@ -105,7 +108,17 @@ def main():
                 "from": f, "to": t,
                 "fromName": name_f, "toName": name_t,
                 "fromBook": nf.get("bookZh", ""), "toBook": nt.get("bookZh", ""),
-                "hits": hits, "level": min(len(hits), 3),
+                # level = 独立证据源的个数：
+            #   1 = 教材顺序（或字面）单证据
+            #   2 = 教材顺序 + 字面（两个独立来源）
+            # 3 = 三类证据
+            "hits": hits,
+            "level": (1 if "册序倒挂" in hits else 0) +
+                     (1 if any(h in hits for h in
+                               ("下位当前置", "方法当前置",
+                                "应用/实例当前置", "重复节点",
+                                "空名占位")) else 0) +
+                     (1 if "模型dispute" in hits else 0),
                 "evidence": e.get("evidence", "") or "",
             })
 
