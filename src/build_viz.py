@@ -102,14 +102,28 @@ def main():
     # 概念层没记 ≠ 没有前置。页面不能拿「数据集没说」冒充「它没有」。
     node_of = {n["id"]: n for n in raw_nodes}
 
-    section_of = defaultdict(list)
-    for e in raw_edges:
-        if e["type"] == "appears_in" and node_of.get(e["to"], {}).get("label") == "Section":
-            section_of[e["from"]].append(e["to"])
     chapter_of = {}
     for e in raw_edges:
         if e["type"] == "is_part_of" and node_of.get(e["from"], {}).get("label") == "Section":
             chapter_of[e["from"]] = e["to"]
+
+    # appears_in 有两种指向，差别只在一个 label 上：
+    #   初中/高中 → Section（8,125 条），再 is_part_of 上溯到 Chapter；
+    #   **小学 → 直接指 Chapter（819 条）**。
+    # 第一版只认前者，于是 782 个小学知识点里有 742 个拿不到教材顺序，
+    # 卡片上「教材里排在它前面的章」整栏是空的 —— 而小学章其实有 69 条
+    # leads_to，数据一直都在，是我们没接上。
+    chapter_of_node = defaultdict(list)
+    for e in raw_edges:
+        if e["type"] != "appears_in":
+            continue
+        tgt = node_of.get(e["to"], {})
+        if tgt.get("label") == "Section":
+            ch = chapter_of.get(e["to"])
+            if ch:
+                chapter_of_node[e["from"]].append(ch)
+        elif tgt.get("label") == "Chapter":
+            chapter_of_node[e["from"]].append(e["to"])
 
     # leads_to 只有章与章之间才是「教材顺序」，混进节/册会得到一堆噪音
     chap_pre, chap_next = defaultdict(list), defaultdict(list)
@@ -134,10 +148,10 @@ def main():
 
     def book_order(nid):
         """→ (排在它前面的章, 排在它后面的章)，都是 CHS 的下标。"""
-        secs = section_of.get(nid) or []
-        ch = chapter_of.get(secs[0]) if secs else None
-        if ch is None:
+        chs_ = chapter_of_node.get(nid) or []
+        if not chs_:
             return [], []
+        ch = chs_[0]
         return ([ch_slot(e["from"]) for e in chap_pre.get(ch, ())],
                 [ch_slot(e["to"]) for e in chap_next.get(ch, ())])
 

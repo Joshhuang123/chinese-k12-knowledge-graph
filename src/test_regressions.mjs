@@ -528,6 +528,42 @@ console.log('\n【15】手机上那句「不是 N 个前置」不能被裁掉半
   await p.close();
 }
 
+console.log('\n【16】小学知识点也必须有教材顺序');
+{
+  // appears_in 有两种指向：初中/高中指 Section 再上溯到 Chapter，
+  // **小学直接指 Chapter**。第一版只认前者，于是 782 个小学知识点里
+  // 742 个拿不到教材顺序，卡片上那一栏整栏是空的 ——
+  // 而小学章本来就有 69 条 leads_to，数据一直在，是我们没接上。
+  const { p } = await fresh();
+  const r = await p.evaluate(() => {
+    const D = JSON.parse(document.getElementById('data').textContent);
+    const prim = D.nodes.filter(a => a[6] >= 1 && a[6] <= 6);
+    const withOrder = prim.filter(a => (a[12] || []).length || (a[13] || []).length);
+    const i = D.nodes.findIndex(a => a[1] === '加数' && a[4] === '四下·概念');
+    return { prim: prim.length, withOrder: withOrder.length, idx: i,
+             order: i < 0 ? [] : (D.nodes[i][12] || []).map(k => D.chs[k][0] + '[' + D.chs[k][1] + ']') };
+  });
+  ok(r.prim === 782, `小学知识点 782 个（实际 ${r.prim}）`);
+  ok(r.withOrder > 500,
+     `其中 ${r.withOrder} 个能定出教材顺序（修之前只有 86 个上下）`);
+  ok(r.order.length > 0 && r.order.some(x => /表内乘法|表内除法/.test(x)),
+     `「加数[四下]」的教材前置章含表内乘法/除法（${JSON.stringify(r.order)}）`);
+
+  // 页面上也要真的显示出来，不能只有 payload 里有
+  await p.click('#q'); await p.type('#q', '加数', { delay: 15 }); await sleep(350);
+  await p.keyboard.press('Enter'); await sleep(1600);
+  const shown = await p.evaluate(() => {
+    const t = document.querySelector('#cChain .ct[data-b="chp"]');
+    const rows = [];
+    let el = t && t.nextElementSibling;
+    while (el && !el.classList.contains('ct')) { rows.push(el.textContent); el = el.nextElementSibling; }
+    return { n: t?.querySelector('.n').textContent, rows };
+  });
+  ok(Number(shown.n) > 0 && shown.rows.length === Number(shown.n),
+     `卡片上「教材里排在它前面的章」有 ${shown.n} 条且真的渲染出来了`);
+  await p.close();
+}
+
 await browser.close();
 console.log(`\n${'='.repeat(52)}\n通过 ${pass}，失败 ${fail}`);
 process.exit(fail ? 1 : 0);
