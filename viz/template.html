@@ -105,8 +105,30 @@ body{
   background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--ink2);
 }
 #card .meta span.hi{background:rgba(255,61,127,.14);border-color:rgba(255,61,127,.34);color:#ff8ab5}
-#card .chain{font-size:11.5px;color:var(--muted);line-height:1.5;border-top:1px solid var(--line);padding-top:11px}
+#card .chain{font-size:11.5px;color:var(--muted);line-height:1.5;border-top:1px solid var(--line);padding-top:11px;margin-top:2px}
 #card .chain b{color:var(--acc);font-weight:500}
+#card .chain .ct{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  margin:11px 0 5px;display:flex;align-items:center;gap:7px;
+}
+#card .chain .ct:first-child{margin-top:0}
+#card .chain .ct .ln{flex:1;height:1px;background:var(--line)}
+#card .chain .ct .n{color:var(--ink2);font-variant-numeric:tabular-nums;letter-spacing:0}
+/* 依赖项用真 button：键盘可达 + 读屏知道这是个可点的跳转 */
+#card .chain .dep{
+  display:flex;align-items:flex-start;gap:6px;width:100%;text-align:left;
+  appearance:none;-webkit-appearance:none;background:none;border:0;padding:3px 5px;
+  border-radius:5px;cursor:pointer;font:inherit;font-size:11.5px;color:var(--ink2);
+  line-height:1.4;transition:background .13s,color .13s;
+}
+#card .chain .dep:hover{background:rgba(255,255,255,.07);color:var(--ink)}
+#card .chain .dep:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+#card .chain .dep .ar{color:var(--acc);flex:none;font-size:10px;line-height:1.55}
+#card .chain .dep .t{flex:1;min-width:0}
+/* 最长的知识点名字有 39 个字，必须允许折行而不是溢出或截断 */
+#card .chain .dep .t{overflow-wrap:anywhere}
+#card .chain .dep .bk{color:var(--muted);font-size:10px;flex:none;font-variant-numeric:tabular-nums}
+#card .chain .none2{font-size:11.5px;color:var(--muted);padding:2px 5px}
 
 /* ---- hint ---- */
 #hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
@@ -273,6 +295,11 @@ body{
   <p class="en mono" id="cEn"></p>
   <p class="desc" id="cDesc"></p>
   <div class="meta" id="cMeta"></div>
+  <!-- 前后依赖直接列出来并且可点。只给数量（「要先掌握 4 个」）等于
+       还得回去猜是哪 4 个 —— 查完了还是不知道。点一下就跳过去，
+       于是这一页从「查一个点」变成「顺着链条走」。
+       7,938 个节点里直接前置/后继最多各 7 个，所以能全列出来，
+       不需要「显示前 N 条」那种截断。 -->
   <div class="chain" id="cChain"></div>
 </div>
 
@@ -467,7 +494,12 @@ function drawNodes(m){
 
     // perspective: near nodes bigger and brighter, far ones smaller and faded
     let r = (1.5 + n.cen*7.5) / k * 0.52;
-    if(r < 0.45) continue;
+    // 焦点节点永远不能被尺寸剔除挡掉。原来剔除跑在焦点修正之前，
+    // 于是被选中的节点一旦投影半径不到半像素就整个不画；而 activeSet
+    // 非空会把其余 7,938 个点全压到 9% —— 结果是「点了依赖，整屏变黑」。
+    // 实测：r=0.4118 < 0.45，焦点被 continue 掉。
+    const isFocus = idx === focus;
+    if(!isFocus && r < 0.45) continue;
 
     let fill, alpha;
     if(activeSet.size && !on){
@@ -478,7 +510,7 @@ function drawNodes(m){
       continue;
     }
     if(activeSet.size){
-      if(idx === focus){ fill = '#ffffff'; alpha = 1; r = Math.max(r, 3.4); }
+      if(isFocus){ fill = '#ffffff'; alpha = 1; r = Math.max(r, 3.4); }
       else { fill = ACC; alpha = Math.min(1, 0.55 + (1.9 - k) * 0.26); }
     }else{
       fill = SUBJ[n.s].c;
@@ -490,7 +522,7 @@ function drawNodes(m){
     ctx.arc(projX[idx], projY[idx], r, 0, 6.2832);
     ctx.fill();
 
-    if(idx === focus){
+    if(isFocus){
       ctx.globalAlpha = 1;
       ctx.strokeStyle = ACC; ctx.lineWidth = 1.6;
       ctx.beginPath(); ctx.arc(projX[idx], projY[idx], r+5, 0, 6.2832); ctx.stroke();
@@ -624,9 +656,14 @@ function flyTo(id){
   setSpin(false);
   const th = Math.atan2(n.x, n.z);
   const z1 = n.x*Math.sin(th) + n.z*Math.cos(th);
+  const ph = Math.atan2(n.y, z1 || 1e-3);
+  // 距离不能钉死 520。透视 k = d/(d - z2)，z2 越大节点越贴镜头、k 越大、
+  // 投影半径越小。原来 d=520 时实测 k 能冲到 2.95，半径只剩 0.41px。
+  // 反解成 k≈1.5 需要 d = 3·z2，这里按需放大并夹在滚轮缩放的区间内。
+  const z2 = n.y*Math.sin(ph) + z1*Math.cos(ph);
   TARGET.th = th;
-  TARGET.ph = Math.atan2(n.y, z1 || 1e-3);
-  TARGET.d  = 520;
+  TARGET.ph = ph;
+  TARGET.d  = Math.max(520, Math.min(3400, 3*z2));
 }
 
 function go(i){
@@ -727,6 +764,20 @@ addEventListener('keydown', e=>{
   }
 });
 
+// 卡片里的依赖项：点一下就跳到那个知识点，顺着链条往下走
+document.getElementById('card').addEventListener('click', e=>{
+  const b = e.target.closest('.dep'); if(!b) return;
+  jump(+b.dataset.jump);
+});
+
+/* 复用 flyTo + setFocus + showCard，但不像搜索那样收起结果框、也不清空输入框 ——
+   走链条和搜索是两回事，别互相破坏对方的状态。 */
+function jump(id){
+  if(id < 0 || id >= N) return;
+  pinned = id; hover = -1;
+  flyTo(id); setFocus(id); showCard(id);
+}
+
 btn('tReset', ()=>{
   TARGET.th = -0.62; TARGET.ph = 0.30; TARGET.d = 1500;
   pinned = -1; setFocus(-1); card.classList.remove('on');
@@ -747,12 +798,31 @@ function showCard(id){
   enEl.textContent = n.en || '';
   enEl.style.display = n.en ? '' : 'none';
   document.getElementById('cDesc').textContent = n.desc || '（该条目没有描述文本）';
-  const nb = (pre.get(id) || []).length, ub = (unlocks.get(id) || []).length;
   document.getElementById('cMeta').innerHTML =
     (n.core ? '<span class="hi">9–10 岁核心</span>' : '<span>低年级基础</span>') +
     '<span>' + n.evn + ' 条掌握证据</span><span>重要度 ' + n.cen.toFixed(3) + '</span>';
+
+  // 前后依赖：直接列出名字，并且每一项都能点进去。
+  // 名��里有尖括号的（数据里确实有「反比例函数的性质（k<0）」这类），
+  // 拼 HTML 前先转义，别让它被解析成标签。
+  const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const depRow = (jid, arrow) =>
+    '<button type="button" class="dep" data-jump="' + jid + '">' +
+      '<span class="ar">' + arrow + '</span>' +
+      '<span class="t">' + esc(label(NODES[jid])) + '</span>' +
+      '<span class="bk">' + esc(NODES[jid].dz) + '</span>' +
+    '</button>';
+
+  const ps = pre.get(id) || [], us = unlocks.get(id) || [];
+  const block = (title, arr, arrow, empty) =>
+    '<div class="ct"><span>' + title + '</span><span class="n">' + arr.length + '</span><span class="ln"></span></div>' +
+    // 必须包一层箭头：arr.map(depRow) 会把下标当成第二个参数传进去，
+    // 于是箭头全被渲染成 0/1/2/3（第一版就踩了这个，肉眼看截图才发现）。
+    (arr.length ? arr.map(j => depRow(j, arrow)).join('') : '<div class="none2">' + empty + '</div>');
+
   document.getElementById('cChain').innerHTML =
-    '学它之前要先掌握 <b>' + nb + '</b> 个知识点，学完解锁 <b>' + ub + '</b> 个。<br>图中高亮的是向前追溯最多 70 个的前置链。';
+    block('要先会', ps, '◀', '没有直接前置 —— 它是这一串的起点') +
+    block('学会后能学', us, '▶', '没有直接后继 —— 在数据里它是终点');
   card.classList.add('on');
 }
 

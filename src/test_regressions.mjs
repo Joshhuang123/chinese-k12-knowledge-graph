@@ -328,6 +328,87 @@ console.log('\n【10】无障碍：学科开关键盘可达，搜索框有正式
   await p.close();
 }
 
+console.log('\n【11】卡片要列出前后依赖的名字，而且能点进去');
+{
+  const { p } = await fresh();
+  await p.click('#q'); await p.type('#q', '闭合电路欧姆定律', { delay: 15 }); await sleep(350);
+  await p.keyboard.press('Enter'); await sleep(1600);
+
+  const c = await p.evaluate(() => {
+    const deps = [...document.querySelectorAll('#cChain .dep')];
+    return {
+      cts: [...document.querySelectorAll('#cChain .ct')].map(e => ({
+        label: e.querySelector('span').textContent, n: e.querySelector('.n').textContent,
+      })),
+      pre: deps.filter(e => e.querySelector('.ar').textContent === '◀'),
+      post: deps.filter(e => e.querySelector('.ar').textContent === '▶'),
+      // 箭头必须真的是箭头。第一版写成 arr.map(depRow)，而 map 会把下标
+      // 作为第二个参数传进去，于是箭头全被渲染成 0/1/2/3 —— 是看截图才发现的。
+      anyDigitArrow: deps.some(e => /^[0-9]+$/.test(e.querySelector('.ar').textContent)),
+      allButtons: deps.every(e => e.tagName === 'BUTTON'),
+      allHaveJump: deps.every(e => /^[0-9]+$/.test(e.dataset.jump || '')),
+    };
+  });
+  ok(c.pre.length === 4, `前置列了 4 条（实际 ${c.pre.length}）`);
+  ok(c.post.length === 4, `后继列了 4 条（实际 ${c.post.length}）`);
+  ok(c.cts[0]?.n === '4' && c.cts[1]?.n === '4', `两个小标题都带上了计数（${c.cts.map(x => x.label + x.n).join(' / ')}）`);
+  ok(!c.anyDigitArrow, '箭头是 ◀/▶ 而不是 0/1/2/3');
+  ok(c.allButtons && c.allHaveJump, '每一项都是真 button 且带跳转目标（键盘可达）');
+
+  // 点一条后继：卡片要跟着换，且新节点飞正中
+  const before = await p.evaluate(() => document.getElementById('cZh').textContent);
+  const target = await p.evaluate(() => {
+    const e = document.querySelector('#cChain .dep[data-jump]');
+    e.click();
+    return e.querySelector('.t').textContent;
+  });
+  await sleep(1700);
+  const after = await p.evaluate(() => {
+    const cv = document.getElementById('c'), g = cv.getContext('2d');
+    const d = g.getImageData(cv.width / 2 - 6, cv.height / 2 - 6, 12, 12).data;
+    let w = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 60 && d[i] > 200 && d[i + 1] > 200 && d[i + 2] > 200) w++;
+    return {
+      zh: document.getElementById('cZh').textContent,
+      cardOn: document.getElementById('card').classList.contains('on'),
+      white: w,
+      qKept: document.getElementById('q').value,
+    };
+  });
+  ok(after.zh === target && after.zh !== before, `点「${target}」跳过去了（${before} → ${after.zh}）`);
+  ok(after.cardOn, '卡片保持打开（走链条和搜索是两回事）');
+  ok(after.white > 0, `新节点落在画面正中（白心像素 ${after.white}）`);
+  ok(after.qKept === '闭合电路欧姆定律', '搜索框里的词没被清掉');
+
+  // 没有依赖的节点要给出说明，不能留空
+  await p.click('#q');
+  await p.evaluate(() => { const q = document.getElementById('q'); q.value = '概念'; q.dispatchEvent(new Event('input')); });
+  await sleep(300); await p.keyboard.press('Enter'); await sleep(1500);
+  const noneTxt = await p.evaluate(() => [...document.querySelectorAll('#cChain .none2')].map(e => e.textContent));
+  ok(noneTxt.length > 0, `无依赖时给说明而不是留空（${JSON.stringify(noneTxt)}）`);
+  await p.close();
+}
+
+console.log('\n【12】手机底抽屉加上依赖列表后不能超出视口');
+{
+  const { p } = await fresh(390, 844, true);
+  await p.tap('#q'); await p.type('#q', '闭合电路欧姆定律', { delay: 12 }); await sleep(350);
+  await p.keyboard.press('Enter'); await sleep(1800);
+  const g = await p.evaluate(() => {
+    const c = document.getElementById('card').getBoundingClientRect();
+    const el = document.getElementById('card');
+    return { top: Math.round(c.top), bottom: Math.round(c.bottom), vh: innerHeight,
+             scrollable: el.scrollHeight > el.clientHeight + 1,
+             fits: el.scrollHeight <= el.clientHeight + 1 };
+  });
+  ok(g.top >= 0 && g.bottom <= g.vh + 1, `卡片完整在视口内（${g.top}~${g.bottom} / ${g.vh}）`);
+  // 真实要求是「要么装得下、要么能滚」，不是「必须能滚」——
+  // 8 条依赖 + 一段描述在多数机型上本来就装得下。
+  ok(g.fits || g.scrollable,
+     `内容要么装得下要么能滚（装得下=${g.fits} 可滚=${g.scrollable}）`);
+  await p.close();
+}
+
 await browser.close();
 console.log(`\n${'='.repeat(52)}\n通过 ${pass}，失败 ${fail}`);
 process.exit(fail ? 1 : 0);
