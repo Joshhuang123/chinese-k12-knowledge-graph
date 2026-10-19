@@ -91,6 +91,9 @@ body{
   background:var(--panel);border:1px solid var(--line);border-radius:14px;
   padding:17px 18px;backdrop-filter:blur(14px);opacity:0;pointer-events:none;
   transition:opacity .2s;box-shadow:0 12px 40px rgba(0,0,0,.5);
+  /* 依赖从 2 栏加到 6 栏（先修/后继/教材顺序前后章/上下位），
+     内容最长的知识点卡片会高过视口。不给上界就顶出屏幕顶部。 */
+  max-height:calc(100vh - 40px);overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 #card.on{opacity:1;pointer-events:auto}
 #card .eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;
@@ -122,6 +125,11 @@ body{
   line-height:1.4;transition:background .13s,color .13s;
 }
 #card .chain .dep:hover{background:rgba(255,255,255,.07);color:var(--ink)}
+/* 章：不可点，所以不给 hover 也不给按钮语义 */
+#card .chain .dep.flat{color:var(--ink2)}
+#card .chain .dep.flat .ar{color:var(--muted)}
+/* 一次说清哪些能点。6 栏里 4 栏能跳、2 栏不能，不写出来用户只能靠试。 */
+#card .chain .chint{font-size:10.5px;color:var(--muted);margin:0 0 9px;line-height:1.5}
 #card .chain .dep:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
 #card .chain .dep .ar{color:var(--acc);flex:none;font-size:10px;line-height:1.55}
 #card .chain .dep .t{flex:1;min-width:0}
@@ -131,7 +139,14 @@ body{
 #card .chain .none2{font-size:11.5px;color:var(--muted);padding:2px 5px}
 
 /* ---- hint ---- */
-#hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
+#hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7;
+  transition:opacity .2s}
+/* 卡片一打开就把操作提示收走。依赖从 2 栏加到 6 栏之后，卡片最高能到视口的九成，
+   而提示条固定在右下角 —— 实测「惯性参考系」那张卡（教材前置 15 章）
+   底边正好压住提示条，两行字叠在一起谁也看不清。
+   :has() 在 Chrome 105 / Safari 15.4 / Firefox 121 之后都有；
+   万一不支持，退化成「提示条一直在」，也就是今天的样子，不会更糟。 */
+body:has(#card.on) #hint{opacity:0;pointer-events:none}
 
 /* 只给读屏用：视觉上藏起来，但仍留在无障碍树里。
    不能用 display:none / visibility:hidden —— 那会把内容从无障碍树里摘掉，
@@ -174,7 +189,11 @@ body{
 #res .r .bk{margin-left:auto;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
 #res .r.sel,#res .r:hover{background:var(--panel);color:var(--ink)}
 #res .none{font-size:12px;color:var(--muted);padding:7px 10px}
-#res .more{font-size:10.5px;color:var(--muted);padding:7px 10px 2px;border-top:1px solid var(--line);margin-top:4px}
+/* 吸在结果框底部。手机上 8 条结果 × 45.7px 已经接近 46vh 的上限，
+   脚注是最后一个子元素，会被裁在半句话上（实测「…前置关系，选」就断了）。
+   吸底之后不管滚到哪都看得见 —— 而这行恰恰是最不能看不见的一句。 */
+#res .more{font-size:10.5px;color:var(--muted);padding:7px 10px 5px;border-top:1px solid var(--line);
+  position:sticky;bottom:0;background:var(--panel);margin-top:4px}
 
 /* 署名：原始数据是 CC BY-NC-SA 4.0，署名是硬性要求。
    烧进页面里，才能保证这份 HTML 被转发、被下载、被存盘之后，
@@ -320,8 +339,10 @@ const N = D.nodes.length;
 // ---- expand compact arrays into objects ----
 const NODES = D.nodes.map(a => ({
   i:a[0], zh:a[1], en:a[2], s:a[3], dz:a[4], de:a[5],
-  a1:a[6], a2:a[7], cen:a[8], core:a[9], desc:a[10], evn:a[11]
+  a1:a[6], a2:a[7], cen:a[8], core:a[9], desc:a[10], evn:a[11],
+  chp:a[12]||[], chn:a[13]||[]     // 教材顺序：排在它前面 / 后面的章（CHS 下标）
 }));
+const CHS = D.chs || [];
 const label = n => n.zh || n.en;
 
 /* ================= layout: cone, height = age ================= */
@@ -350,6 +371,14 @@ const pre = new Map(), unlocks = new Map();
 for(const [t,p] of D.edges){
   if(!pre.has(t)) pre.set(t, []); pre.get(t).push(p);
   if(!unlocks.has(p)) unlocks.set(p, []); unlocks.get(p).push(t);
+}
+/* is_a 的方向是「具体 → 一般」：「二次函数 y=a(x-h)²+k」is_a「二次函数」。
+   原先页面只画 prerequisites_for，is_a 那 1,895 条边整条被丢在门外，
+   于是「二次函数」只显示成一个孤零零的起点，看不出它下面挂着一堆具体表述。 */
+const isaUp = new Map(), isaDown = new Map();
+for(const [spec, gen] of (D.isa || [])){
+  if(!isaUp.has(spec)) isaUp.set(spec, []);   isaUp.get(spec).push(gen);
+  if(!isaDown.has(gen)) isaDown.set(gen, []); isaDown.get(gen).push(spec);
 }
 function traceBack(root, cap){
   const seen = new Set([root]); const out = []; let q = [root];
@@ -703,12 +732,18 @@ function render(){
   }).join('') +
   // 视觉上的计数。对读屏是冗余的（下面 say() 会单独播），
   // 所以标 aria-hidden 避免同一件事念两遍。
-  (total > 8 ? `<li class="more" aria-hidden="true" role="presentation">共 ${total.toLocaleString('en-US')} 条匹配，显示前 8 条 · 补一个字可缩小范围</li>` : '');
+  /* 「共 19 条」这句话本身就会误导人：搜「二次函数」得到 19 条，
+     第一版就写成「共 19 条匹配」——于是读起来像「二次函数有 19 个前置」。
+     实际这 19 条是名字含「二次函数」的条目横跨九上/必修一/选必一，
+     是同一主题在不同册次的不同表述，不是依赖。
+     措辞直接对着这个误读写，并且要短 —— 手机上这行只有 46vh 里的两行，
+     写长了会被裁在半句话上。 */
+  (total > 8 ? `<li class="more" aria-hidden="true" role="presentation">共 ${total.toLocaleString('en-US')} 条名字匹配，不是 ${total} 个前置 · 显示前 8 条</li>` : '');
   resEl.classList.add('on');
   qEl.setAttribute('aria-expanded', 'true');
   qEl.setAttribute('aria-activedescendant', 'r-' + selI);
   say(total > 8
-    ? `找到 ${total.toLocaleString('en-US')} 个知识点，当前第 ${selI+1} 个：${NODES[hits[selI].i].zh}`
+    ? `按名字匹配到 ${total.toLocaleString('en-US')} 个知识点（不是前置关系），当前第 ${selI+1} 个：${NODES[hits[selI].i].zh}`
     : `找到 ${total} 个知识点：${NODES[hits[selI].i].zh}`);
 }
 
@@ -803,7 +838,7 @@ function showCard(id){
     '<span>' + n.evn + ' 条掌握证据</span><span>重要度 ' + n.cen.toFixed(3) + '</span>';
 
   // 前后依赖：直接列出名字，并且每一项都能点进去。
-  // 名��里有尖括号的（数据里确实有「反比例函数的性质（k<0）」这类），
+  // 名字里有尖括号的（数据里确实有「反比例函数的性质（k<0）」这类），
   // 拼 HTML 前先转义，别让它被解析成标签。
   const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const depRow = (jid, arrow) =>
@@ -812,17 +847,37 @@ function showCard(id){
       '<span class="t">' + esc(label(NODES[jid])) + '</span>' +
       '<span class="bk">' + esc(NODES[jid].dz) + '</span>' +
     '</button>';
+  // 章不是画出来的点，没有下标也跳不过去，用 div 并且不给 hover 反馈——
+  // 长得像能点而点了没反应，比明摆着不可点更烦。
+  const chRow = (c, arrow) =>
+    '<div class="dep flat"><span class="ar">' + arrow + '</span>' +
+      '<span class="t">' + esc(c[0]) + '</span>' +
+      '<span class="bk">' + esc(c[1]) + '</span></div>';
 
   const ps = pre.get(id) || [], us = unlocks.get(id) || [];
-  const block = (title, arr, arrow, empty) =>
-    '<div class="ct"><span>' + title + '</span><span class="n">' + arr.length + '</span><span class="ln"></span></div>' +
-    // 必须包一层箭头：arr.map(depRow) 会把下标当成第二个参数传进去，
-    // 于是箭头全被渲染成 0/1/2/3（第一版就踩了这个，肉眼看截图才发现）。
-    (arr.length ? arr.map(j => depRow(j, arrow)).join('') : '<div class="none2">' + empty + '</div>');
+  const chp = (n.chp||[]).map(k => CHS[k]).filter(c => c && c[0]);
+  const chn = (n.chn||[]).map(k => CHS[k]).filter(c => c && c[0]);
+  const iu = isaUp.get(id) || [], idn = isaDown.get(id) || [];
 
+  // data-b 是给测试用的稳定锚点。块数从 2 涨到 6 之后，
+  // 按「.ct 的第几个」定位的测试会随排列顺序一起漂。
+  const block = (key, title, arr, row, arrow, empty) =>
+    '<div class="ct" data-b="' + key + '"><span>' + title + '</span><span class="n">' + arr.length + '</span><span class="ln"></span></div>' +
+    // 必须包一层箭头：arr.map(row) 会把下标当成第二个参数传进去，
+    // 于是箭头全被渲染成 0/1/2/3（第一版就踩了这个，肉眼看截图才发现）。
+    (arr.length ? arr.map(x => row(x, arrow)).join('') : '<div class="none2">' + empty + '</div>');
+
+  /* 无前置时不能说「它是这一串的起点」——那是拿数据缺口冒充知识点属性。
+     九上册的二次函数在常识上不可能是起点，它只是这一层没标。
+     原话就是「没有直接前置 —— 它是这一串的起点」，第一版自己写的。 */
   document.getElementById('cChain').innerHTML =
-    block('要先会', ps, '◀', '没有直接前置 —— 它是这一串的起点') +
-    block('学会后能学', us, '▶', '没有直接后继 —— 在数据里它是终点');
+    '<div class="chint">点名字跳过去 · 带「章」的是教材顺序，不可点</div>' +
+    block('pre', '要先会', ps, depRow, '◀', '数据里没记前置 —— 不等于它没有前置') +
+    block('post', '学会后能学', us, depRow, '▶', '数据里没记谁要先会它') +
+    block('chp', '教材里排在它前面的章', chp, chRow, '◀', '教材没标前面还有哪一章') +
+    block('chn', '教材里排在它后面的章', chn, chRow, '▶', '教材没标后面还有哪一章') +
+    block('sup', '更一般的概念', iu, depRow, '◀', '数据里没有更一般的上位概念') +
+    block('sub', '它的具体表述', idn, depRow, '▶', '数据里没有更具体的表述');
   card.classList.add('on');
 }
 

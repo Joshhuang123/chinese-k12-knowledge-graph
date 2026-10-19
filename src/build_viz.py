@@ -94,6 +94,66 @@ def main():
             indeg[b] += 1
     mx = max(indeg.values()) or 1
 
+    # ── 关系补齐：is_a 上下位 + 章节级教材顺序 ────────────────────────
+    # 为什么必须加：可视化原本只保留 Concept/Skill 之间的 prerequisites_for，
+    # 于是「二次函数[九上]」显示前置 0、解锁 2，看着像凭空冒出来的。
+    # 真实先修并没有丢，是记在章节节点的 leads_to 上：
+    #   轴对称[8a] / 一次函数[8b] / 一元二次方程[9a] --leads_to--> 第二十二章 二次函数[9a]
+    # 概念层没记 ≠ 没有前置。页面不能拿「数据集没说」冒充「它没有」。
+    node_of = {n["id"]: n for n in raw_nodes}
+
+    section_of = defaultdict(list)
+    for e in raw_edges:
+        if e["type"] == "appears_in" and node_of.get(e["to"], {}).get("label") == "Section":
+            section_of[e["from"]].append(e["to"])
+    chapter_of = {}
+    for e in raw_edges:
+        if e["type"] == "is_part_of" and node_of.get(e["from"], {}).get("label") == "Section":
+            chapter_of[e["from"]] = e["to"]
+
+    # leads_to 只有章与章之间才是「教材顺序」，混进节/册会得到一堆噪音
+    chap_pre, chap_next = defaultdict(list), defaultdict(list)
+    for e in raw_edges:
+        if e["type"] != "leads_to":
+            continue
+        if node_of.get(e["from"], {}).get("label") != "Chapter" or \
+           node_of.get(e["to"], {}).get("label") != "Chapter":
+            continue
+        chap_pre[e["to"]].append(e)
+        chap_next[e["from"]].append(e)
+
+    # 同一个章会被几百个知识点引用，节点槽位里只存下标
+    chs, ch_ix = [], {}
+
+    def ch_slot(cid):
+        if cid not in ch_ix:
+            c = node_of[cid]
+            ch_ix[cid] = len(chs)
+            chs.append([c["name"], c["bookZh"]])
+        return ch_ix[cid]
+
+    def book_order(nid):
+        """→ (排在它前面的章, 排在它后面的章)，都是 CHS 的下标。"""
+        secs = section_of.get(nid) or []
+        ch = chapter_of.get(secs[0]) if secs else None
+        if ch is None:
+            return [], []
+        return ([ch_slot(e["from"]) for e in chap_pre.get(ch, ())],
+                [ch_slot(e["to"]) for e in chap_next.get(ch, ())])
+
+    # is_a 的方向：具体 → 一般（「二次函数 y=a(x-h)²+k」is_a「二次函数」）。
+    # 数据里有 3 个 is_a 环（已记 ISSUE 并上报上游），展示前先去重，
+    # 否则同一个关系会在卡片里出现两遍。
+    isa_pairs = []
+    for e in raw_edges:
+        if e["type"] != "is_a":
+            continue
+        a, b = idx.get(e["from"]), idx.get(e["to"])
+        if a is not None and b is not None and a != b:
+            isa_pairs.append([a, b])
+    isa_pairs = sorted({tuple(p) for p in isa_pairs})
+    isa_pairs = [list(p) for p in isa_pairs]
+
     payload_nodes = []
     for i, n in enumerate(nodes):
         props = n["props"] or {}
@@ -101,6 +161,7 @@ def main():
                 or props.get("steps") or props.get("formula") or "")
         if isinstance(desc, list):
             desc = "；".join(str(x) for x in desc[:3])
+        chp, chn = book_order(n["id"])
         payload_nodes.append([
             i,
             n["name"],                       # zh
@@ -116,6 +177,8 @@ def main():
             # 原模板这里放的是「N 条掌握证据」，但中文数据里 59.7% 的节点为 0，
             # 展示出来一片「0 条掌握证据」，白占一行。
             props.get("importance") or "—",
+            chp,                               # 12 → 教材里排在它前面的章（CHS 下标）
+            chn,                               # 13 → 教材里排在它后面的章
         ])
 
     payload_edges = [[b, a] for a, bs in prereq.items() for b in bs]   # [后继, 先修]
@@ -126,6 +189,7 @@ def main():
     subjects = [{"en": s[0], "zh": s[1], "c": s[2], "n": by_subject.get(s[0], 0)} for s in SUBJECTS]
 
     payload = {"nodes": payload_nodes, "edges": payload_edges,
+               "isa": isa_pairs, "chs": chs,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                "total": len(nodes), "acc": ACC}
 
@@ -186,6 +250,8 @@ def main():
     INDEX.write_text(html, encoding="utf-8")
 
     print(f"节点 {len(payload_nodes):,} | 边 {len(payload_edges):,} | 剪掉的环边 {dropped}")
+    print(f"is_a 上下位 {len(isa_pairs):,} 对 | 章节表 {len(chs)} 章 | "
+          f"能定出教材顺序的知识点 {sum(1 for n in payload_nodes if n[12] or n[13]):,}")
     dist = "、".join("{} {}".format(s["zh"], s["n"]) for s in subjects)
     print(f"学科分布: {dist}")
     print(f"输出 {OUT.relative_to(BASE)}  ({OUT.stat().st_size/1024:.0f} KB)")

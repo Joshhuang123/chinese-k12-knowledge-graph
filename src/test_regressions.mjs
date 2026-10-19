@@ -203,7 +203,9 @@ console.log('\n【7】搜全名要能搜到自己');
     await new Promise(r => setTimeout(r, 200));
     return document.getElementById('res').textContent;
   });
-  ok(/共 [\d,]+ 条匹配/.test(cnt), '命中很多时给出总数（修之前「概念」6574 条只显示 8 行且无提示）');
+  // 措辞从「共 N 条匹配」改成「共 N 条名字匹配，不是 N 个前置」是刻意的：
+  // 前一种写法会被读成「这个知识点有 N 个前置」。
+  ok(/共 [\d,]+ 条名字匹配，不是 [\d,]+ 个前置/.test(cnt), `命中很多时给出总数，并说清不是前置（修之前「概念」6574 条只显示 8 行且无提示）`);
   await p.close();
 }
 
@@ -302,7 +304,8 @@ console.log('\n【10】无障碍：学科开关键盘可达，搜索框有正式
   }));
   ok(s1.expanded === 'true', '有结果时 aria-expanded=true');
   ok(s1.active === 'r-0' && s1.sel[0] === 'true', '默认选中第 1 条且 activedescendant 指对了');
-  ok(/找到 \d+ 个知识点/.test(s1.say), `命中数会被播报（"${s1.say}"）`);
+  // 播报里带上「不是前置关系」，否则读屏用户听到的 40 条同样会被当成 40 个前置
+  ok(/按名字匹配到 [\d,]+ 个知识点（不是前置关系）/.test(s1.say), `命中数会被播报（"${s1.say}"）`);
   await p.keyboard.press('ArrowDown'); await sleep(200);
   const s2 = await p.evaluate(() => ({
     active: document.getElementById('q').getAttribute('aria-activedescendant'),
@@ -335,13 +338,20 @@ console.log('\n【11】卡片要列出前后依赖的名字，而且能点进去
   await p.keyboard.press('Enter'); await sleep(1600);
 
   const c = await p.evaluate(() => {
-    const deps = [...document.querySelectorAll('#cChain .dep')];
+    // 按 data-b 锚点取，不能用「.ct 的第几个」——块数从 2 涨到 6，
+    // 位置定位会跟着排列顺序一起漂，测的就不是原来那件事了。
+    const block = k => {
+      const t = document.querySelector(`#cChain .ct[data-b="${k}"]`);
+      const rows = [];
+      let el = t && t.nextElementSibling;
+      while (el && !el.classList.contains('ct')) { rows.push(el); el = el.nextElementSibling; }
+      return { label: t?.querySelector('span').textContent, n: t?.querySelector('.n').textContent, rows };
+    };
+    const pre = block('pre'), post = block('post');
+    const deps = [...pre.rows, ...post.rows];
     return {
-      cts: [...document.querySelectorAll('#cChain .ct')].map(e => ({
-        label: e.querySelector('span').textContent, n: e.querySelector('.n').textContent,
-      })),
-      pre: deps.filter(e => e.querySelector('.ar').textContent === '◀'),
-      post: deps.filter(e => e.querySelector('.ar').textContent === '▶'),
+      pre, post,
+      cts: [...document.querySelectorAll('#cChain .ct')].map(e => e.dataset.b),
       // 箭头必须真的是箭头。第一版写成 arr.map(depRow)，而 map 会把下标
       // 作为第二个参数传进去，于是箭头全被渲染成 0/1/2/3 —— 是看截图才发现的。
       anyDigitArrow: deps.some(e => /^[0-9]+$/.test(e.querySelector('.ar').textContent)),
@@ -349,11 +359,13 @@ console.log('\n【11】卡片要列出前后依赖的名字，而且能点进去
       allHaveJump: deps.every(e => /^[0-9]+$/.test(e.dataset.jump || '')),
     };
   });
-  ok(c.pre.length === 4, `前置列了 4 条（实际 ${c.pre.length}）`);
-  ok(c.post.length === 4, `后继列了 4 条（实际 ${c.post.length}）`);
-  ok(c.cts[0]?.n === '4' && c.cts[1]?.n === '4', `两个小标题都带上了计数（${c.cts.map(x => x.label + x.n).join(' / ')}）`);
+  ok(c.pre.rows.length === 4, `前置列了 4 条（实际 ${c.pre.rows.length}）`);
+  ok(c.post.rows.length === 4, `后继列了 4 条（实际 ${c.post.rows.length}）`);
+  ok(c.pre.n === '4' && c.post.n === '4', `两个小标题都带上了计数（${c.pre.label}${c.pre.n} / ${c.post.label}${c.post.n}）`);
   ok(!c.anyDigitArrow, '箭头是 ◀/▶ 而不是 0/1/2/3');
   ok(c.allButtons && c.allHaveJump, '每一项都是真 button 且带跳转目标（键盘可达）');
+  ok(c.cts.join(',') === 'pre,post,chp,chn,sup,sub',
+     `六块都在，顺序固定（${c.cts.join(',')}）`);
 
   // 点一条后继：卡片要跟着换，且新节点飞正中
   const before = await p.evaluate(() => document.getElementById('cZh').textContent);
@@ -406,6 +418,113 @@ console.log('\n【12】手机底抽屉加上依赖列表后不能超出视口');
   // 8 条依赖 + 一段描述在多数机型上本来就装得下。
   ok(g.fits || g.scrollable,
      `内容要么装得下要么能滚（装得下=${g.fits} 可滚=${g.scrollable}）`);
+  await p.close();
+}
+
+console.log('\n【13】数据缺口不能冒充事实：二次函数那一格');
+{
+  // 用户查「二次函数」发现它前置 0、解锁 2。核查结论：
+  //   ① 数据里 concepts 层的 prerequisites_for 确实是 0；
+  //   ② 真实先修没丢，记在章节节点的 leads_to 上：
+  //      轴对称[8a] / 一次函数[8b] / 一元二次方程[9a] --leads_to--> 第二十二章 二次函数[9a]
+  //   ③ 页面前一版只保留 concepts 之间的 prerequisites_for，
+  //      章节层和 is_a 整条没进 payload，所以「前置 0」被当成了「没有前置」。
+  const { p, errs } = await fresh();
+  await p.click('#q'); await p.type('#q', '二次函数', { delay: 15 }); await sleep(400);
+
+  const foot = await p.evaluate(() => document.querySelector('#res .more')?.textContent || '');
+  ok(/19 条/.test(foot), `搜「二次函数」命中 19 条（${foot}）`);
+  // 「共 19 条」这句话本身就会把人读成「二次函数有 19 个前置」。
+  ok(/名字匹配/.test(foot), '脚注写明是「名字匹配」，不是前置关系');
+  ok(/不是 19 个前置/.test(foot), '脚注直接否掉「19 个前置」这个读法');
+
+  await p.keyboard.press('Enter'); await sleep(1600);
+
+  const c = await p.evaluate(() => {
+    const block = k => {
+      const t = document.querySelector(`#cChain .ct[data-b="${k}"]`);
+      const rows = [];
+      let el = t && t.nextElementSibling;
+      while (el && !el.classList.contains('ct')) { rows.push(el); el = el.nextElementSibling; }
+      return { n: t?.querySelector('.n').textContent, rows };
+    };
+    const pre = block('pre'), chp = block('chp'), sub = block('sub');
+    return {
+      preN: pre.n, preTxt: pre.rows.map(e => e.textContent).join('|'),
+      chpN: chp.n, chpTxt: chp.rows.map(e => e.textContent).join('|'),
+      chpAreButtons: chp.rows.some(e => e.tagName === 'BUTTON'),
+      chpHaveJump: chp.rows.some(e => e.dataset.jump !== undefined),
+      subN: sub.n, subJump: sub.rows.map(e => e.dataset.jump),
+    };
+  });
+
+  ok(c.preN === '0', `概念层前置确实是 0（承认数据事实，不粉饰）`);
+  ok(c.chpN === '5', `但教材顺序给出了 5 个前置章（实际 ${c.chpN}）`);
+  ok(/第十九章 一次函数/.test(c.chpTxt), '其中有「第十九章 一次函数[八下]」——常识上确实该在二次函数之前');
+  ok(/第二十一章 一元二次方程/.test(c.chpTxt), '还有「第二十一章 一元二次方程[九上]」');
+  ok(!c.chpAreButtons && !c.chpHaveJump, '章不是可点的 button（章没画在画面上，跳不过去）');
+  ok(c.subN === '1', `is_a 下位有 1 条（实际 ${c.subN}）`);
+
+  // 假断言：原来写的是「没有直接前置 —— 它是这一串的起点」。
+  // 九上册的二次函数在常识上不可能是起点，那是数据集没标，不是它的属性。
+  const body = await p.evaluate(() => document.body.innerText);
+  ok(!/它是这一串的起点/.test(body), '页面不再断言「它是这一串的起点」');
+  ok(/不等于它没有前置/.test(c.preTxt), '改成如实说明「数据里没记前置」');
+
+  // 点 is_a 下位要跳得过去（新增的一栏也得是活的，不能只是好看的字）
+  const jumped = await p.evaluate(() => {
+    const e = document.querySelector('#cChain .dep[data-jump]');
+    if (!e) return null;
+    e.click();
+    return e.querySelector('.t').textContent;
+  });
+  await sleep(1700);
+  const zh = await p.evaluate(() => document.getElementById('cZh').textContent);
+  ok(jumped && zh === jumped, `点 is_a 下位跳过去了（→ ${zh}）`);
+
+  ok(errs.length === 0, `运行期无报错（${JSON.stringify(errs)}）`);
+  await p.close();
+}
+
+console.log('\n【14】卡片最高的那一格不能压住操作提示条');
+{
+  // 依赖从 2 栏加到 6 栏之后，卡片能长到视口的九成（实测 844px / 900px），
+  // 而提示条固定在右下角 —— 「惯性参考系」那张卡（教材前置 15 章）
+  // 底边正好盖住提示条，两行字叠在一起。
+  const { p } = await fresh(1280, 900);
+  await p.click('#q'); await p.type('#q', '惯性参考系', { delay: 15 }); await sleep(350);
+  await p.keyboard.press('Enter'); await sleep(1700);
+  const g = await p.evaluate(() => {
+    const c = document.getElementById('card').getBoundingClientRect();
+    const h = document.getElementById('hint');
+    return { cardBottom: Math.round(c.bottom), hintTop: Math.round(h.getBoundingClientRect().top),
+             hintOpacity: getComputedStyle(h).opacity, chp: document.querySelector('#cChain .ct[data-b="chp"] .n')?.textContent };
+  });
+  ok(g.chp === '15', `这张卡确实是最极端的（前置章 ${g.chp}）`);
+  ok(g.cardBottom <= g.hintTop || g.hintOpacity === '0',
+     `卡片不压提示条（卡底 ${g.cardBottom} / 提示条顶 ${g.hintTop}，提示条透明度 ${g.hintOpacity}）`);
+  await p.close();
+}
+
+console.log('\n【15】手机上那句「不是 N 个前置」不能被裁掉半句');
+{
+  // 手机上 #res 只有 46vh，8 条结果已经快占满，脚注又是最后一个子元素。
+  // 第一版把脚注写长了三倍（41 字），实测在 iPhone 尺寸下被裁成
+  // 「…名字匹配不等于前置关系，选」——最关键的那半句正好被切掉。
+  // 现在脚注短了，而且 sticky 吸底，滚到哪都看得见。
+  const { p } = await fresh(390, 844, true);
+  await p.tap('#q'); await p.type('#q', '二次函数', { delay: 20 }); await sleep(500);
+  const g = await p.evaluate(() => {
+    const res = document.getElementById('res');
+    const m = res.querySelector('.more');
+    const rb = res.getBoundingClientRect(), mb = m.getBoundingClientRect();
+    return { text: m.textContent, bottom: Math.round(mb.bottom), resBottom: Math.round(rb.bottom),
+             pos: getComputedStyle(m).position, vh: innerHeight };
+  });
+  ok(g.pos === 'sticky', `脚注吸在结果框底部（position: ${g.pos}）`);
+  ok(g.bottom <= g.resBottom + 1,
+     `脚注完整落在结果框内（脚注底 ${g.bottom} / 框底 ${g.resBottom}）`);
+  ok(g.text.length <= 40, `脚注够短（${g.text.length} 字：${g.text}）`);
   await p.close();
 }
 
