@@ -94,6 +94,26 @@ def main():
 
                 st, tid, cands, how = ix.resolve(p.get("name"), prefer_book=tgt.get("book"))
 
+                # **同学科优先。** 图谱里「归纳推理」数学和物理都有，
+                # 「显微镜」物理八上和生物七上都有。
+                # nameindex 的 _pick 消歧规则是「取最早出现的那一册」，
+                # 跨学科时不成立 —— 会出现「生物的显微镜」被接到
+                # 「物理的显微镜」上，然后连出
+                # 「显微镜(物理) → 玻片标本(生物)」这种跨学科边。
+                #
+                # 目标节点同学科下有同名候选时，改选它。
+                # 这里只做**后置修正**，不改 nameindex ——
+                # nameindex 被另外几个脚本共用，改它的消歧规则影响面太大。
+                if st in AUTO and tid is not None and \
+                        ix.node_of[tid].get("subject") != tgt.get("subject"):
+                    same_subj = [c for c in cands
+                                 if ix.node_of.get(c, {}).get("subject")
+                                 == tgt.get("subject")]
+                    if same_subj:
+                        stat["CROSS_SUBJECT_FIXED"] += 1
+                        tid = same_subj[0]
+                        how += "+同学科修正"
+
                 if ptype == "ability":
                     # 能力节点图谱里一个都没有，任何解析结果都是巧合。
                     # 不能因为「识字」碰巧对上某个知识点就把它接进去。
