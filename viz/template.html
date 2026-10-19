@@ -820,13 +820,41 @@ function search(){
       hits.push({i, k: n.zh === kw ? -1 : (at === 0 ? 0 : 1), len: n.zh.length, dep: n.cen});
     }else if(n.dz.indexOf(kw) >= 0){
       hits.push({i, k: 2, len: 99, dep: n.cen});
+    }else{
+      // **别名也要能搜到。** L0 能力的别名（「观察力」「生活经验」
+      // 「规范操作」「对比分析」…）是模型在盲测里实际说的词，
+      // 全量跑完 1,700+ 次；主名却是「观察与发现规律」。
+      // 用户搜「观察力」搜不到「观察与发现规律」——
+      // **最常被提到的名字反而搜不着**，这是最扎眼的一类问题。
+      const al = (D.aliases && D.aliases[i]) || [];
+      for(const a of al){
+        if(a === kw){ hits.push({i, k: -1, len: 99, dep: n.cen, via:a}); break; }
+        if(a.indexOf(kw) >= 0){ hits.push({i, k: 1, len: 99, dep: n.cen, via:a}); break; }
+      }
     }
   }
-  // 档位 → 名字短的优先（更可能是那个概念本身）→ 被依赖度高的优先（更吃紧）
-  hits.sort((a,b)=> a.k - b.k || a.len - b.len || b.dep - a.dep);
+  // 档位 → 名字短的优先（更可能是那个概念本身）
+  // → **教材里更早的优先**（a1 是年级层）
+  // → 被依赖度高的优先（更吃紧）
+  //
+  // 「被依赖度」这一档原来是最后的排它序，结果搜「光合作用」第一个出来的是
+  // **高中化学必修二**那个（被依赖度 0.214），而学生要的是**初中生物七上**那个。
+  // 被依赖度反映的是「图谱里多少条边指向它」，不是教学上的早晚。
+  hits.sort((a,b)=> a.k - b.k || a.len - b.len
+                  || (NODES[a.i].a1 - NODES[b.i].a1) || b.dep - a.dep);
   total = hits.length;
   hits = hits.slice(0, 8);
   render();
+  // **搜不到就把卡片收起来。** 原来搜「观察力」（搜不到）之后，
+  // 卡片还停在上一个节点的内容上 —— 看着像「搜到了这个」，
+  // 实际展示的是上一条。用户会以为页面卡了。
+  if(!hits.length){
+    // 用 getElementById 而不是 card 常量 —— card 声明在文件后面（#card
+    // 的 DOM 初始化那段），这里直接取 DOM 免得踩 TDZ。
+    document.getElementById('card').classList.remove('on');
+    setFocus(-1);
+    pinned = -1;
+  }
 }
 
 qEl.addEventListener('input', search);

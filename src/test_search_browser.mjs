@@ -234,10 +234,55 @@ const bk = await page.evaluate(() => [...document.querySelectorAll('#res .r .bk'
 ok(bk.length > 0 && bk.every(x => x.startsWith('五上')), `册次搜索命中且全是五上（${bk.length} 条）`, JSON.stringify(bk));
 
 console.log('\n[8] 无匹配');
+// **先打开一个节点的卡片**，再搜不存在的词。
+// 不先打开的话卡片本来就是关的，这条断言恒为真 ——
+// 判别力为零，撤掉修复它也不会红。
+await page.evaluate(() => { document.getElementById('q').value = ''; });
+await page.type('#q', '小数加法', { delay: 20 });
+await sleep(300);
+await page.keyboard.press('Enter');
+await sleep(1200);
+const cardWasOpen = await page.evaluate(() =>
+  document.getElementById('card').classList.contains('on'));
+ok(cardWasOpen, '先打开一个节点的卡片（后面要验证它被收掉）');
 await page.evaluate(() => { document.getElementById('q').value = ''; });
 await page.type('#q', 'qqqq不存在', { delay: 20 });
-await sleep(200);
+await sleep(300);
 ok(await page.evaluate(() => document.getElementById('res').textContent.includes('没有匹配')), '给出「没有匹配」提示');
+// **搜不到时，上一个节点的卡片必须收掉。**
+// 原来卡片还停在上一次搜的内容上，看着像「搜到了这个」，
+// 实际展示的是上一条 —— 用户会以为页面卡了。
+ok(await page.evaluate(() => !document.getElementById('card').classList.contains('on')),
+   '搜不到时把上一个节点的卡片收掉（别残留）');
+
+console.log('\n[8b] 别名能搜到 + 教材里更早的排前面');
+{
+  // 别名：L0 能力的别名（「观察力」「生活经验」「规范操作」…）
+  // 是模型在盲测里实际说的词，全量跑完 1,700+ 次；
+  // 主名却是「观察与发现规律」。搜「观察力」搜不到，
+  // 等于**最常被提到的名字反而搜不着**。
+  await page.evaluate(() => { document.getElementById('q').value = ''; });
+  await page.type('#q', '观察力', { delay: 20 });
+  await sleep(300);
+  const aliasHit = await page.evaluate(() => {
+    const r = document.querySelector('#res .r');
+    return r ? r.textContent.replace(/\s+/g, ' ').trim() : '';
+  });
+  ok(/观察与发现规律/.test(aliasHit), `搜别名「观察力」能搜到「观察与发现规律」（实际「${aliasHit}」）`);
+
+  // 排序：搜「光合作用」有初中生物和高中化学两个。
+  // 原来按「被依赖度」排，**高中化学**（0.214）排在**初中生物**前面 ——
+  // 被依赖度反映的是图谱里多少条边指向它，不是教学上的早晚。
+  await page.evaluate(() => { document.getElementById('q').value = ''; });
+  await page.type('#q', '光合作用', { delay: 20 });
+  await sleep(300);
+  const first = await page.evaluate(() => {
+    const r = document.querySelector('#res .r');
+    return r ? r.textContent.replace(/\s+/g, ' ').trim() : '';
+  });
+  ok(/七上/.test(first) && !/必修二/.test(first),
+     `搜「光合作用」第一条是初中生物那个，不是高中化学（实际「${first}」）`);
+}
 
 console.log('\n[9] 跨学段抽检：锥形从底到顶都要能飞准');
 {
