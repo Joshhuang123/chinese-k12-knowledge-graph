@@ -130,6 +130,9 @@ body{
 #card .chain .dep.flat .ar{color:var(--muted)}
 /* 一次说清哪些能点。6 栏里 4 栏能跳、2 栏不能，不写出来用户只能靠试。 */
 #card .chain .chint{font-size:10.5px;color:var(--muted);margin:0 0 9px;line-height:1.5}
+/* 教材顺序那一栏：两个按钮并排（上一单元 / 下一单元），
+   章序是连续的两步，竖着排会让人以为是两串不同的信息 */
+#card .chain .ord2{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 5px}
 #card .chain .dep:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
 #card .chain .dep .ar{color:var(--acc);flex:none;font-size:10px;line-height:1.55}
 #card .chain .dep .t{flex:1;min-width:0}
@@ -340,9 +343,30 @@ const N = D.nodes.length;
 const NODES = D.nodes.map(a => ({
   i:a[0], zh:a[1], en:a[2], s:a[3], dz:a[4], de:a[5],
   a1:a[6], a2:a[7], cen:a[8], core:a[9], desc:a[10], evn:a[11],
-  chp:a[12]||[], chn:a[13]||[]     // 教材顺序：排在它前面 / 后面的章（CHS 下标）
+  chp:a[12]||[], chn:a[13]||[],               // leads_to 标为前置/后继的章
+  oc: a[14] === undefined ? -1 : a[14]         // 它所属的单元在 CNS 里的下标
 }));
 const CHS = D.chs || [];
+/* 教材顺序单元表：[名字, 册次, 学科下标, 里面第一个可点的概念下标]。
+   873 个单元，按学科分组、组内按 (册序, ch, s) 排好 —— 这个顺序是
+   从节点 id 里的 _chNN_sMM 加 books.py 的册序直接推出来的，不是猜的。 */
+const CNS = D.cns || [];
+// 学科 → 该学科的单元下标升序列表，用来定位「上一单元 / 下一单元」
+const UNITS = (()=>{ const m=new Map();
+  for(let i=0;i<CNS.length;i++){ const si=CNS[i][2];
+    if(!m.has(si)) m.set(si,[]); m.get(si).push(i); }
+  return m; })();
+// 每个单元在本学科里的序号（1 起）+ 该学科总共几个单元
+const UPOS = new Map(), UTOT = new Map();
+for(const [si, list] of UNITS){ UTOT.set(si, list.length);
+  list.forEach((gi, k)=>UPOS.set(gi, k+1)); }
+// 某单元在同学科里的上一个 / 下一个；跨册、跨学科都只在本学科内找
+function neighbourUnit(gi, delta){
+  if(gi < 0 || gi >= CNS.length) return -1;
+  const list = UNITS.get(CNS[gi][2]); if(!list) return -1;
+  const k = list.indexOf(gi) + delta;
+  return (k >= 0 && k < list.length) ? list[k] : -1;
+}
 const label = n => n.zh || n.en;
 
 /* ================= layout: cone, height = age ================= */
@@ -853,11 +877,24 @@ function showCard(id){
     '<div class="dep flat"><span class="ar">' + arrow + '</span>' +
       '<span class="t">' + esc(c[0]) + '</span>' +
       '<span class="bk">' + esc(c[1]) + '</span></div>';
+  // 单元行指向的是「那个单元里第一个概念」，所以能点。空单元（里没有
+  // 可点的概念）就退回不可点的 div。
+  const unitRow = (gi, arrow) => {
+    if(gi < 0 || gi >= CNS.length) return '';
+    const c = CNS[gi];
+    const name = esc(c[0]) + '<span class="bk"> ' + esc(c[1]) + '</span>';
+    return c[3] >= 0
+      ? '<button type="button" class="dep" data-jump="' + c[3] + '">' +
+          '<span class="ar">' + arrow + '</span><span class="t">' + name + '</span></button>'
+      : '<div class="dep flat"><span class="ar">' + arrow + '</span>' +
+          '<span class="t">' + name + '</span></div>';
+  };
 
   const ps = pre.get(id) || [], us = unlocks.get(id) || [];
   const chp = (n.chp||[]).map(k => CHS[k]).filter(c => c && c[0]);
   const chn = (n.chn||[]).map(k => CHS[k]).filter(c => c && c[0]);
   const iu = isaUp.get(id) || [], idn = isaDown.get(id) || [];
+  const gi = n.oc, pu = neighbourUnit(gi, -1), nu = neighbourUnit(gi, 1);
 
   // data-b 是给测试用的稳定锚点。块数从 2 涨到 6 之后，
   // 按「.ct 的第几个」定位的测试会随排列顺序一起漂。
@@ -870,12 +907,17 @@ function showCard(id){
   /* 无前置时不能说「它是这一串的起点」——那是拿数据缺口冒充知识点属性。
      九上册的二次函数在常识上不可能是起点，它只是这一层没标。
      原话就是「没有直接前置 —— 它是这一串的起点」，第一版自己写的。 */
+  const pos = gi >= 0 ? UPOS.get(gi) : 0, tot = gi >= 0 ? (UTOT.get(CNS[gi][2]) || 0) : 0;
   document.getElementById('cChain').innerHTML =
-    '<div class="chint">点名字跳过去 · 带「章」的是教材顺序，不可点</div>' +
+    '<div class="chint">点名字跳过去 · 「上一/下一单元」是教材排列顺序，不是先修</div>' +
     block('pre', '要先会', ps, depRow, '◀', '数据里没记前置 —— 不等于它没有前置') +
     block('post', '学会后能学', us, depRow, '▶', '数据里没记谁要先会它') +
-    block('chp', '教材里排在它前面的章', chp, chRow, '◀', '教材没标前面还有哪一章') +
-    block('chn', '教材里排在它后面的章', chn, chRow, '▶', '教材没标后面还有哪一章') +
+    (gi >= 0
+      ? '<div class="ct" data-b="ord"><span>教材顺序 · ' + SUBJ[n.s].zh +
+        '</span><span class="n">' + pos + '/' + tot + '</span><span class="ln"></span></div>' +
+        '<div class="ord2">' + [unitRow(pu, '◀'), unitRow(nu, '▶')].join('') + '</div>'
+      : '') +
+    block('chp', '教材标为前置的章', chp, chRow, '◀', '这一章前面教材没标别的章') +
     block('sup', '更一般的概念', iu, depRow, '◀', '数据里没有更一般的上位概念') +
     block('sub', '它的具体表述', idn, depRow, '▶', '数据里没有更具体的表述');
   card.classList.add('on');

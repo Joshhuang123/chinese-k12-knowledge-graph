@@ -14,7 +14,11 @@
 import json
 import pathlib
 import re
+import sys
 from collections import defaultdict
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from books import rank           # noqa: E402  册次排序，跟归一化层共用一套口径
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
 GRAPH = BASE / "data" / "normalized" / "graph.json"
@@ -114,6 +118,7 @@ def main():
     # 卡片上「教材里排在它前面的章」整栏是空的 —— 而小学章其实有 69 条
     # leads_to，数据一直都在，是我们没接上。
     chapter_of_node = defaultdict(list)
+    appears_of = defaultdict(list)      # 容器 → 属于它的知识点（appears_in 的反向）
     for e in raw_edges:
         if e["type"] != "appears_in":
             continue
@@ -122,8 +127,10 @@ def main():
             ch = chapter_of.get(e["to"])
             if ch:
                 chapter_of_node[e["from"]].append(ch)
+            appears_of[e["to"]].append(e["from"])
         elif tgt.get("label") == "Chapter":
             chapter_of_node[e["from"]].append(e["to"])
+            appears_of[e["to"]].append(e["from"])
 
     # leads_to 只有章与章之间才是「教材顺序」，混进节/册会得到一堆噪音
     chap_pre, chap_next = defaultdict(list), defaultdict(list)
@@ -146,8 +153,82 @@ def main():
             chs.append([c["name"], c["bookZh"]])
         return ch_ix[cid]
 
+    # ── 教材顺序链：从节点 id 直接推，不依赖任何外部数据源 ────────────
+    # 609 个 Section 全部带 _chNN_sMM，264 个 Chapter 带 _chNN，
+    # 配上 books.py 的册序，完整教学顺序就写在 id 里。
+    #
+    # 已经用人教社官方 PDF 的目录逐册核对过（见 src/verify_order.py）：
+    # 数学一上「准备课→位置→5以内→认识图形（一）→6~10→11~20→认识钟表→
+    # 20以内的进位加法→总复习」、四下、九上、物理八下、化学必修一全部吻合。
+    #
+    # **顺序 ≠ 先修**：教材把 A 排在 B 前面，不等于学 B 必须先会 A。
+    # 页面文案因此叫「教材顺序」，不叫「前置」——两者不能混。
+    seq_key = {}
+    for n in raw_nodes:
+        m = re.search(r"_ch(\d+)(?:_s(\d+))?$", n["id"])
+        if m:
+            seq_key[n["id"]] = (int(m.group(1)), int(m.group(2) or 0))
+
+    # 每个学科按 (册序, ch, s) 排成一个总序列
+    order_by_subject = defaultdict(list)
+    for n in raw_nodes:
+        if n["label"] not in ("Section", "Chapter") or n["id"] not in seq_key:
+            continue
+        ch, s = seq_key[n["id"]]
+        order_by_subject[n["subject"]].append((rank(n["book"]), ch, s, n["id"]))
+    for v in order_by_subject.values():
+        v.sort(key=lambda x: (x[0], x[1], x[2]))
+
+    # 容器在序列中的位置 → 全局表；每个容器记住「里面第一个可点的概念」
+    cns, cn_pos = [], {}
+    for si, (sub, lst) in enumerate(sorted(order_by_subject.items())):
+        for pos, (_, _, _, cid) in enumerate(lst):
+            cn_pos[cid] = (len(cns), pos, len(lst), si)
+            cns.append([None, None, None, None])       # 先占位，下面填
+    node_ix = {n["id"]: i for i, n in enumerate(nodes)}
+    # 每个容器记住「里面第一个可点的概念」。按 cn_pos 的自然顺序扫，
+    # 命中的第一个就是教材顺序最靠前的那个容器 —— 与下面 container_of
+    # 取「最靠前的容器」是同一套口径（这里不能反过来依赖 container_of）。
+    first_concept = {}
+    for cid in cn_pos:
+        for nid in appears_of.get(cid, ()):
+            if nid in node_ix and cid not in first_concept:
+                first_concept[cid] = node_ix[nid]
+    for cid, (gi, _, _, si) in cn_pos.items():
+        c = node_of[cid]
+        cns[gi] = [c["name"], c["bookZh"], si, first_concept.get(cid, -1)]
+
+    # 概念 → 它所属的容器（Section 或 Chapter）。一个概念可能出现在多个容器里，
+    # 取全局表里最靠前的那个，保证同一个概念在页面上位置唯一且稳定。
+    container_of = defaultdict(list)
+    for cid in cn_pos:
+        for nid in appears_of.get(cid, ()):
+            container_of[nid].append(cid)
+    for v in container_of.values():
+        v.sort(key=lambda c: cn_pos[c][0])
+
+    def seq_slot(nid):
+        """它属于教材序列里的哪个单元。
+
+        优先挑**有可点概念**的那个容器，不是编号最小的那个。
+        初中/高中概念挂在 Section 上（「第一节 二次函数的图象和性质」），
+        Chapter 层自己一个概念都没有 —— 按编号最小挑的话，每个知识点
+        都会落在那个点不动的章上，「下一单元」按钮点了没反应。
+        """
+        cs = container_of.get(nid) or []
+        if not cs:
+            return -1
+        withconcept = [c for c in cs if first_concept.get(c, -1) >= 0]
+        return cn_pos[(withconcept or cs)[0]][0]
+
     def book_order(nid):
-        """→ (排在它前面的章, 排在它后面的章)，都是 CHS 的下标。"""
+        """→ (leads_to 标为前置的章, leads_to 指向的后续章)，都是 CHS 的下标。
+
+        必须用 chapter_of_node 上溯到 Chapter，不能用 container_of ——
+        后者对初中/高中给的是 Section，而 chap_pre 是按 Chapter 建的键，
+        直接拿 Section 去查会一个都查不到（第一版就这么写的，
+        7,510 掉到 569，全库 95% 的知识点凭空丢掉前置章）。
+        """
         chs_ = chapter_of_node.get(nid) or []
         if not chs_:
             return [], []
@@ -193,6 +274,7 @@ def main():
             props.get("importance") or "—",
             chp,                               # 12 → 教材里排在它前面的章（CHS 下标）
             chn,                               # 13 → 教材里排在它后面的章
+            seq_slot(n["id"]),                 # 14 → 它所属的单元在 CNS 里的下标
         ])
 
     payload_edges = [[b, a] for a, bs in prereq.items() for b in bs]   # [后继, 先修]
@@ -203,7 +285,7 @@ def main():
     subjects = [{"en": s[0], "zh": s[1], "c": s[2], "n": by_subject.get(s[0], 0)} for s in SUBJECTS]
 
     payload = {"nodes": payload_nodes, "edges": payload_edges,
-               "isa": isa_pairs, "chs": chs,
+               "isa": isa_pairs, "chs": chs, "cns": cns,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                "total": len(nodes), "acc": ACC}
 
@@ -264,8 +346,11 @@ def main():
     INDEX.write_text(html, encoding="utf-8")
 
     print(f"节点 {len(payload_nodes):,} | 边 {len(payload_edges):,} | 剪掉的环边 {dropped}")
-    print(f"is_a 上下位 {len(isa_pairs):,} 对 | 章节表 {len(chs)} 章 | "
-          f"能定出教材顺序的知识点 {sum(1 for n in payload_nodes if n[12] or n[13]):,}")
+    print(f"is_a 上下位 {len(isa_pairs):,} 对 | leads_to 章表 {len(chs)} 章 | "
+          f"能定出前置章的知识点 {sum(1 for n in payload_nodes if n[12] or n[13]):,}")
+    withunit = sum(1 for n in payload_nodes if n[14] >= 0)
+    print(f"教材顺序单元 {len(cns)} 个 | 能定出单元位置的知识点 {withunit:,}"
+          f"（{100*withunit/len(payload_nodes):.1f}%）")
     dist = "、".join("{} {}".format(s["zh"], s["n"]) for s in subjects)
     print(f"学科分布: {dist}")
     print(f"输出 {OUT.relative_to(BASE)}  ({OUT.stat().st_size/1024:.0f} KB)")

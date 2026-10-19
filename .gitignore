@@ -9,6 +9,14 @@ data/raw/
 # 构建产物，由原件 + 脚本可完全复现。
 data/normalized/
 
+# ── 教材 PDF 缓存不入库 ──
+# src/verify_order.py 从 TapXWorld/ChinaTextbook 下载的人教社教材 PDF，
+# 只用来核对章节顺序。**每一页都印着「版权所有·未经许可不得采用任何方式
+# 擅自复制或使用本产品任何部分·违者必究」**，而且体积不小（一上 48 MB）。
+# 缓存进仓库等于再分发一次整本教材 —— 核对用途不需要承担这个。
+# 需要时跑 `python3 src/verify_order.py --fetch` 重新拉。
+data/pdf-cache/
+
 # ── 录制的中间产物 ──
 viz/rec/
 

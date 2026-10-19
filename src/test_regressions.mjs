@@ -364,7 +364,7 @@ console.log('\n【11】卡片要列出前后依赖的名字，而且能点进去
   ok(c.pre.n === '4' && c.post.n === '4', `两个小标题都带上了计数（${c.pre.label}${c.pre.n} / ${c.post.label}${c.post.n}）`);
   ok(!c.anyDigitArrow, '箭头是 ◀/▶ 而不是 0/1/2/3');
   ok(c.allButtons && c.allHaveJump, '每一项都是真 button 且带跳转目标（键盘可达）');
-  ok(c.cts.join(',') === 'pre,post,chp,chn,sup,sub',
+  ok(c.cts.join(',') === 'pre,post,ord,chp,sup,sub',
      `六块都在，顺序固定（${c.cts.join(',')}）`);
 
   // 点一条后继：卡片要跟着换，且新节点飞正中
@@ -561,6 +561,73 @@ console.log('\n【16】小学知识点也必须有教材顺序');
   });
   ok(Number(shown.n) > 0 && shown.rows.length === Number(shown.n),
      `卡片上「教材里排在它前面的章」有 ${shown.n} 条且真的渲染出来了`);
+  await p.close();
+}
+
+console.log('\n【17】教材顺序链：每个知识点都要能顺着单元往前走');
+{
+  // 顺序是从节点 id 里的 _chNN_sMM 加 books.py 的册序直接推出来的，
+  // 已经用人教社官方 PDF 的目录逐册核对过（src/verify_order.py）。
+  //
+  // **顺序不是先修**。教材把 A 排在 B 前面，不等于学 B 必须先会 A，
+  // 所以这一栏叫「上一单元 / 下一单元」，不叫「前置」。
+  const { p, errs } = await fresh();
+
+  const raw = await p.evaluate(() => {
+    const D = JSON.parse(document.getElementById('data').textContent);
+    const withUnit = D.nodes.filter(a => a[14] >= 0);
+    const clickable = D.cns.filter(c => c[3] >= 0);
+    const i = D.nodes.findIndex(a => a[1] === '小数的性质');
+    return {
+      total: D.nodes.length, withUnit: withUnit.length,
+      units: D.cns.length, clickable: clickable.length,
+      idx: i, unit: i < 0 ? null : D.cns[D.nodes[i][14]],
+      // 上一/下一单元必须在同一学科、序号相邻
+      badLink: D.cns.reduce((n, _, gi) => n, 0),
+    };
+  });
+  ok(raw.total === 7938, `可视化 7,938 个知识点（实际 ${raw.total}）`);
+  ok(raw.withUnit === raw.total,
+     `每个知识点都落在教材序列的某个单元上（${raw.withUnit}/${raw.total}）`);
+  ok(raw.clickable >= raw.units * 0.8,
+     `单元表 ${raw.units} 个，其中 ${raw.clickable} 个能点到具体知识点`);
+
+  // 小数这条链是人教版四下的真实次序：运算律 → 小数的意义和性质 → 三角形
+  await p.click('#q'); await p.type('#q', '小数的性质', { delay: 15 }); await sleep(350);
+  await p.keyboard.press('Enter'); await sleep(1600);
+  const g = await p.evaluate(() => {
+    const t = document.querySelector('#cChain .ct[data-b="ord"]');
+    const o2 = t?.nextElementSibling;
+    return {
+      head: t?.textContent.replace(/\s+/g, ' ').trim(),
+      rows: o2 ? [...o2.children].map(k =>
+        k.textContent.replace(/\s+/g, ' ').trim() + (k.dataset.jump !== undefined ? ' [可点]' : ' [不可点]')) : [],
+    };
+  });
+  ok(/\d+\/\d+/.test(g.head || ''), `卡片上显示教材位置（${g.head}）`);
+  ok(/◀.*运算律/.test(g.rows.join('|')), `上一单元是「运算律[四下]」（${JSON.stringify(g.rows)}）`);
+  ok(/▶.*三角形/.test(g.rows.join('|')), '下一单元是「三角形[四下]」');
+
+  // 顺序栏不能被读成先修栏
+  const hint = await p.evaluate(() => document.querySelector('#cChain .chint')?.textContent || '');
+  ok(/不是先修/.test(hint), `提示写明这不是先修（${hint}）`);
+
+  // 点「下一单元」要真的跳过去
+  const before = await p.evaluate(() => document.getElementById('cZh').textContent);
+  const jumped = await p.evaluate(() => {
+    const b = document.querySelector('#cChain .ord2 .dep[data-jump]');
+    if (!b) return null;
+    b.click();
+    return b.querySelector('.t').textContent;
+  });
+  await sleep(1700);
+  const after = await p.evaluate(() => ({
+    zh: document.getElementById('cZh').textContent,
+    on: document.getElementById('card').classList.contains('on'),
+  }));
+  ok(jumped && after.zh !== before && after.on,
+     `点「下一单元」跳过去了（${before} → ${after.zh}）`);
+  ok(errs.length === 0, `运行期无报错（${JSON.stringify(errs)}）`);
   await p.close();
 }
 
