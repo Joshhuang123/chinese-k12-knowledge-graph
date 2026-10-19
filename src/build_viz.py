@@ -44,6 +44,12 @@ LABEL_ZH = {
 # 只画概念与技能。习题/实验/节/章/册是容器或素材，10,685 → 7,938，画面才读得动。
 KEEP = {"Concept", "Skill"}
 
+# 先修边的来源。页面上每条边都要标出来是哪来的 ——
+# 「上游数据集标的」和「我们用模型重建的」可信度完全不同，
+# 混着显示等于让推测冒充数据。
+SRC = {"dataset": 0, "model": 1, "l0": 2, "derived": 3}
+SRC_ZH = {0: "上游", 1: "模型重建", 2: "能力底座", 3: "自建概念"}
+
 # 年级 → 视觉层（小学 1-6，初中 7-9，高中 10-12）
 GRADE = {"小学": range(1, 7), "初中": range(7, 10), "高中": range(10, 13)}
 
@@ -59,6 +65,22 @@ def main():
     nodes = [n for n in raw_nodes if n["label"] in KEEP and n["name"].strip()]
     idx = {n["id"]: i for i, n in enumerate(nodes)}
 
+    # ── 自建三层接进来：L0 能力底座 + derived 概念 + 模型重建的先修边 ──
+    # 数据集本身 69.6% 的节点零前置，图谱对「为什么不会」无话可说。
+    # 自建层就是补这一段。**来源逐条标记**，页面上分得清哪条是上游的、
+    # 哪条是我们用模型重建的 —— 混在一起就等于把推测伪装成数据。
+    SELF = BASE / "data" / "normalized" / "selfbuilt-edges.json"
+    self_nodes, self_edges, self_l0 = [], [], []
+    if SELF.exists():
+        sb = json.load(open(SELF, encoding="utf-8"))
+        self_nodes = sb["nodes"]
+        self_edges = sb["edges"]
+        self_l0 = {n["id"]: n for n in self_nodes if n["label"] == "Ability"}
+        for n in self_nodes:
+            n.setdefault("grade", 0)
+            nodes.append(n)
+            idx[n["id"]] = len(nodes) - 1
+
     # 依赖关系（DAG 校验发现的环在这里被截断，避免渲染时死循环）
     prereq = defaultdict(set)
     for e in raw_edges:
@@ -68,6 +90,18 @@ def main():
         if a is None or b is None:
             continue
         prereq[a].add(b)                      # a 的先修是 b
+    # 自建边并入同一张先修表。环检测在下面统一跑 —— 自建边必须过校验，
+    # 不然「模型说有环」跟「我们加出来一个环」分不清。
+    edge_src = {}
+    for e in raw_edges:
+        if e["type"] == "prerequisites_for":
+            edge_src[(e["from"], e["to"])] = 0
+    for e in self_edges:
+        a, b = idx.get(e["from"]), idx.get(e["to"])
+        if a is None or b is None:
+            continue
+        prereq[a].add(b)
+        edge_src[(e["from"], e["to"])] = SRC[e["source"]]
 
     # 环检测并剪枝：回边直接丢弃（先把要删的边收集完，再统一改集合，
     # 不能一边迭代一边改 —— 会 RuntimeError: Set changed size during iteration）
@@ -173,7 +207,7 @@ def main():
 
     payload_nodes = []
     for i, n in enumerate(nodes):
-        props = n["props"] or {}
+        props = n.get("props") or {}
         desc = (props.get("definition") or props.get("description")
                 or props.get("steps") or props.get("formula") or "")
         if isinstance(desc, list):
@@ -184,7 +218,11 @@ def main():
             n["name"],                       # zh
             "",                              # en（中文教材无英文名，留空走 label() 回退）
             [s[0] for s in SUBJECTS].index(n["subject"]),
-            f"{n['bookZh']}·{LABEL_ZH.get(n['label'], n['label'])}",   # dz
+            # 自建节点不属于任何一册，「—·Ability」这种写法一眼就假。
+            # 它们标自己的层，不标册次。
+            n.get("source") in ("l0", "derived") and (
+                {"l0": "能力底座", "derived": "自建概念"}[n["source"]]
+            ) or f"{n['bookZh']}·{LABEL_ZH.get(n['label'], n['label'])}",   # dz
             n["id"],                          # de
             grade_of(n), grade_of(n),          # a1,a2 → 布局层
             round(indeg[i] / mx, 4),          # cen → 被依赖度
@@ -199,17 +237,29 @@ def main():
             seq_slot(n["id"]),                 # 14 → 它所属的单元在 CNS 里的下标
         ])
 
-    payload_edges = [[b, a] for a, bs in prereq.items() for b in bs]   # [后继, 先修]
+    payload_edges = [[b, a, edge_src.get((nodes[a]["id"], nodes[b]["id"]), 0)]
+                     for a, bs in prereq.items() for b in bs]   # [后继, 先修, 来源]
 
     by_subject = defaultdict(int)
     for n in nodes:
+        if n.get("source") in ("l0", "derived"):
+            continue          # 自建节点不计入学科知识点数
         by_subject[n["subject"]] += 1
     subjects = [{"en": s[0], "zh": s[1], "c": s[2], "n": by_subject.get(s[0], 0)} for s in SUBJECTS]
 
     payload = {"nodes": payload_nodes, "edges": payload_edges,
                "isa": isa_pairs, "chs": chs, "cns": cns,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
-               "total": len(nodes), "acc": ACC}
+               # 画布上画的点数（含自建），但首页写的「N 个知识点」
+               # 必须只数上游那批 —— 把能力节点算进「知识点」是偷换概念。
+               "total": sum(1 for n in nodes if n.get("source") not in ("l0", "derived")),
+               "drawn": len(nodes), "acc": ACC,
+               # 自建能力节点的说明文字单独传：payload 节点的槽位排满了，
+               # 硬塞进去会让 16 个能力的定义挤掉别的东西。
+               "abi": [[n["id"], n["name"], n.get("definition", ""), n.get("blocks", ""),
+                        n.get("core", "")] for n in self_l0.values()],
+               "srczh": [SRC_ZH[i] for i in range(4)],
+               "selfbuilt": {"nodes": len(self_nodes), "edges": len(self_edges)}}
 
     blob = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
     html = TPL.read_text(encoding="utf-8")

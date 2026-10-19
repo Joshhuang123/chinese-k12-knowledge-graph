@@ -458,7 +458,28 @@ console.log('\n【13】数据缺口不能冒充事实：二次函数那一格');
     };
   });
 
-  ok(c.preN === '0', `概念层前置确实是 0（承认数据事实，不粉饰）`);
+  /* 这里曾经断言「概念层前置恰好 0」。自建层接进来之后，页面上多了一条
+     模型重建的「函数」，直接改成 != 0 就等于把这条测试作废了 ——
+     它当初守的是「不许凭空造前置」，不是「这个数必须是 0」。
+     现在把守的范围缩到上游那一层：上游标的仍然必须是 0，
+     且自建的那条必须带来源徽标，跟上游的分开显示。 */
+  // .dep 是块标题的**兄弟**不是子元素（block() 把标题和行拼在同一层），
+  // 所以不能用后代选择器，得从 .ct[data-b=pre] 往后走到下一个 .ct 为止。
+  const preSrc = await p.evaluate(() => {
+    const head = document.querySelector('#cChain .ct[data-b="pre"]');
+    const rows = [];
+    for (let el = head && head.nextElementSibling; el && !el.classList.contains('ct'); el = el.nextElementSibling)
+      if (el.classList.contains('dep')) rows.push(el);
+    return rows.map(e => {
+      const sg = e.querySelector('.sg');
+      return { t: e.querySelector('.t').textContent, src: sg ? sg.textContent : '' };
+    });
+  });
+  const upstreamRows = preSrc.filter(r => r.src === '');
+  ok(upstreamRows.length === 0,
+     `二次函数的上游前置仍然是 0 条，没被自建边污染（实际 ${upstreamRows.length}）`);
+  ok(preSrc.length > 0 && preSrc.every(r => r.src !== ''),
+     `页面上显示的 ${preSrc.length} 条前置全部带来源徽标（上游：${upstreamRows.length}）`);
   ok(c.chpN === '5', `但教材顺序给出了 5 个前置章（实际 ${c.chpN}）`);
   ok(/第十九章 一次函数/.test(c.chpTxt), '其中有「第十九章 一次函数[八下]」——常识上确实该在二次函数之前');
   ok(/第二十一章 一元二次方程/.test(c.chpTxt), '还有「第二十一章 一元二次方程[九上]」');
@@ -469,7 +490,8 @@ console.log('\n【13】数据缺口不能冒充事实：二次函数那一格');
   // 九上册的二次函数在常识上不可能是起点，那是数据集没标，不是它的属性。
   const body = await p.evaluate(() => document.body.innerText);
   ok(!/它是这一串的起点/.test(body), '页面不再断言「它是这一串的起点」');
-  ok(/不等于它没有前置/.test(c.preTxt), '改成如实说明「数据里没记前置」');
+  ok(!/数据里没记前置 —— 不等于它没有前置/.test(c.preTxt) || c.preN === '0',
+     '「数据里没记前置」这句空态文案只在真的为空时才出现');
 
   // 点 is_a 下位要跳得过去（新增的一栏也得是活的，不能只是好看的字）
   const jumped = await p.evaluate(() => {
@@ -582,13 +604,23 @@ console.log('\n【17】教材顺序链：每个知识点都要能顺着单元往
       total: D.nodes.length, withUnit: withUnit.length,
       units: D.cns.length, clickable: clickable.length,
       idx: i, unit: i < 0 ? null : D.cns[D.nodes[i][14]],
+      selfbuilt: D.selfbuilt, drawn: D.drawn, kpTotal: D.total,
       // 上一/下一单元必须在同一学科、序号相邻
       badLink: D.cns.reduce((n, _, gi) => n, 0),
     };
   });
-  ok(raw.total === 7938, `可视化 7,938 个知识点（实际 ${raw.total}）`);
-  ok(raw.withUnit === raw.total,
-     `每个知识点都落在教材序列的某个单元上（${raw.withUnit}/${raw.total}）`);
+  const SB = raw.selfbuilt ? raw.selfbuilt.nodes : 0;
+  ok(raw.drawn === 7938 + SB,
+     `画布上 ${7938 + SB} 个点 = 上游 7,938 知识点 + 自建 ${SB}（实际 ${raw.drawn}）`);
+  ok(raw.withUnit === 7938,
+     `上游那 7,938 个知识点仍 100% 落在教材序列的某个单元上（${raw.withUnit}/7938）`);
+  ok(raw.drawn - raw.withUnit === SB,
+     `自建的 ${SB} 个节点不落在任何一册里 —— L0 能力不属于任何一册，这是定义`);
+  /* 首页那句「共 N 个知识点」不能把自建的能力节点算进去 ——
+     能力不是知识点，把两者相加是偷换概念。画布上的点数另算。 */
+  ok(raw.kpTotal === 7938, `首页写的知识点数仍是上游的 7,938（实际 ${raw.kpTotal}）`);
+  ok(raw.drawn === 7938 + SB,
+     `画布上画了 ${raw.drawn} 个点 = 7,938 知识点 + ${SB} 自建`);
   ok(raw.clickable >= raw.units * 0.8,
      `单元表 ${raw.units} 个，其中 ${raw.clickable} 个能点到具体知识点`);
 

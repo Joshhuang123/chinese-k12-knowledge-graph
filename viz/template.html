@@ -135,6 +135,13 @@ body{
 #card .chain .ord2{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 5px}
 #card .chain .dep:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
 #card .chain .dep .ar{color:var(--acc);flex:none;font-size:10px;line-height:1.55}
+/* 来源徽标。上游 / 模型重建 / 能力底座 / 自建概念。
+   不标出来的话，页面上「数据集说的」和「我们猜的」长得一模一样。 */
+#card .chain .dep .sg{flex:none;font-size:9px;line-height:1;padding:3px 5px;border-radius:4px;
+  letter-spacing:.02em;white-space:nowrap;border:1px solid transparent}
+#card .chain .dep .sg1{color:#7fd3ff;background:rgba(127,211,255,.11);border-color:rgba(127,211,255,.3)}
+#card .chain .dep .sg2{color:#ffc477;background:rgba(255,196,119,.11);border-color:rgba(255,196,119,.32)}
+#card .chain .dep .sg3{color:#c6a7ff;background:rgba(198,167,255,.11);border-color:rgba(198,167,255,.3)}
 #card .chain .dep .t{flex:1;min-width:0}
 /* 最长的知识点名字有 39 个字，必须允许折行而不是溢出或截断 */
 #card .chain .dep .t{overflow-wrap:anywhere}
@@ -392,9 +399,10 @@ AGES.forEach((age, li) => {
 
 /* ================= adjacency ================= */
 const pre = new Map(), unlocks = new Map();
-for(const [t,p] of D.edges){
-  if(!pre.has(t)) pre.set(t, []); pre.get(t).push(p);
-  if(!unlocks.has(p)) unlocks.set(p, []); unlocks.get(p).push(t);
+for(const e of D.edges){
+  const t = e[0], p = e[1], src = e[2] || 0;
+  if(!pre.has(t)) pre.set(t, []); pre.get(t).push([p, src]);
+  if(!unlocks.has(p)) unlocks.set(p, []); unlocks.get(p).push([t, src]);
 }
 /* is_a 的方向是「具体 → 一般」：「二次函数 y=a(x-h)²+k」is_a「二次函数」。
    原先页面只画 prerequisites_for，is_a 那 1,895 条边整条被丢在门外，
@@ -409,7 +417,9 @@ function traceBack(root, cap){
   while(q.length && out.length < cap){
     const nx = [];
     for(const id of q){
-      for(const p of (pre.get(id) || [])){
+      // pre 里存的是 [下标, 来源]，traceBack 只关心下标。
+      for(const x of (pre.get(id) || [])){
+        const p = Array.isArray(x) ? x[0] : x;
         if(seen.has(p)) continue;
         seen.add(p); out.push(p); nx.push(p);
         if(out.length >= cap) break;
@@ -473,7 +483,10 @@ function setFocus(id){
   if(id < 0) return;
   activeSet.add(id);
   for(const p of traceBack(id, 70)) if(passes(NODES[p])) activeSet.add(p);
-  for(const u of (unlocks.get(id) || [])) if(passes(NODES[u])) activeSet.add(u);
+  for(const x of (unlocks.get(id) || [])){
+    const u = Array.isArray(x) ? x[0] : x;
+    if(NODES[u] && passes(NODES[u])) activeSet.add(u);
+  }
 }
 
 const CX = () => W * 0.5, CY = () => H * 0.5;
@@ -865,12 +878,20 @@ function showCard(id){
   // 名字里有尖括号的（数据里确实有「反比例函数的性质（k<0）」这类），
   // 拼 HTML 前先转义，别让它被解析成标签。
   const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const depRow = (jid, arrow) =>
-    '<button type="button" class="dep" data-jump="' + jid + '">' +
+  /* 来源徽标。上游数据集标的和我们用模型重建的，可信度完全不一样，
+     不标出来就等于让推测冒充数据。四档：0 上游 / 1 模型重建 /
+     2 能力底座 / 3 自建概念。 */
+  const srcTag = src => src ? '<span class="sg sg' + src + '">' +
+      esc((D.srczh && D.srczh[src]) || '') + '</span>' : '';
+  const depRow = (x, arrow) => {
+    const jid = Array.isArray(x) ? x[0] : x, src = Array.isArray(x) ? x[1] : 0;
+    return '<button type="button" class="dep" data-jump="' + jid + '">' +
       '<span class="ar">' + arrow + '</span>' +
       '<span class="t">' + esc(label(NODES[jid])) + '</span>' +
+      srcTag(src) +
       '<span class="bk">' + esc(NODES[jid].dz) + '</span>' +
     '</button>';
+  };
   // 章不是画出来的点，没有下标也跳不过去，用 div 并且不给 hover 反馈——
   // 长得像能点而点了没反应，比明摆着不可点更烦。
   const chRow = (c, arrow) =>
