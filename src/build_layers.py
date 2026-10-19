@@ -31,6 +31,7 @@ GRAPH = BASE / "data" / "normalized" / "graph.json"
 L0_FILE = BASE / "data" / "l0-abilities.json"
 MERGED = BASE / "data" / "normalized" / "lmm-merged.json"
 L1_FILE = BASE / "data" / "normalized" / "l1-names.json"
+INTRO_FILE = BASE / "data" / "intro-links.json"
 OUT = BASE / "data" / "normalized" / "selfbuilt-edges.json"
 
 # 这些「概念」其实是方法/能力，建成知识节点会把 L0 的东西混进 L1
@@ -118,6 +119,34 @@ def main():
         })
         stat["model_edges"] += 1
 
+    # ── 教材引入路径边 ─────────────────────────────────────
+    # 盲测问的是「硬前置」，教材讲的是「引入路径」，两者不是一回事。
+    # 人教九上 22.1.2 原话：「在八年级下册，我们学习了一次函数的概念，
+    # 研究了它的图象和性质。像研究一次函数一样，现在我们来研究二次函数的
+    # 图象和性质。」—— 教材自己声明了「一次函数 → 二次函数」，
+    # 而模型给的是「函数 → 二次函数」，中间站被跳过。
+    #
+    # 这类边必须**有教材原文**才建，不做语义推断。
+    # 清单在 data/intro-links.json，每条带原文出处。
+    if INTRO_FILE.exists():
+        for il in json.loads(INTRO_FILE.read_text(encoding="utf-8"))["links"]:
+            if il.get("status") != "confirmed":
+                stat["intro_pending"] += 1     # 待人工确认的先不建
+                continue
+            f, t = il["from"], il["to"]
+            if f not in nodes or t not in nodes:
+                stat["intro_skip_missing_node"] += 1
+                continue
+            if any(e["from"] == f and e["to"] == t for e in out_edges):
+                stat["intro_dup"] += 1
+                continue
+            out_edges.append({
+                "from": f, "to": t, "type": "prerequisites_for",
+                "fromName": nodes[f]["name"], "toName": nodes[t]["name"],
+                "source": "intro", "evidence": il.get("evidence", ""),
+            })
+            stat["intro_edges"] += 1
+
     # ── 跟上游边撞车：方向相反的同一条关系 ──────────────────
     # 2,928 条模型边里有 41 条跟上游边方向相反。逐条看过，**模型那边是对的**：
     #   上游：对数函数 → 对数函数的定义域与值域
@@ -172,6 +201,7 @@ def main():
     print(f"    └ 剔除方法/能力类 {len(NOT_CONCEPTS)} 个：{'、'.join(NOT_CONCEPTS)}")
     print(f"\n  L0 → 知识点   {stat['l0_edges']:>4} 条")
     print(f"  derived → 知识点 {stat['derived_edges']:>4} 条")
+    print(f"  教材引入路径    {stat['intro_edges']:>4} 条")
     print(f"  模型边        {stat['model_edges']:>4} 条")
     print(f"  去重掉        {stat['dedup']:>4} 条")
     print(f"  合计          {len(uniq):>4} 条")

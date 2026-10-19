@@ -47,8 +47,9 @@ KEEP = {"Concept", "Skill"}
 # 先修边的来源。页面上每条边都要标出来是哪来的 ——
 # 「上游数据集标的」和「我们用模型重建的」可信度完全不同，
 # 混着显示等于让推测冒充数据。
-SRC = {"dataset": 0, "model": 1, "l0": 2, "derived": 3}
-SRC_ZH = {0: "上游", 1: "模型重建", 2: "能力底座", 3: "自建概念"}
+SRC = {"dataset": 0, "model": 1, "l0": 2, "derived": 3, "intro": 4}
+SRC_ZH = {0: "上游", 1: "模型重建", 2: "能力底座", 3: "自建概念",
+          4: "教材引入路径"}
 
 # 年级 → 视觉层（小学 1-6，初中 7-9，高中 10-12）
 GRADE = {"小学": range(1, 7), "初中": range(7, 10), "高中": range(10, 13)}
@@ -258,7 +259,7 @@ def main():
                # 硬塞进去会让 16 个能力的定义挤掉别的东西。
                "abi": [[n["id"], n["name"], n.get("definition", ""), n.get("blocks", ""),
                         n.get("core", "")] for n in self_l0.values()],
-               "srczh": [SRC_ZH[i] for i in range(4)],
+               "srczh": [SRC_ZH[i] for i in range(5)],
                "selfbuilt": {"nodes": len(self_nodes), "edges": len(self_edges)}}
 
     blob = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")

@@ -196,6 +196,40 @@ class KG:
         self.model_edges = added
         return added
 
+    def overlay_selfbuilt_edges(self, path=None):
+        """把**自建层**的边（L0 能力底座 + derived 概念）叠进来。
+
+        **诊断层以前完全看不见这两层。**
+        diagnose 只读 graph.json 的边（上游 3703 条）+ overlay 的模型边
+        （2928 条）= 6631 条，而页面上有 6800 条 —— 差的 505 条
+        （L0 能力边 415 + derived 概念边 90）**在诊断里等于不存在**。
+
+        这两层恰恰是这个项目自己建的东西：
+        16 个 L0 能力、48 个 derived 概念。诊断报告里
+        「能力底座挡在多少条边上」「概念层前置有多少条」
+        这类结论，用的是残缺的边集。
+
+        叠进来的边按 source 原样保留（l0 / derived / intro），
+        跟 model 分开统计 —— 三者的可信度完全不同：
+        上游标的、模型重建的、能力底座建的。
+        """
+        path = path or (BASE / "data" / "normalized" / "selfbuilt-edges.json")
+        if not os.path.exists(path):
+            return 0
+        d = json.load(open(path, encoding="utf-8"))
+        added = 0
+        for e in d.get("edges", []):
+            src = e.get("source", "")
+            if src not in ("l0", "derived", "intro"):
+                continue                  # model 的走 overlay_model_edges
+            if e.get("type") != "prerequisites_for":
+                continue
+            self.inb[e["to"]].append(e)
+            self.outb[e["from"]].append(e)
+            added += 1
+        self.selfbuilt_edges = added
+        return added
+
     def prereq_of(self, nid, only=None):
         """→ [(节点, 边)]，only='dataset' 时只看数据集自己的边。"""
         out = []
@@ -222,7 +256,10 @@ def main():
     kg = KG()
     if args.model:
         n = kg.overlay_model_edges()
-        print(f"[已叠加模型重建的先修边 {n} 条，来源标记 model]\n")
+        print(f"[已叠加模型重建的先修边 {n} 条，来源标记 model]")
+        m = kg.overlay_selfbuilt_edges()
+        print(f"[已叠加自建层边 {m} 条（能力底座 l0 + 自建概念 derived）]")
+        print()
     node = kg.nodes[args.id] if args.id else (kg.find(args.concept) if args.concept else None)
     if node is None:
         ap.error("给个概念名或者 --id（已登记子知识表的概念：" + "、".join(SUBKNOWLEDGE) + "）")

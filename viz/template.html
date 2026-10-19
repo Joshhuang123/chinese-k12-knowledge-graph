@@ -142,6 +142,10 @@ body{
 #card .chain .dep .sg1{color:#7fd3ff;background:rgba(127,211,255,.11);border-color:rgba(127,211,255,.3)}
 #card .chain .dep .sg2{color:#ffc477;background:rgba(255,196,119,.11);border-color:rgba(255,196,119,.32)}
 #card .chain .dep .sg3{color:#c6a7ff;background:rgba(198,167,255,.11);border-color:rgba(198,167,255,.3)}
+/* 第 5 档：教材引入路径 —— 教材原文自己说的前置（人教九上 22.1.2
+   「在八年级下册，我们学习了一次函数的概念…像研究一次函数一样，
+   现在我们来研究二次函数的图象和性质」）。绿到发青，跟前三档都不同色。 */
+#card .chain .dep .sg4{color:#6ee7b7;background:rgba(110,231,183,.11);border-color:rgba(110,231,183,.3)}
 #card .chain .dep .t{flex:1;min-width:0}
 /* 最长的知识点名字有 39 个字，必须允许折行而不是溢出或截断 */
 #card .chain .dep .t{overflow-wrap:anywhere}
@@ -879,8 +883,8 @@ function showCard(id){
   // 拼 HTML 前先转义，别让它被解析成标签。
   const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   /* 来源徽标。上游数据集标的和我们用模型重建的，可信度完全不一样，
-     不标出来就等于让推测冒充数据。四档：0 上游 / 1 模型重建 /
-     2 能力底座 / 3 自建概念。 */
+     不标出来就等于让推测冒充数据。五档：0 上游 / 1 模型重建 /
+     2 能力底座 / 3 自建概念 / 4 教材引入路径。 */
   const srcTag = src => src ? '<span class="sg sg' + src + '">' +
       esc((D.srczh && D.srczh[src]) || '') + '</span>' : '';
   const depRow = (x, arrow) => {

@@ -113,12 +113,27 @@ def main():
             str_items.append((item_id, txt))
 
     # 2) 字符串形态：把提到的名字解析成 id，拼成被争议的边
+    #
+    # **一句话里提到多个概念时，不能把它们两两连边。**
+    # 「existing_prereq 里的 连加 与 连减 是教学先后顺序」这句里有两个概念，
+    # 扫出来就会连出「连加→连减」和「连减→连加」两条，其中一条是自环。
+    # 277 条里 75 条是这么造出来的伪边（70 条 from==to 自环）——
+    # 数字看着像「模型指认了 277 条边」，实际只有 202 条是真的。
+    #
+    # 正确做法：**只把句子里出现的概念，跟该条知识点连**。
+    # 「existing_prereq 里的 X」里 X 才是被质疑的前置。
     named, unresolved = [], 0
     for item_id, txt in str_items:
-        for k, _ in scan(txt):
+        # 只取「existing_prereq 里的 …」后面那一句里的概念 ——
+        # 争议指向的是**上游已有的边**，也就是这条知识点的前置。
+        m = re.search(r"existing_prereq\s*里的\s*([^；;。]+)", txt)
+        scope = m.group(1) if m else txt
+        for k, _ in scan(scope):
             st, nid, cands, how = idx.resolve(k)
             if nid is None:
                 unresolved += 1
+                continue
+            if nid == item_id:            # 自环，扫出来就是伪边
                 continue
             named.append(((nid, item_id), item_id, k, txt, how))
 
