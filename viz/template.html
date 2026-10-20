@@ -165,6 +165,10 @@ body{
    修正后的方向（来源标 fix）。跟「可疑」区分：可疑是「值得看一眼」，
    已修正是「判过了，方向已经改对」。 */
 #card .chain .dep .sg5{color:#ffd166;background:rgba(255,209,102,.12);border-color:rgba(255,209,102,.32)}
+/* 第 7 档：教材结构图 —— 来自每章小结第一项那张「本章知识结构图」。
+   跟第 5 档「教材引入路径」（正文回指句）分开：一个是教材画的网络，
+   一个是教材正文里的话。 */
+#card .chain .dep .sg6{color:#5eead4;background:rgba(94,234,212,.11);border-color:rgba(94,234,212,.3)}
 #card .chain .dep .sus1{color:#ff9d6b;background:rgba(255,157,107,.12);border-color:rgba(255,157,107,.32)}
 #card .chain .dep .sus2{color:#ff7a7a;background:rgba(255,122,122,.14);border-color:rgba(255,122,122,.38)}
 #card .chain .dep .t{flex:1;min-width:0}
@@ -1141,7 +1145,7 @@ function showCard(id){
   const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   /* 来源徽标。上游数据集标的和我们用模型重建的，可信度完全不一样，
      不标出来就等于让推测冒充数据。五档：0 上游 / 1 模型重建 /
-     2 能力底座 / 3 自建概念 / 4 教材引入路径 / 5 已修正。 */
+     2 能力底座 / 3 自建概念 / 4 教材引入路径 / 5 已修正 / 6 教材结构图。 */
   const srcTag = src => src ? '<span class="sg sg' + src + '">' +
       esc((D.srczh && D.srczh[src]) || '') + '</span>' : '';
   /* 可疑边徽标。上游 3703 条先修边里有 267 条（7.2%）跟教材顺序倒挂，

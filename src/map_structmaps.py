@@ -97,6 +97,22 @@ def main():
             if bare and bare != nm:
                 section_names.setdefault(bare, []).append(n["id"])
 
+    # 教材的概念名常带公式后缀：
+    #   「一元二次方程 ax²+bx+c=0」  → 「一元二次方程」
+    #   「二次函数 y=ax²+bx+c」        → 「二次函数」
+    #   「函数y=Asin(ωx+φ)」          → 「函数」
+    #   「一次函数 y=kx+b (k≠0)」      → 「一次函数」
+    MATHY = re.compile(r"[\s=＋+\-±∝≤≥<>^/·()（）\[\]0-9a-zωφπΔ∠⊥∥].*$")
+
+    def strip_formula(t):
+        t = (t or "").strip()
+        # 先切掉「=」及其后
+        if "=" in t:
+            t = t.split("=")[0].strip()
+        # 再剥尾部连续的数学符号/数字/拉丁字母
+        t = MATHY.sub("", t).strip()
+        return t
+
     def resolve(name):
         """教材里的概念名 → 图谱节点 id。返回 (id 或 None, 用的哪档, 候选数)。"""
         n = (name or "").strip()
@@ -108,6 +124,11 @@ def main():
             piece = piece.strip()
             if piece and len(piece) >= 2 and piece not in cands_to_try:
                 cands_to_try.append(piece)
+        # 剥公式后缀的版本也要试
+        for v0 in list(cands_to_try):
+            sf = strip_formula(v0)
+            if sf and len(sf) >= 2 and sf not in cands_to_try:
+                cands_to_try.append(sf)
         for v0 in cands_to_try:
             # 先剥括号注释：「一元一次方程的解（x=a）」→「一元一次方程的解」
             for v in (v0, NOISE.sub("", v0).strip(),
@@ -119,10 +140,26 @@ def main():
                     return nid, st, 1
                 if st.startswith("CONTAIN") and len(cands) == 1:
                     return cands[0], "CONTAIN_UNIQUE", 1
+        # **双向子串**：结构图写「函数的概念与表示」，图谱写「函数的概念与性质」，
+        # 谁也不是谁的前缀 —— 但前 4 个字一样。
+        # 只查「结构图名 ⊂ 图谱名」会漏掉反过来的情况。
+        for v0 in cands_to_try:
+            for v in (v0, strip_formula(v0), NOISE.sub("", v0).strip()):
+                if not v or len(v) < 2:
+                    continue
+                # 取**最长**的匹配（更具体）
+                best = None
+                for key, ids in idx.by_norm.items():
+                    if len(key) < 2:
+                        continue
+                    if key in v or v in key:
+                        if best is None or len(key) > len(best[0]):
+                            best = (key, sorted(ids))
+                if best:
+                    return best[1][0], "SUBSTR", 1
         # 知识点里没有，但教材的小节里有 → 它是「节」，不是知识点
         for v0 in cands_to_try:
-            for v in (v0, NOISE.sub("", v0).strip(),
-                      v0.split("（")[0].split("(")[0].strip()):
+            for v in (v0, strip_formula(v0), NOISE.sub("", v0).strip()):
                 if v and v in section_names:
                     return None, "是教材的小节(Section)，不是知识点", 0
         return None, "MISS", 0

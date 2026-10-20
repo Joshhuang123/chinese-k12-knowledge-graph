@@ -159,10 +159,15 @@ def main():
             if any(e["from"] == f and e["to"] == t for e in out_edges):
                 stat["intro_dup"] += 1
                 continue
+            # 「教材引入路径」有两种出处，页面上要能分开看：
+            #   via=structmap → 来自「本章知识结构图」（教材画的网络）
+            #   其他         → 来自正文回指句（「像研究一次函数一样」）
             out_edges.append({
                 "from": f, "to": t, "type": "prerequisites_for",
                 "fromName": nodes[f]["name"], "toName": nodes[t]["name"],
-                "source": "intro", "evidence": il.get("evidence", ""),
+                "source": "structmap" if il.get("via") == "structmap" else "intro",
+                "evidence": il.get("evidence", ""),
+                "evidenceSource": il.get("source", ""),
             })
             stat["intro_edges"] += 1
 

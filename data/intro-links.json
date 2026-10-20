@@ -160,6 +160,61 @@
    "source": "人教9a 23.2.1 中心对称（前面学过）",
    "match": "CONTAIN_UNIQUE",
    "status": "confirmed"
+  },
+  {
+   "from": "math_7b_rjb_cpt20",
+   "to": "math_7b_rjb_cpt19",
+   "action": "反向",
+   "fromName": "被开方数",
+   "toName": "平方根",
+   "evidence": "开平方",
+   "source": "人教七下 7.2 本章知识结构图",
+   "status": "confirmed",
+   "via": "structmap"
+  },
+  {
+   "from": "math_7b_rjb_cpt20",
+   "to": "math_7b_rjb_cpt23",
+   "action": "反向",
+   "fromName": "被开方数",
+   "toName": "立方根",
+   "evidence": "开立方",
+   "source": "人教七下 7.2 本章知识结构图",
+   "status": "confirmed",
+   "via": "structmap"
+  },
+  {
+   "from": "math_7b_rjb_cpt71",
+   "to": "math_7b_rjb_skl19",
+   "action": "反向",
+   "fromName": "数据",
+   "toName": "整理数据",
+   "evidence": "制表",
+   "source": "人教七下 10.3 本章知识结构图",
+   "status": "confirmed",
+   "via": "structmap"
+  },
+  {
+   "from": "math_5a_rjb_cpt23",
+   "to": "math_5a_rjb_cpt24",
+   "action": "反向",
+   "fromName": "等式的性质",
+   "toName": "方程",
+   "evidence": "",
+   "source": "人教必修一 1.1 本章知识结构图（该概念初中已学，高中引用）",
+   "status": "confirmed",
+   "via": "structmap"
+  },
+  {
+   "from": "math_7b_rjb_cpt64",
+   "to": "math_7b_rjb_cpt57",
+   "action": "反向",
+   "fromName": "不等式的性质",
+   "toName": "不等式",
+   "evidence": "",
+   "source": "人教必修一 1.3 本章知识结构图（该概念初中已学）",
+   "status": "confirmed",
+   "via": "structmap"
   }
  ]
 }

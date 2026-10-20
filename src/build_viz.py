@@ -61,9 +61,9 @@ KEEP = {"Concept", "Skill", "Experiment"}
 # 「上游数据集标的」和「我们用模型重建的」可信度完全不同，
 # 混着显示等于让推测冒充数据。
 SRC = {"dataset": 0, "model": 1, "l0": 2, "derived": 3, "intro": 4,
-       "fix": 5}
+       "fix": 5, "structmap": 6}
 SRC_ZH = {0: "上游", 1: "模型重建", 2: "能力底座", 3: "自建概念",
-          4: "教材引入路径", 5: "已修正"}
+          4: "教材引入路径", 5: "已修正", 6: "教材结构图"}
 
 # 年级 → 视觉层（小学 1-6，初中 7-9，高中 10-12）
 GRADE = {"小学": range(1, 7), "初中": range(7, 10), "高中": range(10, 13)}
@@ -370,7 +370,7 @@ def main():
                # 硬塞进去会让 16 个能力的定义挤掉别的东西。
                "abi": [[n["id"], n["name"], n.get("definition", ""), n.get("blocks", ""),
                         n.get("core", "")] for n in self_l0.values()],
-               "srczh": [SRC_ZH[i] for i in range(6)],
+               "srczh": [SRC_ZH[i] for i in range(7)],
                "selfbuilt": {"nodes": len(self_nodes), "edges": len(self_edges)},
                # **别名索引。** L0 能力节点的别名（「观察力」「生活经验」
                # 「规范操作」…）是模型在盲测里实际说的词，
