@@ -286,6 +286,28 @@ def layer2(g, sb, payload, html):
     ok("全世界孩子" not in html, "连 <title> 里也没有「全世界孩子」")
     ok(f"{len(pedges):,}" in txt, f"页面里有前置关系数 {len(pedges):,}")
 
+    # ── 多版本教材对照 ───────────────────────────────────────
+    # 页面上「其他版本教材里的位置」那一栏的数据来源。
+    # 对不上就说明 payload 里的 altpos 跟 align 文件脱节了
+    # （改了对齐没重建、或者重建了对齐没提交）。
+    ALIGN = BASE / "data" / "alt-align.json"
+    if ALIGN.exists():
+        aj = json.load(open(ALIGN, encoding="utf-8"))
+        bc = aj.get("byConcept", {})
+        ap = payload.get("altpos", {}) or {}
+        ok(len(ap) > 0, f"payload 带了多版本对照数据（{len(ap)} 个概念）")
+        # 概念 id 必须都真实存在
+        node_ids = {n["id"] for n in g["nodes"]}
+        ghost = [c for c in bc if c not in node_ids]
+        ok(not ghost, f"对照表里的概念 id 都真实存在（幽灵 {len(ghost)} 个）",
+           str(ghost[:3]))
+        # payload 里的条数不能超过对照表
+        over = sum(len(v) for v in ap.values())
+        total = sum(len(v) for v in bc.values())
+        ok(over <= total, f"payload 里的多版本条数不超过对照表（{over} ≤ {total}）")
+    else:
+        warn("data/alt-align.json 不存在 —— 多版本教材对照还没生成")
+
     # git 一致性
     try:
         blob = subprocess.run(["git", "show", "HEAD:index.html"],

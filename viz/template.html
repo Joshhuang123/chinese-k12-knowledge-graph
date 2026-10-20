@@ -123,6 +123,16 @@ body{
 }
 #card .meta span.hi{background:rgba(255,61,127,.14);border-color:rgba(255,61,127,.34);color:#ff8ab5}
 #card .chain{font-size:11.5px;color:var(--muted);line-height:1.5;border-top:1px solid var(--line);padding-top:11px;margin-top:2px}
+/* 其他版本教材里的位置 */
+#card .altpos{
+  font-size:11px;color:var(--muted);line-height:1.6;
+  border-top:1px solid var(--line);padding-top:9px;margin-top:9px;
+}
+#card .altpos .at{color:#7c8496;font-size:10.5px;margin-bottom:4px}
+#card .altpos .arow{display:flex;gap:7px;align-items:baseline;padding:1.5px 0}
+#card .altpos .aed{color:#9fb0c8;flex:none;min-width:74px}
+#card .altpos .aw{flex:1;color:var(--ink2)}
+#card .altpos[hidden]{display:none}
 #card .chain b{color:var(--acc);font-weight:500}
 #card .chain .ct{
   font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
@@ -509,6 +519,9 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
        7,938 个节点里直接前置/后继最多各 7 个，所以能全列出来，
        不需要「显示前 N 条」那种截断。 -->
   <div class="chain" id="cChain"></div>
+  <!-- 其他出版社教材里的位置。图谱按人教版排，但上海用沪教版、湖南用湘教版 ——
+       「九上 22.2」对用别的教材的学生没有意义，得告诉他「你那本里是第几节」。 -->
+  <div class="altpos" id="cAlt" hidden></div>
 </div>
 
 <!-- 二维知识脉络：点开一个知识点后展开它的先修链与后继链。
@@ -1302,6 +1315,21 @@ function showCard(id){
     block('chp', '教材标为前置的章', chp, chRow, '◀', '这一章前面教材没标别的章') +
     block('sup', '更一般的概念', iu, depRow, '◀', '数据里没有更一般的上位概念') +
     block('sub', '它的具体表述', idn, depRow, '▶', '数据里没有更具体的表述');
+  /* 其他出版社教材里的位置。
+     图谱按人教版排，但上海用沪教版、湖南用湘教版、江苏用苏科版……
+     「九上 22.2 二次函数」这个说法对用别的教材的学生**没有意义**，
+     得告诉他「你那本里是第几节」。 */
+  const altEl = document.getElementById('cAlt');
+  const alts = (D.altpos && D.altpos[id]) || [];
+  if(alts.length){
+    altEl.hidden = false;
+    altEl.innerHTML = '<div class="at">其他版本教材里的位置</div>' +
+      alts.map(a => '<div class="arow"><span class="aed">' + esc(a[0]) +
+        '</span><span class="aw">' + esc(a[1]) + '</span></div>').join('');
+  } else {
+    altEl.hidden = true;
+    altEl.innerHTML = '';
+  }
   card.classList.add('on');
 }
 

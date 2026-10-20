@@ -601,6 +601,43 @@ console.log('\n[8c-4] 「卡在哪」：先修闭包要排得出优先级');
   await sleep(200);
 }
 
+console.log('\n[8c-5] 多版本教材：卡片的「其他版本教材里的位置」');
+{
+  // 图谱按人教版排，但上海用沪教版、湖南用湘教版……
+  // 「九上 22.2 二次函数」这个说法对用别的教材的学生没有意义，
+  // 得告诉他「你那本里是第几节」。
+  await page.evaluate(() => { const q = document.getElementById('q'); q.value = ''; q.dispatchEvent(new Event('input')); });
+  await page.click('#q');
+  await page.type('#q', '相交线', { delay: 20 });
+  await sleep(400);
+  await page.keyboard.press('Enter');
+  await sleep(1500);
+  const r = await page.evaluate(() => {
+    const el = document.getElementById('cAlt');
+    const KG = window.__kg;
+    return {
+      hidden: el.hidden,
+      text: el.textContent.replace(/\s+/g, ' ').trim(),
+      // payload 里确实带着多版本数据
+      hasPayload: !!(KG.D.altpos && Object.keys(KG.D.altpos).length),
+      rows: el.querySelectorAll('.arow').length,
+    };
+  });
+  ok(r.hasPayload, 'payload 里带了多版本对照数据');
+  ok(!r.hidden && r.rows > 0, `「其他版本教材里的位置」这一栏有内容（${r.rows} 行）`);
+  ok(/冀教版|沪科技版/.test(r.text),
+     `栏里出现了别的出版社的版本名（${r.text.slice(0, 50)}）`);
+  // 没有对照的概念不该显示这一栏
+  await page.evaluate(() => { const q = document.getElementById('q'); q.value = ''; q.dispatchEvent(new Event('input')); });
+  await page.click('#q');
+  await page.type('#q', '光合作用', { delay: 20 });
+  await sleep(400);
+  await page.keyboard.press('Enter');
+  await sleep(1400);
+  const noAlt = await page.evaluate(() => document.getElementById('cAlt').hidden);
+  ok(noAlt, '没有对照的概念不显示这一栏（不占地方）');
+}
+
 console.log('\n[8d] 配色：点和线的颜色都能选');
 {
   await page.click('#tPal');

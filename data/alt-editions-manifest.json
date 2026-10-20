@@ -1,0 +1,430 @@
+{
+ "editions": {
+  "初中数学人教版": {
+   "七上": {
+    "repoPath": "初中/数学/人教版-人民教育出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学人教版/七上.pdf",
+    "bytes": 9975261,
+    "publisher": "人教版-人民教育出版社",
+    "subject": "初中/数学"
+   },
+   "七下": {
+    "repoPath": "初中/数学/人教版-人民教育出版社/七年级/义务教育教科书·数学七年级下册.pdf",
+    "fileName": "义务教育教科书·数学七年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学人教版/七下.pdf",
+    "bytes": 15097728,
+    "publisher": "人教版-人民教育出版社",
+    "subject": "初中/数学"
+   },
+   "九上": {
+    "repoPath": "初中/数学/人教版-人民教育出版社/九年级/义务教育教科书·数学九年级上册.pdf",
+    "fileName": "义务教育教科书·数学九年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学人教版/九上.pdf",
+    "bytes": 8925172,
+    "publisher": "人教版-人民教育出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/人教版-人民教育出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学人教版/九下.pdf",
+    "bytes": 9688920,
+    "publisher": "人教版-人民教育出版社",
+    "subject": "初中/数学"
+   },
+   "八上": {
+    "repoPath": "初中/数学/人教版-人民教育出版社/八年级/义务教育教科书·数学八年级上册.pdf",
+    "fileName": "义务教育教科书·数学八年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学人教版/八上.pdf",
+    "bytes": 9055875,
+    "publisher": "人教版-人民教育出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/人教版-人民教育出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学人教版/八下.pdf",
+    "bytes": 13183195,
+    "publisher": "人教版-人民教育出版社",
+    "subject": "初中/数学"
+   }
+  },
+  "初中数学冀教版": {
+   "七上": {
+    "repoPath": "初中/数学/冀教版-河北教育出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学冀教版/七上.pdf",
+    "bytes": 15134118,
+    "publisher": "冀教版-河北教育出版社",
+    "subject": "初中/数学"
+   },
+   "七下": {
+    "repoPath": "初中/数学/冀教版-河北教育出版社/七年级/义务教育教科书·数学七年级下册.pdf",
+    "fileName": "义务教育教科书·数学七年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学冀教版/七下.pdf",
+    "bytes": 13179473,
+    "publisher": "冀教版-河北教育出版社",
+    "subject": "初中/数学"
+   },
+   "九上": {
+    "repoPath": "初中/数学/冀教版-河北教育出版社/九年级/义务教育教科书·数学九年级上册.pdf",
+    "fileName": "义务教育教科书·数学九年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学冀教版/九上.pdf",
+    "bytes": 16172912,
+    "publisher": "冀教版-河北教育出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/冀教版-河北教育出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学冀教版/九下.pdf",
+    "bytes": 11021983,
+    "publisher": "冀教版-河北教育出版社",
+    "subject": "初中/数学"
+   },
+   "八上": {
+    "repoPath": "初中/数学/冀教版-河北教育出版社/八年级/义务教育教科书·数学八年级上册.pdf",
+    "fileName": "义务教育教科书·数学八年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学冀教版/八上.pdf",
+    "bytes": 15033284,
+    "publisher": "冀教版-河北教育出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/冀教版-河北教育出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学冀教版/八下.pdf",
+    "bytes": 16222325,
+    "publisher": "冀教版-河北教育出版社",
+    "subject": "初中/数学"
+   }
+  },
+  "初中数学北京版": {
+   "七上": {
+    "repoPath": "初中/数学/北京版-北京出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学北京版/七上.pdf",
+    "bytes": 39058882,
+    "publisher": "北京版-北京出版社",
+    "subject": "初中/数学"
+   },
+   "七下": {
+    "repoPath": "初中/数学/北京版-北京出版社/七年级/义务教育教科书·数学七年级下册.pdf",
+    "fileName": "义务教育教科书·数学七年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学北京版/七下.pdf",
+    "bytes": 26292747,
+    "publisher": "北京版-北京出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/北京版-北京出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学北京版/九下.pdf",
+    "bytes": 20889961,
+    "publisher": "北京版-北京出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/北京版-北京出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学北京版/八下.pdf",
+    "bytes": 24301667,
+    "publisher": "北京版-北京出版社",
+    "subject": "初中/数学"
+   }
+  },
+  "初中数学华东师大版": {
+   "七上": {
+    "repoPath": "初中/数学/华东师大版-华东师范大学出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学华东师大版/七上.pdf",
+    "bytes": 25289957,
+    "publisher": "华东师大版-华东师范大学出版社",
+    "subject": "初中/数学"
+   },
+   "七下": {
+    "repoPath": "初中/数学/华东师大版-华东师范大学出版社/七年级/义务教育教科书·数学七年级下册.pdf",
+    "fileName": "义务教育教科书·数学七年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学华东师大版/七下.pdf",
+    "bytes": 25080082,
+    "publisher": "华东师大版-华东师范大学出版社",
+    "subject": "初中/数学"
+   },
+   "九上": {
+    "repoPath": "初中/数学/华东师大版-华东师范大学出版社/九年级/义务教育教科书·数学九年级上册.pdf",
+    "fileName": "义务教育教科书·数学九年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学华东师大版/九上.pdf",
+    "bytes": 8975682,
+    "publisher": "华东师大版-华东师范大学出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/华东师大版-华东师范大学出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学华东师大版/九下.pdf",
+    "bytes": 9049489,
+    "publisher": "华东师大版-华东师范大学出版社",
+    "subject": "初中/数学"
+   },
+   "八上": {
+    "repoPath": "初中/数学/华东师大版-华东师范大学出版社/八年级/义务教育教科书·数学八年级上册.pdf",
+    "fileName": "义务教育教科书·数学八年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学华东师大版/八上.pdf",
+    "bytes": 10453040,
+    "publisher": "华东师大版-华东师范大学出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/华东师大版-华东师范大学出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学华东师大版/八下.pdf",
+    "bytes": 5216063,
+    "publisher": "华东师大版-华东师范大学出版社",
+    "subject": "初中/数学"
+   }
+  },
+  "初中数学沪科技版": {
+   "七上": {
+    "repoPath": "初中/数学/沪科技版-上海科学技术出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学沪科技版/七上.pdf",
+    "bytes": 28003839,
+    "publisher": "沪科技版-上海科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "七下": {
+    "repoPath": "初中/数学/沪科技版-上海科学技术出版社/七年级/义务教育教科书·数学七年级下册.pdf",
+    "fileName": "义务教育教科书·数学七年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学沪科技版/七下.pdf",
+    "bytes": 8813638,
+    "publisher": "沪科技版-上海科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "九上": {
+    "repoPath": "初中/数学/沪科技版-上海科学技术出版社/九年级/义务教育教科书·数学九年级上册.pdf",
+    "fileName": "义务教育教科书·数学九年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学沪科技版/九上.pdf",
+    "bytes": 10320841,
+    "publisher": "沪科技版-上海科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/沪科技版-上海科学技术出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学沪科技版/九下.pdf",
+    "bytes": 7503707,
+    "publisher": "沪科技版-上海科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "八上": {
+    "repoPath": "初中/数学/沪科技版-上海科学技术出版社/八年级/义务教育教科书·数学八年级上册.pdf",
+    "fileName": "义务教育教科书·数学八年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学沪科技版/八上.pdf",
+    "bytes": 16498176,
+    "publisher": "沪科技版-上海科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/沪科技版-上海科学技术出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学沪科技版/八下.pdf",
+    "bytes": 9090026,
+    "publisher": "沪科技版-上海科学技术出版社",
+    "subject": "初中/数学"
+   }
+  },
+  "初中数学浙教版": {
+   "七上": {
+    "repoPath": "初中/数学/浙教版-浙江教育出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学浙教版/七上.pdf",
+    "bytes": 17073394,
+    "publisher": "浙教版-浙江教育出版社",
+    "subject": "初中/数学"
+   },
+   "七下": {
+    "repoPath": "初中/数学/浙教版-浙江教育出版社/七年级/义务教育教科书·数学七年级下册.pdf",
+    "fileName": "义务教育教科书·数学七年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学浙教版/七下.pdf",
+    "bytes": 14924339,
+    "publisher": "浙教版-浙江教育出版社",
+    "subject": "初中/数学"
+   },
+   "九上": {
+    "repoPath": "初中/数学/浙教版-浙江教育出版社/九年级/义务教育教科书·数学九年级上册.pdf",
+    "fileName": "义务教育教科书·数学九年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学浙教版/九上.pdf",
+    "bytes": 38449287,
+    "publisher": "浙教版-浙江教育出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/浙教版-浙江教育出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学浙教版/九下.pdf",
+    "bytes": 19431462,
+    "publisher": "浙教版-浙江教育出版社",
+    "subject": "初中/数学"
+   },
+   "八上": {
+    "repoPath": "初中/数学/浙教版-浙江教育出版社/八年级/义务教育教科书·数学八年级上册.pdf",
+    "fileName": "义务教育教科书·数学八年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学浙教版/八上.pdf",
+    "bytes": 17563732,
+    "publisher": "浙教版-浙江教育出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/浙教版-浙江教育出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学浙教版/八下.pdf",
+    "bytes": 13926560,
+    "publisher": "浙教版-浙江教育出版社",
+    "subject": "初中/数学"
+   }
+  },
+  "初中数学湘教版": {
+   "七上": {
+    "repoPath": "初中/数学/湘教版-湖南教育出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学湘教版/七上.pdf",
+    "bytes": 36588104,
+    "publisher": "湘教版-湖南教育出版社",
+    "subject": "初中/数学"
+   },
+   "七下": {
+    "repoPath": "初中/数学/湘教版-湖南教育出版社/七年级/义务教育教科书·数学七年级下册.pdf",
+    "fileName": "义务教育教科书·数学七年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学湘教版/七下.pdf",
+    "bytes": 21291847,
+    "publisher": "湘教版-湖南教育出版社",
+    "subject": "初中/数学"
+   },
+   "九上": {
+    "repoPath": "初中/数学/湘教版-湖南教育出版社/九年级/义务教育教科书·数学九年级上册.pdf",
+    "fileName": "义务教育教科书·数学九年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学湘教版/九上.pdf",
+    "bytes": 33908031,
+    "publisher": "湘教版-湖南教育出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/湘教版-湖南教育出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学湘教版/九下.pdf",
+    "bytes": 20816364,
+    "publisher": "湘教版-湖南教育出版社",
+    "subject": "初中/数学"
+   },
+   "八上": {
+    "repoPath": "初中/数学/湘教版-湖南教育出版社/八年级/义务教育教科书·数学八年级上册.pdf",
+    "fileName": "义务教育教科书·数学八年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学湘教版/八上.pdf",
+    "bytes": 22296859,
+    "publisher": "湘教版-湖南教育出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/湘教版-湖南教育出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学湘教版/八下.pdf",
+    "bytes": 24074778,
+    "publisher": "湘教版-湖南教育出版社",
+    "subject": "初中/数学"
+   }
+  },
+  "初中数学苏科版": {
+   "七上": {
+    "repoPath": "初中/数学/苏科版-江苏凤凰科学技术出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学苏科版/七上.pdf",
+    "bytes": 44382371,
+    "publisher": "苏科版-江苏凤凰科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "九上": {
+    "repoPath": "初中/数学/苏科版-江苏凤凰科学技术出版社/九年级/义务教育教科书·数学九年级上册.pdf",
+    "fileName": "义务教育教科书·数学九年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学苏科版/九上.pdf",
+    "bytes": 30963026,
+    "publisher": "苏科版-江苏凤凰科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/苏科版-江苏凤凰科学技术出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学苏科版/九下.pdf",
+    "bytes": 31592143,
+    "publisher": "苏科版-江苏凤凰科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "八上": {
+    "repoPath": "初中/数学/苏科版-江苏凤凰科学技术出版社/八年级/义务教育教科书·数学八年级上册.pdf",
+    "fileName": "义务教育教科书·数学八年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学苏科版/八上.pdf",
+    "bytes": 38431237,
+    "publisher": "苏科版-江苏凤凰科学技术出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/苏科版-江苏凤凰科学技术出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学苏科版/八下.pdf",
+    "bytes": 32218353,
+    "publisher": "苏科版-江苏凤凰科学技术出版社",
+    "subject": "初中/数学"
+   }
+  },
+  "初中数学青岛版": {
+   "七上": {
+    "repoPath": "初中/数学/青岛版-青岛出版社/七年级/义务教育教科书·数学七年级上册.pdf",
+    "fileName": "义务教育教科书·数学七年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学青岛版/七上.pdf",
+    "bytes": 12010350,
+    "publisher": "青岛版-青岛出版社",
+    "subject": "初中/数学"
+   },
+   "七下": {
+    "repoPath": "初中/数学/青岛版-青岛出版社/七年级/义务教育教科书·数学七年级下册.pdf",
+    "fileName": "义务教育教科书·数学七年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学青岛版/七下.pdf",
+    "bytes": 7257851,
+    "publisher": "青岛版-青岛出版社",
+    "subject": "初中/数学"
+   },
+   "九上": {
+    "repoPath": "初中/数学/青岛版-青岛出版社/九年级/义务教育教科书·数学九年级上册.pdf",
+    "fileName": "义务教育教科书·数学九年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学青岛版/九上.pdf",
+    "bytes": 7870657,
+    "publisher": "青岛版-青岛出版社",
+    "subject": "初中/数学"
+   },
+   "九下": {
+    "repoPath": "初中/数学/青岛版-青岛出版社/九年级/义务教育教科书·数学九年级下册.pdf",
+    "fileName": "义务教育教科书·数学九年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学青岛版/九下.pdf",
+    "bytes": 7263828,
+    "publisher": "青岛版-青岛出版社",
+    "subject": "初中/数学"
+   },
+   "八上": {
+    "repoPath": "初中/数学/青岛版-青岛出版社/八年级/义务教育教科书·数学八年级上册.pdf",
+    "fileName": "义务教育教科书·数学八年级上册.pdf",
+    "local": "data/pdf-cache/alt/初中数学青岛版/八上.pdf",
+    "bytes": 11227123,
+    "publisher": "青岛版-青岛出版社",
+    "subject": "初中/数学"
+   },
+   "八下": {
+    "repoPath": "初中/数学/青岛版-青岛出版社/八年级/义务教育教科书·数学八年级下册.pdf",
+    "fileName": "义务教育教科书·数学八年级下册.pdf",
+    "local": "data/pdf-cache/alt/初中数学青岛版/八下.pdf",
+    "bytes": 7579378,
+    "publisher": "青岛版-青岛出版社",
+    "subject": "初中/数学"
+   }
+  }
+ }
+}

@@ -1,0 +1,5685 @@
+{
+ "初中数学冀教版": {
+  "七上": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "第一章 有理数",
+     "chNum": 1,
+     "name": "有理数",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第三章 代数式",
+     "chNum": 3,
+     "name": "代数式",
+     "page": 95,
+     "secs": []
+    },
+    {
+     "ch": "第1章 正数和负数 2",
+     "chNum": 1,
+     "name": "正数和负数 2",
+     "page": null,
+     "secs": [
+      {
+       "no": "3.1",
+       "name": "用字母表示数",
+       "page": 96
+      },
+      {
+       "no": "12",
+       "name": "数册 8 32Hg坟",
+       "page": 9
+      },
+      {
+       "no": "1.3",
+       "name": "绝对值与相反数",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第11章 二 读一读.代数学 109",
+     "chNum": 11,
+     "name": "二 读一读.代数学 109",
+     "page": null,
+     "secs": [
+      {
+       "no": "1.4",
+       "name": "有理数的大小",
+       "page": null
+      },
+      {
+       "no": "3.3",
+       "name": "代数式的值 :",
+       "page": 0
+      },
+      {
+       "no": "1.5",
+       "name": "有理数的j法",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第19章 图 回顾与反思",
+     "chNum": 19,
+     "name": "图 回顾与反思",
+     "page": null,
+     "secs": [
+      {
+       "no": "1.6",
+       "name": "有理数的减法",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第27章 可 复3题 16",
+     "chNum": 27,
+     "name": "可 复3题 16",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第四章 整式的加减， 全",
+     "chNum": 4,
+     "name": "整式的加减， 全",
+     "page": 121,
+     "secs": [
+      {
+       "no": "4.1",
+       "name": "整式",
+       "page": 122
+      },
+      {
+       "no": "1.7",
+       "name": "有理数的加减混合运算",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 合并同类项 127",
+     "chNum": 2,
+     "name": "合并同类项 127",
+     "page": null,
+     "secs": [
+      {
+       "no": "1.8",
+       "name": "有理数的乘法",
+       "page": 34
+      },
+      {
+       "no": "1.9",
+       "name": "有理数的除法",
+       "page": 42
+      }
+     ]
+    },
+    {
+     "ch": "第10章 有理数的乘方",
+     "chNum": 10,
+     "name": "有理数的乘方",
+     "page": null,
+     "secs": [
+      {
+       "no": "1.11",
+       "name": "有理数的混合运算",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第二章 几何图形的初步认识",
+     "chNum": 2,
+     "name": "几何图形的初步认识",
+     "page": null,
+     "secs": [
+      {
+       "no": "2.1",
+       "name": "从生活中认识几何图形",
+       "page": null
+      },
+      {
+       "no": "5.2",
+       "name": "等式的基本性质",
+       "page": 149
+      }
+     ]
+    },
+    {
+     "ch": "第3章 纺R9KE 6",
+     "chNum": 3,
+     "name": "纺R9KE 6",
+     "page": null,
+     "secs": [
+      {
+       "no": "2.4",
+       "name": "线段的05差",
+       "page": null
+      },
+      {
+       "no": "2.5",
+       "name": "角以及角的度量",
+       "page": 75
+      },
+      {
+       "no": "2.6",
+       "name": "角的大小 vv",
+       "page": null
+      },
+      {
+       "no": "2.7",
+       "name": "角的和5村",
+       "page": null
+      },
+      {
+       "no": "2.8",
+       "name": "平面图形的旋转",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 11,
+   "nSections": 19,
+   "tocScore": 0,
+   "nameQuality": 0.36,
+   "reliable": false,
+   "why": "章名可信度 36%（要 ≥60%）、11 章、19 节"
+  },
+  "七下": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "第六章 二元一次方程组",
+     "chNum": 6,
+     "name": "二元一次方程组",
+     "page": 1,
+     "secs": [
+      {
+       "no": "6.1",
+       "name": "二元一次方程组",
+       "page": null
+      },
+      {
+       "no": "6.2",
+       "name": "二元一次方程组的解法",
+       "page": null
+      },
+      {
+       "no": "6.3",
+       "name": "二元一次方程组的应用",
+       "page": null
+      },
+      {
+       "no": "6.4",
+       "name": "简单的三元一次方程组",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "包史| /加因复",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第七章 相交线与平行线",
+     "chNum": 7,
+     "name": "相交线与平行线",
+     "page": null,
+     "secs": [
+      {
+       "no": "7.1",
+       "name": "命题",
+       "page": null
+      },
+      {
+       "no": "7.2",
+       "name": "相交线",
+       "page": null
+      },
+      {
+       "no": "7.3",
+       "name": "平行线",
+       "page": null
+      },
+      {
+       "no": "7.4",
+       "name": "平行线的判定",
+       "page": null
+      },
+      {
+       "no": "7.5",
+       "name": "平行线的性质_",
+       "page": null
+      },
+      {
+       "no": "7.6",
+       "name": "图形的平移",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第八章 整式的乘法",
+     "chNum": 8,
+     "name": "整式的乘法",
+     "page": null,
+     "secs": [
+      {
+       "no": "8.1",
+       "name": "同底数守的乘法",
+       "page": null
+      },
+      {
+       "no": "8.2",
+       "name": "四的乘方与积的乘方",
+       "page": null
+      },
+      {
+       "no": "8.3",
+       "name": "同底数昌的除法",
+       "page": null
+      },
+      {
+       "no": "8.4",
+       "name": "整式的乘法",
+       "page": null
+      },
+      {
+       "no": "8.5",
+       "name": "乘法公式",
+       "page": null
+      },
+      {
+       "no": "8.6",
+       "name": "科学记数法",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第九章 三角形",
+     "chNum": 9,
+     "name": "三角形",
+     "page": null,
+     "secs": [
+      {
+       "no": "9.1",
+       "name": "三角形的边",
+       "page": null
+      },
+      {
+       "no": "9.2",
+       "name": "三角形的内角和外角",
+       "page": null
+      },
+      {
+       "no": "9.3",
+       "name": "三角形的角平分线、中线和高",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第十章 一元一次不等式和一元",
+     "chNum": 10,
+     "name": "一元一次不等式和一元",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 不等式",
+     "chNum": 1,
+     "name": "不等式",
+     "page": null,
+     "secs": [
+      {
+       "no": "28",
+       "name": "一5z一3. 知数的值",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "一5. 大桶和小桶的容积应当是",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 不等式的基本性质",
+     "chNum": 2,
+     "name": "不等式的基本性质",
+     "page": null,
+     "secs": [
+      {
+       "no": "10.3",
+       "name": "解一元一次不等式",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 一元一次不等式的应用",
+     "chNum": 4,
+     "name": "一元一次不等式的应用",
+     "page": null,
+     "secs": [
+      {
+       "no": "10.5",
+       "name": "一元一次不等式组",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第十一章 因式分解",
+     "chNum": 11,
+     "name": "因式分解",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 因式分解",
+     "chNum": 1,
+     "name": "因式分解",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 提公因式法",
+     "chNum": 2,
+     "name": "提公因式法",
+     "page": null,
+     "secs": [
+      {
+       "no": "11.3",
+       "name": "公式法",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 11,
+   "nSections": 25,
+   "tocScore": 0,
+   "nameQuality": 1.0,
+   "reliable": true,
+   "why": ""
+  },
+  "九上": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "第二十三章 数据分析",
+     "chNum": 23,
+     "name": "数据分析",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 。 26",
+     "chNum": 1,
+     "name": "。 26",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 锐角三角函数的计算 110",
+     "chNum": 2,
+     "name": "锐角三角函数的计算 110",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 平均数与加权平均数",
+     "chNum": 1,
+     "name": "平均数与加权平均数",
+     "page": null,
+     "secs": [
+      {
+       "no": "26.3",
+       "name": "解直角三角形",
+       "page": 114
+      },
+      {
+       "no": "26.4",
+       "name": "解直角三角形的应用",
+       "page": 117
+      }
+     ]
+    },
+    {
+     "ch": "第2章 中位数和众数",
+     "chNum": 2,
+     "name": "中位数和众数",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第13章 需 数学活动，测量电视转播塔的",
+     "chNum": 13,
+     "name": "需 数学活动，测量电视转播塔的",
+     "page": null,
+     "secs": [
+      {
+       "no": "23.3",
+       "name": "方差",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第19章 高度 121",
+     "chNum": 19,
+     "name": "高度 121",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 用样本估计总体",
+     "chNum": 4,
+     "name": "用样本估计总体",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第26章 图 回顾与反思 122",
+     "chNum": 26,
+     "name": "图 回顾与反思 122",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第29章 鲁 复习题 123",
+     "chNum": 29,
+     "name": "鲁 复习题 123",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第二十七章 反比例函数",
+     "chNum": 27,
+     "name": "反比例函数",
+     "page": 127,
+     "secs": []
+    },
+    {
+     "ch": "第二十四章 一元二次方程",
+     "chNum": 24,
+     "name": "一元二次方程",
+     "page": null,
+     "secs": [
+      {
+       "no": "27.1",
+       "name": "反比例函数",
+       "page": 128
+      },
+      {
+       "no": "24.1",
+       "name": "一元二次方程",
+       "page": 34
+      },
+      {
+       "no": "27.2",
+       "name": "反比例函数的图像和性质",
+       "page": 131
+      }
+     ]
+    },
+    {
+     "ch": "第2章 解一元二次方程",
+     "chNum": 2,
+     "name": "解一元二次方程",
+     "page": null,
+     "secs": [
+      {
+       "no": "27.3",
+       "name": "反比例函数的应用",
+       "page": 138
+      }
+     ]
+    },
+    {
+     "ch": "第4章 一元二次方程的应用",
+     "chNum": 4,
+     "name": "一元二次方程的应用",
+     "page": null,
+     "secs": [
+      {
+       "no": "28.1",
+       "name": "圆的概念及性质",
+       "page": 146
+      },
+      {
+       "no": "28.2",
+       "name": "过三点的圆",
+       "page": 150
+      },
+      {
+       "no": "28.3",
+       "name": "圆心角和圆周角",
+       "page": 153
+      }
+     ]
+    },
+    {
+     "ch": "第二十五章 图形的相似",
+     "chNum": 25,
+     "name": "图形的相似",
+     "page": null,
+     "secs": [
+      {
+       "no": "28.4",
+       "name": "垂径定理",
+       "page": 163
+      },
+      {
+       "no": "25.1",
+       "name": "比例线段",
+       "page": null
+      },
+      {
+       "no": "28.5",
+       "name": "弧长和扇形面积的计算",
+       "page": 167
+      },
+      {
+       "no": "25.2",
+       "name": "平行线分线段成比例",
+       "page": null
+      },
+      {
+       "no": "25.3",
+       "name": "相似三角形",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 相似三角形的判定",
+     "chNum": 4,
+     "name": "相似三角形的判定",
+     "page": null,
+     "secs": [
+      {
+       "no": "25.5",
+       "name": "相似三角形的性质",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 相似三角形的应用",
+     "chNum": 6,
+     "name": "相似三角形的应用",
+     "page": null,
+     "secs": [
+      {
+       "no": "25.7",
+       "name": "相似多边形和图形的位似",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第二十六章 解 三角形103",
+     "chNum": 26,
+     "name": "解 三角形103",
+     "page": 3,
+     "secs": []
+    },
+    {
+     "ch": "第2章 ss",
+     "chNum": 2,
+     "name": "ss",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 19,
+   "nSections": 17,
+   "tocScore": 0,
+   "nameQuality": 0.58,
+   "reliable": false,
+   "why": "章名可信度 58%（要 ≥60%）、19 章、17 节"
+  },
+  "九下": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "第5章 Se 4",
+     "chNum": 5,
+     "name": "Se 4",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第二十九章 直线与圆的位置 瑟 复习题",
+     "chNum": 29,
+     "name": "直线与圆的位置 瑟 复习题",
+     "page": 55,
+     "secs": []
+    },
+    {
+     "ch": "第三十一章 随机事件的概率",
+     "chNum": 31,
+     "name": "随机事件的概率",
+     "page": 59,
+     "secs": []
+    },
+    {
+     "ch": "第1章 点与圆的位置关系 2",
+     "chNum": 1,
+     "name": "点与圆的位置关系 2",
+     "page": null,
+     "secs": [
+      {
+       "no": "31.1",
+       "name": "确定事件和随机事件 _",
+       "page": 60
+      }
+     ]
+    },
+    {
+     "ch": "第2章 直线与圆的位车关系 5",
+     "chNum": 2,
+     "name": "直线与圆的位车关系 5",
+     "page": null,
+     "secs": [
+      {
+       "no": "31.2",
+       "name": "随机事件的概率",
+       "page": 63
+      },
+      {
+       "no": "7",
+       "name": "二",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第3章 切线的性质和判定",
+     "chNum": 3,
+     "name": "切线的性质和判定",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 切线长定理 11",
+     "chNum": 4,
+     "name": "切线长定理 11",
+     "page": null,
+     "secs": [
+      {
+       "no": "31.3",
+       "name": "用频率估计概率",
+       "page": 71
+      },
+      {
+       "no": "29.5",
+       "name": "正多边形与贺",
+       "page": 16
+      },
+      {
+       "no": "31.4",
+       "name": "用列举法求简单事件的概率",
+       "page": 78
+      }
+     ]
+    },
+    {
+     "ch": "第20章 蝎 数学活动 涌丰投针试验 84",
+     "chNum": 20,
+     "name": "蝎 数学活动 涌丰投针试验 84",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第21章 转 。 回顾与反思 85",
+     "chNum": 21,
+     "name": "转 。 回顾与反思 85",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第三十章 二次函数",
+     "chNum": 30,
+     "name": "二次函数",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第25章 上厨 。 复习题 86",
+     "chNum": 25,
+     "name": "上厨 。 复习题 86",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 二次函数",
+     "chNum": 1,
+     "name": "二次函数",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第三十二章 投影与视图",
+     "chNum": 32,
+     "name": "投影与视图",
+     "page": 89,
+     "secs": []
+    },
+    {
+     "ch": "第2章 二次函数的图像和性质",
+     "chNum": 2,
+     "name": "二次函数的图像和性质",
+     "page": null,
+     "secs": [
+      {
+       "no": "32.1",
+       "name": "投影",
+       "page": 90
+      }
+     ]
+    },
+    {
+     "ch": "第3章 由不共线三点的坐标确定二次",
+     "chNum": 3,
+     "name": "由不共线三点的坐标确定二次",
+     "page": null,
+     "secs": [
+      {
+       "no": "32.2",
+       "name": "视图",
+       "page": 94
+      }
+     ]
+    },
+    {
+     "ch": "第39章 二 读一读_ 有趣的三用塞子 105",
+     "chNum": 39,
+     "name": "二 读一读_ 有趣的三用塞子 105",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 二次函数的应用_",
+     "chNum": 4,
+     "name": "二次函数的应用_",
+     "page": null,
+     "secs": [
+      {
+       "no": "32.3",
+       "name": "直棱柱和圆锥的侧面展开图",
+       "page": 106
+      }
+     ]
+    }
+   ],
+   "nChapters": 17,
+   "nSections": 9,
+   "tocScore": 0,
+   "nameQuality": 0.41,
+   "reliable": false,
+   "why": "章名可信度 41%（要 ≥60%）、17 章、9 节"
+  },
+  "八上": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "第十二章 分式和分式方程",
+     "chNum": 12,
+     "name": "分式和分式方程",
+     "page": 1,
+     "secs": [
+      {
+       "no": "15.1",
+       "name": "二次根式",
+       "page": 90
+      }
+     ]
+    },
+    {
+     "ch": "第1章 分式 2 15",
+     "chNum": 1,
+     "name": "分式 2 15",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 二次根式的乘除运算 95",
+     "chNum": 2,
+     "name": "二次根式的乘除运算 95",
+     "page": null,
+     "secs": [
+      {
+       "no": "12.2",
+       "name": "分式的乘除",
+       "page": 7
+      },
+      {
+       "no": "15.3",
+       "name": "二次根式的加减运算",
+       "page": 98
+      },
+      {
+       "no": "12.3",
+       "name": "分式的加减",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第12章 15",
+     "chNum": 12,
+     "name": "15",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 二次根式的混合运算 101",
+     "chNum": 4,
+     "name": "二次根式的混合运算 101",
+     "page": null,
+     "secs": [
+      {
+       "no": "12.4",
+       "name": "分式方程",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第18章 加 回顾与反思 :04",
+     "chNum": 18,
+     "name": "加 回顾与反思 :04",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第21章 有面 复3题 10",
+     "chNum": 21,
+     "name": "有面 复3题 10",
+     "page": null,
+     "secs": [
+      {
+       "no": "12.5",
+       "name": "分式方程的应用",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第十六章 轴对称和中心对称",
+     "chNum": 16,
+     "name": "轴对称和中心对称",
+     "page": null,
+     "secs": [
+      {
+       "no": "16.1",
+       "name": "轴对称",
+       "page": 108
+      },
+      {
+       "no": "16.2",
+       "name": "线段的垂直平分线",
+       "page": 112
+      },
+      {
+       "no": "16.3",
+       "name": "角的平分线",
+       "page": 120
+      }
+     ]
+    },
+    {
+     "ch": "第十三章 全等三角形 31",
+     "chNum": 13,
+     "name": "全等三角形 31",
+     "page": 16,
+     "secs": []
+    },
+    {
+     "ch": "第4章 中心对称图形 124",
+     "chNum": 4,
+     "name": "中心对称图形 124",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 命题与证明 32",
+     "chNum": 1,
+     "name": "命题与证明 32",
+     "page": null,
+     "secs": [
+      {
+       "no": "16.5",
+       "name": "利用图形的平移,旋转和轴对称设",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 全等图形",
+     "chNum": 2,
+     "name": "全等图形",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第35章 计图案 128",
+     "chNum": 35,
+     "name": "计图案 128",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 全等三角形的判定",
+     "chNum": 3,
+     "name": "全等三角形的判定",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "四",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第38章 项 数学活动 中心对称图形与面积",
+     "chNum": 38,
+     "name": "项 数学活动 中心对称图形与面积",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 三角形的尺规作图",
+     "chNum": 4,
+     "name": "三角形的尺规作图",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第十七章 特殊三角形",
+     "chNum": 17,
+     "name": "特殊三角形",
+     "page": 139,
+     "secs": []
+    },
+    {
+     "ch": "第十四章 实数",
+     "chNum": 14,
+     "name": "实数",
+     "page": null,
+     "secs": [
+      {
+       "no": "17.1",
+       "name": "等腰三角形_",
+       "page": 140
+      },
+      {
+       "no": "14.1",
+       "name": "平方根",
+       "page": null
+      },
+      {
+       "no": "17.2",
+       "name": "直角三角形",
+       "page": 147
+      },
+      {
+       "no": "14.2",
+       "name": "立方根",
+       "page": 66
+      },
+      {
+       "no": "17.3",
+       "name": "久股定理",
+       "page": 150
+      },
+      {
+       "no": "14",
+       "name": "3 实数",
+       "page": null
+      },
+      {
+       "no": "17.4",
+       "name": "直角三角形全等的判定",
+       "page": 159
+      }
+     ]
+    },
+    {
+     "ch": "第4章 近似数 79",
+     "chNum": 4,
+     "name": "近似数 79",
+     "page": null,
+     "secs": [
+      {
+       "no": "17.5",
+       "name": "反证法-",
+       "page": 162
+      },
+      {
+       "no": "14.5",
+       "name": "用计算器求平方根与立方根",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第8章 卫】 得怕 :六",
+     "chNum": 8,
+     "name": "卫】 得怕 :六",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "5Q&Q&",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 20,
+   "nSections": 21,
+   "tocScore": 0,
+   "nameQuality": 0.35,
+   "reliable": false,
+   "why": "章名可信度 35%（要 ≥60%）、20 章、21 节"
+  },
+  "八下": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "第十八章 数据的收集与整理",
+     "chNum": 18,
+     "name": "数据的收集与整理",
+     "page": null,
+     "secs": [
+      {
+       "no": "20",
+       "name": "o4 9422 2008 15",
+       "page": 781
+      },
+      {
+       "no": "29",
+       "name": "000 race",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 。 21",
+     "chNum": 1,
+     "name": "。 21",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 一次函数的图像和性质 30",
+     "chNum": 2,
+     "name": "一次函数的图像和性质 30",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 统计的初步认识 2",
+     "chNum": 1,
+     "name": "统计的初步认识 2",
+     "page": null,
+     "secs": [
+      {
+       "no": "21.3",
+       "name": "用待定系数法确定一次函数表达",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 抽样调查",
+     "chNum": 2,
+     "name": "抽样调查",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 式 96",
+     "chNum": 5,
+     "name": "式 96",
+     "page": null,
+     "secs": [
+      {
+       "no": "18.3",
+       "name": "数据的整理与表示",
+       "page": 11
+      },
+      {
+       "no": "21.4",
+       "name": "一次函数的应用",
+       "page": 98
+      },
+      {
+       "no": "21.5",
+       "name": "一次函数与二元一次方程的关系",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 频数分布表与直方图",
+     "chNum": 4,
+     "name": "频数分布表与直方图",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第20章 需 数学活动 匀速变化和一次函数",
+     "chNum": 20,
+     "name": "需 数学活动 匀速变化和一次函数",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第25章 轩 回顾与反思 10",
+     "chNum": 25,
+     "name": "轩 回顾与反思 10",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第十九章 平面直角坐标系",
+     "chNum": 19,
+     "name": "平面直角坐标系",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第29章 加 复习题 111",
+     "chNum": 29,
+     "name": "加 复习题 111",
+     "page": null,
+     "secs": [
+      {
+       "no": "19.1",
+       "name": "确定平面上物体的位置",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第二十二章 四边形",
+     "chNum": 22,
+     "name": "四边形",
+     "page": 115,
+     "secs": []
+    },
+    {
+     "ch": "第2章 平面直角坐标系 34",
+     "chNum": 2,
+     "name": "平面直角坐标系 34",
+     "page": null,
+     "secs": [
+      {
+       "no": "22.1",
+       "name": "平行四边形的性质",
+       "page": 116
+      }
+     ]
+    },
+    {
+     "ch": "第3章 坐标与图形的位置 41",
+     "chNum": 3,
+     "name": "坐标与图形的位置 41",
+     "page": null,
+     "secs": [
+      {
+       "no": "22.2",
+       "name": "平行四边形的判定",
+       "page": 123
+      }
+     ]
+    },
+    {
+     "ch": "第4章 坐标与图形的变化",
+     "chNum": 4,
+     "name": "坐标与图形的变化",
+     "page": null,
+     "secs": [
+      {
+       "no": "22.3",
+       "name": "三角形的中位线",
+       "page": 130
+      },
+      {
+       "no": "22.4",
+       "name": "矩形",
+       "page": 134
+      },
+      {
+       "no": "22.5",
+       "name": "生形",
+       "page": 140
+      },
+      {
+       "no": "22.6",
+       "name": "正方形",
+       "page": 147
+      }
+     ]
+    },
+    {
+     "ch": "第二十章 函数",
+     "chNum": 20,
+     "name": "函数",
+     "page": 59,
+     "secs": [
+      {
+       "no": "22.7",
+       "name": "多边形的内角和与外角和___",
+       "page": 150
+      },
+      {
+       "no": "20.1",
+       "name": "常量和变量",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 函数",
+     "chNum": 2,
+     "name": "函数",
+     "page": null,
+     "secs": [
+      {
+       "no": "20.3",
+       "name": "函数的表示",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 函数的初步应用",
+     "chNum": 4,
+     "name": "函数的初步应用",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第二十一章 一次函数",
+     "chNum": 21,
+     "name": "一次函数",
+     "page": null,
+     "secs": [
+      {
+       "no": "21.1",
+       "name": "一次函数",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 19,
+   "nSections": 17,
+   "tocScore": 0,
+   "nameQuality": 0.53,
+   "reliable": false,
+   "why": "章名可信度 53%（要 ≥60%）、19 章、17 节"
+  }
+ },
+ "初中数学北京版": {
+  "七上": {
+   "tocPages": [
+    15
+   ],
+   "chapters": [
+    {
+     "ch": "第10章 的点;",
+     "chNum": 10,
+     "name": "的点;",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 对点 (如图1-4) :",
+     "chNum": 5,
+     "name": "对点 (如图1-4) :",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "上",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 人 上 二",
+     "chNum": 2,
+     "name": "人 上 二",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 -6-4-20 2 4 6 8 10",
+     "chNum": 8,
+     "name": "-6-4-20 2 4 6 8 10",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 + 6,， +",
+     "chNum": 2,
+     "name": "+ 6,， +",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第10章 中的每一对数都是一对相反数，我们",
+     "chNum": 10,
+     "name": "中的每一对数都是一对相反数，我们",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第10章 和-",
+     "chNum": 10,
+     "name": "和-",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第10章 分别互为相反数",
+     "chNum": 10,
+     "name": "分别互为相反数",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第一章 有理数",
+     "chNum": 1,
+     "name": "有理数",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 9,
+   "nSections": 1,
+   "tocScore": 39.666666666666664,
+   "nameQuality": 0.22,
+   "reliable": false,
+   "why": "章名可信度 22%（要 ≥60%）、9 章、1 节、节数不足 5"
+  },
+  "七下": {
+   "tocPages": [
+    11
+   ],
+   "chapters": [
+    {
+     "ch": "第6章 + 5",
+     "chNum": 6,
+     "name": "+ 5",
+     "page": null,
+     "secs": [
+      {
+       "no": "9",
+       "name": "+",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": "；",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 + ( -",
+     "chNum": 6,
+     "name": "+ ( -",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第9章 + ( -",
+     "chNum": 9,
+     "name": "+ ( -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 ) ；",
+     "chNum": 3,
+     "name": ") ；",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 × 5",
+     "chNum": 6,
+     "name": "× 5",
+     "page": null,
+     "secs": [
+      {
+       "no": "9",
+       "name": "×",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": "；",
+       "page": null
+      },
+      {
+       "no": "4",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 ÷ 3",
+     "chNum": 6,
+     "name": "÷ 3",
+     "page": null,
+     "secs": [
+      {
+       "no": "9",
+       "name": "÷",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "；",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 × ( -",
+     "chNum": 6,
+     "name": "× ( -",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第9章 × ( -",
+     "chNum": 9,
+     "name": "× ( -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 ) ；",
+     "chNum": 5,
+     "name": ") ；",
+     "page": null,
+     "secs": [
+      {
+       "no": "6",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 ÷ ( -",
+     "chNum": 6,
+     "name": "÷ ( -",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第9章 ÷ ( -",
+     "chNum": 9,
+     "name": "÷ ( -",
+     "page": null,
+     "secs": [
+      {
+       "no": "6",
+       "name": "<",
+       "page": null
+      },
+      {
+       "no": "9",
+       "name": "：",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 ) 当不等式两边同时加上",
+     "chNum": 1,
+     "name": ") 当不等式两边同时加上",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 时，不等号的方向 ；",
+     "chNum": 5,
+     "name": "时，不等号的方向 ；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 ) 当不等式两边同时加上-",
+     "chNum": 2,
+     "name": ") 当不等式两边同时加上-",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 时，不等号的方向 ；",
+     "chNum": 3,
+     "name": "时，不等号的方向 ；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 ) 当不等式两边同时乘",
+     "chNum": 3,
+     "name": ") 当不等式两边同时乘",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 ( 即+",
+     "chNum": 5,
+     "name": "( 即+",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 ) 时，不等号的方向 ；",
+     "chNum": 5,
+     "name": ") 时，不等号的方向 ；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 ) 当不等式两边同时除以",
+     "chNum": 4,
+     "name": ") 当不等式两边同时除以",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 ( 即+",
+     "chNum": 3,
+     "name": "( 即+",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 ) 时，不等号的方向 ；",
+     "chNum": 3,
+     "name": ") 时，不等号的方向 ；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 ) 当不等式两边同时乘 -",
+     "chNum": 5,
+     "name": ") 当不等式两边同时乘 -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 时，不等号的方向 ；",
+     "chNum": 5,
+     "name": "时，不等号的方向 ；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第6章 ) 当不等式两边同时除以 -",
+     "chNum": 6,
+     "name": ") 当不等式两边同时除以 -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 时，不等号的方向",
+     "chNum": 3,
+     "name": "时，不等号的方向",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 ) 今年父亲的年龄是",
+     "chNum": 2,
+     "name": ") 今年父亲的年龄是",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第40章 岁，儿子的年龄是",
+     "chNum": 40,
+     "name": "岁，儿子的年龄是",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第13章 岁，x 年后父亲的年龄与儿子的",
+     "chNum": 13,
+     "name": "岁，x 年后父亲的年龄与儿子的",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "用不等式表示：",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 ) a 是正数；",
+     "chNum": 1,
+     "name": ") a 是正数；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 ) b 不是负数；",
+     "chNum": 2,
+     "name": ") b 不是负数；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 ) x 与",
+     "chNum": 3,
+     "name": ") x 与",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 的和小于",
+     "chNum": 8,
+     "name": "的和小于",
+     "page": null,
+     "secs": [
+      {
+       "no": "6",
+       "name": "；",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 ) y 的一半大于6",
+     "chNum": 4,
+     "name": ") y 的一半大于6",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "用 > 或 < 填空：",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 + 5",
+     "chNum": 6,
+     "name": "+ 5",
+     "page": null,
+     "secs": [
+      {
+       "no": "9",
+       "name": "+",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": "；",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 + ( -",
+     "chNum": 6,
+     "name": "+ ( -",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第9章 + ( -",
+     "chNum": 9,
+     "name": "+ ( -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 ) ；",
+     "chNum": 3,
+     "name": ") ；",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 × 5",
+     "chNum": 6,
+     "name": "× 5",
+     "page": null,
+     "secs": [
+      {
+       "no": "9",
+       "name": "×",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": "；",
+       "page": null
+      },
+      {
+       "no": "4",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 ÷ 3",
+     "chNum": 6,
+     "name": "÷ 3",
+     "page": null,
+     "secs": [
+      {
+       "no": "9",
+       "name": "÷",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "；",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 × ( -",
+     "chNum": 6,
+     "name": "× ( -",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第9章 × ( -",
+     "chNum": 9,
+     "name": "× ( -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 ) ；",
+     "chNum": 5,
+     "name": ") ；",
+     "page": null,
+     "secs": [
+      {
+       "no": "6",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 ÷ ( -",
+     "chNum": 6,
+     "name": "÷ ( -",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": ")",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第9章 ÷ ( -",
+     "chNum": 9,
+     "name": "÷ ( -",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 44,
+   "nSections": 34,
+   "tocScore": 210.27272727272728,
+   "nameQuality": 0.02,
+   "reliable": false,
+   "why": "章名可信度 2%（要 ≥60%）、44 章、34 节"
+  },
+  "九下": {
+   "tocPages": [
+    14
+   ],
+   "chapters": [
+    {
+     "ch": "第二十三章 图形的变换",
+     "chNum": 23,
+     "name": "图形的变换",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 题 )",
+     "chNum": 3,
+     "name": "题 )",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 题 )",
+     "chNum": 4,
+     "name": "题 )",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 题 )",
+     "chNum": 5,
+     "name": "题 )",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第6章 题 )",
+     "chNum": 6,
+     "name": "题 )",
+     "page": null,
+     "secs": [
+      {
+       "no": "7",
+       "name": "如图，⊙O 的半径OD 为",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 cm，直线l ⊥ OD，垂足为O",
+     "chNum": 5,
+     "name": "cm，直线l ⊥ OD，垂足为O",
+     "page": null,
+     "secs": [
+      {
+       "no": "8",
+       "name": "在平面直角坐标系中：",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 ) 描出A ( - 2",
+     "chNum": 1,
+     "name": ") 描出A ( - 2",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 )，B ( - 3， -",
+     "chNum": 1,
+     "name": ")，B ( - 3， -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 )，C ( 0",
+     "chNum": 5,
+     "name": ")，C ( 0",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 ) 三点，依次连",
+     "chNum": 4,
+     "name": ") 三点，依次连",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 ) . 画出平移",
+     "chNum": 1,
+     "name": ") . 画出平移",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 个单位长度",
+     "chNum": 2,
+     "name": "个单位长度",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 题 )",
+     "chNum": 7,
+     "name": "题 )",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 题 )",
+     "chNum": 1,
+     "name": "题 )",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 14,
+   "nSections": 2,
+   "tocScore": 59.714285714285715,
+   "nameQuality": 0.14,
+   "reliable": false,
+   "why": "章名可信度 14%（要 ≥60%）、14 章、2 节、节数不足 5"
+  },
+  "八下": {
+   "tocPages": [
+    13
+   ],
+   "chapters": [
+    {
+     "ch": "第十四章 一次函数",
+     "chNum": 14,
+     "name": "一次函数",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "和",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 ) 当x = -",
+     "chNum": 1,
+     "name": ") 当x = -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 时，分别求出这两个函数的函数值；",
+     "chNum": 4,
+     "name": "时，分别求出这两个函数的函数值；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 ) 当这两个函数的函数值都为",
+     "chNum": 2,
+     "name": ") 当这两个函数的函数值都为",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第18章 时，自变量x 分别取什么值？",
+     "chNum": 18,
+     "name": "时，自变量x 分别取什么值？",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 ) 把x = -",
+     "chNum": 1,
+     "name": ") 把x = -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 分别代入这两个函数的表达式，得",
+     "chNum": 4,
+     "name": "分别代入这两个函数的表达式，得",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "=",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 × ( -",
+     "chNum": 2,
+     "name": "× ( -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 ) -",
+     "chNum": 4,
+     "name": ") -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 = -",
+     "chNum": 5,
+     "name": "= -",
+     "page": null,
+     "secs": [
+      {
+       "no": "8",
+       "name": "-",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 = -",
+     "chNum": 5,
+     "name": "= -",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "x =",
+       "page": 1
+      }
+     ]
+    },
+    {
+     "ch": "第4章 时，函数y = 2x -",
+     "chNum": 4,
+     "name": "时，函数y = 2x -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 的函数值为 - 13，函数y = 1",
+     "chNum": 5,
+     "name": "的函数值为 - 13，函数y = 1",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "x 的函",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 ) 把函数值y =",
+     "chNum": 2,
+     "name": ") 把函数值y =",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第18章 = 2x -",
+     "chNum": 18,
+     "name": "= 2x -",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "x =",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第18章 代入函数的表达式y",
+     "chNum": 18,
+     "name": "代入函数的表达式y",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "得",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第18章 = 1",
+     "chNum": 18,
+     "name": "= 1",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "x",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 = 36",
+     "chNum": 2,
+     "name": "= 36",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第36章 的平方根，所以",
+     "chNum": 36,
+     "name": "的平方根，所以",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第6章 或 x = - 6",
+     "chNum": 6,
+     "name": "或 x = - 6",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第18章 时，函数y = 2x -",
+     "chNum": 18,
+     "name": "时，函数y = 2x -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 的自变量x 的值",
+     "chNum": 5,
+     "name": "的自变量x 的值",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 函数y",
+     "chNum": 2,
+     "name": "函数y",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "的自变量x 的值为",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 或 - 6",
+     "chNum": 6,
+     "name": "或 - 6",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 24,
+   "nSections": 9,
+   "tocScore": 105.5,
+   "nameQuality": 0.04,
+   "reliable": false,
+   "why": "章名可信度 4%（要 ≥60%）、24 章、9 节"
+  }
+ },
+ "初中数学华东师大版": {
+  "七上": {
+   "tocPages": [
+    15
+   ],
+   "chapters": [
+    {
+     "ch": "第1章 章 走进数学世界·7",
+     "chNum": 1,
+     "name": "章 走进数学世界·7",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 名评委",
+     "chNum": 7,
+     "name": "名评委",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 个分数的平均数",
+     "chNum": 7,
+     "name": "个分数的平均数",
+     "page": null,
+     "secs": [
+      {
+       "no": "55",
+       "name": "×",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 + 9",
+     "chNum": 5,
+     "name": "+ 9",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 = 9. 607;",
+     "chNum": 7,
+     "name": "= 9. 607;",
+     "page": null,
+     "secs": [
+      {
+       "no": "60",
+       "name": "×",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 + 9. 70) ÷",
+     "chNum": 5,
+     "name": "+ 9. 70) ÷",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 = 9. 60",
+     "chNum": 7,
+     "name": "= 9. 60",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "个",
+       "page": null
+      },
+      {
+       "no": "55",
+       "name": "×",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 + 9. 60) ÷",
+     "chNum": 4,
+     "name": "+ 9. 60) ÷",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 = 9. 56;",
+     "chNum": 5,
+     "name": "= 9. 56;",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 = 9. 60",
+     "chNum": 5,
+     "name": "= 9. 60",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 个分数的平均数会出现偏差,而采用去",
+     "chNum": 7,
+     "name": "个分数的平均数会出现偏差,而采用去",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 章吧. 从第",
+     "chNum": 2,
+     "name": "章吧. 从第",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "章",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 12,
+   "nSections": 5,
+   "tocScore": 55.0,
+   "nameQuality": 0.17,
+   "reliable": false,
+   "why": "章名可信度 17%（要 ≥60%）、12 章、5 节"
+  },
+  "七下": {
+   "tocPages": [
+    9
+   ],
+   "chapters": [
+    {
+     "ch": "第2章 辆校车共可乘坐",
+     "chNum": 2,
+     "name": "辆校车共可乘坐",
+     "page": null,
+     "secs": [
+      {
+       "no": "44",
+       "name": "x( )+",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 1,
+   "nSections": 1,
+   "tocScore": 17.0,
+   "nameQuality": 1.0,
+   "reliable": false,
+   "why": "章名可信度 100%（要 ≥60%）、1 章、1 节、章数不足 2、节数不足 5"
+  },
+  "九上": {
+   "tocPages": [
+    11
+   ],
+   "chapters": [
+    {
+     "ch": "第21章 章 二次根式·3",
+     "chNum": 21,
+     "name": "章 二次根式·3",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 等于什么?",
+     "chNum": 2,
+     "name": "等于什么?",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 等,分别",
+     "chNum": 3,
+     "name": "等,分别",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 的值,看看有什么规律:",
+     "chNum": 2,
+     "name": "的值,看看有什么规律:",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "=",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 = 2;",
+     "chNum": 4,
+     "name": "= 2;",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "=",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 = 2;",
+     "chNum": 4,
+     "name": "= 2;",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "=",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第9章 = 3;",
+     "chNum": 9,
+     "name": "= 3;",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "=",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第9章 = 3;",
+     "chNum": 9,
+     "name": "= 3;",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 = a;",
+     "chNum": 2,
+     "name": "= a;",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 = - a",
+     "chNum": 2,
+     "name": "= - a",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "计算:",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": ";",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": ";",
+       "page": null
+      },
+      {
+       "no": "81",
+       "name": ";",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": ";",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "x -",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": ";",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 - x",
+     "chNum": 1,
+     "name": "- x",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "( a)",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "与",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 的值. 从中",
+     "chNum": 2,
+     "name": "的值. 从中",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 12,
+   "nSections": 13,
+   "tocScore": 61.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、12 章、13 节"
+  },
+  "九下": {
+   "tocPages": [
+    16
+   ],
+   "chapters": [
+    {
+     "ch": "第26章 章 二次函数",
+     "chNum": 26,
+     "name": "章 二次函数",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "x",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "-",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 与函数y = 1",
+     "chNum": 2,
+     "name": "与函数y = 1",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "x",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "x",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "-",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 的图象可以",
+     "chNum": 2,
+     "name": "的图象可以",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "x",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "+",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "的",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 的图象有什么关系? 你能说出函",
+     "chNum": 2,
+     "name": "的图象有什么关系? 你能说出函",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "+",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 的图象的开口方向、对称轴和顶点坐标",
+     "chNum": 2,
+     "name": "的图象的开口方向、对称轴和顶点坐标",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "已知函数y = -",
+       "page": 1
+      },
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 和y = - 1",
+     "chNum": 2,
+     "name": "和y = - 1",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 - 2",
+     "chNum": 2,
+     "name": "- 2",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 得到抛物线y = - 1",
+     "chNum": 2,
+     "name": "得到抛物线y = - 1",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 - 2? 如",
+     "chNum": 2,
+     "name": "- 2? 如",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 + 4,应将抛物线y = - 1",
+     "chNum": 2,
+     "name": "+ 4,应将抛物线y = - 1",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 作怎样的平移? 试说出函",
+     "chNum": 2,
+     "name": "作怎样的平移? 试说出函",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "x",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "+",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 的图象的开口方向、对称轴和顶点坐标",
+     "chNum": 4,
+     "name": "的图象的开口方向、对称轴和顶点坐标",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 12,
+   "nSections": 21,
+   "tocScore": 70.0,
+   "nameQuality": 0.08,
+   "reliable": false,
+   "why": "章名可信度 8%（要 ≥60%）、12 章、21 节"
+  },
+  "八上": {
+   "tocPages": [
+    13
+   ],
+   "chapters": [
+    {
+     "ch": "第11章 章 数的开方",
+     "chNum": 11,
+     "name": "章 数的开方",
+     "page": null,
+     "secs": [
+      {
+       "no": "11.1",
+       "name": "平方根与立方根",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "平方根",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第25章 cm",
+     "chNum": 25,
+     "name": "cm",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "求这个正方形的边长",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 cm",
+     "chNum": 5,
+     "name": "cm",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 = 25,所以",
+     "chNum": 2,
+     "name": "= 25,所以",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "是",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第25章 的一个平方根",
+     "chNum": 25,
+     "name": "的一个平方根",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 = 25,所以-",
+     "chNum": 2,
+     "name": "= 25,所以-",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 也是",
+     "chNum": 5,
+     "name": "也是",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第25章 的一个平方根",
+     "chNum": 25,
+     "name": "的一个平方根",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 与-",
+     "chNum": 5,
+     "name": "与-",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 都是",
+     "chNum": 5,
+     "name": "都是",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第25章 的平方根",
+     "chNum": 25,
+     "name": "的平方根",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 = 100, ( - 10)",
+     "chNum": 2,
+     "name": "= 100, ( - 10)",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 = 100,除了",
+     "chNum": 2,
+     "name": "= 100,除了",
+     "page": null,
+     "secs": [
+      {
+       "no": "10",
+       "name": "和",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 有没有平方根? 为什么?",
+     "chNum": 4,
+     "name": "有没有平方根? 为什么?",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第25章 的平方根",
+     "chNum": 25,
+     "name": "的平方根",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 15,
+   "nSections": 5,
+   "tocScore": 69.8,
+   "nameQuality": 0.4,
+   "reliable": false,
+   "why": "章名可信度 40%（要 ≥60%）、15 章、5 节"
+  },
+  "八下": {
+   "tocPages": [
+    14
+   ],
+   "chapters": [
+    {
+     "ch": "第16章 章 分 式",
+     "chNum": 16,
+     "name": "章 分 式",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第6章 题)",
+     "chNum": 6,
+     "name": "题)",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "当x 取什么值时,下列分式有意义?",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "x; (2) x -",
+       "page": 2
+      },
+      {
+       "no": "4",
+       "name": "x + 1;",
+       "page": null
+      },
+      {
+       "no": "4",
+       "name": "x",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "x -",
+       "page": 5
+      },
+      {
+       "no": "4",
+       "name": "约分:",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": ";",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 - 2x + 1",
+     "chNum": 2,
+     "name": "- 2x + 1",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 - 1",
+     "chNum": 2,
+     "name": "- 1",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "通分:",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 + x",
+     "chNum": 2,
+     "name": "+ x",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 + 2x + 1",
+     "chNum": 2,
+     "name": "+ 2x + 1",
+     "page": null,
+     "secs": [
+      {
+       "no": "6",
+       "name": "某机械厂生产某种零件,第一道工序需要",
+       "page": null
+      },
+      {
+       "no": "16.2",
+       "name": "分式的运算",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "分式的乘除",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "2b",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "a ; (2) a",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第3章 ÷ a",
+     "chNum": 3,
+     "name": "÷ a",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "b",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "2b",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "a = a",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "2b",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "3a = 2a",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "b",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第3章 ÷ a",
+     "chNum": 3,
+     "name": "÷ a",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "b = a",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "2b",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "2b",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "a = 2a",
+       "page": null
+      },
+      {
+       "no": "6",
+       "name": "×",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第10章 和5",
+     "chNum": 10,
+     "name": "和5",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第6章 ÷ 3",
+     "chNum": 6,
+     "name": "÷ 3",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 ? 从中",
+     "chNum": 4,
+     "name": "? 从中",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 11,
+   "nSections": 24,
+   "tocScore": 68.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、11 章、24 节"
+  }
+ },
+ "初中数学沪科技版": {
+  "七上": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "有理数",
+     "chNum": null,
+     "name": "有理数",
+     "page": null,
+     "secs": [
+      {
+       "no": "1.1",
+       "name": "正数和负数",
+       "page": null
+      },
+      {
+       "no": "1.2",
+       "name": "数轴、相反数和绝对值",
+       "page": null
+      },
+      {
+       "no": "1.3",
+       "name": "有理数的大小",
+       "page": null
+      },
+      {
+       "no": "1.4",
+       "name": "有理数的加减",
+       "page": null
+      },
+      {
+       "no": "1.5",
+       "name": "有理数的乘除",
+       "page": null
+      },
+      {
+       "no": "1.6",
+       "name": "有理数的乘方",
+       "page": null
+      },
+      {
+       "no": "1.7",
+       "name": "近似数",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "整式加减",
+     "chNum": null,
+     "name": "整式加减",
+     "page": null,
+     "secs": [
+      {
+       "no": "2.1",
+       "name": "代数式",
+       "page": null
+      },
+      {
+       "no": "2.2",
+       "name": "整式加减",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "一次方程与方程组",
+     "chNum": null,
+     "name": "一次方程与方程组",
+     "page": null,
+     "secs": [
+      {
+       "no": "3.1",
+       "name": "一元一次方程及其解法",
+       "page": null
+      },
+      {
+       "no": "3.2",
+       "name": "一元一次方程的应用",
+       "page": null
+      },
+      {
+       "no": "3.3",
+       "name": "二元一次方程组及其解法",
+       "page": null
+      },
+      {
+       "no": "3.4",
+       "name": "二元一次方程组的应用",
+       "page": null
+      },
+      {
+       "no": "3.6",
+       "name": "综合与实践 一次方程组与ＣＴ技术",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "直线与角",
+     "chNum": null,
+     "name": "直线与角",
+     "page": null,
+     "secs": [
+      {
+       "no": "4.1",
+       "name": "几何图形",
+       "page": null
+      },
+      {
+       "no": "4.2",
+       "name": "线段、射线、直线",
+       "page": null
+      },
+      {
+       "no": "4.3",
+       "name": "线段的长短比较",
+       "page": null
+      },
+      {
+       "no": "4.4",
+       "name": "角",
+       "page": null
+      },
+      {
+       "no": "4.5",
+       "name": "角的比较与补（余）角",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 4,
+   "nSections": 19,
+   "tocScore": 0,
+   "nameQuality": 1.0,
+   "reliable": true,
+   "why": ""
+  },
+  "七下": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "实数",
+     "chNum": null,
+     "name": "实数",
+     "page": null,
+     "secs": [
+      {
+       "no": "6.1",
+       "name": "平方根、立方根",
+       "page": null
+      },
+      {
+       "no": "6.2",
+       "name": "实数",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "一元一次不等式与不等式组",
+     "chNum": null,
+     "name": "一元一次不等式与不等式组",
+     "page": null,
+     "secs": [
+      {
+       "no": "7.1",
+       "name": "不等式及其基本性质",
+       "page": null
+      },
+      {
+       "no": "7.2",
+       "name": "一元一次不等式",
+       "page": null
+      },
+      {
+       "no": "7.3",
+       "name": "一元一次不等式组",
+       "page": null
+      },
+      {
+       "no": "7.4",
+       "name": "综合与实践 排队问题",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "整式乘法与因式分解",
+     "chNum": null,
+     "name": "整式乘法与因式分解",
+     "page": null,
+     "secs": [
+      {
+       "no": "8.1",
+       "name": "幂的运算",
+       "page": null
+      },
+      {
+       "no": "8.2",
+       "name": "整式乘法",
+       "page": null
+      },
+      {
+       "no": "8.3",
+       "name": "完全平方公式与平方差公式",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "分式",
+     "chNum": null,
+     "name": "分式",
+     "page": null,
+     "secs": [
+      {
+       "no": "9.1",
+       "name": "分式及其基本性质",
+       "page": null
+      },
+      {
+       "no": "9.2",
+       "name": "分式的运算",
+       "page": null
+      },
+      {
+       "no": "9.3",
+       "name": "分式方程",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "相交线、平行线与平移",
+     "chNum": null,
+     "name": "相交线、平行线与平移",
+     "page": null,
+     "secs": [
+      {
+       "no": "10.1",
+       "name": "相交线",
+       "page": null
+      },
+      {
+       "no": "10.2",
+       "name": "平行线的判定",
+       "page": null
+      },
+      {
+       "no": "10.3",
+       "name": "平行线的性质",
+       "page": null
+      },
+      {
+       "no": "10.4",
+       "name": "平移",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 5,
+   "nSections": 16,
+   "tocScore": 0,
+   "nameQuality": 1.0,
+   "reliable": true,
+   "why": ""
+  },
+  "九上": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "第16章 印张",
+     "chNum": 16,
+     "name": "印张",
+     "page": null,
+     "secs": [
+      {
+       "no": "9.25",
+       "name": "字数151",
+       "page": 0
+      },
+      {
+       "no": "1",
+       "name": "／Ｇ",
+       "page": 504
+      },
+      {
+       "no": "9.47",
+       "name": "元",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "二次函数与反比例函数",
+     "chNum": null,
+     "name": "二次函数与反比例函数",
+     "page": null,
+     "secs": [
+      {
+       "no": "21.1",
+       "name": "二次函数",
+       "page": null
+      },
+      {
+       "no": "21.2",
+       "name": "二次函数的图象和性质",
+       "page": null
+      },
+      {
+       "no": "21.3",
+       "name": "二次函数与一元二次方程",
+       "page": null
+      },
+      {
+       "no": "21.4",
+       "name": "二次函数的应用",
+       "page": null
+      },
+      {
+       "no": "21.5",
+       "name": "反比例函数",
+       "page": null
+      },
+      {
+       "no": "21.6",
+       "name": "综合与实践 获取最大利润",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "相似形",
+     "chNum": null,
+     "name": "相似形",
+     "page": null,
+     "secs": [
+      {
+       "no": "22.1",
+       "name": "比例线段",
+       "page": null
+      },
+      {
+       "no": "22.2",
+       "name": "相似三角形的判定",
+       "page": null
+      },
+      {
+       "no": "22.3",
+       "name": "相似三角形的性质",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 3,
+   "nSections": 12,
+   "tocScore": 0,
+   "nameQuality": 1.0,
+   "reliable": true,
+   "why": ""
+  },
+  "九下": {
+   "tocPages": [
+    5
+   ],
+   "chapters": [
+    {
+     "ch": "投影与视图",
+     "chNum": null,
+     "name": "投影与视图",
+     "page": null,
+     "secs": [
+      {
+       "no": "25.1",
+       "name": "投影",
+       "page": null
+      },
+      {
+       "no": "25.2",
+       "name": "三视图",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "概率初步",
+     "chNum": null,
+     "name": "概率初步",
+     "page": null,
+     "secs": [
+      {
+       "no": "26.1",
+       "name": "随机事件",
+       "page": null
+      },
+      {
+       "no": "26.2",
+       "name": "等可能情形下的概率计算",
+       "page": null
+      },
+      {
+       "no": "26.3",
+       "name": "用频率估计概率",
+       "page": null
+      },
+      {
+       "no": "26.4",
+       "name": "综合与实践 概率在遗传学中的应用",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 2,
+   "nSections": 6,
+   "tocScore": 0,
+   "nameQuality": 1.0,
+   "reliable": true,
+   "why": ""
+  },
+  "八上": {
+   "tocPages": [
+    5
+   ],
+   "chapters": [
+    {
+     "ch": "三角形中的边角关系、命题",
+     "chNum": null,
+     "name": "三角形中的边角关系、命题",
+     "page": null,
+     "secs": [
+      {
+       "no": "13.1",
+       "name": "三角形中的边角关系",
+       "page": null
+      },
+      {
+       "no": "13.2",
+       "name": "命题与证明",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "全等三角形",
+     "chNum": null,
+     "name": "全等三角形",
+     "page": null,
+     "secs": [
+      {
+       "no": "14.1",
+       "name": "全等三角形",
+       "page": null
+      },
+      {
+       "no": "14.2",
+       "name": "三角形全等的判定",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "轴对称图形与等腰",
+     "chNum": null,
+     "name": "轴对称图形与等腰",
+     "page": null,
+     "secs": [
+      {
+       "no": "15.1",
+       "name": "轴对称图形",
+       "page": null
+      },
+      {
+       "no": "15.2",
+       "name": "线段的垂直平分线",
+       "page": null
+      },
+      {
+       "no": "15.3",
+       "name": "等腰三角形",
+       "page": null
+      },
+      {
+       "no": "15.4",
+       "name": "角的平分线",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "平面直角坐标系",
+     "chNum": null,
+     "name": "平面直角坐标系",
+     "page": null,
+     "secs": [
+      {
+       "no": "11.1",
+       "name": "平面内点的坐标",
+       "page": null
+      },
+      {
+       "no": "11.2",
+       "name": "图形在坐标系中的平移",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "一次函数",
+     "chNum": null,
+     "name": "一次函数",
+     "page": null,
+     "secs": [
+      {
+       "no": "12.1",
+       "name": "函数",
+       "page": null
+      },
+      {
+       "no": "12.2",
+       "name": "一次函数",
+       "page": null
+      },
+      {
+       "no": "12.3",
+       "name": "一次函数与二元一次方程",
+       "page": null
+      },
+      {
+       "no": "12.4",
+       "name": "综合与实践 一次函数模型的应用",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 5,
+   "nSections": 14,
+   "tocScore": 0,
+   "nameQuality": 1.0,
+   "reliable": true,
+   "why": ""
+  },
+  "八下": {
+   "tocPages": [
+    4
+   ],
+   "chapters": [
+    {
+     "ch": "二次根式",
+     "chNum": null,
+     "name": "二次根式",
+     "page": null,
+     "secs": [
+      {
+       "no": "16.1",
+       "name": "二次根式",
+       "page": null
+      },
+      {
+       "no": "16.2",
+       "name": "二次根式的运算",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "一元二次方程",
+     "chNum": null,
+     "name": "一元二次方程",
+     "page": null,
+     "secs": [
+      {
+       "no": "17.1",
+       "name": "一元二次方程",
+       "page": null
+      },
+      {
+       "no": "17.2",
+       "name": "一元二次方程的解法",
+       "page": null
+      },
+      {
+       "no": "17.3",
+       "name": "一元二次方程根的判别式",
+       "page": null
+      },
+      {
+       "no": "17.5",
+       "name": "一元二次方程的应用",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "勾股定理",
+     "chNum": null,
+     "name": "勾股定理",
+     "page": null,
+     "secs": [
+      {
+       "no": "18.1",
+       "name": "勾股定理",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "四边形",
+     "chNum": null,
+     "name": "四边形",
+     "page": null,
+     "secs": [
+      {
+       "no": "19.1",
+       "name": "多边形内角和",
+       "page": null
+      },
+      {
+       "no": "19.2",
+       "name": "平行四边形",
+       "page": null
+      },
+      {
+       "no": "19.3",
+       "name": "矩形、菱形、正方形",
+       "page": null
+      },
+      {
+       "no": "19.4",
+       "name": "综合与实践 多边形的镶嵌",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "数据的初步分析",
+     "chNum": null,
+     "name": "数据的初步分析",
+     "page": null,
+     "secs": [
+      {
+       "no": "20.1",
+       "name": "数据的频数分布",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 5,
+   "nSections": 12,
+   "tocScore": 0,
+   "nameQuality": 1.0,
+   "reliable": true,
+   "why": ""
+  }
+ },
+ "初中数学浙教版": {
+  "七上": {
+   "tocPages": [
+    15
+   ],
+   "chapters": [
+    {
+     "ch": "第2章 345678&9",
+     "chNum": 2,
+     "name": "345678&9",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 ! :9",
+     "chNum": 2,
+     "name": "! :9",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 # :9",
+     "chNum": 2,
+     "name": "# :9",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 $ g",
+     "chNum": 2,
+     "name": "$ g",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 ();,!-##./(",
+     "chNum": 1,
+     "name": "();,!-##./(",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 F!F#F% 34QB",
+     "chNum": 2,
+     "name": "F!F#F% 34QB",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 347*F",
+     "chNum": 2,
+     "name": "347*F",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 ! 348!F",
+     "chNum": 2,
+     "name": "! 348!F",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "#",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 % 34 09*!",
+     "chNum": 2,
+     "name": "% 34 09*!",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 9*F: *",
+     "chNum": 1,
+     "name": "9*F: *",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 10,
+   "nSections": 1,
+   "tocScore": 41.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、10 章、1 节、节数不足 5"
+  },
+  "七下": {
+   "tocPages": [
+    12
+   ],
+   "chapters": [
+    {
+     "ch": "第1章 !$!!!W",
+     "chNum": 1,
+     "name": "!$!!!W",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 !!5!$![\\]-+^ # 9_N",
+     "chNum": 1,
+     "name": "!!5!$![\\]-+^ # 9_N",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 !#",
+     "chNum": 8,
+     "name": "!#",
+     "page": null,
+     "secs": [
+      {
+       "no": "6",
+       "name": "! !#$%-./01*!#$56!",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第8章 !%N-",
+     "chNum": 8,
+     "name": "!%N-",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 !!N!$!!]-",
+     "chNum": 1,
+     "name": "!!N!$!!]-",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 !%N$+&,!#-N",
+     "chNum": 8,
+     "name": "!%N$+&,!#-N",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 !%",
+     "chNum": 8,
+     "name": "!%",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 7,
+   "nSections": 1,
+   "tocScore": 29.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、7 章、1 节、节数不足 5"
+  },
+  "九上": {
+   "tocPages": [
+    11
+   ],
+   "chapters": [
+    {
+     "ch": "第3章 的图象了吗?",
+     "chNum": 3,
+     "name": "的图象了吗?",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第22章 的图象",
+     "chNum": 22,
+     "name": "的图象",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "列自变量 * 与函数y的对应值表",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 |一05| 0",
+     "chNum": 1,
+     "name": "|一05| 0",
+     "page": null,
+     "secs": [
+      {
+       "no": "7",
+       "name": "一2也 | …",
+       "page": null
+      },
+      {
+       "no": "7",
+       "name": "一一22| … |一45| 一",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 | 一05|",
+     "chNum": 2,
+     "name": "| 一05|",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 |一45",
+     "chNum": 2,
+     "name": "|一45",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 从数学 九年级上册",
+     "chNum": 8,
+     "name": "从数学 九年级上册",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 6,
+   "nSections": 3,
+   "tocScore": 29.0,
+   "nameQuality": 0.17,
+   "reliable": false,
+   "why": "章名可信度 17%（要 ≥60%）、6 章、3 节、节数不足 5"
+  },
+  "九下": {
+   "tocPages": [
+    10
+   ],
+   "chapters": [
+    {
+     "ch": "第4章 和 tan刀,你发现了什么?",
+     "chNum": 4,
+     "name": "和 tan刀,你发现了什么?",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 离地面的高度",
+     "chNum": 4,
+     "name": "离地面的高度",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "C长为1m 时,人竹笔4B 的倾斜",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 位于4,离地面的高度 4C",
+     "chNum": 4,
+     "name": "位于4,离地面的高度 4C",
+     "page": null,
+     "secs": [
+      {
+       "no": "10",
+       "name": "0 吗?",
+       "page": null
+      },
+      {
+       "no": "4",
+       "name": "的",
+       "page": null
+      },
+      {
+       "no": "4",
+       "name": "C一V4B:一BC",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 一V(2BC)2一BC? 也",
+     "chNum": 2,
+     "name": "一V(2BC)2一BC? 也",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 一V",
+     "chNum": 2,
+     "name": "一V",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 BC",
+     "chNum": 3,
+     "name": "BC",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "B 2BC",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 网1 7",
+     "chNum": 2,
+     "name": "网1 7",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "C YYV3pBC YYV",
+       "page": 3
+      },
+      {
+       "no": "4",
+       "name": "B 2BC",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 ER",
+     "chNum": 2,
+     "name": "ER",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第30章 一an4一4C一",
+     "chNum": 30,
+     "name": "一an4一4C一",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 你能利用图 1_7",
+     "chNum": 7,
+     "name": "你能利用图 1_7",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "5C 得到 60角的三角函数",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第3章 值吗?",
+     "chNum": 3,
+     "name": "值吗?",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 11,
+   "nSections": 8,
+   "tocScore": 53.09090909090909,
+   "nameQuality": 0.09,
+   "reliable": false,
+   "why": "章名可信度 9%（要 ≥60%）、11 章、8 节"
+  },
+  "八上": {
+   "tocPages": [
+    14
+   ],
+   "chapters": [
+    {
+     "ch": "第5章 CTCU$:VWA%8XBC!",
+     "chNum": 5,
+     "name": "CTCU$:VWA%8XBC!",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "#",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 YZABC!",
+     "chNum": 5,
+     "name": "YZABC!",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "$",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 ?@ABC:;<=>!",
+     "chNum": 5,
+     "name": "?@ABC:;<=>!",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "#",
+       "page": null
+      },
+      {
+       "no": "4",
+       "name": "$",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 stuv]wxtyq",
+     "chNum": 5,
+     "name": "stuv]wxtyq",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "#",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 :z{|<}~!",
+     "chNum": 5,
+     "name": ":z{|<}~!",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "$",
+       "page": 5
+      },
+      {
+       "no": "4",
+       "name": "%",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第5章 ]H;<P;< ;!",
+     "chNum": 5,
+     "name": "]H;<P;< ;!",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "b  N",
+       "page": 5
+      },
+      {
+       "no": "4",
+       "name": "#",
+       "page": 5
+      },
+      {
+       "no": "4",
+       "name": "$",
+       "page": 5
+      }
+     ]
+    }
+   ],
+   "nChapters": 6,
+   "nSections": 10,
+   "tocScore": 34.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、6 章、10 节"
+  },
+  "八下": {
+   "tocPages": [
+    5
+   ],
+   "chapters": [
+    {
+     "ch": "第2章 AT 不忆 工直 和二",
+     "chNum": 2,
+     "name": "AT 不忆 工直 和二",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 RE 下 人 和 了",
+     "chNum": 2,
+     "name": "RE 下 人 和 了",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 AN",
+     "chNum": 4,
+     "name": "AN",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 二次根式的运算",
+     "chNum": 5,
+     "name": "二次根式的运算",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第12章 Wan",
+     "chNum": 12,
+     "name": "Wan",
+     "page": null,
+     "secs": [
+      {
+       "no": "20",
+       "name": "二",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 5,
+   "nSections": 1,
+   "tocScore": 23.4,
+   "nameQuality": 0.2,
+   "reliable": false,
+   "why": "章名可信度 20%（要 ≥60%）、5 章、1 节、节数不足 5"
+  }
+ },
+ "初中数学湘教版": {
+  "七上": {
+   "tocPages": [
+    15
+   ],
+   "chapters": [
+    {
+     "ch": "第1章 个单位长度的点表示",
+     "chNum": 1,
+     "name": "个单位长度的点表示",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 个单位",
+     "chNum": 1,
+     "name": "个单位",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第6章 所示",
+     "chNum": 6,
+     "name": "所示",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "站",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 了 杞",
+     "chNum": 1,
+     "name": "了 杞",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "看",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 也 了",
+     "chNum": 1,
+     "name": "也 了",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 10",
+     "chNum": 2,
+     "name": "10",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 所示",
+     "chNum": 8,
+     "name": "所示",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 了 于D 而",
+     "chNum": 5,
+     "name": "了 于D 而",
+     "page": null,
+     "secs": [
+      {
+       "no": "1.5",
+       "name": "填",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": "示",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "-",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "一",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "从",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "于",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第3章 十 5",
+     "chNum": 3,
+     "name": "十 5",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 一全. 坦.2",
+     "chNum": 3,
+     "name": "一全. 坦.2",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 -2一| 站",
+     "chNum": 3,
+     "name": "-2一| 站",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 了 子 二 5",
+     "chNum": 1,
+     "name": "了 子 二 5",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 琢人站 士年齐上且",
+     "chNum": 8,
+     "name": "琢人站 士年齐上且",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 13,
+   "nSections": 8,
+   "tocScore": 63.69230769230769,
+   "nameQuality": 0.31,
+   "reliable": false,
+   "why": "章名可信度 31%（要 ≥60%）、13 章、8 节"
+  },
+  "七下": {
+   "tocPages": [
+    12
+   ],
+   "chapters": [
+    {
+     "ch": "第4章 设这两个自然数分别是*，r 【其中",
+     "chNum": 4,
+     "name": "设这两个自然数分别是*，r 【其中",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 的方程组",
+     "chNum": 7,
+     "name": "的方程组",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 场得2分，负",
+     "chNum": 1,
+     "name": "场得2分，负",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 场得1",
+     "chNum": 1,
+     "name": "场得1",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第15章 场比赛中得到",
+     "chNum": 15,
+     "name": "场比赛中得到",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 分，为了求出这个队胜，负场数分别是窗",
+     "chNum": 2,
+     "name": "分，为了求出这个队胜，负场数分别是窗",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 | -",
+     "chNum": 3,
+     "name": "| -",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 是下列哪个方程组的解?",
+     "chNum": 5,
+     "name": "是下列哪个方程组的解?",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "一=了",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "x+3y7=17; 外",
+       "page": null
+      },
+      {
+       "no": "3",
+       "name": "孜一=",
+       "page": null
+      },
+      {
+       "no": "4",
+       "name": "r+r=9000 or+r=9",
+       "page": 0
+      },
+      {
+       "no": "6",
+       "name": "某阶梯教室从第",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 排起，每一排都比",
+     "chNum": 2,
+     "name": "排起，每一排都比",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 9,
+   "nSections": 5,
+   "tocScore": 43.666666666666664,
+   "nameQuality": 0.22,
+   "reliable": false,
+   "why": "章名可信度 22%（要 ≥60%）、9 章、5 节"
+  },
+  "九上": {
+   "tocPages": [
+    12
+   ],
+   "chapters": [
+    {
+     "ch": "第15章 一1 1",
+     "chNum": 15,
+     "name": "一1 1",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 了 二 | 在 oa",
+     "chNum": 2,
+     "name": "了 二 | 在 oa",
+     "page": null,
+     "secs": [
+      {
+       "no": "7",
+       "name": "=习 一 -",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "-",
+       "page": null
+      },
+      {
+       "no": "15",
+       "name": "-",
+       "page": null
+      },
+      {
+       "no": "2",
+       "name": "-",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 所示",
+     "chNum": 2,
+     "name": "所示",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 |. | 观察图 1-",
+     "chNum": 1,
+     "name": "|. | 观察图 1-",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "中",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第7章 轴右边",
+     "chNum": 7,
+     "name": "轴右边",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 轴去边的各点是知也",
+     "chNum": 7,
+     "name": "轴去边的各点是知也",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 6,
+   "nSections": 5,
+   "tocScore": 35.0,
+   "nameQuality": 0.5,
+   "reliable": false,
+   "why": "章名可信度 50%（要 ≥60%）、6 章、5 节"
+  },
+  "九下": {
+   "tocPages": [
+    15
+   ],
+   "chapters": [
+    {
+     "ch": "第6章 所示. 从点 人的 本",
+     "chNum": 6,
+     "name": "所示. 从点 人的 本",
+     "page": null,
+     "secs": [
+      {
+       "no": "14",
+       "name": "中",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "-",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第6章 的绿色曲线",
+     "chNum": 6,
+     "name": "的绿色曲线",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 赦学息年旺下而",
+     "chNum": 8,
+     "name": "赦学息年旺下而",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 3,
+   "nSections": 2,
+   "tocScore": 22.0,
+   "nameQuality": 0.67,
+   "reliable": false,
+   "why": "章名可信度 67%（要 ≥60%）、3 章、2 节、节数不足 5"
+  },
+  "八上": {
+   "tocPages": [
+    16
+   ],
+   "chapters": [
+    {
+     "ch": "第4章 好-",
+     "chNum": 4,
+     "name": "好-",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 (2) 和十了4+",
+     "chNum": 1,
+     "name": "(2) 和十了4+",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "+",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 十1 4r 二 斗",
+     "chNum": 1,
+     "name": "十1 4r 二 斗",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第25章 【YY+1)fY一1)",
+     "chNum": 25,
+     "name": "【YY+1)fY一1)",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "r (x+l)fr=-1)",
+       "page": null
+      },
+      {
+       "no": "12",
+       "name": "+2r+",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "+",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 《x+T17 2",
+     "chNum": 1,
+     "name": "《x+T17 2",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 (x+l)",
+     "chNum": 8,
+     "name": "(x+l)",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 计算:",
+     "chNum": 1,
+     "name": "计算:",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "由",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第37章 好。 人",
+     "chNum": 37,
+     "name": "好。 人",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 好二4+填",
+     "chNum": 1,
+     "name": "好二4+填",
+     "page": null,
+     "secs": [
+      {
+       "no": "82",
+       "name": "人",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 frx-T)",
+     "chNum": 1,
+     "name": "frx-T)",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "【",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第2章 E 二一",
+     "chNum": 2,
+     "name": "E 二一",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 11,
+   "nSections": 7,
+   "tocScore": 51.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、11 章、7 节"
+  },
+  "八下": {
+   "tocPages": [
+    14
+   ],
+   "chapters": [
+    {
+     "ch": "第8章 cm",
+     "chNum": 8,
+     "name": "cm",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 边上的中线长",
+     "chNum": 8,
+     "name": "边上的中线长",
+     "page": null,
+     "secs": [
+      {
+       "no": "30",
+       "name": "*，且4=",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第3章 cm，那么线段 晤 多长呢?",
+     "chNum": 3,
+     "name": "cm，那么线段 晤 多长呢?",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 五 了",
+     "chNum": 1,
+     "name": "五 了",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 题加) {秆",
+     "chNum": 3,
+     "name": "题加) {秆",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 是图)",
+     "chNum": 4,
+     "name": "是图)",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 求D的长;",
+     "chNum": 1,
+     "name": "求D的长;",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "如图是某建筑物的屋顶架，其中 4刀=",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 7,
+   "nSections": 2,
+   "tocScore": 31.714285714285715,
+   "nameQuality": 0.14,
+   "reliable": false,
+   "why": "章名可信度 14%（要 ≥60%）、7 章、2 节、节数不足 5"
+  }
+ },
+ "初中数学苏科版": {
+  "七上": {
+   "tocPages": [
+    9
+   ],
+   "chapters": [
+    {
+     "ch": "第2章 丰生有束半生局全帮",
+     "chNum": 2,
+     "name": "丰生有束半生局全帮",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 1,
+   "nSections": 0,
+   "tocScore": 16.0,
+   "nameQuality": 1.0,
+   "reliable": false,
+   "why": "章名可信度 100%（要 ≥60%）、1 章、0 节、章数不足 2、节数不足 5"
+  },
+  "九上": {
+   "tocPages": [
+    9
+   ],
+   "chapters": [
+    {
+     "ch": "第1章 上二 me me MA 口",
+     "chNum": 1,
+     "name": "上二 me me MA 口",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 三5",
+     "chNum": 2,
+     "name": "三5",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "现 中 CE en",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 2,
+   "nSections": 1,
+   "tocScore": 9.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、2 章、1 节、节数不足 5"
+  },
+  "九下": {
+   "tocPages": [
+    9
+   ],
+   "chapters": [
+    {
+     "ch": "第2章 OO 2",
+     "chNum": 2,
+     "name": "OO 2",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "区",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第7章 CE",
+     "chNum": 7,
+     "name": "CE",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 il 大",
+     "chNum": 7,
+     "name": "il 大",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 Jo AR",
+     "chNum": 2,
+     "name": "Jo AR",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 了 训 an",
+     "chNum": 2,
+     "name": "了 训 an",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 5,
+   "nSections": 1,
+   "tocScore": 21.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、5 章、1 节、节数不足 5"
+  },
+  "八上": {
+   "tocPages": [
+    1
+   ],
+   "chapters": [
+    {
+     "ch": "第7章 和 本",
+     "chNum": 7,
+     "name": "和 本",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 玫 FF EBPe1A 区- = 二",
+     "chNum": 2,
+     "name": "玫 FF EBPe1A 区- = 二",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第8章 c ea f /",
+     "chNum": 8,
+     "name": "c ea f /",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "时",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 3,
+   "nSections": 1,
+   "tocScore": 13.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、3 章、1 节、节数不足 5"
+  },
+  "八下": {
+   "tocPages": [
+    11
+   ],
+   "chapters": [
+    {
+     "ch": "第7章 !!",
+     "chNum": 7,
+     "name": "!!",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 !!",
+     "chNum": 7,
+     "name": "!!",
+     "page": null,
+     "secs": [
+      {
+       "no": "3",
+       "name": "",
+       "page": null
+      },
+      {
+       "no": "9",
+       "name": "!<!:!9!=!:!;!9!<!;",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 2,
+   "nSections": 2,
+   "tocScore": 10.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、2 章、2 节、节数不足 5"
+  }
+ },
+ "初中数学青岛版": {
+  "七上": {
+   "tocPages": [
+    3
+   ],
+   "chapters": [
+    {
+     "ch": "第6章 月第",
+     "chNum": 6,
+     "name": "月第",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 版 2021 年",
+     "chNum": 2,
+     "name": "版 2021 年",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第6章 月第",
+     "chNum": 6,
+     "name": "月第",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第17章 次印刷",
+     "chNum": 17,
+     "name": "次印刷",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第16章 开（787mm×1092mm）",
+     "chNum": 16,
+     "name": "开（787mm×1092mm）",
+     "page": null,
+     "secs": [
+      {
+       "no": "10.66",
+       "name": "元",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 5,
+   "nSections": 1,
+   "tocScore": 28.2,
+   "nameQuality": 0.6,
+   "reliable": false,
+   "why": "章名可信度 60%（要 ≥60%）、5 章、1 节、节数不足 5"
+  },
+  "七下": {
+   "tocPages": [
+    16
+   ],
+   "chapters": [
+    {
+     "ch": "第1章 直角等于多少度？",
+     "chNum": 1,
+     "name": "直角等于多少度？",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 平角呢？你能说出锐",
+     "chNum": 1,
+     "name": "平角呢？你能说出锐",
+     "page": null,
+     "secs": [
+      {
+       "no": "48",
+       "name": "°22′13与",
+       "page": null
+      },
+      {
+       "no": "48.37",
+       "name": "°哪个大 ？",
+       "page": null
+      },
+      {
+       "no": "0.37",
+       "name": "°是用十进制表示的，因此可先将",
+       "page": null
+      },
+      {
+       "no": "0.37",
+       "name": "°用分、秒表示：",
+       "page": null
+      },
+      {
+       "no": "0.37",
+       "name": "° = 60′×",
+       "page": null
+      },
+      {
+       "no": "0.37",
+       "name": "=",
+       "page": null
+      },
+      {
+       "no": "22.2",
+       "name": "′",
+       "page": null
+      },
+      {
+       "no": "0.2",
+       "name": "′ = 60 ×",
+       "page": null
+      },
+      {
+       "no": "0.2",
+       "name": "=",
+       "page": 12
+      },
+      {
+       "no": "0.37",
+       "name": "° = 22′ +",
+       "page": null
+      },
+      {
+       "no": "0.2",
+       "name": "′",
+       "page": null
+      },
+      {
+       "no": "48.37",
+       "name": "°＜ 48°22′",
+       "page": 13
+      },
+      {
+       "no": "48",
+       "name": "°，因此，只需要比较22′",
+       "page": 13
+      },
+      {
+       "no": "0.37",
+       "name": "°的大小，但它们的单",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第11章 时到",
+     "chNum": 11,
+     "name": "时到",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第13章 ①），蜂房的入口处是由一",
+     "chNum": 13,
+     "name": "①），蜂房的入口处是由一",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 4,
+   "nSections": 14,
+   "tocScore": 33.0,
+   "nameQuality": 0.25,
+   "reliable": false,
+   "why": "章名可信度 25%（要 ≥60%）、4 章、14 节"
+  },
+  "九上": {
+   "tocPages": [
+    14
+   ],
+   "chapters": [
+    {
+     "ch": "第2章 被三条平行直线 l",
+     "chNum": 2,
+     "name": "被三条平行直线 l",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 l4，l",
+     "chNum": 3,
+     "name": "l4，l",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 所截，如果",
+     "chNum": 5,
+     "name": "所截，如果",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 上截得的两条线段的比也等于",
+     "chNum": 2,
+     "name": "上截得的两条线段的比也等于",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第1章 被 l3，l4，l",
+     "chNum": 1,
+     "name": "被 l3，l4，l",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第5章 所截得的线段不",
+     "chNum": 5,
+     "name": "所截得的线段不",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "-",
+       "page": 4
+      },
+      {
+       "no": "3",
+       "name": "交",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "-",
+       "page": 5
+      }
+     ]
+    },
+    {
+     "ch": "第1章 作直线 l7∥l3，交 l",
+     "chNum": 1,
+     "name": "作直线 l7∥l3，交 l",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 于点",
+     "chNum": 2,
+     "name": "于点",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "（图",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "-",
+       "page": 5
+      }
+     ]
+    },
+    {
+     "ch": "第2章 被平行",
+     "chNum": 2,
+     "name": "被平行",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 截得的对应线段 AP1，P1B，D",
+     "chNum": 4,
+     "name": "截得的对应线段 AP1，P1B，D",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "C 成比例吗（图",
+       "page": null
+      },
+      {
+       "no": "1",
+       "name": "-",
+       "page": 5
+      },
+      {
+       "no": "1",
+       "name": "-",
+       "page": 5
+      }
+     ]
+    }
+   ],
+   "nChapters": 10,
+   "nSections": 8,
+   "tocScore": 52.8,
+   "nameQuality": 0.4,
+   "reliable": false,
+   "why": "章名可信度 40%（要 ≥60%）、10 章、8 节"
+  },
+  "九下": {
+   "tocPages": [
+    15
+   ],
+   "chapters": [
+    {
+     "ch": "第2章 L. 开始时水箱中有水",
+     "chNum": 2,
+     "name": "L. 开始时水箱中有水",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 min",
+     "chNum": 2,
+     "name": "min",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "-",
+       "page": 6
+      }
+     ]
+    },
+    {
+     "ch": "第4章 min",
+     "chNum": 4,
+     "name": "min",
+     "page": null,
+     "secs": [
+      {
+       "no": "5",
+       "name": "-",
+       "page": 6
+      }
+     ]
+    },
+    {
+     "ch": "第1章 = 96",
+     "chNum": 1,
+     "name": "= 96",
+     "page": null,
+     "secs": [
+      {
+       "no": "2",
+       "name": "k",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 + b",
+     "chNum": 1,
+     "name": "+ b",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "=",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第1章 = -8，b",
+     "chNum": 1,
+     "name": "= -8，b",
+     "page": null,
+     "secs": [
+      {
+       "no": "1",
+       "name": "=",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 6,
+   "nSections": 5,
+   "tocScore": 29.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、6 章、5 节"
+  },
+  "八上": {
+   "tocPages": [
+    3
+   ],
+   "chapters": [
+    {
+     "ch": "第6章 月第",
+     "chNum": 6,
+     "name": "月第",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 版 2021 年",
+     "chNum": 2,
+     "name": "版 2021 年",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第6章 月第",
+     "chNum": 6,
+     "name": "月第",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第17章 次印刷",
+     "chNum": 17,
+     "name": "次印刷",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第16章 开（787mm×1092mm）",
+     "chNum": 16,
+     "name": "开（787mm×1092mm）",
+     "page": null,
+     "secs": [
+      {
+       "no": "11.33",
+       "name": "元",
+       "page": null
+      }
+     ]
+    }
+   ],
+   "nChapters": 5,
+   "nSections": 1,
+   "tocScore": 28.2,
+   "nameQuality": 0.6,
+   "reliable": false,
+   "why": "章名可信度 60%（要 ≥60%）、5 章、1 节、节数不足 5"
+  },
+  "八下": {
+   "tocPages": [
+    14
+   ],
+   "chapters": [
+    {
+     "ch": "第6章 题）",
+     "chNum": 6,
+     "name": "题）",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第7章 题）",
+     "chNum": 7,
+     "name": "题）",
+     "page": null,
+     "secs": [
+      {
+       "no": "6.1",
+       "name": "平行四边形及其性质",
+       "page": null
+      },
+      {
+       "no": "8",
+       "name": "（1）如图①",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第4章 的关系；",
+     "chNum": 4,
+     "name": "的关系；",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第2章 与 S4∶S",
+     "chNum": 2,
+     "name": "与 S4∶S",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第3章 之间的关系；",
+     "chNum": 3,
+     "name": "之间的关系；",
+     "page": null,
+     "secs": [
+      {
+       "no": "4",
+       "name": "如图，在",
+       "page": null
+      },
+      {
+       "no": "5",
+       "name": "在",
+       "page": null
+      }
+     ]
+    },
+    {
+     "ch": "第8章 题）",
+     "chNum": 8,
+     "name": "题）",
+     "page": null,
+     "secs": []
+    },
+    {
+     "ch": "第4章 题）",
+     "chNum": 4,
+     "name": "题）",
+     "page": null,
+     "secs": []
+    }
+   ],
+   "nChapters": 7,
+   "nSections": 4,
+   "tocScore": 32.0,
+   "nameQuality": 0.0,
+   "reliable": false,
+   "why": "章名可信度 0%（要 ≥60%）、7 章、4 节、节数不足 5"
+  }
+ }
+}

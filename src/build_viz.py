@@ -527,8 +527,24 @@ def main():
         by_subject[n["subject"]] += 1
     subjects = [{"en": s[0], "zh": s[1], "c": s[2], "n": by_subject.get(s[0], 0)} for s in SUBJECTS]
 
+    # ── 其他出版社教材的位置（多版本对照）──────────────────────
+    # 图谱的教材顺序是按人教版排的。别的出版社（沪教/湘教/冀教…）
+    # 章号节号都不一样 ——「九上 22.2 二次函数」对用湘教的学生没有意义。
+    # 这里把对齐结果挂到节点上，卡片上就能看到「这概念在别的教材里是第几节」。
+    ALIGN = BASE / "data" / "alt-align.json"
+    alt_pos = {}
+    if ALIGN.exists():
+        aj = json.load(open(ALIGN, encoding="utf-8"))
+        for cid, lst in aj.get("byConcept", {}).items():
+            j = idx.get(cid)
+            if j is None:
+                continue
+            alt_pos[j] = [[x.get("label", ""), x.get("alt", ""),
+                           x.get("chapter", "")] for x in lst]
+
     payload = {"nodes": payload_nodes, "edges": payload_edges,
                "isa": isa_pairs, "chs": chs, "cns": cns,
+               "altpos": alt_pos,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                # 画布上画的点数（含自建），但首页写的「N 个知识点」
                # 必须只数上游那批 —— 把能力节点算进「知识点」是偷换概念。
