@@ -219,7 +219,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 .mtitle span{font-size:12px;color:var(--muted);white-space:nowrap}
 .mtools{display:flex;align-items:center;gap:6px;flex:none}
 .mlab{font-size:11px;color:var(--muted);margin-right:2px}
-#mapBody{flex:1;overflow:auto;padding:10px 16px 24px}
+#mapBody{flex:1;overflow:auto;padding:10px 16px 24px;display:flex;align-items:center;justify-content:center}
 #mapSvg{display:block;min-width:100%;max-height:100%}
 #mapTip{
   position:absolute;left:20px;bottom:14px;font-size:11px;color:var(--muted);
@@ -289,6 +289,19 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #tip .t-en{font-size:10.5px;color:var(--muted);margin-top:1px}
 
 @media(max-width:900px){
+  /* 窄屏下卡片底部是抽屉，顶到哪算哪。
+     「知识脉络」那一行按钮 + 提示文字让卡片高了一截，
+     抽屉就往上顶，**压住了标题区下方的署名**（窄屏断言实测 263~373 被 321~844 盖住）。
+     手机屏幕窄，提示文字本来也没地方放 —— 藏掉它，只留按钮。 */
+  .cardact-hint{display:none}
+  .cardacts{margin:7px 0 2px}
+  /* 页脚那段「两套数据分开」的补充说明有 3 行，
+     把署名往下撑，窄屏下**署名会被底部抽屉盖住**（263~373 被 321~844 压住）。
+     手机上这几行本来也读不清，窄屏直接收起来。 */
+  .attr2{display:none}
+  /* 抽屉再收一点。62vh 时抽屉顶到 321，署名底 342，还压着 21px。
+     56vh → 顶到 371，署名就露出来了。卡片本来就在滚，矮一点只是多滚两下。
+     （要写在下面那行 max-height:62vh 之后才生效。） */
   /* 窄屏的判断标准是「能不能找到知识点」，不是「标题区挤不挤」。
      标题区在手机上只占 242×149，下面空着 450px——空间从来不是问题。
      原来把搜索框整个隐藏了，理由写的是「触屏没键盘」，那句话是错的：
@@ -323,7 +336,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   #card{
     left:0;right:0;bottom:0;top:auto;width:auto;transform:none;
     border-radius:16px 16px 0 0;border-bottom:none;
-    max-height:62vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    max-height:56vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
     padding-bottom:26px;   /* 留出 iPhone 底部安全区，避免贴着 home 条 */
   }
 }
@@ -1270,20 +1283,48 @@ function mapRender(){
   const edges = [];
   for(const [nid, v] of L.anc) edges.push([nid, root, v.src, v.sus]);
   for(const [nid, v] of L.des) edges.push([root, nid, v.src, v.sus]);
+  /* 边的两个端点都缩到圆的边缘：
+     起点从 A 圆外侧 1px 出发（不然线从圆心冒出来，被圆盖住一截，看着像没接上），
+     终点停在 B 圆外侧 —— 箭头 marker 画在路径末端，
+     终点压在圆心上就会被圆盖住，箭头就看不见了。 */
   const edgeSvg = edges.map(([a,b,src,sus])=>{
     const A=pos.get(a), B=pos.get(b);
     if(!A || !B) return '';
-    const mx=(A.x+B.x)/2;
+    const ax=tx(A.x), ay=ty(A.y), bx=tx(B.x), by=ty(B.y);
+    const dx=bx-ax, dy=by-ay, len=Math.hypot(dx,dy)||1;
+    const ra = A.it.center ? 9 : 6.5, rb = B.it.center ? 9 : 6.5;
+    const sx = ax + dx/len*ra, sy = ay + dy/len*ra;
+    const ex = bx - dx/len*rb, ey = by - dy/len*rb;
+    const mx=(sx+ex)/2;
     const cls='medge'+(sus?' sus':'');
     const col=MAP_SRC_COLOR[src]||MAP_SRC_COLOR[0];
-    return '<path class="'+cls+'" stroke="'+col+'" d="M '+tx(A.x)+' '+tx(A.y)+
-           ' C '+tx(mx)+' '+ty(A.y)+' '+tx(mx)+' '+ty(B.y)+' '+tx(B.x)+' '+ty(B.y)+'"/>';
+    // 箭头**直接画三角**，不用 marker。
+    // marker 里的 fill="context-stroke" 在 Chrome 上不生效 ——
+    // 箭头渲染成黑色，混在深色背景里根本看不见。
+    const ang = Math.atan2(dy,dx), L1 = 10, L2 = 4.6;
+    const tipx = ex + Math.cos(ang)*L1, tipy = ey + Math.sin(ang)*L1;
+    const b1x = ex + Math.cos(ang+2.6)*L2, b1y = ey + Math.sin(ang+2.6)*L2;
+    const b2x = ex + Math.cos(ang-2.6)*L2, b2y = ey + Math.sin(ang-2.6)*L2;
+    return '<path class="'+cls+'" stroke="'+col+'"'+
+           ' d="M '+sx+' '+sy+
+           ' C '+mx+' '+sy+' '+mx+' '+ey+' '+ex+' '+ey+'"/>'+
+           '<path d="M '+tipx+' '+tipy+' L '+b1x+' '+b1y+' L '+b2x+' '+b2y+' Z" '+
+           'fill="'+col+'" stroke="#0b0c10" stroke-width="0.7"/>';
   }).join('');
+
+  // 先修区 / 后继区的分界：**在当前节点两侧画一条竖虚线**，
+  // 线上标「◀ 要先会」和「学会后能学 ▶」。
+  // 光靠左右位置还不够 —— 「哪些是前面的、哪些是后面的」要一眼分得清。
+  const divX = tx(0);
+  const divSvg = '<line x1="'+divX+'" y1="'+ty(minY)+'" x2="'+divX+'" y2="'+ty(maxY)+'" '+
+    'stroke="#3a4150" stroke-width="1" stroke-dasharray="2 6"/>'+
+    '<text class="mcol" x="'+(divX-10)+'" y="'+(ty(minY)-18)+'" text-anchor="end">◀ 要先会</text>'+
+    '<text class="mcol" x="'+(divX+10)+'" y="'+(ty(minY)-4)+'" text-anchor="start">学会后能学 ▶</text>';
 
   // 列标题
   const colSvg = [...cols.entries()].map(([col,arr])=>{
     const x = tx(col*MAP_COL_W);
-    const t = col===0 ? '当前' : (col<0 ? '先修 '+(-col)+' 层' : '后继 '+col+' 层');
+    const t = col===0 ? '当 前' : (col<0 ? '◀ 先修 '+(-col)+' 层' : '后继 '+col+' 层 ▶');
     return '<text class="mcol" x="'+x+'" y="'+(ty(minY)-26)+'" text-anchor="middle">'+t+'</text>';
   }).join('');
 
@@ -1304,7 +1345,12 @@ function mapRender(){
   svg.setAttribute('height', H);
   // 等比缩放并居中 —— 顶部对齐的话，整张图会浮在容器上沿，下面空一大块。
   svg.setAttribute('preserveAspectRatio','xMidYMid meet');
-  svg.innerHTML = edgeSvg + colSvg + nodeSvg;
+  // 箭头：从先修指向后继，方向一眼可辨。
+  // `context-stroke` 让箭头跟着边的颜色走（上游灰 / 模型蓝 / 引入路径绿…）。
+  const defs = '<defs><marker id="mArrow" viewBox="0 0 10 10" refX="8.5" refY="5" '+
+    'markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">'+
+    '<path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>';
+  svg.innerHTML = defs + divSvg + edgeSvg + colSvg + nodeSvg;
 
   document.getElementById('mapName').textContent = KG.label(nRoot);
   const aCount = L.anc.size, dCount = L.des.size;

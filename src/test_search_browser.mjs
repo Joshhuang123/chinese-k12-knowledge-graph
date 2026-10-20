@@ -373,6 +373,38 @@ console.log('\n[8c] 二维知识脉络：能打开、分层正确、能钻取');
   ok(m.rowGap >= 18, `同列相邻节点间距够放标签（最小 ${m.rowGap}px）`);
   ok(m.nNodes > 10 && m.nEdges > 5, `图里有内容（${m.nNodes} 节点 / ${m.nEdges} 边）`);
 
+  // **每条线都要真的接到点上。**
+  // 原来边的起点 y 用了水平的平移函数 tx()，节点圆心用的是 ty() ——
+  // 差了一个 (minX - minY)，整张图的线全接歪，看着像「没连上」。
+  // 这条断言量的是「边的起点离最近节点圆心多远」：应落在圆半径附近。
+  const wired = await page.evaluate(() => {
+    const ns = [...document.querySelectorAll('#mapSvg .mnode')].map(g => {
+      const c = g.querySelector('circle');
+      return { x: +c.getAttribute('cx'), y: +c.getAttribute('cy') };
+    });
+    const bad = [];
+    document.querySelectorAll('#mapSvg .medge').forEach((p, i) => {
+      const n = p.getAttribute('d').match(/-?\d+(\.\d+)?/g).map(Number);
+      const M = [n[0], n[1]];
+      let dm = 1e9;
+      for (const v of ns) dm = Math.min(dm, Math.hypot(v.x - M[0], v.y - M[1]));
+      if (dm > 12) bad.push({ i, d: +dm.toFixed(1) });
+    });
+    return { total: document.querySelectorAll('#mapSvg .medge').length, bad };
+  });
+  ok(wired.bad.length === 0,
+     `每条线都接到点上（${wired.total} 条线，断开 ${wired.bad.length} 条` +
+     `${wired.bad.length ? '：' + wired.bad.slice(0,3).map(b=>b.d+'px').join(',') : ''}）`);
+
+  // **方向要看得见**：箭头（三角形）数量 = 边数量，且分界线把先修/后继分开
+  const dir = await page.evaluate(() => {
+    const arrows = document.querySelectorAll('#mapSvg path[fill]:not([fill="none"])').length;
+    const div = document.querySelectorAll('#mapSvg line').length;
+    return { arrows, div };
+  });
+  ok(dir.arrows >= wired.total, `每条边都有箭头（${dir.arrows} 个三角 / ${wired.total} 条边）`);
+  ok(dir.div >= 1, '先修区与后继区之间有分界线');
+
   // 钻取：点一个非中心节点，应以它为新中心
   const drill = await page.evaluate(() => {
     const g = [...document.querySelectorAll('#mapSvg .mnode')].find(e => !e.classList.contains('center'));
