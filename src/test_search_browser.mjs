@@ -325,6 +325,69 @@ console.log('\n[8b] 别名能搜到 + 教材里更早的排前面');
      `搜「光合作用」第一条是初中生物那个，不是高中化学（实际「${first}」）`);
 }
 
+console.log('\n[8c] 二维知识脉络：能打开、分层正确、能钻取');
+{
+  await page.evaluate(() => { document.getElementById('q').value = ''; });
+  await page.type('#q', '二次函数', { delay: 20 });
+  await sleep(300);
+  await page.keyboard.press('Enter');
+  await sleep(1400);
+  await page.click('#cMap');
+  await sleep(800);
+  const m = await page.evaluate(() => {
+    const svg = document.getElementById('mapSvg');
+    const cols = [...document.querySelectorAll('#mapSvg .mcol')].map(e => e.textContent);
+    const nodes = [...document.querySelectorAll('#mapSvg .mnode')];
+    // 圆点的 x 坐标集合 = 实际用到的列
+    const xs = [...new Set(nodes.map(n => Math.round(+n.querySelector('circle').getAttribute('cx'))))].sort((a,b)=>a-b);
+    return {
+      open: !document.getElementById('map').hidden,
+      name: document.getElementById('mapName').textContent,
+      sub: document.getElementById('mapSub').textContent,
+      cols, xs, nNodes: nodes.length,
+      nEdges: document.querySelectorAll('#mapSvg .medge').length,
+      // 纵向不能全挤在一行：圆的 cy 必须有多个不同值
+      ys: [...new Set(nodes.map(n => +n.querySelector('circle').getAttribute('cy')))].length,
+      // 文字不能叠在一起：同一列内相邻两个圆的 y 差要够放一行字
+      rowGap: (() => {
+        const byX = {};
+        for (const n of nodes) {
+          const k = Math.round(+n.querySelector('circle').getAttribute('cx'));
+          (byX[k] = byX[k] || []).push(+n.querySelector('circle').getAttribute('cy'));
+        }
+        let min = 1e9;
+        for (const arr of Object.values(byX)) {
+          arr.sort((a,b)=>a-b);
+          for (let i=1;i<arr.length;i++) min = Math.min(min, arr[i]-arr[i-1]);
+        }
+        return min;
+      })(),
+    };
+  });
+  ok(m.open, '点「知识脉络」能打开二维视图');
+  ok(m.name === '二次函数', `中心节点是当前知识点（${m.name}）`);
+  ok(m.cols.length >= 3, `至少三列：先修 / 当前 / 后继（${m.cols.join(' | ')}）`);
+  ok(m.cols.some(c => c.includes('先修')) && m.cols.some(c => c.includes('后继')),
+     '先修在左、后继在右');
+  ok(m.ys >= 3, `节点纵向铺开，不是挤在一行（${m.ys} 个不同的 y）`);
+  ok(m.rowGap >= 18, `同列相邻节点间距够放标签（最小 ${m.rowGap}px）`);
+  ok(m.nNodes > 10 && m.nEdges > 5, `图里有内容（${m.nNodes} 节点 / ${m.nEdges} 边）`);
+
+  // 钻取：点一个非中心节点，应以它为新中心
+  const drill = await page.evaluate(() => {
+    const g = [...document.querySelectorAll('#mapSvg .mnode')].find(e => !e.classList.contains('center'));
+    const nm = g.querySelector('text').textContent;
+    g.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    return { nm, now: document.getElementById('mapName').textContent };
+  });
+  ok(drill.now === drill.nm, `点节点能以它为新中心（${drill.nm} → ${drill.now}）`);
+
+  // Esc 关闭
+  await page.keyboard.press('Escape');
+  await sleep(200);
+  ok(await page.evaluate(() => document.getElementById('map').hidden), 'Esc 能关闭脉络视图');
+}
+
 console.log('\n[9] 跨学段抽检：锥形从底到顶都要能飞准');
 {
   // 单验一个节点不算数。锥形底部（小学，半径小、y 很负）和顶部（高中，半径大、y 很正）

@@ -44,6 +44,8 @@ body{
 
 /* ---- masthead ---- */
 #head{top:34px;left:38px;max-width:400px;pointer-events:none}
+#head .attr2{color:var(--muted);font-size:10px;line-height:1.55}
+#head .attr2 b{color:var(--ink2);font-weight:600}
 #head .eyebrow{
   font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
   display:flex;align-items:center;gap:9px;margin-bottom:18px;
@@ -106,6 +108,8 @@ body{
   max-height:calc(100vh - 140px);overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 #card.on{opacity:1;pointer-events:auto}
+.cardacts{display:flex;align-items:center;gap:9px;margin:10px 0 4px}
+.cardact-hint{font-size:10.5px;color:var(--muted);line-height:1.4}
 #card .eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;
   display:flex;align-items:center;gap:7px}
 #card .eyebrow .sw{width:7px;height:7px;border-radius:50%;flex:none}
@@ -199,6 +203,41 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #tools .btn:focus-visible{
   outline:2px solid var(--acc);outline-offset:3px;border-radius:6px;
 }
+
+/* ================= 二维知识脉络 ================= */
+#map{
+  inset:0;background:rgba(9,10,13,.975);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;z-index:40;padding:0;
+}
+#map[hidden]{display:none}
+#mapBar{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px 20px;border-bottom:1px solid var(--line);flex:none;
+}
+.mtitle{display:flex;align-items:baseline;gap:12px;min-width:0}
+.mtitle b{font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mtitle span{font-size:12px;color:var(--muted);white-space:nowrap}
+.mtools{display:flex;align-items:center;gap:6px;flex:none}
+.mlab{font-size:11px;color:var(--muted);margin-right:2px}
+#mapBody{flex:1;overflow:auto;padding:10px 16px 24px}
+#mapSvg{display:block;min-width:100%;max-height:100%}
+#mapTip{
+  position:absolute;left:20px;bottom:14px;font-size:11px;color:var(--muted);
+  pointer-events:none;
+}
+#map .btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e}
+/* 脉络里的节点 */
+.mnode{cursor:pointer}
+.mnode circle{stroke:#0b0c10;stroke-width:1.5}
+.mnode text{font-size:11px;fill:var(--ink2);paint-order:stroke;stroke:#0b0c10;
+  stroke-width:3px;stroke-linejoin:round}
+.mnode:hover text{fill:var(--ink)}
+.mnode.center circle{stroke:#fff;stroke-width:2.5}
+.mnode.center text{fill:#fff;font-size:13px;font-weight:600}
+.medge{fill:none;stroke-width:1.4;opacity:.75}
+.medge.sus{stroke-dasharray:4 3;opacity:.95}
+.mtag{font-size:9px;fill:var(--muted)}
+.mcol{font-size:10px;fill:var(--muted);letter-spacing:.1em}
 
 /* ---- search ---- */
 /* 7,938 个点，靠鼠标点是找不到的。搜索是唯一入口。
@@ -321,8 +360,11 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
        #head 是 pointer-events:none，而 pointer-events 会继承，
        所以这里必须显式打开，否则「源码」链接点不动。 -->
   <div id="attr">
-    <b>数据</b> K12-KGraph · 北京大学 PKU-DCAI<br>
+    <b>知识点数据</b> K12-KGraph · 北京大学 PKU-DCAI<br>
     arXiv:2605.09635 · CC BY-NC-SA 4.0<br>
+    <b>本项目补的</b> 能力底座 · 自建概念 · 教材引入路径 · 模型重建的先修边<br>
+    <span class="attr2">边上的徽标分得出哪条来自数据集、哪条是我们补的。<br>
+    K12-KGraph 本身是跨国的知识点集，这里按<b>人教版</b>教材排序 —— 两套是分开的，留着做对照。</span><br>
     <b>可视化与校验</b> 本项目自建 · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
   </div>
 </div>
@@ -345,12 +387,38 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   <p class="en mono" id="cEn"></p>
   <p class="desc" id="cDesc"></p>
   <div class="meta" id="cMeta"></div>
+  <!-- 知识脉络入口：卡片是「列表」，这是「脉络」。
+       放在 meta 下面、依赖列表上面 —— 依赖行可能很长（后继最多 14 条），
+       按钮夹在中间会找不到。 -->
+  <div class="cardacts">
+    <button class="btn" id="cMap">知识脉络</button>
+    <span class="cardact-hint">展开它的先修链与后继链</span>
+  </div>
   <!-- 前后依赖直接列出来并且可点。只给数量（「要先掌握 4 个」）等于
        还得回去猜是哪 4 个 —— 查完了还是不知道。点一下就跳过去，
        于是这一页从「查一个点」变成「顺着链条走」。
        7,938 个节点里直接前置/后继最多各 7 个，所以能全列出来，
        不需要「显示前 N 条」那种截断。 -->
   <div class="chain" id="cChain"></div>
+</div>
+
+<!-- 二维知识脉络：点开一个知识点后展开它的先修链与后继链。
+     跟右边那张卡片是同一份数据的两种看法：卡片是「列表」，
+     这里是「脉络」—— 先修在左一路铺过来，后继在右铺出去。
+     数据全在 payload 里（D.edges），前端现算，不用改后端。 -->
+<div class="ui" id="map" hidden>
+  <div id="mapBar">
+    <div class="mtitle"><b id="mapName"></b><span id="mapSub"></span></div>
+    <div class="mtools">
+      <span class="mlab">展开</span>
+      <button class="btn" id="mD1" data-d="1">1 层</button>
+      <button class="btn" id="mD2" data-d="2">2 层</button>
+      <button class="btn" id="mD3" data-d="3">3 层</button>
+      <button class="btn" id="mClose">关闭</button>
+    </div>
+  </div>
+  <div id="mapBody"><svg id="mapSvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <div id="mapTip">点任意节点 → 以它为中心重画 · Esc 关闭</div>
 </div>
 
 <div class="ui" id="hint">
@@ -420,6 +488,12 @@ AGES.forEach((age, li) => {
 
 /* ================= adjacency ================= */
 const pre = new Map(), unlocks = new Map();
+/* **挂到 window 上。** const/let 声明在全局**词法**环境里，
+   自动化脚本（puppeteer evaluate）注入的代码拿不到它们 ——
+   实测 evaluate 里 `typeof pre` / `typeof D` 全是 not defined，
+   而 function 声明的 openMap 却能调到。
+   二维脉络视图要读这些结构，挂一份到 window 才够得着。 */
+window.__kg = {D, NODES, SUBJ, pre, unlocks};
 for(const e of D.edges){
   const t = e[0], p = e[1], src = e[2] || 0, sus = e[3] || 0;
   if(!pre.has(t)) pre.set(t, []); pre.get(t).push([p, src, sus]);
@@ -908,7 +982,9 @@ btn('tReset', ()=>{
 
 /* ================= info card ================= */
 const card = document.getElementById('card');
+let cardId = -1;                 // 卡片当前显示的是哪个节点
 function showCard(id){
+  cardId = id;
   const n = NODES[id], s = SUBJ[n.s];
   card.querySelector('.sw').style.background = s.c;
   document.getElementById('cEyebrow').textContent = s.zh + ' · ' + n.dz + ' · ' + n.a1 + '–' + n.a2 + ' 岁';
@@ -1093,8 +1169,191 @@ addEventListener('keydown', e=>{
   }
 });
 
+/* **给 IIFE 外面留一个出口。**
+   整个主脚本是一个 IIFE —— `const pre` / `const NODES` / `let cardId`
+   全在它内部，外面（以及 puppeteer 的 evaluate）都够不着。
+   二维脉络视图的代码要放在 IIFE 外面（它自己是一整块），
+   就得从这里递东西出去。 */
+window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId};
+
 loop();
 })();
+/* ================= 二维知识脉络 ================= */
+/* 点开一个知识点后，展开它的先修链（往左）和后继链（往右）。
+   跟右边那张卡片是同一份数据的两种看法：卡片是「列表」，
+   这里是「脉络」—— 看得见一条链是怎么一层层铺到当前的。
+
+   为什么分层而不是力导向：先修关系有天然的层次（更远的先修在更左），
+   力导向会把一条 8 层的链揉成一团球，而「脉络」要的就是层次感。
+   层内按教材顺序排，所以同一层里上下也读得出教学先后。 */
+
+const KG = window.__kg;
+const kgEsc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const MAP_SRC_COLOR = ['#5b6472', '#7fd3ff', '#ffc477', '#c6a7ff', '#6ee7b7', '#ffd166'];
+const MAP_COL_W = 250, MAP_ROW_H = 40;
+let mapRoot = -1, mapDepth = 2;
+
+function mapGather(root, dir, maxd){
+  // dir=-1 往先修方向（逆向走 pre），+1 往后继方向（走 unlocks）。
+  // 记录每个节点到 root 的**最长**层数 —— 用最短的话，
+  // 一个既远又近的节点会排到靠里的列，图上就出现「跳过」的线。
+  const out = new Map();
+  let frontier = [root];
+  for(let d=1; d<=maxd; d++){
+    const nx = [];
+    for(const cur of frontier){
+      const rows = dir < 0 ? (KG.pre.get(cur)||[]) : (KG.unlocks.get(cur)||[]);
+      for(const r of rows){
+        const nid = r[0];
+        if(nid === root) continue;
+        const prev = out.get(nid);
+        if(!prev){ out.set(nid, {d, src:r[1], sus:r[2]}); nx.push(nid); }
+        else if(d > prev.d){ prev.d = d; nx.push(nid); }
+      }
+    }
+    frontier = nx;
+    if(!frontier.length) break;
+  }
+  return out;
+}
+
+function mapLayout(root){
+  const anc = mapGather(root, -1, mapDepth);
+  const des = mapGather(root, +1, Math.min(mapDepth, 2));
+  // 按层分列。左侧先修（越远越靠左），右侧后继。
+  const cols = new Map();          // 列号 → [节点]
+  const put = (col, item) => {
+    if(!cols.has(col)) cols.set(col, []);
+    cols.get(col).push(item);
+  };
+  put(0, {id:root, d:0, src:0, sus:0, center:true});
+  for(const [nid, v] of anc) put(-v.d, {id:nid, ...v});
+  for(const [nid, v] of des) put(v.d, {id:nid, ...v});
+  // 层内按教材顺序排（oc = 所属单元在 CNS 里的下标），读得出教学先后
+  for(const arr of cols.values())
+    arr.sort((a,b)=> (KG.NODES[a.id].oc - KG.NODES[b.id].oc) || (a.id - b.id));
+  // y 坐标：**所有列共享同一个 y 范围**，各自在其中均匀铺满。
+  // 原来每列各自居中，节点多的列把画布撑高，节点少的列就在中间一小段 ——
+  // 于是整张图上半部分空着，下半部分挤成一团。
+  const pos = new Map();
+  let maxRows = 0;
+  for(const arr of cols.values()) maxRows = Math.max(maxRows, arr.length);
+  const span = (maxRows - 1) * MAP_ROW_H;
+  for(const [col, arr] of cols){
+    // 本列节点少时，按比例压缩间距，铺满同一段高度
+    const step = arr.length > 1 ? span / (arr.length - 1) : 0;
+    arr.forEach((it, i) => pos.set(it.id, {x: col * MAP_COL_W, y: span/2 - i * step, it}));
+  }
+  return {cols, pos, anc, des, maxRows};
+}
+
+function mapRender(){
+  const svg = document.getElementById('mapSvg');
+  const root = mapRoot, L = mapLayout(root);
+  const {cols, pos} = L;
+  const nRoot = KG.NODES[root];
+
+  // 视图范围
+  let minX=0, maxX=0, minY=0, maxY=0;
+  for(const {x,y} of pos.values()){
+    minX=Math.min(minX,x); maxX=Math.max(maxX,x);
+    minY=Math.min(minY,y); maxY=Math.max(maxY,y);
+  }
+  const PAD=70, W=maxX-minX+PAD*2, H=maxY-minY+PAD*2;
+  const tx = v => v - minX + PAD;
+  // **y 必须用自己的平移函数。** 原来 y 也用 tx()，
+  // 而 tx 是按 minX（水平的最小值，通常是负的）平移的 ——
+  // 一整套节点被推到画布下面去，只剩底部一条。
+  const ty = v => v - minY + PAD;
+
+  // 边：先画，避免盖住节点
+  const edges = [];
+  for(const [nid, v] of L.anc) edges.push([nid, root, v.src, v.sus]);
+  for(const [nid, v] of L.des) edges.push([root, nid, v.src, v.sus]);
+  const edgeSvg = edges.map(([a,b,src,sus])=>{
+    const A=pos.get(a), B=pos.get(b);
+    if(!A || !B) return '';
+    const mx=(A.x+B.x)/2;
+    const cls='medge'+(sus?' sus':'');
+    const col=MAP_SRC_COLOR[src]||MAP_SRC_COLOR[0];
+    return '<path class="'+cls+'" stroke="'+col+'" d="M '+tx(A.x)+' '+tx(A.y)+
+           ' C '+tx(mx)+' '+ty(A.y)+' '+tx(mx)+' '+ty(B.y)+' '+tx(B.x)+' '+ty(B.y)+'"/>';
+  }).join('');
+
+  // 列标题
+  const colSvg = [...cols.entries()].map(([col,arr])=>{
+    const x = tx(col*MAP_COL_W);
+    const t = col===0 ? '当前' : (col<0 ? '先修 '+(-col)+' 层' : '后继 '+col+' 层');
+    return '<text class="mcol" x="'+x+'" y="'+(ty(minY)-26)+'" text-anchor="middle">'+t+'</text>';
+  }).join('');
+
+  // 节点
+  const nodeSvg = [...pos.entries()].map(([nid,p])=>{
+    const n=KG.NODES[nid], c=KG.SUBJ[n.s].c;
+    const r = p.it.center ? 8 : 5.5;
+    const dy = p.it.center ? -16 : -11;
+    const tag = '<text class="mtag" x="'+tx(p.x)+'" y="'+(ty(p.y)+14)+'" text-anchor="middle">'+kgEsc(n.dz)+'</text>';
+    return '<g class="mnode'+(p.it.center?' center':'')+'" data-id="'+nid+'" tabindex="0">'+
+      '<circle cx="'+tx(p.x)+'" cy="'+ty(p.y)+'" r="'+r+'" fill="'+c+'"/>'+
+      '<text x="'+tx(p.x)+'" y="'+(ty(p.y)+dy)+'" text-anchor="middle">'+kgEsc(KG.label(n))+'</text>'+
+      tag+'</g>';
+  }).join('');
+
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  // 等比缩放并居中 —— 顶部对齐的话，整张图会浮在容器上沿，下面空一大块。
+  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  svg.innerHTML = edgeSvg + colSvg + nodeSvg;
+
+  document.getElementById('mapName').textContent = KG.label(nRoot);
+  const aCount = L.anc.size, dCount = L.des.size;
+  document.getElementById('mapSub').textContent =
+    '先修 '+aCount+' 个 · 后继 '+dCount+' 个 · 展开 '+mapDepth+' 层';
+}
+
+function openMap(id){
+  mapRoot = id;
+  document.getElementById('map').hidden = false;
+  mapRender();
+}
+function closeMap(){ document.getElementById('map').hidden = true; mapRoot = -1; }
+
+document.getElementById('mClose').addEventListener('click', closeMap);
+/* 卡片上的「知识脉络」：用委托绑定，避免每次 showCard 都挂一个新 listener。 */
+document.getElementById('cMap').addEventListener('click', ()=>{
+  // 用 cardId 不用 focus —— focus 是 let 声明（全局词法环境），
+  // 而且「卡片正在显示哪个节点」本来就是这里要的语义。
+  const cid = KG.cardId();
+  if(cid >= 0) openMap(cid);
+});
+document.getElementById('mapBody').addEventListener('click', e=>{
+  const g = e.target.closest('.mnode');
+  if(!g) return;
+  const nid = +g.dataset.id;
+  if(nid === mapRoot) return;
+  mapRoot = nid; mapRender();
+});
+document.getElementById('mapBody').addEventListener('keydown', e=>{
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  const g = e.target.closest && e.target.closest('.mnode');
+  if(!g) return;
+  e.preventDefault();
+  const nid = +g.dataset.id;
+  if(nid !== mapRoot){ mapRoot = nid; mapRender(); }
+});
+for(const b of document.querySelectorAll('#map .mtools .btn[data-d]')){
+  b.addEventListener('click', ()=>{
+    mapDepth = +b.dataset.d;
+    for(const o of document.querySelectorAll('#map .mtools .btn[data-d]'))
+      o.setAttribute('aria-pressed', String(+o.dataset.d === mapDepth));
+    if(mapRoot >= 0) mapRender();
+  });
+}
+document.getElementById('mD2').setAttribute('aria-pressed','true');
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && mapRoot >= 0){ closeMap(); }
+});
 </script>
 </body>
 </html>
