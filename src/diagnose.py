@@ -84,13 +84,28 @@ ALIAS = {  # 概念名在数据里可能长这样
 
 
 class KG:
+    # 成品 payload 里的 7 档来源（跟 build_viz.py 的 TIER_SRC 一致）
+    TIER_SRC = {0: "dataset", 1: "model", 2: "l0", 3: "derived",
+                4: "intro", 5: "fix", 6: "structmap"}
+
     def __init__(self, path=GRAPH, viz_html=None):
         g = json.load(open(path, encoding="utf-8"))
         self.g = g
         self.nodes = {n["id"]: n for n in g["nodes"]}
         self.inb = collections.defaultdict(list)
         self.outb = collections.defaultdict(list)
+        # **先修边不用 graph.json 的，用成品 payload 的。**
+        # graph.json 是**裁决前**的素材；build_viz 之后还有 247 组方向冲突、
+        # 56 条环剪、46 条修正，页面上是**裁决后**的图。
+        # 诊断层用素材、网页用成品，就等于「命令行说缺 A、网页说缺 B」——
+        # 实测 252 个节点的前置集合对不上（diagnose 多 321 条、页面多 14 条）。
+        final = self._final_prereq(viz_html)
         for e in g["edges"]:
+            if e["type"] == "prerequisites_for":
+                continue          # 先修边统一走成品口径
+            self.inb[e["to"]].append(e)
+            self.outb[e["from"]].append(e)
+        for e in final:
             self.inb[e["to"]].append(e)
             self.outb[e["from"]].append(e)
         self.by_name = {}
@@ -98,6 +113,50 @@ class KG:
             if n["label"] in ("Concept", "Skill") and n["name"].strip():
                 self.by_name.setdefault(n["name"], []).append(n)
         self.units = self._load_units(viz_html)
+
+    def _final_prereq(self, viz_html):
+        """成品图（index.html 的 payload）里的先修边 —— **唯一权威**。
+
+        每条边带上来源档位和「可疑」标记；从素材里把证据补回来
+        （证据只用来给人看，不参与边的取舍）。
+        """
+        viz_html = viz_html or (BASE / "index.html")
+        s = open(viz_html, encoding="utf-8").read()
+        m = re.search(r'<script id="data" type="application/json">(.*?)</script>',
+                      s, re.S)
+        if not m:
+            raise SystemExit("在 index.html 里找不到 payload —— 先跑 python3 src/build_viz.py")
+        D = json.loads(m.group(1))
+        ns = D["nodes"]
+
+        # 证据：从三份素材里按 (from,to) 查回来
+        evid = {}
+        for f in (GRAPH, BASE / "data" / "normalized" / "lmm-merged.json",
+                  BASE / "data" / "normalized" / "selfbuilt-edges.json"):
+            if not pathlib.Path(f).exists():
+                continue
+            d = json.load(open(f, encoding="utf-8"))
+            if "edges" in d and isinstance(d["edges"], list) and d["edges"] and \
+                    "from" in d["edges"][0]:
+                for e in d["edges"]:
+                    if e.get("type") == "prerequisites_for":
+                        evid.setdefault((e["from"], e["to"]), e.get("evidence") or "")
+            for r in d.get("resolved", []):
+                if r.get("kind") == "new":
+                    evid.setdefault((r["from"], r["to"]), r.get("why") or "")
+
+        out = []
+        for e in D["edges"]:
+            succ, pred, tier, sus = e[0], e[1], e[2], e[3]
+            out.append({
+                "from": ns[pred][5], "to": ns[succ][5],
+                "type": "prerequisites_for",
+                "fromName": ns[pred][1], "toName": ns[succ][1],
+                "source": self.TIER_SRC.get(tier, "dataset"),
+                "suspect": sus,
+                "evidence": evid.get((ns[pred][5], ns[succ][5]), ""),
+            })
+        return out
 
     def _load_units(self, viz_html):
         """教材顺序单元表（build_viz.py 产出）。先修边在数学这边几乎全空，
@@ -230,13 +289,42 @@ class KG:
         self.selfbuilt_edges = added
         return added
 
+    def inb_all_prereq(self):
+        """全部先修边（跨所有节点）。"""
+        for nid, es in self.inb.items():
+            for e in es:
+                if e.get("type") == "prerequisites_for":
+                    yield e
+
+    def filter_source(self, only=None):
+        """按来源过滤先修边。only=None（全都要）/ 'dataset' / 'model' / 'selfbuilt'。
+
+        **为什么是「过滤」而不是原来的「叠加」：**
+        诊断层的先修边现在直接取成品 payload —— 7 档全在里面。
+        再「叠加」一遍模型边和自建层边就会**重复计数**。
+        原来那套「先只有上游边，--model 再补上模型边」的设计，
+        是建立在「诊断读的是裁决前的素材」这个前提上的；
+        前提没了，叠加就没有意义了。
+        """
+        if not only:
+            return
+        keep = {"dataset": ("dataset",), "model": ("model",),
+                "selfbuilt": ("l0", "derived", "intro", "fix", "structmap")}.get(only)
+        if keep is None:
+            return
+        for d in (self.inb, self.outb):
+            for nid in list(d.keys()):
+                d[nid] = [e for e in d[nid]
+                          if e.get("type") != "prerequisites_for"
+                          or e.get("source") in keep]
+
     def prereq_of(self, nid, only=None):
         """→ [(节点, 边)]，only='dataset' 时只看数据集自己的边。"""
         out = []
         for e in self.inb.get(nid, []):
             if e["type"] != "prerequisites_for":
                 continue
-            if only == "dataset" and e.get("source") == "model":
+            if only == "dataset" and e.get("source") not in ("dataset",):
                 continue
             n = self.nodes.get(e["from"])
             if n:
@@ -249,17 +337,23 @@ def main():
     ap.add_argument("concept", nargs="?", help="概念名")
     ap.add_argument("--id", help="直接给节点 id")
     ap.add_argument("--explain", action="store_true", help="打印判定依据")
-    ap.add_argument("--model", action="store_true",
-                    help="叠加模型重建的先修边（来源会单独标注，不跟数据集混算）")
+    ap.add_argument("--only", choices=["dataset", "model", "selfbuilt"],
+                    help="只看某一档来源的先修边（默认全都要）")
+    ap.add_argument("--card", help="导出选题卡到这个文件（Markdown）")
     args = ap.parse_args()
 
     kg = KG()
-    if args.model:
-        n = kg.overlay_model_edges()
-        print(f"[已叠加模型重建的先修边 {n} 条，来源标记 model]")
-        m = kg.overlay_selfbuilt_edges()
-        print(f"[已叠加自建层边 {m} 条（能力底座 l0 + 自建概念 derived）]")
-        print()
+    # **先修边现在直接取成品 payload** —— 7 档全在里面，
+    # 跟网页上看到的是同一张图（原来诊断读的是裁决前的素材，
+    # 252 个节点的前置集合跟页面对不上）。
+    np_total = sum(1 for e in kg.inb_all_prereq())
+    by_src = collections.Counter(e["source"] for e in kg.inb_all_prereq())
+    print(f"[先修边取自成品图（跟网页同一张）：{np_total} 条]")
+    print("  " + "  ".join(f"{kg.TIER_SRC.get(k, k)} {v}" for k, v in sorted(by_src.items())))
+    if args.only:
+        kg.filter_source(args.only)
+        print(f"[已过滤：只看 {args.only}]")
+    print()
     node = kg.nodes[args.id] if args.id else (kg.find(args.concept) if args.concept else None)
     if node is None:
         ap.error("给个概念名或者 --id（已登记子知识表的概念：" + "、".join(SUBKNOWLEDGE) + "）")

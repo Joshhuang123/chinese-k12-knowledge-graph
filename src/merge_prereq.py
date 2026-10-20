@@ -152,8 +152,26 @@ def main():
                 if st in AUTO and tid == nid:
                     st, how = "SELF", "自己给自己当前置"
                 if st in AUTO and nid in ix.node_of:
-                    oidx, islot = order.seq_slot(nid), order.seq_slot(tid)
-                    if oidx >= 0 and islot >= 0 and islot > oidx:
+                    # **册序倒挂：前置所在的册比后继更晚。**
+                    #
+                    # 原来比的是 `order.seq_slot`（**单元**位置），比文档写的严 ——
+                    # 同册里「前置在后面的单元」也被扔掉，906 条里 363 条是这种。
+                    # 而本项目自己的原则是「顺序 ≠ 先修：教材把 A 排在 B 前面
+                    # 不等于学 B 必须先会 A」—— 这条原则被用在了跨册判断上，
+                    # 却没用在同册的单元顺序上。
+                    #
+                    # 现在统一走 books.is_reversed：同科比册序、跨科比学年。
+                    # 跟 validate.py 的 BOOK_REVERSED、flag_suspect.py 的
+                    # 「册序倒挂」是**同一套口径**。
+                    #
+                    # **参数顺序别搞反**：is_reversed(from, to) 问的是
+                    # 「from 是不是比 to 晚」。这里 from 必须是**前置方**。
+                    # 传反了会把所有正常的边判成倒挂（实测 906 → 4,786）。
+                    fb = ix.node_of[tid].get("book")     # 前置方所在册
+                    tb = ix.node_of[nid].get("book")     # 目标所在册
+                    same_subj = ix.node_of[nid].get("subject") == \
+                        ix.node_of[tid].get("subject")
+                    if fb and tb and books.is_reversed(fb, tb, same_subj):
                         queue.append({
                             "kind": "BOOK_REVERSED", "target": nid, "targetName": tgt["name"],
                             "book": tgt["bookZh"], "type": ptype, "name": p.get("name"),

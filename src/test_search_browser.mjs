@@ -420,6 +420,174 @@ console.log('\n[8c] 二维知识脉络：能打开、分层正确、能钻取');
   ok(await page.evaluate(() => document.getElementById('map').hidden), 'Esc 能关闭脉络视图');
 }
 
+console.log('\n[8c-2] 脉络视图画的每条线都必须在图谱里真实存在');
+{
+  // **这条断言是本轮修 ISSUE-25 F1/F2 时加的。**
+  // 原来脉络视图把所有节点直连到根（`edges.push([nid, root, ...])`），
+  // 画出来的线有一半以上在图谱里根本不存在 ——
+  // 真实关系「正比例函数 → 函数 → 二次函数」被画成「正比例函数 ──→ 二次函数」。
+  // 线是断言不是画法偏好：看图的人会得出图谱没说过的话。
+  //
+  // 判别力：把模板改回直连根，这一条立刻红（实测 56.9% 的线对不上）。
+  const probes = ['二次函数', '函数', '光合作用', '电流', '细胞', '力'];
+  let checked = 0, bad = 0, pushed = 0, details = [];
+  for (const kw of probes) {
+    await page.evaluate(() => { const q = document.getElementById('q'); q.value = ''; q.dispatchEvent(new Event('input')); });
+    await page.click('#q');
+    await page.type('#q', kw, { delay: 15 });
+    await sleep(300);
+    await page.keyboard.press('Enter');
+    await sleep(1400);
+    await page.click('#cMap');
+    await sleep(900);
+    const r = await page.evaluate(() => {
+      const KG = window.__kg;
+      // 图谱里真实存在的边：payload 的 [后继, 先修, ...]
+      const real = new Set();
+      for (const e of KG.D.edges) real.add(e[1] + '>' + e[0]);
+      const edges = [...document.querySelectorAll('#mapSvg .medge')];
+      const bad = edges.filter(p => !real.has(p.dataset.a + '>' + p.dataset.b));
+      // 直接前置必须落在「先修 1 层」那一列，不能被推到更远
+      const root = KG.NODES.findIndex(n => n.zh === document.getElementById('mapName').textContent);
+      const direct = new Set((KG.pre.get(root) || []).map(r => r[0]));
+      const cols = new Map();
+      for (const g of document.querySelectorAll('#mapSvg .mnode')) {
+        const cx = +g.querySelector('circle').getAttribute('cx');
+        cols.set(cx, (cols.get(cx) || 0) + 1);
+      }
+      const xs = [...cols.keys()].sort((a, b) => a - b);
+      // 第 1 层的列 = 中心左边最近的那一列
+      const oneLayerX = xs.length >= 2 ? xs[1] : null;
+      const pushed = [...document.querySelectorAll('#mapSvg .mnode')].filter(g => {
+        const id = +g.dataset.id;
+        if (!direct.has(id)) return false;
+        return +g.querySelector('circle').getAttribute('cx') !== oneLayerX;
+      }).map(g => KG.NODES[+g.dataset.id].zh);
+      return { total: edges.length, bad: bad.length, pushed, rootFound: root >= 0 };
+    });
+    checked += r.total; bad += r.bad; pushed += r.pushed.length;
+    if (r.bad) details.push(`${kw}: ${r.bad}/${r.total} 条对不上`);
+    if (r.pushed.length) details.push(`${kw}: 直接前置被推远 ${r.pushed.join('、')}`);
+    await page.keyboard.press('Escape');
+    await sleep(250);
+  }
+  ok(bad === 0, `脉络视图的 ${checked} 条线全部在图谱里存在（对不上 ${bad} 条）`,
+     details.join('\n      '));
+  ok(pushed === 0, `直接前置全部落在「先修 1 层」列（被推远 ${pushed} 个）`,
+     details.join('\n      '));
+}
+
+console.log('\n[8c-3] 7 档来源色一个都不能少，线的来源要有图例');
+{
+  // 原来 MAP_SRC_COLOR 只有 6 个颜色，tier6「教材结构图」回退成
+  // tier0「上游」的灰 —— 恰恰是最该跟别的档区分的那一档。
+  const c = await page.evaluate(() => {
+    // 从页面上量：取一条 tier6 的边，看它渲成什么色
+    const KG = window.__kg;
+    const six = KG.D.edges.find(e => e[2] === 6);
+    const zero = KG.D.edges.find(e => e[2] === 0);
+    return { hasSix: !!six, hasZero: !!zero };
+  });
+  ok(c.hasSix, 'payload 里有 tier6（教材结构图）的边');
+
+  // 打开一个含 tier6 边的节点的脉络，量它的线色
+  await page.evaluate(() => { const q = document.getElementById('q'); q.value = ''; q.dispatchEvent(new Event('input')); });
+  await page.click('#q');
+  await page.type('#q', '不等式', { delay: 15 });
+  await sleep(300);
+  await page.keyboard.press('Enter');
+  await sleep(1400);
+  await page.click('#cMap');
+  await sleep(900);
+  const r = await page.evaluate(() => {
+    const KG = window.__kg;
+    const real = new Set();
+    for (const e of KG.D.edges) real.add(e[1] + '>' + e[0]);
+    const out = { tier6: null, tier0: null };
+    for (const p of document.querySelectorAll('#mapSvg .medge')) {
+      const src = +p.dataset.src;
+      if (src === 6 && out.tier6 === null) out.tier6 = p.getAttribute('stroke');
+      if (src === 0 && out.tier0 === null) out.tier0 = p.getAttribute('stroke');
+    }
+    out.legend = document.getElementById('mapLegend').classList.contains('on');
+    out.legendText = document.getElementById('mapLegend').textContent.replace(/\s+/g, ' ').trim();
+    return out;
+  });
+  ok(r.tier6 !== null, '脉络视图里画出了 tier6 的边');
+  ok(r.tier6 && r.tier6 !== r.tier0,
+     `tier6（教材结构图）的线色跟 tier0（上游）不一样（${r.tier6} vs ${r.tier0}）`);
+  ok(r.legend, '按来源着色时，脉络视图里有线的来源图例');
+  ok(/教材结构图/.test(r.legendText) || !/上游/.test(r.legendText),
+     `图例里的档位名跟实际用到的档位对得上（${r.legendText.slice(0, 60)}）`);
+  await page.keyboard.press('Escape');
+  await sleep(250);
+}
+
+console.log('\n[8c-4] 「卡在哪」：先修闭包要排得出优先级');
+{
+  // 这是本项目真正要回答的那个问题：
+  // 「朋友最近在二次函数上卡住，是因为什么前置的缺失」。
+  // 脉络视图给的是「有哪些前置」（事实），这个面板给的是「先补哪一块」（判断）。
+  await page.evaluate(() => { const q = document.getElementById('q'); q.value = ''; q.dispatchEvent(new Event('input')); });
+  await page.click('#q');
+  await page.type('#q', '二次函数', { delay: 20 });
+  await sleep(300);
+  await page.keyboard.press('Enter');
+  await sleep(1400);
+  await page.click('#cGap');
+  await sleep(800);
+  const g = await page.evaluate(() => {
+    const KG = window.__kg;
+    const items = [...document.querySelectorAll('#gapList li[data-id]')].map(li => ({
+      id: +li.dataset.id,
+      name: li.querySelector('.nm').textContent,
+      score: parseFloat(li.querySelector('.sc').textContent),
+      why: li.querySelector('.why').textContent.replace(/\s+/g, ' ').trim(),
+    }));
+    // 排出来的必须是**真祖先**（沿先修边能走到）
+    const anc = new Set();
+    let fr = [KG.cardId()];
+    for (let d = 0; d < 3; d++) {
+      const nx = [];
+      for (const u of fr) for (const r of (KG.pre.get(u) || [])) {
+        if (!anc.has(r[0])) { anc.add(r[0]); nx.push(r[0]); }
+      }
+      fr = nx;
+    }
+    return {
+      open: !document.getElementById('gap').hidden,
+      name: document.getElementById('gapName').textContent,
+      sub: document.getElementById('gapSub').textContent,
+      items,
+      notAncestor: items.filter(i => !anc.has(i.id)).map(i => i.name),
+      sorted: items.every((v, i, a) => i === 0 || a[i-1].score >= v.score),
+      rootFirst: items.length ? items[0].why.includes('根') || items[0].why.includes('很早') : false,
+    };
+  });
+  ok(g.open, '「卡在哪」面板能打开');
+  ok(g.name === '二次函数', `面板中心是当前知识点（${g.name}）`);
+  ok(g.items.length > 0, `排出了 ${g.items.length} 个候选`);
+  ok(g.notAncestor.length === 0,
+     `排出来的每个候选都是真的先修祖先（不是祖先的：${g.notAncestor.join('、') || '无'}）`);
+  ok(g.sorted, '候选按分数降序');
+  ok(g.rootFirst, '排在最前面的是「链的根」或「很早学」的（最该先补的那块）');
+  ok(/直接前置/.test(g.items[0].why) || /隔 \d+ 层/.test(g.items[0].why),
+     `第一条给了人话理由（${g.items[0].why.slice(0, 50)}）`);
+
+  // 选题卡：复制出来的内容要能直接进内容生产
+  const card = await page.evaluate(() => {
+    const KG = window.__kg;
+    // 复用面板里的生成逻辑：复制按钮走剪贴板，这里直接取文本
+    const btn = document.getElementById('gapCopy');
+    return { hasBtn: !!btn, label: btn?.textContent };
+  });
+  ok(card.hasBtn, '有「复制选题卡」按钮');
+
+  await page.keyboard.press('Escape');
+  await sleep(200);
+  ok(await page.evaluate(() => document.getElementById('gap').hidden), 'Esc 能关闭「卡在哪」');
+}
+
 console.log('\n[8d] 配色：点和线的颜色都能选');
 {
   await page.click('#tPal');

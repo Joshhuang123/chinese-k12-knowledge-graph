@@ -16,7 +16,7 @@
 import pathlib
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import books
@@ -76,6 +76,15 @@ class Order:
                 self.chapter_of_node[e["from"]].append(e["to"])
                 appears_of[e["to"]].append(e["from"])
         self.appears_of = appears_of
+        # 容器 → 它所属的 Chapter（小学直接指 Chapter，自己就是自己）
+        self.chapter_of_container = {}
+        for cid in list(appears_of) + list(chapter_of.keys()):
+            if self.node_of.get(cid, {}).get("label") == "Chapter":
+                self.chapter_of_container[cid] = cid
+            elif cid in chapter_of:
+                self.chapter_of_container[cid] = chapter_of[cid]
+            else:
+                self.chapter_of_container[cid] = cid
 
         # ── 章级 leads_to（只收 Chapter→Chapter，混进节/册全是噪音）──
         self.chap_pre, self.chap_next = defaultdict(list), defaultdict(list)
@@ -135,12 +144,44 @@ class Order:
         初中/高中概念挂在 Section 上，Chapter 层自己一个概念都没有 ——
         按编号最小挑的话，每个知识点都会落在那个点不动的章上，
         「下一单元」按钮点了没反应。
+
+        **同一个概念可能在好几个容器里出现**（跨章回顾、习题引用…）。
+        原来在这些容器里直接取**最早**的那个，但「最早」常常只是
+        「被提一句」而不是「被教」：
+
+            光合作用[七上] 出现在 第一章 认识生物（提一句）、
+                          第四章 绿色植物是生物圈中有机物的制造者（真正教）、
+                          第五章 绿色植物与生物圈中的碳-氧平衡（回顾）
+            取最早就落到了第一章 —— 教材顺序、上一/下一单元导航、
+            册序倒挂检测，全都跟着错。
+
+        改成两条规则：
+        ① **先只看节点自己那本册里的容器**。
+           「催化剂[九上]」在九上有个容器（课题3 制取氧气），
+           另有两个在必修二（回顾）。不先按册筛，它会被挪到必修二去 ——
+           而催化剂确实是九上教的。跨册的容器是**回顾/引用**，
+           跨学科的更是不同教材的同名概念。
+        ② 同一册内再按**所属 Chapter 归组**，取出现次数最多的那个 Chapter
+           —— 那才是它「住在」的章，再在该 Chapter 内取最早的容器。
+        全库 48 个知识点因此换了位置，同册倒挂里的 10 条假信号被消掉。
         """
         cs = self.container_of.get(nid) or []
         if not cs:
             return -1
         withconcept = [c for c in cs if c in self.first_concept]
-        return self.cn_pos[(withconcept or cs)[0]][0]
+        pool = withconcept or cs
+        # ① 先按节点自己那本册筛
+        own = self.node_of.get(nid, {}).get("book")
+        if own:
+            inown = [c for c in pool
+                     if self.node_of.get(c, {}).get("book") == own]
+            if inown:
+                pool = inown
+        # ② 同一册内按 Chapter 归组，取最多的那个
+        grp = Counter(self.chapter_of_container.get(c, c) for c in pool)
+        top = max(grp.values())
+        cands = [c for c in pool if grp[self.chapter_of_container.get(c, c)] == top]
+        return self.cn_pos[min(cands, key=lambda c: self.cn_pos[c][0])][0]
 
     def seq_pos(self, nid):
         """(学科内位次, 该学科单元总数)，定不出时 (None, total)。"""

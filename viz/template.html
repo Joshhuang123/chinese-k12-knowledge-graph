@@ -232,6 +232,12 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   display:flex;flex-direction:column;z-index:40;padding:0;
 }
 #map[hidden]{display:none}
+/* 「卡在哪」面板跟脉络视图一样的整屏覆盖 */
+#gap{
+  inset:0;background:rgba(9,10,13,.975);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;z-index:41;padding:0;
+}
+#gap[hidden]{display:none}
 #mapBar{
   display:flex;align-items:center;justify-content:space-between;gap:16px;
   padding:14px 20px;border-bottom:1px solid var(--line);flex:none;
@@ -243,13 +249,59 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 .mlab{font-size:11px;color:var(--muted);margin-right:2px}
 #mapBody{flex:1;overflow:auto;padding:10px 16px 24px;display:flex;align-items:center;justify-content:center}
 #mapSvg{display:block;min-width:100%;max-height:100%}
+/* 脉络视图里**线的来源色图例**。
+   配色面板写着「线：来源」，但图例只画点的颜色 ——
+   屏幕上七种颜色的线各代表什么，看的人无从知道。 */
+#mapLegend{
+  position:absolute;right:20px;top:64px;z-index:5;
+  display:none;flex-direction:column;gap:5px;
+  padding:9px 12px;border:1px solid var(--line);border-radius:8px;
+  background:rgba(12,14,20,.86);font-size:11px;color:var(--muted);
+}
+#mapLegend.on{display:flex}
+#mapLegend .lt{font-size:10px;color:#7c8496;margin-bottom:1px}
+#mapLegend .lr{display:flex;align-items:center;gap:7px;white-space:nowrap}
+#mapLegend .sw{width:16px;height:2.5px;border-radius:2px;flex:none}
 #mapTip{
   position:absolute;left:20px;bottom:14px;font-size:11px;color:var(--muted);
   pointer-events:none;
 }
 #map .btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e}
+/* 「卡在哪」面板 */
+#gapBody{flex:1;overflow:auto;padding:16px 22px 26px}
+#gapIntro{font-size:12.5px;color:var(--muted);line-height:1.75;margin-bottom:14px;
+  padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.02)}
+#gapIntro b{color:#e8ebf2}
+#gapList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+#gapList li{
+  display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:start;
+  padding:11px 14px;border:1px solid var(--line);border-radius:8px;
+  background:rgba(255,255,255,.02);cursor:pointer;
+}
+#gapList li:hover{border-color:#3a4150;background:rgba(255,255,255,.05)}
+#gapList .rk{
+  font:600 15px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:#ff3d7f;text-align:right;padding-top:1px;
+}
+#gapList .nm{font-size:14px;font-weight:600;color:#e8ebf2}
+#gapList .why{font-size:12px;color:var(--muted);line-height:1.6;margin-top:3px}
+#gapList .why em{color:#9fb0c8;font-style:normal}
+#gapList .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+#gapList .tag{
+  font-size:10.5px;padding:2px 7px;border-radius:20px;
+  border:1px solid var(--line);color:#8b93a7;white-space:nowrap;
+}
+#gapList .tag.hot{border-color:#6b2b45;color:#ff8fb4;background:rgba(255,61,127,.08)}
+#gapList .tag.root{border-color:#3d4a2c;color:#b9d67f;background:rgba(185,214,127,.07)}
+#gapList .sc{font:600 12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;color:#6b7488;text-align:right}
+#gapFoot{margin-top:16px;font-size:11.5px;color:#6b7488;line-height:1.7}
+#gapTip{
+  position:absolute;left:20px;bottom:14px;font-size:11px;color:var(--muted);
+  pointer-events:none;
+}
 /* 脉络里的节点 */
 .mnode{cursor:pointer}
+
 .mnode circle{stroke:#0b0c10;stroke-width:1.5}
 .mnode text{font-size:11px;fill:var(--ink2);paint-order:stroke;stroke:#0b0c10;
   stroke-width:3px;stroke-linejoin:round}
@@ -446,6 +498,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
        按钮夹在中间会找不到。 -->
   <div class="cardacts">
     <button class="btn" id="cMap">知识脉络</button>
+    <button class="btn" id="cGap">卡在哪</button>
     <span class="cardact-hint">展开它的先修链与后继链</span>
   </div>
   <!-- 前后依赖直接列出来并且可点。只给数量（「要先掌握 4 个」）等于
@@ -459,8 +512,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 <!-- 二维知识脉络：点开一个知识点后展开它的先修链与后继链。
      跟右边那张卡片是同一份数据的两种看法：卡片是「列表」，
      这里是「脉络」—— 先修在左一路铺过来，后继在右铺出去。
-     数据全在 payload 里（D.edges），前端现算，不用改后端。 -->
-<div class="ui" id="map" hidden>
+     数据全在 payload 里（D.edges），前端现算，不用改后端。 --><div class="ui" id="map" hidden>
   <div id="mapBar">
     <div class="mtitle"><b id="mapName"></b><span id="mapSub"></span></div>
     <div class="mtools">
@@ -472,7 +524,30 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
     </div>
   </div>
   <div id="mapBody"><svg id="mapSvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <div id="mapLegend"></div>
   <div id="mapTip">点任意节点 → 以它为中心重画 · Esc 关闭</div>
+</div>
+
+<!-- 「卡在哪」：这是本项目真正要回答的那个问题 ——
+     「朋友最近在二次函数上卡住，是因为什么前置的缺失」。
+     脉络视图说的是「有哪些前置」，这个面板说的是「**先补哪一块**」：
+     把先修闭包里的候选按「杠杆（多少人依赖它）× 早晚（多早学）×
+     是不是真的没前置 × 离症状多近」排个序，每条给出人话理由。
+     一键复制成选题卡（Markdown），直接进内容生产。 -->
+<div class="ui" id="gap" hidden>
+  <div id="mapBar">
+    <div class="mtitle"><b id="gapName"></b><span id="gapSub"></span></div>
+    <div class="mtools">
+      <button class="btn" id="gapCopy">复制选题卡</button>
+      <button class="btn" id="gapClose">关闭</button>
+    </div>
+  </div>
+  <div id="gapBody">
+    <div id="gapIntro"></div>
+    <ol id="gapList"></ol>
+    <div id="gapFoot"></div>
+  </div>
+  <div id="gapTip">点任意一条 → 跳到那个知识点 · Esc 关闭</div>
 </div>
 
 <div class="ui" id="hint">
@@ -815,7 +890,15 @@ const PAL = {
   lc: localStorage.getItem('kg.lc') || 'source',
 };
 const STAGE_C = { pri: '#4ade80', mid: '#60a5fa', high: '#f472b6' };
-const MAP_SRC_COLOR = ['#5b6472', '#7fd3ff', '#ffc477', '#c6a7ff', '#6ee7b7', '#ffd166'];
+/* **7 档来源，一个都不能少。** 原来这里只有 6 个颜色，
+   tier6「教材结构图」取到 undefined → `|| MAP_SRC_COLOR[0]` 回退成
+   tier0「上游」的灰 —— 恰恰是最该跟别的档区分的那一档，
+   在脉络视图里跟上游的边长得一模一样。
+   顺序必须跟 build_viz.py 的 SRC_ZH 完全一致。 */
+const TIER_ZH = ['上游','模型重建','能力底座','自建概念',
+                 '教材引入路径','已修正','教材结构图'];
+const MAP_SRC_COLOR = ['#5b6472', '#7fd3ff', '#ffc477', '#c6a7ff',
+                       '#6ee7b7', '#ffd166', '#ff8fab'];
 const IMP_C = ['#2f3646', '#4b5b73', '#7f8fa6', '#c9a227', '#ffd166'];
 
 function stageOf(n){
@@ -839,7 +922,10 @@ const PAL_LNAME = { source:'来源', dir:'方向', mono:'单色' };
 function edgeColor(src, isAnc){
   if(PAL.lc === 'dir') return isAnc ? '#7fd3ff' : '#ff9d6b';
   if(PAL.lc === 'mono') return '#6b7488';
-  return MAP_SRC_COLOR[src] || MAP_SRC_COLOR[0];
+  // **越界不许回退到 tier0 的颜色** —— 那样新加的档位会跟「上游」撞色，
+  // 看的人分不出来。越界就给一个显眼的洋红，一眼知道「这里出错了」。
+  const c = MAP_SRC_COLOR[src];
+  return c || '#ff2d6f';
 }
 
 /* 配色面板的交互 */
@@ -1315,7 +1401,15 @@ addEventListener('keydown', e=>{
    二维脉络视图的代码要放在 IIFE 外面（它自己是一整块），
    就得从这里递东西出去。 */
 window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
-              nodeColor, edgeColor, getPal: ()=>PAL, setPal: (k,v)=>{PAL[k]=v;}};
+              nodeColor, edgeColor, getPal: ()=>PAL, setPal: (k,v)=>{PAL[k]=v;},
+              // **脉络视图那块代码在 IIFE 外面**，要自己取配色。
+              // 只递 getPal() 不够 —— PAL 本身要递出去（它是同一个对象引用，
+              // setPal 改的就是它），颜色表和档位名也要。
+              // 少了这些，脉络视图里 `PAL.lc` 直接 ReferenceError，
+              // 线的来源图例永远不显示，控制台一片红。
+              PAL, MAP_SRC_COLOR, TIER_ZH,
+              // 「卡在哪」面板在 IIFE 外面，要跳回某个知识点 / 弹提示
+              showCard, say};
 
 loop();
 })();
@@ -1329,14 +1423,34 @@ loop();
    层内按教材顺序排，所以同一层里上下也读得出教学先后。 */
 
 const KG = window.__kg;
+/* 配色从主 IIFE 里取。**这里是引用不是拷贝** ——
+   配色面板改的是同一个 PAL 对象，所以这里拿到的永远是最新值。 */
+const PAL = KG.PAL;
+const MAP_SRC_COLOR = KG.MAP_SRC_COLOR;
+const TIER_ZH = KG.TIER_ZH;
 const kgEsc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const MAP_COL_W = 250, MAP_ROW_H = 40;
 let mapRoot = -1, mapDepth = 2;
 
 function mapGather(root, dir, maxd){
   // dir=-1 往先修方向（逆向走 pre），+1 往后继方向（走 unlocks）。
-  // 记录每个节点到 root 的**最长**层数 —— 用最短的话，
-  // 一个既远又近的节点会排到靠里的列，图上就出现「跳过」的线。
+  //
+  // 每个节点记两件事：**到 root 的距离 d**，和**是从哪个节点走过来的 parent**。
+  //
+  // ── 原来这两样都错了 ─────────────────────────────────────
+  // ① 只记 d，且取**最长**（`d > prev.d` 就改）：
+  //    一个既远又近的节点被推到更远的列 —— 二次函数的**直接前置**
+  //    「函数」被标成「先修 2 层」，因为它同时能经「一次函数」两步到达。
+  //    层数标签在说谎。
+  // ② 渲染时所有节点都直接连到 root（`edges.push([nid, root, ...])`）：
+  //    真实关系是「正比例函数 → 函数 → 二次函数」，图上画成
+  //    「正比例函数 ──→ 二次函数」。**线是断言，不是画法偏好** ——
+  //    随机 300 个知识点、2 层视图，2253 条线里 1281 条（56.9%）
+  //    在图谱里根本不存在。
+  //
+  // ── 现在 ────────────────────────────────────────────────
+  // BFS **首次发现即最短距离**（这是 BFS 的性质），并记下 parent。
+  // 边画成 parent → child，于是**每一条线都是图谱里真实存在的边**。
   const out = new Map();
   let frontier = [root];
   for(let d=1; d<=maxd; d++){
@@ -1346,9 +1460,9 @@ function mapGather(root, dir, maxd){
       for(const r of rows){
         const nid = r[0];
         if(nid === root) continue;
-        const prev = out.get(nid);
-        if(!prev){ out.set(nid, {d, src:r[1], sus:r[2]}); nx.push(nid); }
-        else if(d > prev.d){ prev.d = d; nx.push(nid); }
+        if(out.has(nid)) continue;   // 已见过：首次发现就是最短距离
+        out.set(nid, {d, parent: cur, src:r[1], sus:r[2]});
+        nx.push(nid);
       }
     }
     frontier = nx;
@@ -1359,7 +1473,9 @@ function mapGather(root, dir, maxd){
 
 function mapLayout(root){
   const anc = mapGather(root, -1, mapDepth);
-  const des = mapGather(root, +1, Math.min(mapDepth, 2));
+  // 后继侧跟先修侧**同样深**。原来写死 min(mapDepth, 2)：
+  // 点「3 层」按钮，先修给 3 层、后继只给 2 层 —— 按钮在说谎。
+  const des = mapGather(root, +1, mapDepth);
   // 按层分列。左侧先修（越远越靠左），右侧后继。
   const cols = new Map();          // 列号 → [节点]
   const put = (col, item) => {
@@ -1407,9 +1523,16 @@ function mapRender(){
   const ty = v => v - minY + PAD;
 
   // 边：先画，避免盖住节点
+  //
+  // **边画成 parent → child，不是「所有节点直连 root」。**
+  // 直连根会把「正比例函数 → 函数 → 二次函数」画成
+  // 「正比例函数 ──→ 二次函数」—— 一条图谱里根本不存在的边。
+  // 现在每条线都是遍历时走过的那条真实边，箭头方向：
+  //   先修侧：外层(先修) → 内层(离目标更近的一步)，指回目标
+  //   后继侧：内层 → 外层(后继)，指向前进的方向
   const edges = [];
-  for(const [nid, v] of L.anc) edges.push([nid, root, v.src, v.sus, true]);
-  for(const [nid, v] of L.des) edges.push([root, nid, v.src, v.sus, false]);
+  for(const [nid, v] of L.anc) edges.push([nid, v.parent, v.src, v.sus, true]);
+  for(const [nid, v] of L.des) edges.push([v.parent, nid, v.src, v.sus, false]);
   /* 边的两个端点都缩到圆的边缘：
      起点从 A 圆外侧 1px 出发（不然线从圆心冒出来，被圆盖住一截，看着像没接上），
      终点停在 B 圆外侧 —— 箭头 marker 画在路径末端，
@@ -1433,6 +1556,7 @@ function mapRender(){
     const b1x = ex + Math.cos(ang+2.6)*L2, b1y = ey + Math.sin(ang+2.6)*L2;
     const b2x = ex + Math.cos(ang-2.6)*L2, b2y = ey + Math.sin(ang-2.6)*L2;
     return '<path class="'+cls+'" stroke="'+col+'"'+
+           ' data-a="'+a+'" data-b="'+b+'" data-src="'+src+'"'+
            ' d="M '+sx+' '+sy+
            ' C '+mx+' '+sy+' '+mx+' '+ey+' '+ex+' '+ey+'"/>'+
            '<path d="M '+tipx+' '+tipy+' L '+b1x+' '+b1y+' L '+b2x+' '+b2y+' Z" '+
@@ -1483,6 +1607,25 @@ function mapRender(){
   const aCount = L.anc.size, dCount = L.des.size;
   document.getElementById('mapSub').textContent =
     '先修 '+aCount+' 个 · 后继 '+dCount+' 个 · 展开 '+mapDepth+' 层';
+
+  // 线的来源色图例 —— 只在「按来源着色」时出现。
+  // **7 档一个不落**，包括最容易漏的「教材结构图」。
+  const lg = document.getElementById('mapLegend');
+  if(PAL.lc === 'source'){
+    const seen = new Set();
+    for(const [,v] of L.anc) seen.add(v.src);
+    for(const [,v] of L.des) seen.add(v.src);
+    const rows = TIER_ZH.map((nm,i)=>({nm, i}))
+      .filter(o=>seen.has(o.i))
+      .map(o=>'<div class="lr"><span class="sw" style="background:'
+               + MAP_SRC_COLOR[o.i] + '"></span><span>' + o.nm + '</span></div>')
+      .join('');
+    lg.innerHTML = '<div class="lt">线的来源</div>' + rows;
+    lg.classList.add('on');
+  } else {
+    lg.classList.remove('on');
+    lg.innerHTML = '';
+  }
 }
 
 function openMap(id){
@@ -1526,6 +1669,189 @@ for(const b of document.querySelectorAll('#map .mtools .btn[data-d]')){
 document.getElementById('mD2').setAttribute('aria-pressed','true');
 document.addEventListener('keydown', e=>{
   if(e.key === 'Escape' && mapRoot >= 0){ closeMap(); }
+});
+
+/* ================= 「卡在哪」================= */
+/* 这个项目要回答的就是一句话：
+     「朋友最近在二次函数上卡住，是因为什么前置的缺失」
+
+   脉络视图说的是「有哪些前置」—— 那是**事实**。
+   这个面板说的是「**先补哪一块**」—— 那是**判断**。
+   事实图谱不会给判断，判断得自己排。
+
+   排序用四个信号，都从 payload 现算，不另存一份数据：
+     ① 杠杆 fanout —— 有多少个概念依赖它。被 300 个人依赖的
+        基础概念，讲透一个能带出一串；被 1 个人依赖的，带不动。
+     ② 早晚 depth —— 它自己链深多少。链深 0 = 它没有前置，
+        是整条链的根；越早学的东西越该先补。
+     ③ 距离 dist —— 离症状几层。直接前置比隔三层的更可能是卡点。
+     ④ 覆盖 ann —— 它自己的前置在图谱里标了几条。
+        标得少 = 这一块我们也不清楚，正是内容可以补的地方。
+
+   每条都给出**人话理由**，不只给分数 ——
+   「被 339 个概念依赖」比「8.7 分」有用得多。 */
+let _depthCache = null;
+function computeDepths(){
+  if(_depthCache) return _depthCache;
+  const d = new Map(), color = new Map();
+  for(const n of KG.NODES){
+    if(d.has(n.id)) continue;
+    color.set(n.id, 1);
+    const st = [[n.id, 0]];
+    while(st.length){
+      const top = st[st.length-1];
+      const ps = KG.pre.get(top[0]) || [];
+      if(top[1] < ps.length){
+        const v = ps[top[1]][0];
+        top[1]++;
+        if(color.get(v) === 1) continue;   // 成品图无环，防御
+        if(color.get(v) === 2) continue;
+        color.set(v, 1); st.push([v, 0]);
+      } else {
+        let mx = 0;
+        for(const r of ps) mx = Math.max(mx, (d.get(r[0]) || 0) + 1);
+        d.set(top[0], mx); color.set(top[0], 2); st.pop();
+      }
+    }
+  }
+  _depthCache = d;
+  return d;
+}
+
+const GAP_DEPTH = 3;     // 往先修方向看几层
+function gapRank(id){
+  const depths = computeDepths();
+  const fanout = new Map();
+  for(const [u, rows] of KG.unlocks) fanout.set(u, rows.length);
+  // 先修闭包（带上距离）
+  const anc = new Map();
+  let frontier = [id];
+  for(let d=1; d<=GAP_DEPTH; d++){
+    const nx = [];
+    for(const cur of frontier){
+      for(const r of (KG.pre.get(cur) || [])){
+        const nid = r[0];
+        if(nid === id) continue;
+        if(!anc.has(nid)){ anc.set(nid, d); nx.push(nid); }
+      }
+    }
+    frontier = nx;
+    if(!frontier.length) break;
+  }
+  const out = [];
+  for(const [nid, dist] of anc){
+    const n = KG.NODES[nid];
+    const fo = fanout.get(nid) || 0;
+    const dp = depths.get(nid) || 0;
+    const ann = (KG.pre.get(nid) || []).length;
+    // 分数：杠杆 + 早晚 + 是不是根 + 近 + 覆盖薄弱
+    const score = 2.0 * Math.log1p(fo)
+                + 1.6 * (1 - Math.min(dp, 6) / 6)
+                + (dp === 0 ? 2.2 : 0)
+                + 1.2 * (1 - (dist - 1) / GAP_DEPTH)
+                + 0.9 * (1 - Math.min(ann, 4) / 4);
+    const why = [];
+    if(fo >= 20) why.push(`被 <em>${fo}</em> 个概念依赖`);
+    else if(fo >= 3) why.push(`被 ${fo} 个概念依赖`);
+    if(dp === 0) why.push('它自己没有前置 —— 是整条链的<b>根</b>');
+    else if(dp <= 2) why.push('很早就学（链深 ' + dp + '）');
+    if(dist === 1) why.push('就是直接前置');
+    else why.push('隔 ' + (dist-1) + ' 层');
+    if(ann === 0) why.push('图谱里也没标它的前置 —— <b>这块正是空白</b>');
+    else if(ann <= 2) why.push('只标了 ' + ann + ' 条前置');
+    out.push({ nid, name: n.zh, dz: n.dz, fo, dp, ann, dist, score,
+               why: why.join(' · ') });
+  }
+  out.sort((a,b) => b.score - a.score || b.fo - a.fo);
+  return out;
+}
+
+function gapCardText(id, rows){
+  const n = KG.NODES[id];
+  const lines = [];
+  lines.push('## 选题卡：' + n.zh);
+  lines.push('');
+  lines.push('- **症状**：`' + n.zh + '`（' + n.dz + '）');
+  const direct = (KG.pre.get(id) || []).map(r => KG.NODES[r[0]].zh);
+  lines.push('- **图谱记录的直接前置**：' + (direct.length ? direct.join('、') : '（无）'));
+  lines.push('- **先修闭包**（往回 ' + GAP_DEPTH + ' 层共 ' + rows.length + ' 个）：');
+  lines.push('');
+  lines.push('| # | 前置 | 杠杆 | 链深 | 离症状 | 理由 |');
+  lines.push('|---|---|---|---|---|---|');
+  rows.slice(0, 8).forEach((r, i) => {
+    lines.push('| ' + (i+1) + ' | ' + r.name + ' | ' + r.fo + ' | ' + r.dp +
+               ' | ' + r.dist + ' | ' + r.why.replace(/<[^>]+>/g,'') + ' |');
+  });
+  lines.push('');
+  lines.push('> 排序信号：杠杆（被依赖数）× 早晚（链深）× 是不是链根 × 离症状距离 × 覆盖薄弱。');
+  lines.push('> 数据来自中文 K12 知识图谱（人教版教材排序），每条边可查来源。');
+  return lines.join('\n');
+}
+
+let gapRows = [];
+function openGap(id){
+  gapRows = gapRank(id);
+  const n = KG.NODES[id];
+  document.getElementById('gapName').textContent = n.zh;
+  const direct = (KG.pre.get(id) || []).length;
+  document.getElementById('gapSub').textContent =
+    '直接前置 ' + direct + ' 条 · 往回 ' + GAP_DEPTH + ' 层共 ' + gapRows.length + ' 个候选';
+  document.getElementById('gapIntro').innerHTML = direct === 0
+    ? '<b>' + kgEsc(n.zh) + '</b> 在图谱里<b>没有记录任何直接前置</b> —— ' +
+      '这本身就是诊断结论。下面是它往回 ' + GAP_DEPTH + ' 层能找到的、' +
+      '以及它下游依赖它最多的那些。'
+    : '<b>' + kgEsc(n.zh) + '</b> 的直接前置有 <b>' + direct + '</b> 条。' +
+      '下面按「<b>先补哪一块</b>」排了序 —— 杠杆大、又早学、' +
+      '离症状近的排在前面。';
+  document.getElementById('gapList').innerHTML = gapRows.slice(0, 12).map((r, i) =>
+    '<li data-id="' + r.nid + '">' +
+      '<div class="rk">' + (i+1) + '</div>' +
+      '<div><div class="nm">' + kgEsc(r.name) + '</div>' +
+      '<div class="why">' + r.why + '</div>' +
+      '<div class="tags"><span class="tag">链深 ' + r.dp + '</span>' +
+      '<span class="tag">离症状 ' + r.dist + ' 层</span>' +
+      '<span class="tag">前置标注 ' + r.ann + ' 条</span>' +
+      (r.fo >= 20 ? '<span class="tag hot">被 ' + r.fo + ' 个依赖</span>' : '') +
+      (r.dp === 0 ? '<span class="tag root">链的根</span>' : '') +
+      '</div></div>' +
+      '<div class="sc">' + r.score.toFixed(1) + '</div>' +
+    '</li>').join('') ||
+    '<li style="grid-template-columns:1fr;color:#8b93a7">往回 ' + GAP_DEPTH +
+    ' 层没找到任何前置 —— 图谱在这一片是空的。</li>';
+  document.getElementById('gapFoot').textContent =
+    '分数只用来排序，真正有用的是每条的理由。点任意一条跳到那个知识点。';
+  document.getElementById('gap').hidden = false;
+}
+function closeGap(){ document.getElementById('gap').hidden = true; }
+document.getElementById('cGap').addEventListener('click', ()=>{
+  const cid = KG.cardId();
+  if(cid >= 0) openGap(cid);
+});
+document.getElementById('gapClose').addEventListener('click', closeGap);
+document.getElementById('gapList').addEventListener('click', e=>{
+  const li = e.target.closest('li[data-id]');
+  if(!li) return;
+  const nid = +li.dataset.id;
+  closeGap();
+  showCard(nid);
+});
+document.getElementById('gapCopy').addEventListener('click', async ()=>{
+  const cid = KG.cardId();
+  if(cid < 0) return;
+  const txt = gapCardText(cid, gapRows);
+  try{
+    await navigator.clipboard.writeText(txt);
+    say('选题卡已复制到剪贴板');
+  }catch(err){
+    // 剪贴板 API 在非 https / 无权限时会拒绝，给个能手动拿走的兜底
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove();
+    say('选题卡已复制');
+  }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && !document.getElementById('gap').hidden) closeGap();
 });
 </script>
 </body>
