@@ -121,6 +121,15 @@ console.log('\n[1b] 页面自洽：标题里的数字必须是真实规模');
      `标题含教材知识点数 ${want}（不是画布点数 ${meta.N.toLocaleString('en-US')}）`,
      meta.title);
   ok(!/1,590|1,127|5,255/.test(meta.title), '标题里没有别的项目的遗留数字', meta.title);
+  // **标题的口径必须跟页面主体一致。**
+  // 原来只替换了 <h1>（「中国的孩子」），<title> 漏了 ——
+  // 浏览器标签页上写着「全世界孩子在学什么」，页面主体却是「中国的孩子」，
+  // 自己跟自己打架；分享链接时标签页那句最先被看见。
+  ok(!/全世界/.test(meta.title), '标签页标题里没有「全世界」', meta.title);
+  ok(/中国的孩子/.test(meta.title), '标签页标题是「中国的孩子在学什么」', meta.title);
+  const h1 = await page.evaluate(() => document.querySelector('#head h1')?.textContent || '');
+  ok(!/全世界/.test(h1) && /中国的孩子/.test(h1),
+     `页面大标题也是「中国的孩子」（实际「${h1.replace(/\s+/g, '')}」）`);
   ok(meta.icon.startsWith('data:image/svg+xml'), 'favicon 内联（单文件自包含，不会 404）');
 }
 
