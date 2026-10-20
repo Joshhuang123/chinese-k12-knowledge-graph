@@ -103,6 +103,57 @@ def main():
                 stat["derived_edges"] += 1
     stat["derived_nodes"] = len(out_nodes) - stat["l0_nodes"]
 
+    # ── 教材覆盖缺口节点（source=textbook）──────────────────
+    # 教材里有、图谱里没有的知识点。数据在 data/cover-gaps.json。
+    #
+    # **不并进上游节点集**，跟 derived 一样单独建：
+    # 混进去就分不清哪些是数据集的、哪些是我们从教材读出来的。
+    # 但 source 标 "textbook" 而不是 "derived" —— derived 的意思是
+    # 「模型跑出、图谱没有的」，这些是从**教材**里读出来的，来源不同。
+    COVER = BASE / "data" / "cover-gaps.json"
+    if COVER.exists():
+        cg = json.loads(COVER.read_text(encoding="utf-8"))
+        for n in cg.get("nodes", []):
+            bk = n.get("book", "")
+            # 册次显示名从 books.py 查（册次码 → 「七下」这种）。
+            # 不查的话 bookZh 是空的，卡片眉标会显示「数学 · —·概念」——
+            # 补节点的**全部意义**就是教材位置，位置丢了等于白补。
+            try:
+                _stage, _grade, bkzh = books.lookup(bk)
+            except KeyError:
+                bkzh = n.get("bookZh", "—")
+            out_nodes.append({
+                "id": n["id"], "name": n["name"], "label": n.get("label", "Concept"),
+                "subject": n.get("subject", "math"), "subjectZh": n.get("subjectZh", "数学"),
+                "book": bk, "bookZh": bkzh,
+                "stage": n.get("stage", ""), "grade": n.get("grade", 0),
+                # **定义要放在 props 里** —— 卡片的说明文字读的是
+                # props.definition / props.description，不是顶层的 definition。
+                # 放错地方的话卡片会显示「该条目没有描述文本」。
+                "props": {"definition": n.get("definition", "")},
+                "definition": n.get("definition", ""),
+                "textbookRef": n.get("textbookRef", ""),
+                "source": "textbook",
+            })
+            stat["textbook_nodes"] += 1
+        for e in cg.get("edges", []):
+            allids = set(nodes) | {n["id"] for n in out_nodes}
+            if e["from"] not in allids:
+                stat["cover_edge_skip_missing_from"] += 1
+                continue
+            if e["to"] not in allids:
+                stat["cover_edge_skip_missing_to"] += 1
+                continue
+            out_edges.append({
+                "from": e["from"], "to": e["to"], "type": "prerequisites_for",
+                "fromName": nodes.get(e["from"], {}).get("name", ""),
+                "toName": nodes.get(e["to"], {}).get("name", ""),
+                "source": e.get("source", "structmap"),
+                "evidence": e.get("evidence", ""),
+                "evidenceSource": e.get("evidenceSource", ""),
+            })
+            stat["cover_edges"] += 1
+
     # ── L0 → 知识点 ────────────────────────────────────────
     # 从原始批次里重读，因为 lmm-merged.json 只留了 queue 的样本
     # **不要只读 math-*.json** —— 非数学的盲测结果也要接上，
@@ -222,6 +273,7 @@ def main():
     print("═══ 自建层 ═══")
     print(f"  L0 能力节点   {stat['l0_nodes']:>4} 个（手工定，不落册）")
     print(f"  derived 概念  {stat['derived_nodes']:>4} 个（模型跑出、图谱没有的）")
+    print(f"  教材缺口节点  {stat['textbook_nodes']:>4} 个（教材里有、图谱没有的）")
     print(f"    └ 剔除方法/能力类 {len(NOT_CONCEPTS)} 个：{'、'.join(NOT_CONCEPTS)}")
     print(f"\n  L0 → 知识点   {stat['l0_edges']:>4} 条")
     print(f"  derived → 知识点 {stat['derived_edges']:>4} 条")

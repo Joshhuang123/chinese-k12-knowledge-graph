@@ -401,6 +401,9 @@ def main():
             [s[0] for s in SUBJECTS].index(n["subject"]),
             # 自建节点不属于任何一册，「—·Ability」这种写法一眼就假。
             # 它们标自己的层，不标册次。
+            # **教材缺口节点（textbook）要标册次** —— 它们是真实存在于
+            # 人教版某册某章的概念（「垂线及其性质[七下]」），
+            # 标成「自建概念」会把教材位置丢掉，那正是补它们的目的。
             n.get("source") in ("l0", "derived") and (
                 {"l0": "能力底座", "derived": "自建概念"}[n["source"]]
             ) or f"{n['bookZh']}·{LABEL_ZH.get(n['label'], n['label'])}",   # dz
@@ -519,7 +522,7 @@ def main():
 
     by_subject = defaultdict(int)
     for n in nodes:
-        if n.get("source") in ("l0", "derived"):
+        if n.get("source") in ("l0", "derived", "textbook"):
             continue          # 自建节点不计入学科知识点数
         by_subject[n["subject"]] += 1
     subjects = [{"en": s[0], "zh": s[1], "c": s[2], "n": by_subject.get(s[0], 0)} for s in SUBJECTS]
@@ -529,7 +532,10 @@ def main():
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                # 画布上画的点数（含自建），但首页写的「N 个知识点」
                # 必须只数上游那批 —— 把能力节点算进「知识点」是偷换概念。
-               "total": sum(1 for n in nodes if n.get("source") not in ("l0", "derived")),
+               # **教材缺口节点（textbook）也不算在内**：
+               # 它们是从教材里读出来的，不是上游数据集里的。
+               "total": sum(1 for n in nodes
+                            if n.get("source") not in ("l0", "derived", "textbook")),
                "drawn": len(nodes), "acc": ACC,
                # 自建能力节点的说明文字单独传：payload 节点的槽位排满了，
                # 硬塞进去会让 16 个能力的定义挤掉别的东西。
@@ -578,7 +584,7 @@ def main():
         # 整段替换，模板里保持旧形式，这样这道守卫仍然有效
         # （模板一改就报「文案未命中」，不会静默漂移）。
         ("共 <b>__N_TOPIC__</b> 个知识点（另有 <b>__N_SELF__</b> 个我们补的能力节点与自建概念），其中 <b>__N_CORE__</b> 个属于 9–10 岁核心",
-         "教材知识点 <b>__N_TOPIC__</b> 个，我们另外补了 <b>__N_SELF__</b> 个能力节点与自建概念；其中 <b>__N_CORE__</b> 个是初中概念"),
+         "教材知识点 <b>__N_TOPIC__</b> 个，我们另外补了 <b>__N_SELF__</b> 个能力节点、教材节点与自建概念；其中 <b>__N_CORE__</b> 个是初中概念"),
         ("只看 9–10 岁", "只看初中"),
         ("<span class=\"hi\">9–10 岁核心</span>", "<span class=\"hi\">初中</span>"),
         ("<span>低年级基础</span>", "<span>其他学段</span>"),

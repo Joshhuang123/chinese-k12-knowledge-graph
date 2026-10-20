@@ -82,13 +82,54 @@ def main():
            if r.get("kind") == "cross" and r.get("source") == "upstream"]
     rev.sort(key=lambda r: r.get("toPos", 0) - r.get("fromPos", 0), reverse=True)
 
-    # ── ② 覆盖缺口 ──
-    miss = struct.get("missing_nodes", [])
+    # ── ② 覆盖缺口（**算还剩多少**）──
+    # data/cover-gaps.json 已经补掉 9 处（9 个教材节点 + 17 条边）。
+    # 页面要报的是**剩下的**，不是当初挖出来的总数 ——
+    # 否则过一年再看，页面还写着「21 处缺口」，而其中 9 处早补上了。
+    import sys
+    sys.path.insert(0, str(BASE / "src"))
+    from nameindex import NameIndex
+    g = json.load(open(BASE / "data" / "normalized" / "graph.json", encoding="utf-8"))
+    idx = NameIndex(g["nodes"])
+    # **要用成品图谱的节点名**，不是 graph.json 的 ——
+    # 补上的 9 个教材节点在 selfbuilt-edges.json 里，不在 graph.json 里。
+    import re as _re
+    _html = (BASE / "index.html").read_text(encoding="utf-8")
+    _m = _re.search(r'<script id="data" type="application/json">(.*?)</script>',
+                     _html, _re.S)
+    _pl = json.loads(_m.group(1)) if _m else {"nodes": []}
+    have = {n[1] for n in _pl["nodes"]}
+    allmiss = struct.get("missing_nodes", [])
+    # 一个缺口算「已补」：那一侧的名字现在能在图谱里找到（概念节点）
+    fixed_miss, open_miss = [], []
+    for m in allmiss:
+        side = m.get(m.get("missingSide", "to"), "")
+        (fixed_miss if side in have else open_miss).append(m)
+    # 已补的那些，逐条列出来（说明补了什么）
+    cover = BASE / "data" / "cover-gaps.json"
+    covered_rows = []
+    if cover.exists():
+        cj = json.load(open(cover, encoding="utf-8"))
+        for n in cj.get("nodes", []):
+            covered_rows.append([
+                esc(n["name"]), esc(n.get("bookZh", n.get("book", ""))),
+                esc(n.get("definition", "")[:66]),
+                esc(n.get("textbookRef", "")),
+            ])
 
     # ── ③ 方向冲突裁决 ──
     conf = [r for r in confl.get("resolved", []) if r.get("reason") == "conflict"]
     cyc = [r for r in confl.get("resolved", []) if r.get("reason") == "cycle"]
     adj = [r for r in confl.get("resolved", []) if r.get("reason") == "adjudicated"]
+
+    # ── ④b 模型能力类输出里的真覆盖缺口 ──
+    ag = load("ability-gaps.json", {"rows": [], "totals": {}})
+    ag_rows = []
+    for r in [x for x in ag.get("rows", []) if x.get("kind") == "gap"][:40]:
+        subs = "、".join({"math": "数学", "physics": "物理",
+                          "chemistry": "化学", "biology": "生物"}.get(s, s)
+                         for s in r.get("subjects", {}))
+        ag_rows.append([esc(r["name"]), f"{r['count']}", esc(subs)])
 
     # ── ④ 可疑边 ──
     sus = suspect
@@ -104,7 +145,7 @@ def main():
          f"均值 {stats.get('chain_depth_mean', '—')}"),
         ("方向冲突已裁决", f"{len(conf)}", "同一对节点两个方向都有边时，按来源优先级留一条"),
         ("成环剪掉", f"{len(cyc)}", "先修边必须是 DAG，剪掉的每条都记在账上"),
-        ("教材覆盖缺口", f"{len(miss)}", "教材里有、图谱里没有的概念"),
+        ("教材覆盖缺口", f"{len(open_miss)}", "教材里有、图谱里还没有的概念（已补 9 处）"),
         ("可疑上游边", f"{len(sus)}", "标出来但不删 —— 上游数据只读"),
     ]
     card_html = "".join(
@@ -132,9 +173,10 @@ def main():
         ])
 
     miss_rows = []
-    for m in miss:
+    for m in open_miss:
+        side = m.get(m.get("missingSide", "to"), "")
         miss_rows.append([
-            esc(m.get("name", "")), esc(m.get("book", "")),
+            esc(side), esc(m.get("book", "")),
             esc(m.get("kind", "")), esc(m.get("fromHow", m.get("how", ""))),
         ])
 
@@ -230,11 +272,16 @@ code{{background:#191d25;padding:1px 5px;border-radius:4px;font-size:11.5px}}
 （同一册里位置反的 <b>不作判据</b>：教材自己就大量这么排，拿它当依据一半以上是假阳性。）</p>
 {table(["前置", "册", "", "后继", "册", "教材位置"], rev_rows)}
 
-<h2><span class="n">03</span>教材覆盖缺口（{len(miss)} 处）</h2>
-<p class="note">教材里有、图谱里没有的概念 —— 比如「垂线及其性质」「等分圆周」
-「常用逻辑用语」「和差角公式」「空间几何体」。
-<b>没有节点就没有边</b>，所以这一栏比「再加一千条边」更值钱。</p>
-{table(["教材里的概念", "册", "类型", "怎么找到的"], miss_rows)}
+<h2><span class="n">03</span>教材覆盖缺口：已补 {len(covered_rows)} 处，还剩 {len(open_miss)} 处</h2>
+<p class="note">教材里有、图谱里没有的概念。<b>没有节点就没有边</b>，
+所以这一栏比「再加一千条边」更值钱。<br>
+<b>已补</b>：从人教版 43 张「本章知识结构图」里读出来、建成节点的。
+标 source=textbook，页面上跟上游知识点一样显示册次，但不计入「教材知识点」那个数 ——
+它们不是上游数据集里的，是从教材里读出来的。<br>
+<b>还剩</b>：教材结构图里提到、但要么是过程性说法（「实际问题的答案」「数学定义」）、
+要么对应的内容图谱里已经有了同义节点（「正多边形和圆」是九上 24.3 的节名）。</p>
+{table(["已补的教材节点", "册", "是什么", "教材出处"], covered_rows)}
+{table(["还缺的概念", "册", "类型", "怎么找到的"], miss_rows)}
 
 <h2><span class="n">04</span>方向冲突的裁决（{len(conf)} 组）</h2>
 <p class="note">同一对节点上下两个方向都有边时，按来源优先级留一条、丢一条。
@@ -243,12 +290,21 @@ code{{background:#191d25;padding:1px 5px;border-radius:4px;font-size:11.5px}}
 完整账本在仓库的 <code>docs/prereq-conflicts.md</code>。</p>
 {table(["留（谁赢）", "", "丢（谁输）", ""], conf_rows)}
 
-<h2><span class="n">05</span>可疑的上游先修边（{len(sus)} 条）</h2>
+<h2><span class="n">05</span>模型指出来的知识覆盖缺口（{ag.get("totals", {}).get("gap", 0)} 次 / {len([x for x in ag.get("rows", []) if x.get("kind") == "gap"])} 个）</h2>
+<p class="note">盲测时模型对每个知识点说出它认为的先修，
+其中标成「能力」的那些里有 <b>9.3% 图谱里根本没有对应概念</b> ——
+「光屏」「接触面」「小磁针」「压强计」「悬挂法」……
+<b>模型替我们指出了覆盖缺口</b>，这份清单比结构图挖出来的更细（覆盖四科 8,590 个知识点）。<br>
+完整清单在仓库的 <code>data/normalized/ability-gaps.json</code>，
+生成脚本 <code>src/ability_gaps.py</code>。</p>
+{table(["图谱里没有的概念", "模型说了几次", "哪科"], ag_rows)}
+
+<h2><span class="n">06</span>可疑的上游先修边（{len(sus)} 条）</h2>
 <p class="note">命中「册序倒挂 / 下位当前置 / 方法当前置 / 应用实例当前置」等规则的边。
 命中 2 条以上的最该先看。页面上这些边带「可疑」标记，<b>但不删</b>。</p>
 {table(["前置", "册", "", "后继", "册", "命中规则", "证据条数"], sus_rows)}
 
-<h2><span class="n">06</span>已裁决的上游错误（{len(adj_rows)} 条）</h2>
+<h2><span class="n">07</span>已裁决的上游错误（{len(adj_rows)} 条）</h2>
 <p class="note">逐条拿模型 + 教材两个独立证据核过的上游错误边。
 改的是页面上用的派生边集，<b>上游原件一字未动</b>。</p>
 {table(["前置", "", "后继", "处置", "理由"], adj_rows)}
@@ -267,7 +323,8 @@ code{{background:#191d25;padding:1px 5px;border-radius:4px;font-size:11.5px}}
 
     OUT.write_text(doc, encoding="utf-8")
     print(f"数据质量页 → {OUT.relative_to(BASE)}  ({OUT.stat().st_size//1024} KB)")
-    print(f"  倒挂 {len(rev)} · 覆盖缺口 {len(miss)} · 方向冲突 {len(conf)} "
+    print(f"  倒挂 {len(rev)} · 覆盖缺口 已补{len(covered_rows)}/还剩{len(open_miss)}"
+          f" · 方向冲突 {len(conf)} "
           f"· 环剪 {len(cyc)} · 可疑 {len(sus)} · 已裁决 {len(adj_rows)}")
     return 0
 

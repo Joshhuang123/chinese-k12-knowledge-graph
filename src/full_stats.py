@@ -145,12 +145,32 @@ def main():
 
     # ── 6. 盲测落位率（分科）────────────────────────────────
     print("\n盲测落位率（分科，EXACT/NORM/CORE/TAIL 算能自动连边）：")
+    # **ability 类要用 L0 别名表算，不能用知识点索引。**
+    # L0 能力节点**不在 graph.json 里** —— 它们是自建层（selfbuilt-edges.json）。
+    # 拿 ability 表述去查知识点索引，命中必然是 0，
+    # 于是报出来「ability 落位率 0~11%」，看着像能力层完全没建起来。
+    # 真实口径是「能不能挂到某个 L0 能力桶上」——那个是 88%。
+    #
+    # 这个指标一开始是错的，而且**错得很有说服力**：
+    # 「能力层只接住了 8%」听起来像结论，其实只是查错了表。
+    l0 = json.load(open(BASE / "data" / "l0-abilities.json", encoding="utf-8"))
+    alias2l0 = {}
+    for a in l0["abilities"]:
+        for x in [a.get("name")] + list(a.get("aliases") or []):
+            if x:
+                alias2l0[x.strip()] = a["id"]
     stat = defaultdict(Counter)
     for f in glob.glob(str(LMM / "*.json")):
         s = pathlib.Path(f).stem.split("-")[0]
         for it in json.load(open(f, encoding="utf-8")):
             for p in it.get("prereq", []):
                 t = p.get("type")
+                if t == "ability":
+                    # 能力类：查 L0 别名表
+                    stat[s][t + "_total"] += 1
+                    if p.get("name", "").strip() in alias2l0:
+                        stat[s][t + "_hit"] += 1
+                    continue
                 st, nid, c, how = idx.resolve(p.get("name"))
                 stat[s][t + "_total"] += 1
                 if st in ("EXACT", "NORM", "CORE", "TAIL"):

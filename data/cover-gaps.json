@@ -1,0 +1,251 @@
+{
+ "_comment": "教材覆盖缺口 —— 教材里有、图谱里没有的知识点。\n\n  来源：43 张人教版「本章知识结构图」，具体哪一页见每个节点的 textbookRef。\n\n  为什么单独建：上游 K12-KGraph 里没有这些概念，但教材确实在教 ——\n  比如人教七下 5.1 整节讲垂线，图谱里「垂线」只有 1 个技能节点、没有概念节点。\n  **没有节点就没有边**：不补节点，「垂线」这一块在图谱里等于不存在。\n\n  为什么标 source=textbook 而不是 derived：derived 的意思是「模型跑出、图谱没有的」\n  （见 build_layers.py）。这些是从**教材**里读出来的，来源不同，得能分开看。\n  页面上它们跟上游知识点一样显示册次，但不计入「教材知识点 8,590」那个数。\n\n  边的 source 是 structmap（页面上第 7 档徽标「教材结构图」）：\n  依据是教材那张图本身，不是模型的推理。",
+ "nodes": [
+  {
+   "id": "textbook_math_7b_cpt_zhui_xian",
+   "name": "垂线及其性质",
+   "label": "Concept",
+   "subject": "math",
+   "book": "7b",
+   "stage": "初中",
+   "grade": 7,
+   "source": "textbook",
+   "definition": "垂线：与一条直线相交的点叫垂足，这条直线叫另一条直线的垂线。垂直是相交的特殊情形。垂线的性质：垂线段最短，到直线各点的距离里垂足最近。",
+   "textbookRef": "人教七下 第五章 相交线与平行线 · 本章知识结构图（p040）"
+  },
+  {
+   "id": "textbook_math_7b_cpt_dian_dao_zhixian",
+   "name": "点到直线的距离",
+   "label": "Concept",
+   "subject": "math",
+   "book": "7b",
+   "stage": "初中",
+   "grade": 7,
+   "source": "textbook",
+   "definition": "点到直线的距离：直线外一点到这条直线的垂线段的长度。点到直线的距离是所有连线中最短的。",
+   "textbookRef": "人教七下 第五章 相交线与平行线 · 本章知识结构图（p040）"
+  },
+  {
+   "id": "textbook_math_9a_cpt_dengfen_yuanzhou",
+   "name": "等分圆周",
+   "label": "Concept",
+   "subject": "math",
+   "book": "9a",
+   "stage": "初中",
+   "grade": 9,
+   "source": "textbook",
+   "definition": "把圆周分成若干等份，每段弧相等；依次连接这些等分点得到正多边形。反过来，能用圆内接正多边形分割圆的，叫等分圆周。",
+   "textbookRef": "人教九上 第二十四章 圆 · 本章知识结构图（p128）"
+  },
+  {
+   "id": "textbook_math_bx1_cpt_changyong_luoji_yuyu",
+   "name": "常用逻辑用语",
+   "label": "Concept",
+   "subject": "math",
+   "book": "bx1",
+   "stage": "高中",
+   "grade": 10,
+   "source": "textbook",
+   "definition": "命题及其关系、充分条件与必要条件、全称量词与存在量词 —— 这一组是描述命题真假的基础概念。",
+   "textbookRef": "人教必修一 第一章 集合与常用逻辑用语 · 本章知识结构图（p040）"
+  },
+  {
+   "id": "textbook_math_bx1_cpt_hecha_jiao_gongshi",
+   "name": "和差角公式",
+   "label": "Concept",
+   "subject": "math",
+   "book": "bx1",
+   "stage": "高中",
+   "grade": 10,
+   "source": "textbook",
+   "definition": "sin(α±β)=sinαcosβ±cosαsinβ，cos(α±β)=cosαcosβ∓sinαsinβ，tan(α±β)=(tanα±tanβ)/(1∓tanαtanβ)。",
+   "textbookRef": "人教必修一 第五章 三角函数 · 本章知识结构图（p258）"
+  },
+  {
+   "id": "textbook_math_bx2_cpt_kongjian_jihe",
+   "name": "空间几何体",
+   "label": "Concept",
+   "subject": "math",
+   "book": "bx2",
+   "stage": "高中",
+   "grade": 11,
+   "source": "textbook",
+   "definition": "现实世界中物体的形状抽象成的几何体：柱、锥、台、球等，以及它们的几何性质、表面积和体积。",
+   "textbookRef": "人教必修二 第八章 立体几何初步 · 本章知识结构图（p174）"
+  },
+  {
+   "id": "textbook_math_bx2_cpt_zhiguitu",
+   "name": "立体图形的直观图",
+   "label": "Concept",
+   "subject": "math",
+   "book": "bx2",
+   "stage": "高中",
+   "grade": 11,
+   "source": "textbook",
+   "definition": "用平行投影的方法把立体图形画成的平面图形。画法规则：长方形变平行四边形、正方形变菱形、平行性不变。",
+   "textbookRef": "人教必修二 第八章 立体几何初步 · 本章知识结构图（p174）"
+  },
+  {
+   "id": "textbook_math_bx2_cpt_biaomianji_tiji",
+   "name": "柱、锥、台、球的表面积和体积",
+   "label": "Concept",
+   "subject": "math",
+   "book": "bx2",
+   "stage": "高中",
+   "grade": 11,
+   "source": "textbook",
+   "definition": "柱 V=Sh，锥 V=1/3Sh，台 V=1/3(S1+S2)h，球 V=4/3πr³、S=4πr²。",
+   "textbookRef": "人教必修二 第八章 立体几何初步 · 本章知识结构图（p174）"
+  },
+  {
+   "id": "textbook_math_bx2_cpt_weizhiguanxi",
+   "name": "空间点、直线、平面的位置关系",
+   "label": "Concept",
+   "subject": "math",
+   "book": "bx2",
+   "stage": "高中",
+   "grade": 11,
+   "source": "textbook",
+   "definition": "空间中点、直线、平面之间的位置关系：直线与直线（相交/平行/异面）、直线与平面、平面与平面，以及异面直线所成角、平行线与平面平行的判定与性质。",
+   "textbookRef": "人教必修二 第八章 立体几何初步 · 本章知识结构图（p174）"
+  }
+ ],
+ "edges": [
+  {
+   "from": "math_7b_rjb_cpt1",
+   "to": "textbook_math_7b_cpt_zhui_xian",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "垂线及其性质",
+   "evidenceSource": "人教七下 第五章 本章知识结构图（p040）"
+  },
+  {
+   "from": "textbook_math_7b_cpt_zhui_xian",
+   "to": "textbook_math_7b_cpt_dian_dao_zhixian",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "点到直线的距离",
+   "evidenceSource": "人教七下 第五章 本章知识结构图（p040）"
+  },
+  {
+   "from": "textbook_math_9a_cpt_dengfen_yuanzhou",
+   "to": "math_9a_rjb_cpt66",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "等分圆周",
+   "evidenceSource": "人教九上 第二十四章 圆 本章知识结构图（p128）"
+  },
+  {
+   "from": "textbook_math_bx1_cpt_changyong_luoji_yuyu",
+   "to": "math_bx1_rjb_cpt14",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "充分条件",
+   "evidenceSource": "人教必修一 第一章 本章知识结构图（p040）"
+  },
+  {
+   "from": "textbook_math_bx1_cpt_changyong_luoji_yuyu",
+   "to": "math_bx1_rjb_cpt15",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "必要条件",
+   "evidenceSource": "人教必修一 第一章 本章知识结构图（p040）"
+  },
+  {
+   "from": "textbook_math_bx1_cpt_changyong_luoji_yuyu",
+   "to": "math_bx1_rjb_cpt16",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "充要条件",
+   "evidenceSource": "人教必修一 第一章 本章知识结构图（p040）"
+  },
+  {
+   "from": "textbook_math_bx1_cpt_changyong_luoji_yuyu",
+   "to": "math_bx1_rjb_cpt17",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "全称量词",
+   "evidenceSource": "人教必修一 第一章 本章知识结构图（p040）"
+  },
+  {
+   "from": "textbook_math_bx1_cpt_changyong_luoji_yuyu",
+   "to": "math_bx1_rjb_cpt18",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "存在量词",
+   "evidenceSource": "人教必修一 第一章 本章知识结构图（p040）"
+  },
+  {
+   "from": "textbook_math_bx1_cpt_changyong_luoji_yuyu",
+   "to": "math_bx1_rjb_cpt22",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "全称量词命题的否定",
+   "evidenceSource": "人教必修一 第一章 本章知识结构图（p040）"
+  },
+  {
+   "from": "textbook_math_bx1_cpt_changyong_luoji_yuyu",
+   "to": "math_bx1_rjb_cpt23",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "存在量词命题的否定",
+   "evidenceSource": "人教必修一 第一章 本章知识结构图（p040）"
+  },
+  {
+   "from": "math_bx1_rjb_cpt114",
+   "to": "textbook_math_bx1_cpt_hecha_jiao_gongshi",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "和差角公式",
+   "evidenceSource": "人教必修一 第五章 三角函数 本章知识结构图（p258）"
+  },
+  {
+   "from": "textbook_math_bx2_cpt_kongjian_jihe",
+   "to": "textbook_math_bx2_cpt_zhiguitu",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "立体图形的直观图",
+   "evidenceSource": "人教必修二 第八章 本章知识结构图（p174）"
+  },
+  {
+   "from": "textbook_math_bx2_cpt_zhiguitu",
+   "to": "math_bx2_rjb_cpt67",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "立体图形的直观图",
+   "evidenceSource": "人教必修二 第八章 本章知识结构图（p174）"
+  },
+  {
+   "from": "textbook_math_bx2_cpt_kongjian_jihe",
+   "to": "textbook_math_bx2_cpt_biaomianji_tiji",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "柱、锥、台、球的表面积和体积",
+   "evidenceSource": "人教必修二 第八章 本章知识结构图（p174）"
+  },
+  {
+   "from": "textbook_math_bx2_cpt_biaomianji_tiji",
+   "to": "math_bx2_rjb_cpt72",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "柱、锥、台、球的表面积和体积",
+   "evidenceSource": "人教必修二 第八章 本章知识结构图（p174）"
+  },
+  {
+   "from": "textbook_math_bx2_cpt_kongjian_jihe",
+   "to": "textbook_math_bx2_cpt_weizhiguanxi",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "空间点、直线、平面的位置关系",
+   "evidenceSource": "人教必修二 第八章 本章知识结构图（p174）"
+  },
+  {
+   "from": "textbook_math_bx2_cpt_weizhiguanxi",
+   "to": "math_bx2_rjb_cpt86",
+   "type": "prerequisites_for",
+   "source": "structmap",
+   "evidence": "空间点、直线、平面的位置关系",
+   "evidenceSource": "人教必修二 第八章 本章知识结构图（p174）"
+  }
+ ]
+}
