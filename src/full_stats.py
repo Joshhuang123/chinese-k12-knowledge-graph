@@ -31,10 +31,35 @@ from nameindex import NameIndex   # noqa: E402
 GRAPH = BASE / "data" / "normalized" / "graph.json"
 SELF = BASE / "data" / "normalized" / "selfbuilt-edges.json"
 LMM = BASE / "data" / "lmm-out"
+INDEX = BASE / "index.html"
 
 SUBJ_ZH = {"math": "数学", "physics": "物理",
            "chemistry": "化学", "biology": "生物"}
 KEEP = {"Concept", "Skill", "Experiment"}
+
+# 页面上的 7 档来源徽标（跟 build_viz.py 的 SRC_ZH 一致）
+TIER_ZH = {0: "上游", 1: "模型重建", 2: "能力底座", 3: "自建概念",
+           4: "教材引入路径", 5: "已修正", 6: "教材结构图"}
+
+
+def load_payload():
+    """读成品 index.html 里嵌的 payload。
+
+    **为什么总账要从 payload 算，而不是从 graph.json + selfbuilt-edges.json 算：**
+    那两个文件是**裁决前**的素材。build_viz 还会做两件事：
+      1. 按来源优先级裁掉 247 组方向冲突的边（每组丢 1 条）
+      2. 环检测剪掉 56 条
+    所以素材里的 16,631 条 ≠ 用户看到的 16,320 条。
+    链深、0 前置率这些**只在成品图上算得准** ——
+    素材里还挂着 247 条方向相反的边，算出来的深度是假的。
+    """
+    import re
+    html = INDEX.read_text(encoding="utf-8")
+    m = re.search(r'<script id="data" type="application/json">(.*?)</script>',
+                  html, re.S)
+    if not m:
+        raise SystemExit("在 index.html 里找不到 payload —— 先跑 python3 src/build_viz.py")
+    return json.loads(m.group(1))
 
 
 def main():
@@ -69,28 +94,23 @@ def main():
     for s in sorted(batches):
         print(f"  {SUBJ_ZH[s]:<4} {done[s]:>5} 个 / {batches[s]:>3} 批")
 
-    # ── 3. 边的来源 ────────────────────────────────────────
+    # ── 3. 边的来源（**按成品 payload 算**）──────────────────
+    # payload 的边格式：[后继下标, 先修下标, 来源档位, 可疑档位]
+    payload = load_payload()
+    pnodes = payload["nodes"]
+    # 边的 [0]/[1] 是**节点下标**，不是 id —— 下标取 id 要走 pnodes
+    pname = [n[5] for n in pnodes]
     src_cnt = Counter()
-    for e in g["edges"]:
-        if e["type"] == "prerequisites_for":
-            src_cnt["上游"] += 1
-    for e in sb["edges"]:
-        if e["type"] == "prerequisites_for":
-            src_cnt[{"model": "模型重建", "l0": "能力底座",
-                     "derived": "自建概念", "intro": "教材引入路径",
-                     "fix": "已修正"}.get(e.get("source"), "自建")] += 1
-    print(f"\n先修边来源（共 {sum(src_cnt.values())} 条）：")
+    for e in payload["edges"]:
+        src_cnt[TIER_ZH.get(e[2], "?")] += 1
+    print(f"\n先修边来源（共 {sum(src_cnt.values())} 条，**成品图口径**）：")
     for k, v in src_cnt.most_common():
         print(f"  {v:>6}  {k}")
 
     # ── 4. 0 前置 ──────────────────────────────────────────
     pre = defaultdict(set)
-    for e in g["edges"]:
-        if e["type"] == "prerequisites_for":
-            pre[e["to"]].add(e["from"])
-    for e in sb["edges"]:
-        if e["type"] == "prerequisites_for":
-            pre[e["to"]].add(e["from"])
+    for e in payload["edges"]:
+        pre[pname[e[0]]].add(pname[e[1]])
     zero = [n for n in up if not pre.get(n["id"])]
     print(f"\n0 前置知识点 {len(zero)} / {len(up)} = {len(zero)/len(up)*100:.1f}%")
     z_by = Counter(n["subject"] for n in zero)
@@ -154,6 +174,10 @@ def main():
         "upstream_nodes": len(up), "selfbuilt_nodes": len(selfids),
         "by_subject": dict(by_subj),
         "blind_batches": dict(batches), "blind_covered": dict(done),
+        # **成品图口径的边数。** 之前只有 edge_sources 的分档，没有总数 ——
+        # 体检脚本只能去 JSON 文本里搜数字，搜不到就报错（假警报）。
+        "total_edges": sum(src_cnt.values()),
+        "canvas_nodes": len(payload["nodes"]),
         "edge_sources": dict(src_cnt),
         "zero_prereq": len(zero), "zero_by_subject": dict(z_by),
         "zero_by_label": dict(z_lab),

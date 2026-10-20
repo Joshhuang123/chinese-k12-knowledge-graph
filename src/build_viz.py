@@ -15,10 +15,10 @@ import json
 import pathlib
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from books import rank           # noqa: E402  册次排序，跟归一化层共用一套口径
+from books import is_reversed, rank           # noqa: E402  册次排序，跟归一化层共用一套口径
 from order import Order           # noqa: E402  教材顺序推导，与 sweep_math.py 共用一份
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
@@ -64,6 +64,25 @@ SRC = {"dataset": 0, "model": 1, "l0": 2, "derived": 3, "intro": 4,
        "fix": 5, "structmap": 6}
 SRC_ZH = {0: "上游", 1: "模型重建", 2: "能力底座", 3: "自建概念",
           4: "教材引入路径", 5: "已修正", 6: "教材结构图"}
+
+# **来源档位 ≠ 优先级。**
+# 档位数字是给页面显示用的（7 个徽标），跟「谁更可信」没有必然关系 ——
+# 比如「教材引入路径」=4、「上游」=0，看起来上游优先级最高，
+# 实际上上游恰恰是可信度最低的一档（ISSUE-09 逐条看过 38 条，模型全对）。
+# 所以优先级必须**单独一张表**写死，不能拿档位数字凑。
+#
+# 顺序的依据：
+#   fix       M3 逐条裁决过的修正（341 条争议边里 96.5% 判上游错）
+#   intro     教材原话直接声明的依赖（「像研究一次函数一样，现在研究二次函数」）
+#   structmap 教材「本章知识结构图」画出来的层级
+#   derived   自建概念：节点和边都是我们的
+#   model     模型重建，每条边带 why 理由，全量盲测过
+#   l0        能力底座
+#   upstream  上游数据集标的 —— 排最后（ISSUE-09：38 条逐条看过，模型那边全对）
+TIER_SRC = {0: "upstream", 1: "model", 2: "l0", 3: "derived",
+            4: "intro", 5: "fix", 6: "structmap"}
+PRIORITY = {"fix": 110, "intro": 100, "structmap": 95, "derived": 70,
+            "model": 60, "l0": 45, "upstream": 40}
 
 # 年级 → 视觉层（小学 1-6，初中 7-9，高中 10-12）
 GRADE = {"小学": range(1, 7), "初中": range(7, 10), "高中": range(10, 13)}
@@ -130,50 +149,163 @@ def main():
     # 上游的「证据」往往只是正文里的一句话（ISSUE-09 的原话）。
     #
     # 丢掉的边要记进 conflicts，不能默默消失。
+    #
+    # ── 这里曾经有一个静默失效的 bug ────────────────────────────
+    # `prereq` 的键是**下标**（u、v 是 nodes 数组的下标），
+    # `edge_src` 的键是**节点 id**（"math_1a_rjb_cpt3" 这样的字符串）。
+    # 原来写的是 `edge_src.get((u, v), 0)` —— 拿下标去查 id 键，
+    # **永远查不到**，恒返回默认值 0。
+    # 于是 su == sv == 0 → `if su == sv: continue` → **整段裁决从未执行过**。
+    # 页面上「对的那条留哪条」一直由后面环检测的遍历顺序决定，
+    # 跟注释里写的优先级毫无关系。
+    #
+    # 证据：这 246 组「上游 vs 模型」的对局里，模型赢 193 组、上游赢 53 组 ——
+    # **不是任何一套规则的执行结果，是遍历顺序的产物**。
+    # 修好之后模型 246:0 全赢，53 条上游边翻成模型边。
     pair_drop, pair_log = set(), []
     for u in list(prereq):
         for v in list(prereq[u]):
-            if (v, u) in prereq and (u, v) not in pair_drop:
-                su = edge_src.get((u, v), 0)
-                sv = edge_src.get((v, u), 0)
-                if su == sv:
-                    continue          # 同来源，不在这里判
-                # 数字小 = 优先级高
-                loser = (u, v) if su > sv else (v, u)
-                winner = (v, u) if loser == (u, v) else (u, v)
-                pair_drop.add(loser)
-                pair_log.append({
-                    "kept": list(winner), "dropped": list(loser),
-                    "keptSrc": min(su, sv), "droppedSrc": max(su, sv),
-                })
+            # **prereq 的键是 int（下标），值是后继下标集合。**
+            # 原来写的是 `(v, u) in prereq` —— 拿 tuple 去查一个 int 键的 dict，
+            # **恒为 False**。这是第一道门，门本来就没开过。
+            # 正确的问法是「v 的后继里有没有 u」，即反向边存不存在。
+            if u not in prereq.get(v, ()):
+                continue
+            # 这一对已经在别处判过了（(u,v) 或 (v,u) 有一个已在 pair_drop 里）
+            if (u, v) in pair_drop or (v, u) in pair_drop:
+                continue
+            # **必须用 id 去查 edge_src**（u、v 是下标）
+            iu, iv = nodes[u]["id"], nodes[v]["id"]
+            su = edge_src.get((iu, iv), 0)
+            sv = edge_src.get((iv, iu), 0)
+            if su == sv:
+                continue          # 同来源，不在这里判
+            pu = PRIORITY.get(TIER_SRC.get(su, "upstream"), 40)
+            pv = PRIORITY.get(TIER_SRC.get(sv, "upstream"), 40)
+            if pu == pv:
+                continue          # 优先级相同，交给环检测
+            # **pu 大的那条赢**（优先级表里 model=60 > upstream=40）
+            if pu > pv:
+                winner, loser = (u, v), (v, u)
+                ws, ls = su, sv
+            else:
+                winner, loser = (v, u), (u, v)
+                ws, ls = sv, su
+            pair_drop.add(loser)
+            pair_log.append({
+                "kept": [nodes[winner[0]]["id"], nodes[winner[1]]["id"]],
+                "dropped": [nodes[loser[0]]["id"], nodes[loser[1]]["id"]],
+                "keptSrc": TIER_SRC.get(ws, "upstream"),
+                "droppedSrc": TIER_SRC.get(ls, "upstream"),
+                "keptNames": [nodes[winner[0]]["name"], nodes[winner[1]]["name"]],
+                "droppedNames": [nodes[loser[0]]["name"], nodes[loser[1]]["name"]],
+                "reason": "conflict",
+            })
     for u, v in pair_drop:
         prereq[u].discard(v)
     if pair_log:
-        print(f"  双向边对 {len(pair_log)} 组，按来源优先级各丢 1 条"
-              f"（intro>derived>model>upstream）")
+        print(f"  双向边对 {len(pair_log)} 组，按来源优先级各丢 1 条")
+        for r in pair_log:
+            print(f"    留 {r['keptSrc']:>9}：{r['keptNames'][0]} → {r['keptNames'][1]}"
+                  f"   丢 {r['droppedSrc']:>9}：{r['droppedNames'][0]} → {r['droppedNames'][1]}")
 
-    # 环检测并剪枝：回边直接丢弃（先把要删的边收集完，再统一改集合，
-    # 不能一边迭代一边改 —— 会 RuntimeError: Set changed size during iteration）
-    color, to_drop = {}, set()
-    for start in range(len(nodes)):
-        if color.get(start):
-            continue
-        stack = [(start, iter(list(prereq.get(start, ()))))]
-        color[start] = 1
-        while stack:
-            u, it = stack[-1]
-            adv = next((v for v in it if color.get(v) != 2), None)
-            if adv is None:
-                color[u] = 2
-                stack.pop()
-            elif color.get(adv) == 1:
-                to_drop.add((u, adv))
-            else:
-                color[adv] = 1
-                stack.append((adv, iter(list(prereq.get(adv, ())))))
-    for u, v in to_drop:
-        prereq[u].discard(v)
+    # ── 环检测并剪枝：丢**优先级最低**的那条，不是丢回边 ──────────
+    # 原来这里是「回边直接丢弃」—— 丢哪条由 DFS 遍历顺序决定。
+    # 遍历顺序虽然对同一份数据是稳定的，但**没有任何理由**：
+    # 一条环里上游边和模型边都在，凭什么牺牲模型边？
+    #
+    # 现在改成：把环找出来，丢环里**来源优先级最低**的那条。
+    # 这跟前面的冲突裁决用同一张 PRIORITY 表，规则统一。
+    #
+    # 同优先级怎么办？用「册次倒挂」当次级判据 ——
+    # 先修方出现在更晚的册次里，这条边更可能是错的
+    # （ISSUE-11 实测上游 3703 条里有 188 条倒挂）。
+    # 再同就按 id 稳定排序，保证同样输入永远同样结果。
+    def cycle_edge_sets():
+        """列出当前图里所有环的边集合（只读，不改图）。"""
+        color = {}
+        out = []
+        for start in range(len(nodes)):
+            if color.get(start):
+                continue
+            stack = [(start, iter(list(prereq.get(start, ()))))]
+            color[start] = 1
+            path_edges, path_nodes = [], [start]
+            while stack:
+                u, it = stack[-1]
+                adv = next((v for v in it if color.get(v) != 2), None)
+                if adv is None:
+                    color[u] = 2
+                    stack.pop()
+                    if path_edges:
+                        path_edges.pop()
+                    if path_nodes:
+                        path_nodes.pop()
+                elif color.get(adv) == 1:
+                    i = path_nodes.index(adv)
+                    out.append(set(path_edges[i:]) | {(u, adv)})
+                else:
+                    color[adv] = 1
+                    stack.append((adv, iter(list(prereq.get(adv, ())))))
+                    path_edges.append((u, adv))
+                    path_nodes.append(adv)
+        return out
+
+    def cycle_key(e):
+        u, v = e
+        iu, iv = nodes[u]["id"], nodes[v]["id"]
+        tier = edge_src.get((iu, iv), 0)
+        prio = PRIORITY.get(TIER_SRC.get(tier, "upstream"), 40)
+        rev = 0
+        try:
+            if is_reversed(nodes[u]["book"], nodes[v]["book"],
+                           nodes[u]["subject"] == nodes[v]["subject"]):
+                rev = 1
+        except KeyError:
+            rev = 0            # 自建节点没有册次，不参与册次判据
+        # 优先级小的先丢；同级里册次倒挂的先丢（-rev 把它排到前面）；再同按 id
+        return (prio, -rev, iu, iv)
+
+    to_drop = set()
+    rounds = 0
+    while True:
+        cycs = cycle_edge_sets()
+        if not cycs:
+            break
+        uniq, seen = [], set()
+        for c in cycs:
+            f = frozenset(c)
+            if f not in seen:
+                seen.add(f)
+                uniq.append(c)
+        if not uniq:
+            break
+        rounds += 1
+        if rounds > 100:
+            raise SystemExit("构建中止：环剪了 100 轮还没收敛，算法有问题")
+        for c in uniq:
+            e = min(c, key=cycle_key)
+            prereq[e[0]].discard(e[1])
+            to_drop.add(e)
     dropped = len(to_drop)
+    # **环剪掉的边也要记进账。**
+    # 原来只有「双向冲突」的裁决有日志，环剪掉的边是默默消失的 ——
+    # 「不能默默剪掉」这条铁律要求**每一条**没进最终图的边都有出处。
+    for u, v in sorted(to_drop):
+        pair_log.append({
+            "kept": None,
+            "dropped": [nodes[u]["id"], nodes[v]["id"]],
+            "keptSrc": None,
+            "droppedSrc": TIER_SRC.get(edge_src.get((nodes[u]["id"], nodes[v]["id"]), 0),
+                                       "upstream"),
+            "keptNames": None,
+            "droppedNames": [nodes[u]["name"], nodes[v]["name"]],
+            "reason": "cycle",
+        })
+    if dropped:
+        byt = Counter(TIER_SRC.get(edge_src.get((nodes[u]["id"], nodes[v]["id"]), 0),
+                                    "upstream") for u, v in to_drop)
+        print(f"  环剪掉 {dropped} 条（{rounds} 轮收敛），按来源：{dict(byt)}")
 
     # 入度（被多少人依赖），归一化成 0-1 的"重要度"
     indeg = {i: 0 for i in range(len(nodes))}
@@ -318,6 +450,14 @@ def main():
                 if (nodes[u]["id"], nodes[v]["id"]) in fixed_del:
                     prereq[u].discard(v)
                     edge_src.pop((nodes[u]["id"], nodes[v]["id"]), None)
+                    # 裁决删掉的边也要进账
+                    pair_log.append({
+                        "kept": None, "dropped": [nodes[u]["id"], nodes[v]["id"]],
+                        "keptSrc": None, "droppedSrc": "upstream",
+                        "keptNames": None,
+                        "droppedNames": [nodes[u]["name"], nodes[v]["name"]],
+                        "reason": "adjudicated",
+                    })
         # 反向的：加入 to→from
         for v in fixed_rev:
             a, b = idx.get(v["to"]), idx.get(v["from"])
@@ -327,6 +467,31 @@ def main():
             edge_src[(v["to"], v["from"])] = SRC["fix"]
         print(f"  已按裁决修正 {len(fixed_del) + len(fixed_rev)} 条上游边"
               f"（删除 {len(fixed_del)} · 反向 {len(fixed_rev)}）")
+
+    # ── 最终环检测（必须在修正之后）──────────────────────────
+    # 上面那次环检测跑在**修正之前**。修正会新增反向边，
+    # 新增的边可能跟别的边构成新环 —— 而那次检测看不见。
+    # 这是个真隐患，不是理论风险：加一条反向边就能造出环。
+    # 所以这里再检一次，发现环就让构建**失败**：
+    # 环意味着「学 A 前要先会 B，学 B 前要先会 A」，页面不能带着它上线。
+    color2, cyc2 = {}, []
+
+    def dfs2(u, path):
+        color2[u] = 1
+        for v in prereq.get(u, ()):
+            if color2.get(v) == 1:
+                cyc2.append(path[path.index(v):] + [u, v])
+            elif color2.get(v) is None:
+                dfs2(v, path + [u])
+        color2[u] = 2
+
+    for nid in range(len(nodes)):
+        if color2.get(nid) is None:
+            dfs2(nid, [])
+    if cyc2:
+        for c in cyc2[:5]:
+            print("    环：" + " → ".join(nodes[i]["name"] for i in c))
+        raise SystemExit(f"构建中止：修正后出现 {len(cyc2)} 个环，先修边必须是 DAG")
 
     # ── 可疑上游边标记 ──────────────────────────────────────
     # 267 条上游先修边（7.2%）跟教材顺序倒挂、或把下位概念当前置。
@@ -466,6 +631,100 @@ def main():
           f"（{100*withunit/len(payload_nodes):.1f}%）")
     dist = "、".join("{} {}".format(s["zh"], s["n"]) for s in subjects)
     print(f"学科分布: {dist}")
+
+    # ── 裁决日志落盘 ─────────────────────────────────────────
+    # 「不能默默剪掉」这条铁律要求丢掉的边**有账可查**。
+    # 原来 pair_log 只打印到 stdout，构建完就没了 ——
+    # 谁也不知道 53 条上游边被换成了模型边、为什么换。
+    #
+    # **写盘前跟最终图对一次账**：裁决时判「留」的边，可能又被后面的
+    # 环剪枝或裁决删除给干掉了。日志必须反映**最终状态**，
+    # 否则「留」和实际不符，账就是假的。
+    final_pairs = {(nodes[a]["id"], nodes[b]["id"])
+                   for a, bs in prereq.items() for b in bs}
+    for r in pair_log:
+        if r.get("kept"):
+            r["keptSurvived"] = tuple(r["kept"]) in final_pairs
+    CONFL = BASE / "data" / "normalized" / "prereq-conflicts.json"
+    CONFL.write_text(json.dumps({
+        "_comment": ("先修边从素材到成品图的完整账本。每一条没进最终图的边都在 "
+                     "resolved 里，标明 reason：conflict=方向冲突按优先级裁决、"
+                     "cycle=成环剪掉、adjudicated=M3 裁决删除。"
+                     "上游数据本身没动（data/raw/ 只读），这里记的是"
+                     "**页面上用的派生边集**的取舍。"),
+        "priority": PRIORITY,
+        "finalEdges": len(final_pairs),
+        "resolved": pair_log,
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
+    by_reason = Counter(r.get("reason", "conflict") for r in pair_log)
+    print(f"裁决日志 {len(pair_log)} 条 "
+          f"（{' · '.join(f'{k} {v}' for k, v in sorted(by_reason.items()))}）"
+          f" → {CONFL.relative_to(BASE)}")
+
+    # 同时写一份**人可读的账**到 docs/。
+    # 为什么要有两份：data/normalized/ 是 gitignore 的派生产物，
+    # 里面的 JSON 谁在 GitHub 上都看不到 —— 而「不能默默剪掉」这条铁律
+    # 要求账是**公开可复核**的。docs/ 进库，评审的人能直接读、能 diff。
+    DOC = BASE / "docs" / "prereq-conflicts.md"
+    REASON_ZH = {"conflict": "方向冲突（按来源优先级裁决）",
+                  "cycle": "成环剪掉",
+                  "adjudicated": "M3 裁决删除"}
+    TIER_DOC = {"upstream": "上游", "model": "模型重建", "l0": "能力底座",
+                "derived": "自建概念", "intro": "教材引入路径",
+                "fix": "已修正", "structmap": "教材结构图"}
+    lines = [
+        "# 先修边裁决账本",
+        "",
+        "**这份文件由 `python3 src/build_viz.py` 自动生成，不要手改。**",
+        "",
+        "素材（`data/normalized/graph.json` + `selfbuilt-edges.json`）里的每一条先修边，",
+        "要么出现在页面上，要么出现在这张账里。**下落不明的边一条都不许有** ——",
+        "`src/health_check.py` 会查这条。",
+        "",
+        f"- 成品图边数：**{len(final_pairs):,}**",
+        f"- 记在账上的：**{len(pair_log):,}** 条",
+        f"- 按原因：{' · '.join(f'{REASON_ZH.get(k, k)} {v}' for k, v in sorted(by_reason.items()))}",
+        "",
+        "## 优先级规则",
+        "",
+        "| 档位 | 优先级 | 依据 |",
+        "|---|---|---|",
+        "| 已修正 | 110 | M3 逐条裁决过（341 条争议边里 96.5% 判上游错） |",
+        "| 教材引入路径 | 100 | 教材原话直接声明的依赖 |",
+        "| 教材结构图 | 95 | 教材「本章知识结构图」画出来的层级 |",
+        "| 自建概念 | 70 | 节点和边都是我们的 |",
+        "| 模型重建 | 60 | 每条边带 why 理由，全量盲测过 |",
+        "| 能力底座 | 45 | L0 能力挂到知识点 |",
+        "| 上游 | 40 | 数据集标的 —— 排最后（ISSUE-09：38 条逐条看过，模型全对） |",
+        "",
+        "## 逐条",
+        "",
+        "| # | 原因 | 留 / 丢 | 前置 | 后继 |",
+        "|---|---|---|---|---|",
+    ]
+    for i, r in enumerate(pair_log, 1):
+        if r.get("kept"):
+            act = f"留 **{TIER_DOC.get(r['keptSrc'], r['keptSrc'])}**" \
+                  f" ／ 丢 {TIER_DOC.get(r['droppedSrc'], r['droppedSrc'])}"
+        else:
+            act = f"丢 **{TIER_DOC.get(r['droppedSrc'], r['droppedSrc'])}**"
+        keep = r.get("keptNames")
+        drop = r.get("droppedNames")
+        cell = (f"{keep[0]} → {keep[1]}" if keep else "") + \
+               (" ／ " if keep and drop else "") + \
+               (f"{drop[0]} → {drop[1]}" if drop else "")
+        lines.append(f"| {i} | {REASON_ZH.get(r.get('reason', 'conflict'), '?')} "
+                     f"| {act} | {cell} |")
+    lines += ["",
+              "---",
+              "",
+              "「留」的那条也可能后来被环剪掉（它是更长环的一部分）——",
+              "JSON 里的 `keptSurvived` 字段如实记录了这一点。",
+              ""]
+    DOC.parent.mkdir(parents=True, exist_ok=True)
+    DOC.write_text("\n".join(lines), encoding="utf-8")
+    print(f"人可读账本 → {DOC.relative_to(BASE)}")
+
     print(f"输出 {OUT.relative_to(BASE)}  ({OUT.stat().st_size/1024:.0f} KB)")
     print(f"     {INDEX.relative_to(BASE)}  (GitHub Pages 入口，内容相同)")
 
