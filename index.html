@@ -1671,7 +1671,7 @@ for(const b of document.querySelectorAll('#map .mtools .btn[data-d]')){
 }
 document.getElementById('mD2').setAttribute('aria-pressed','true');
 document.addEventListener('keydown', e=>{
-  if(e.key === 'Escape' && mapRoot >= 0){ closeMap(); }
+  if(e.key === 'Escape' && mapRoot >= 0){ closeMap(); e.stopPropagation(); }
 });
 
 /* ================= 「卡在哪」================= */
@@ -1854,7 +1854,13 @@ document.getElementById('gapCopy').addEventListener('click', async ()=>{
   }
 });
 document.addEventListener('keydown', e=>{
-  if(e.key === 'Escape' && !document.getElementById('gap').hidden) closeGap();
+  // **面板开着时按 Escape，只关面板，别把底下的卡片也关了。**
+  // 主 IIFE 的全局 Escape 处理器在 window 上（冒泡的最后一步），
+  // 它会 `card.classList.remove('on')` —— 卡片一点，卡片就没了。
+  // document 的处理器比 window 先跑，在这里 stopPropagation 就能挡住。
+  if(e.key === 'Escape' && !document.getElementById('gap').hidden){
+    closeGap(); e.stopPropagation();
+  }
 });
 </script>
 </body>

@@ -586,6 +586,19 @@ console.log('\n[8c-4] 「卡在哪」：先修闭包要排得出优先级');
   await page.keyboard.press('Escape');
   await sleep(200);
   ok(await page.evaluate(() => document.getElementById('gap').hidden), 'Esc 能关闭「卡在哪」');
+  // **面板开着时按 Esc，不能把底下的卡片也关了。**
+  // 主 IIFE 的全局 Escape 处理器在 window 上，会 `card.classList.remove('on')`。
+  // 连锁后果实测过：卡片一关，「知识脉络」按钮就点不动了（pointer-events:none），
+  // 脉络视图根本开不起来 —— 看着像功能坏了，其实是 Esc 的副作用。
+  ok(await page.evaluate(() => document.getElementById('card').classList.contains('on')),
+     '按 Esc 关面板后，卡片还在（没被全局 Escape 一起关掉）');
+  const stillOpens = await page.evaluate(() => {
+    document.getElementById('cMap').click();
+    return !document.getElementById('map').hidden;
+  });
+  ok(stillOpens, '关掉面板后，「知识脉络」仍然点得开');
+  await page.keyboard.press('Escape');
+  await sleep(200);
 }
 
 console.log('\n[8d] 配色：点和线的颜色都能选');
