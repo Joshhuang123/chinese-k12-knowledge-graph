@@ -208,6 +208,28 @@ def main():
             esc(str(v.get("reason") or v.get("evidence") or "")[:70]),
         ])
 
+    # ── 教材版本 ──
+    edfile = BASE / "data" / "textbook-editions.json"
+    ed_rows = []
+    ed_gen = ""
+    if edfile.exists():
+        ed = json.load(open(edfile, encoding="utf-8"))
+        ed_gen = ed.get("_generation", {}).get("summary", "")
+        for bk, r in ed.get("books", {}).items():
+            ed_rows.append([
+                esc(r.get("bookZh", bk)), esc(r.get("subject", "")),
+                esc(r.get("edition") or "?"), esc(r.get("printed") or "?"),
+                esc(r.get("isbn") or "?"), esc(r.get("curriculum") or "—"),
+            ])
+        ed_rows.sort(key=lambda x: (x[1], x[0]))
+    gen_rows = []
+    if edfile.exists():
+        gen = json.load(open(edfile, encoding="utf-8")).get("_generation", {})
+        for k, v in gen.items():
+            if k in ("summary", "implication"):
+                continue
+            gen_rows.append([esc(k), esc(v)])
+
     doc = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -308,6 +330,19 @@ code{{background:#191d25;padding:1px 5px;border-radius:4px;font-size:11.5px}}
 <p class="note">逐条拿模型 + 教材两个独立证据核过的上游错误边。
 改的是页面上用的派生边集，<b>上游原件一字未动</b>。</p>
 {table(["前置", "", "后继", "处置", "理由"], adj_rows)}
+
+<h2><span class="n">08</span>教材版本：我们引用的到底是哪一代</h2>
+<p class="note">视频里会说「这是人教七下第五章 5.1 讲的」——
+这句话只有在<b>读者手上的书跟我们是同一代</b>时才成立。
+下表是从每本 PDF 版权页抠出来的版本指纹（版次、印次、ISBN、依据的课标）。<br>
+<b>{esc(ed_gen)}</b><br>
+2024 秋起人教版初中换了新教材，<b>章号全变了</b>：七下数学的
+第五章「相交线与平行线」变成第七章「相交线与平行线」，实数从第六章变第八章 ——
+<b>所有章号 +2</b>，而且 7.1 相交线下面重新拆成了
+「两条直线相交 / 两条直线垂直 / 两条直线被第三条直线所截」。<br>
+所以引用时要说清版本，或者只说概念名。</p>
+{table(["册", "学科", "版次", "印次", "ISBN", "依据课标"], ed_rows)}
+{table(["学段", "代际说明"], gen_rows)}
 
 <div class="foot">
 数据源：<b>K12-KGraph</b>（北京大学 PKU-DCAI，arXiv:2605.09635，CC BY-NC-SA 4.0）。

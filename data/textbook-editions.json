@@ -1,0 +1,743 @@
+{
+ "_comment": "每本教材的版本指纹。**引用「第几章第几节」必须钉在这个版本上** —— 人教版初中 2024 秋起换新版，章号全变了。由 src/book_editions.py 从 PDF 版权页生成。",
+ "generated": "2026-10-20 19:49",
+ "books": {
+  "math-1a": {
+   "subject": "数学",
+   "bookZh": "一上",
+   "edition": "2022",
+   "printed": "2022.08.61",
+   "isbn": "978-7-107-36922-3",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-1b": {
+   "subject": "数学",
+   "bookZh": "一下",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-2a": {
+   "subject": "数学",
+   "bookZh": "二上",
+   "edition": "2022",
+   "printed": "2022.08.61",
+   "isbn": "978-7-107-26359-0",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-2b": {
+   "subject": "数学",
+   "bookZh": "二下",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-3a": {
+   "subject": "数学",
+   "bookZh": "三上",
+   "edition": "2022",
+   "printed": "2022.08.62",
+   "isbn": "978-7-107-36924-7",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-3b": {
+   "subject": "数学",
+   "bookZh": "三下",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-4a": {
+   "subject": "数学",
+   "bookZh": "四上",
+   "edition": "2022",
+   "printed": "2022.08.61",
+   "isbn": "978-7-107-36927-8",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-4b": {
+   "subject": "数学",
+   "bookZh": "四下",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-5a": {
+   "subject": "数学",
+   "bookZh": "五上",
+   "edition": "2022",
+   "printed": "2022.08.61",
+   "isbn": "978-7-107-36926-1",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-5b": {
+   "subject": "数学",
+   "bookZh": "五下",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-6a": {
+   "subject": "数学",
+   "bookZh": "六上",
+   "edition": "2022",
+   "printed": "2022.08.61",
+   "isbn": "978-7-107-28088-7",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-6b": {
+   "subject": "数学",
+   "bookZh": "六下",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "math-7a": {
+   "subject": "数学",
+   "bookZh": "七上",
+   "edition": "",
+   "printed": "2022.05.71",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "chapterNamesInBook": [
+    "一元一次方程",
+    "几何图形初步",
+    "整式的加减",
+    "有理数"
+   ]
+  },
+  "math-7b": {
+   "subject": "数学",
+   "bookZh": "七下",
+   "edition": "2012.10",
+   "printed": "",
+   "isbn": "978-7-107-24620-3",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "chapterNamesInBook": [
+    "“不等式与不等式组",
+    "“二元一次方程组",
+    "“二元一次方程组”",
+    "“实数",
+    "“平面直角坐标系",
+    "”不等式与不等式组",
+    "”二元一次方程组",
+    "”二元一次方程组”",
+    "”实数",
+    "”平面直角坐标系",
+    "”平面直角坐标系”",
+    "”数据的收集",
+    "”相交线与平行线",
+    "四旬四昌日",
+    "实数",
+    "平面直角坐标系"
+   ],
+   "newEdition2024": {
+    "note": "2024 版人教七下数学，章号全部 +2",
+    "chapters": [
+     [
+      "第五章 相交线与平行线",
+      "第七章 相交线与平行线"
+     ],
+     [
+      "第六章 实数",
+      "第八章 实数"
+     ],
+     [
+      "第七章 平面直角坐标系",
+      "第九章 平面直角坐标系"
+     ],
+     [
+      "第八章 二元一次方程组",
+      "第十章 二元一次方程组"
+     ],
+     [
+      "第九章 不等式与不等式组",
+      "第十一章 不等式与不等式组"
+     ],
+     [
+      "第十章 数据的收集、整理与描述",
+      "第十二章 数据的收集、整理与描述"
+     ]
+    ],
+    "sectionsChanged": [
+     [
+      "5.1 相交线",
+      "7.1 相交线（下面拆成 7.1.1 两条直线相交 / 7.1.2 两条直线垂直 / 7.1.3 两条直线被第三条直线所截）"
+     ],
+     [
+      "5.2 平行线及其判定",
+      "7.2 平行线（概念/判定/性质各成一节）"
+     ],
+     [
+      "5.3 平行线的性质",
+      "7.2.3 平行线的性质（并入 7.2）"
+     ],
+     [
+      "5.4 平移",
+      "7.4 平移"
+     ],
+     [
+      "（无）",
+      "7.3 定义、命题、定理（新增独立一章）"
+     ]
+    ],
+    "source": "https://www.renjiaoshe.com/kewen/87942.html（人教 2024 版七下数学课文目录）"
+   }
+  },
+  "math-8a": {
+   "subject": "数学",
+   "bookZh": "八上",
+   "edition": "",
+   "printed": "2022.05.20",
+   "isbn": "",
+   "curriculum": "《义务教育课程标准（２０１１年版）》",
+   "textSource": "text",
+   "chaptersInBook": [
+    2
+   ],
+   "chapterNamesInBook": [
+    "三角形",
+    "全等三角形",
+    "分式",
+    "整式的乘法与",
+    "整式的乘法与因式分解",
+    "轴对称"
+   ]
+  },
+  "math-8b": {
+   "subject": "数学",
+   "bookZh": "八下",
+   "edition": "2013",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "《义务教育课程标准（2011年版）》",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    30
+   ],
+   "chapterNamesInBook": [
+    "“”勾股定理",
+    "“一次函数",
+    "“久股定理",
+    "“二次根式",
+    "“勾股定理",
+    "“平行叫边形”",
+    "“平行四边形",
+    "“平行四边形”",
+    "“数据的分析",
+    "”一次函数",
+    "”二次根式",
+    "”二次根式”",
+    "”勾股定理",
+    "”勾股定理”",
+    "”平行四边形",
+    "”平行四边形”",
+    "”数据的分析",
+    "一次函数",
+    "二次根式",
+    "二次根式”",
+    "平行中边形",
+    "平行中边形”",
+    "平行四边形",
+    "平行四边形”"
+   ]
+  },
+  "math-9a": {
+   "subject": "数学",
+   "bookZh": "九上",
+   "edition": "",
+   "printed": "2022.05.71",
+   "isbn": "",
+   "curriculum": "《义务教育课程标准（２０１１年版）》",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": [
+    "一元二次方程",
+    "二次函数",
+    "旋转",
+    "概率初步"
+   ]
+  },
+  "math-9b": {
+   "subject": "数学",
+   "bookZh": "九下",
+   "edition": "",
+   "printed": "",
+   "isbn": "978-7-107-29045-9",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [],
+   "chapterNamesInBook": [
+    "“”投影与视图",
+    "“投影与视图",
+    "”反比例函数",
+    "”投影与视图",
+    "”相似",
+    "”锐角三角函数",
+    "”锐角三角函数”",
+    "反比例函数",
+    "投影与视图",
+    "相似",
+    "锐角三角函数",
+    "锐角三角子数"
+   ]
+  },
+  "math-m1": {
+   "subject": "数学",
+   "bookZh": "必修一",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "chapterNamesInBook": [
+    "JJ",
+    "“”函数的概念与性质",
+    "“”集合与常用逻辑用语",
+    "“一元二次函数",
+    "“三角函数",
+    "“三角天数",
+    "“三角杖数",
+    "“三角画数",
+    "“函数的概念与性质",
+    "“指数函数与对数函数",
+    "“指数函数与对数函数pp",
+    "“集合与常用巡辑用语”",
+    "“集合与常用逮辑用语”",
+    "“集合与常用逻辑用语",
+    "“集合与常用逻辑用语.eeeeee",
+    "“集合与常用逻辑用语”",
+    "”一元二次函数",
+    "”三角函数",
+    "”三角天数",
+    "”三角杖数",
+    "”函数的概念与性质",
+    "”函数的概念与性质.pp",
+    "”指数函数与对数函数",
+    "”集合与常用巡辑用语”",
+    "”集合与常用逻辑用语",
+    "一元二次函数",
+    "三角函数",
+    "函数的概念与性质",
+    "指数函数与对数函数",
+    "给出的概念"
+   ]
+  },
+  "math-m2": {
+   "subject": "数学",
+   "bookZh": "必修二",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "《义务教育课程标准（2017年版）》",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "chapterNamesInBook": [
+    "“”概率",
+    "“平面向量及其应用",
+    "“平面向量及其应用”",
+    "“概率",
+    "“立体几何初此间ee",
+    "“立体几何初步",
+    "“立体几何初步”",
+    "”复数",
+    "”平面向量及其应用",
+    "”平面向量及其应用”",
+    "”概率",
+    "”立体几何初步",
+    "”统计",
+    "复数",
+    "平面向量及其应用",
+    "平面向量及其应用.pp",
+    "概率",
+    "立体几何初步",
+    "统计",
+    "通过上一章的学习可知"
+   ]
+  },
+  "math-x1": {
+   "subject": "数学",
+   "bookZh": "选必一",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    1,
+    2,
+    3
+   ],
+   "chapterNamesInBook": [
+    "“空间向量与立体几何",
+    "“空间向量与立体几何“",
+    "“空间向量与立体几何”",
+    "”圆锥曲线的方程",
+    "”圆锥曲线的方程sseseases",
+    "”直线和圆的方程",
+    "”直线和圆的方程“ee",
+    "”直线和圆的方程”",
+    "”空间向量与立体几何",
+    "圆锥曲线的方程",
+    "直线和圆的方程",
+    "空间向量与立体几何"
+   ]
+  },
+  "math-x2": {
+   "subject": "数学",
+   "bookZh": "选必二",
+   "edition": "",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "《义务教育课程标准（2017年版）》",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    4,
+    5
+   ],
+   "chapterNamesInBook": [
+    "“一元函数的导数及其应用",
+    "“一元天数的导数及其应用",
+    "”一元函数的导数及其应用",
+    "”一元函数的导数及其应用”",
+    "”一元天数的导数及其应用",
+    "”数列",
+    "一元函数的导数及其应用",
+    "数列"
+   ]
+  },
+  "math-x3": {
+   "subject": "数学",
+   "bookZh": "选必三",
+   "edition": "",
+   "printed": "2022.03.29",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    6,
+    7,
+    8
+   ],
+   "chapterNamesInBook": [
+    "“计数原理",
+    "“计数原理.eeeeeeeeesee",
+    "“随机变量及其分布",
+    "“随机变量及其分布pe",
+    "“随机变量及其分布“",
+    "“随机变量及其分布”",
+    "”成对数据的统计分析",
+    "”成对数据的统计分析es",
+    "”成对数据的统计分析“",
+    "”成对数据的统计分析”",
+    "”随机变量及其分布",
+    "”随机变量及其分布”",
+    "成对数据的统计分析",
+    "计数原",
+    "随机变量及其分布"
+   ]
+  },
+  "phys-8a": {
+   "subject": "物理",
+   "bookZh": "八上",
+   "edition": "",
+   "printed": "2022.05.51",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "chapterNamesInBook": [
+    "光现象",
+    "声现象",
+    "机械运动",
+    "物态变化",
+    "质量与密度",
+    "透镜及其应用"
+   ]
+  },
+  "phys-8b": {
+   "subject": "物理",
+   "bookZh": "八下",
+   "edition": "2012.10",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    7,
+    8,
+    9,
+    10
+   ],
+   "chapterNamesInBook": [
+    "“”功和机械能",
+    "“”功和机械能“",
+    "“压强",
+    "”功和机械能",
+    "”功和机械能“",
+    "”压强",
+    "”简单机械",
+    "力了",
+    "压强",
+    "浮力",
+    "简单机械",
+    "简单机械“",
+    "运动和力",
+    "运动和力”"
+   ]
+  },
+  "chem-9a": {
+   "subject": "化学",
+   "bookZh": "九上",
+   "edition": "",
+   "printed": "2022.06.24",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "chem-9b": {
+   "subject": "化学",
+   "bookZh": "九下",
+   "edition": "2012.10",
+   "printed": "",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [],
+   "chapterNamesInBook": []
+  },
+  "bio-7a": {
+   "subject": "生物",
+   "bookZh": "七上",
+   "edition": "",
+   "printed": "2022.06.71",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "chapterNamesInBook": [
+    "了解生物圈",
+    "了解生物圈............",
+    "爱护植被",
+    "生物圈中有哪些绿色植物",
+    "生物圈中有哪些绿色植物......",
+    "细胞怎样构成生物体",
+    "细胞怎样构成生物体........",
+    "细胞是生命活动的基本单位",
+    "细胞是生命活动的基本单位.....",
+    "绿色植物与生物圈中的碳-氧平衡",
+    "绿色植物与生物圈中的碳－氧平衡..",
+    "绿色植物与生物圈的水循环",
+    "绿色植物与生物圈的水循环.....",
+    "绿色植物是生物圈中",
+    "绿色植物是生物圈中有机物的制造者",
+    "绿色植物是生物圈中有机物的制造者.",
+    "被子植物的一生",
+    "被子植物的一生..........",
+    "认识生物",
+    "认识生物............."
+   ]
+  },
+  "bio-7b": {
+   "subject": "生物",
+   "bookZh": "七下",
+   "edition": "2012.10",
+   "printed": "",
+   "isbn": "978-7-107-25258-7",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "chapterNamesInBook": [
+    "人体内废物的排出",
+    "人体内废物的排出“",
+    "人体内物质的运输",
+    "人体内物质的运输“",
+    "人体内物质的运输”",
+    "人体生命活动的调节",
+    "人体生命活动的调节”",
+    "人体的吁吸",
+    "人体的呼吸",
+    "人体的营养”",
+    "人的由来",
+    "人的由来“",
+    "人的由来了",
+    "人类活动对生物围的影响",
+    "人类活动对生物图的影响"
+   ]
+  },
+  "bio-8a": {
+   "subject": "生物",
+   "bookZh": "八上",
+   "edition": "",
+   "printed": "2022.04.10",
+   "isbn": "",
+   "curriculum": "",
+   "textSource": "text",
+   "chaptersInBook": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "chapterNamesInBook": [
+    "保护生物的多样性",
+    "保护生物的多样性.........",
+    "动物在生物圈中的作用",
+    "动物在生物圈中的作用.......",
+    "动物的主要类群",
+    "动物的主要类群..........",
+    "动物的运动和行为",
+    "动物的运动和行为.........",
+    "根据生物的特征进行分类",
+    "根据生物的特征进行分类......",
+    "病毒",
+    "病毒...............",
+    "细菌和真菌",
+    "细菌和真菌............",
+    "认识生物的多样性",
+    "认识生物的多样性........."
+   ]
+  },
+  "bio-8b": {
+   "subject": "生物",
+   "bookZh": "八下",
+   "edition": "2013.09",
+   "printed": "",
+   "isbn": "978-7-107-27216-5",
+   "curriculum": "",
+   "textSource": "ocr",
+   "chaptersInBook": [
+    1,
+    2,
+    3
+   ],
+   "chapterNamesInBook": [
+    "”夺和畅的竺兰和发育sseaaaaa",
+    "了解自己,增进健康",
+    "了解自己,增进健康”",
+    "传染病和免疫",
+    "传染病和免疫“",
+    "生命起源和生物进化",
+    "生命起源和生物进化”",
+    "生物的生殖和发育",
+    "生物的生殖和发育“",
+    "生物的生殖和发育”",
+    "生物的遗传与变异",
+    "生物的遗传与变异”",
+    "生物的遭传与变异",
+    "生物的遵传与变异",
+    "用药与急开”",
+    "用药与急弄",
+    "用药与急弄”",
+    "用药与急救”",
+    "用药与急转”"
+   ]
+  }
+ },
+ "_generation": {
+  "summary": "全部是「2024 改版之前」那一代教材。2024 秋起的新教材一代都没有。",
+  "小学数学": "2012 版次，2022 印次，依据 2011 版课标。2024 秋起有新教材（一年级先行）。",
+  "初中数学": "上册 2022 印次、下册 2012/2013/2017 印次，都是 2012 版次那一代，依据 2011 版课标。2024 秋起有新教材，七年级先行，**章号全变**（七下所有章 +2）。",
+  "初中生物": "上册 2022 印次、下册 2012/2013 印次。2024 秋起有新教材（七年级先行）。",
+  "初中化学": "九上 2022 印次、九下 2012 印次。",
+  "初中物理": "八上 2022 印次、八下 2012 印次（刚补下载的）。",
+  "高中数学": "2019 版新教材（人教A版为主，必修二用B版），2022 印次。**高中仍是现行版。**",
+  "implication": "引用「第几章第几节」必须钉在这个版本上。家长手上若是 2024 新版，章号对不上（初中数学差 2）。视频里说章号时要说清是哪个版本，或者只说概念名。"
+ }
+}
