@@ -295,6 +295,32 @@ def layer2(g, sb, payload, html):
     except Exception as e:
         warn(f"取 git blob 失败，跳过：{e}")
 
+    # 数据质量页：数字必须跟当前数据一致，且页面自包含
+    Q = BASE / "quality.html"
+    if Q.exists():
+        qh = Q.read_text(encoding="utf-8")
+        ok(f"{len(pedges):,}" in qh,
+           f"数据质量页里的前置关系数跟成品图一致（{len(pedges):,}）")
+        ext = re.findall(r'<script[^>]+src="(https?://[^"]+)"', qh) + \
+              re.findall(r'<link[^>]+href="(https?://[^"]+)"', qh) + \
+              re.findall(r'<img[^>]+src="(https?://[^"]+)"', qh)
+        ok(not ext, f"数据质量页没有加载任何外部资源（{len(ext)} 个）",
+           str(ext[:3]))
+        # 超链接到源码仓库是允许的（那是给人点的，不是页面依赖）
+        links = re.findall(r'<a[^>]+href="(https?://[^"]+)"', qh)
+        ok(all("github.com" in u for u in links),
+           f"页面里的站外超链接只指向源码仓库（{len(links)} 个）", str(links[:3]))
+        # 倒挂条数：只数跨册的上游边，跟 flag_suspect 同一套口径
+        col = BASE / "data/normalized/order-collide.json"
+        if col.exists():
+            rows = json.loads(col.read_text(encoding="utf-8")).get("rows", [])
+            nrev = sum(1 for r in rows
+                       if r.get("kind") == "cross" and r.get("source") == "upstream")
+            ok(f"跨册 {nrev} 条" in qh,
+               f"数据质量页里的倒挂条数跟 order-collide.json 一致（{nrev} 条）")
+    else:
+        warn("quality.html 不存在 —— 数据质量页还没生成")
+
     # COPY 列表：**旧文案一条都不许残留在成品里**
     bv = (SRC / "build_viz.py").read_text(encoding="utf-8")
     m2 = re.search(r"COPY\s*=\s*\[(.*?)\n    \]", bv, re.S)

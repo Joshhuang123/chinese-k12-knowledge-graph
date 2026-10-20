@@ -31,6 +31,61 @@
 
 ---
 
+## 复现速查表
+
+**每条问题对应哪条命令。** 没有这一栏的话，半年后没人能重跑出一个证据。
+
+| 编号 | 一句话 | 复现命令 |
+|---|---|---|
+| ISSUE-01 | 极性分子 ⇄ 相似相溶规律 互为前置 | `python3 src/validate.py` → PREREQ_CYCLE |
+| ISSUE-02 | 化学键能量变化与反应热 ⇄ 根据键能估算反应热 | 同上 |
+| ISSUE-03 | 6 个空名习题节点 | `python3 src/validate.py` → EMPTY_NAME |
+| ISSUE-04 | 元素周期表 ⇄ 元素周期律 ⇄ 元素周期系 | `python3 src/validate.py` → IS_A_CYCLE |
+| ISSUE-05 | `global_KG/` 从未读入，丢 187 条跨学科边 | `python3 src/normalize.py` 的输出 |
+| ISSUE-06 | 概念层前置大面积缺失 | `python3 src/full_stats.py` |
+| ISSUE-07 | 证据原文被抽到错的边上 | `python3 src/dispute_audit.py` |
+| ISSUE-08 | 整张图几乎全是根 | `python3 src/full_stats.py` → 链深 / 0 前置 |
+| ISSUE-09 | 38 条先修边方向反了 | `python3 src/dispute_audit.py` + `docs/dispute-verdict.md` |
+| ISSUE-10 | 教材里没有这些定义 | `python3 src/def_density.py <pdf>` |
+| ISSUE-11 | 188 条跟教材顺序倒挂 | `python3 src/collide_order.py` |
+| ISSUE-12 | 85 条「下位概念当前置」 | `python3 src/detect_subordinate.py` |
+| ISSUE-13 | 硬前置 ≠ 引入路径 | `python3 src/extract_links.py` |
+| ISSUE-14 | 非数学三科盲测 | `python3 src/full_stats.py` → 落位率段 |
+| ISSUE-15 | 定义句密度全学科都低 | `python3 src/def_density.py <pdf>` |
+| ISSUE-16 | 同名概念跨学科歧义 | `python3 src/merge_prereq.py` → CROSS_SUBJECT_FIXED |
+| ISSUE-17 | 卡片盖住工具栏 | `node src/test_search_browser.mjs` |
+| ISSUE-18 | 页面四个低级问题 | 同上 |
+| ISSUE-19 | 已修正的边没删原边 | 同上 → [8a] |
+| ISSUE-20 | 标签页标题口径 | 同上 → [1b] |
+| ISSUE-21 | 二维知识脉络视图 | 同上 → [8c] |
+| ISSUE-22 | 脉络视图的线没接上 | 同上 → [8c] |
+| ISSUE-23 | 点和线的颜色可选 | 同上 → [8d] |
+| ISSUE-24 | 教材真读了以后 | `python3 src/render_structmaps.py` + `src/check_edition.py` |
+| ISSUE-25 | 43 张结构图的实数账 | `python3 src/map_structmaps.py --in /tmp/structmap-raw.json` |
+| ISSUE-26 | 优先级裁决是死代码 | `python3 src/build_viz.py` 的裁决日志 + `src/audit_findings.py` |
+| ISSUE-27 | 代码库巡检的六条发现 | `python3 src/audit_findings.py` |
+| ISSUE-28 | 优化方向 | —— （不是 bug，是判断） |
+| ISSUE-29 | 修 ISSUE-27 的结果 | `python3 src/health_check.py` |
+
+**跑浏览器测试**要 `puppeteer-core`：
+
+```bash
+npm install puppeteer-core@23 --prefix /tmp/kg-test
+NODE_PATH=/tmp/kg-test/node_modules node src/test_search_browser.mjs
+```
+
+**跑全链**（改完数据层之后）：
+
+```bash
+python3 src/merge_prereq.py && python3 src/build_layers.py && python3 src/build_viz.py
+python3 src/collide_order.py --out data/normalized/order-collide.json
+python3 src/flag_suspect.py --out data/normalized/suspect-edges.json
+python3 src/full_stats.py --out data/normalized/full-stats.json
+python3 src/health_check.py
+```
+
+---
+
 ## ISSUE-01　互为前置：「极性分子」⇄「相似相溶规律」
 
 **位置**：`chemistry_xzxbx2_rjb_cpt100` ⇄ `chemistry_xzxbx2_rjb_cpt108`（人教版化学·选择性必修二）
@@ -1541,7 +1596,7 @@ COPY 加一条：
 
 ---
 
-## ISSUE-16　教材真读了以后：三个新发现，一个覆盖缺口
+## ISSUE-24　教材真读了以后：三个新发现，一个覆盖缺口
 
 前面十几轮都只用了教材的**目录页**和**关键词扫描**。这次把正文真读了一遍
 （43 张「本章知识结构图」由 M3 子代理逐张读），有三个发现。
@@ -1620,9 +1675,9 @@ COPY 加一条：
 
 ---
 
-## ISSUE-17　43 张「本章知识结构图」读完后的实际账：能建 5 条边，挖出 21 处覆盖缺口
+## ISSUE-25　43 张「本章知识结构图」读完后的实际账：能建 5 条边，挖出 21 处覆盖缺口
 
-ISSUE-16 说结构图「能验证大方向、也能建边」。**读完 43 张、243 条边之后，
+ISSUE-24 说结构图「能验证大方向、也能建边」。**读完 43 张、243 条边之后，
 这个预期得往下调**：能安全建的新边只有 5 条。
 
 ### 账
@@ -1687,7 +1742,7 @@ m2  「空间几何体」×3  「现实世界中的物体」  「实际背景」
 
 ---
 
-## ISSUE-24　「按来源优先级确定性丢弃」这套机制从来没执行过 —— 整段代码是死代码
+## ISSUE-26　「按来源优先级确定性丢弃」这套机制从来没执行过 —— 整段代码是死代码
 
 ### 现象
 
@@ -1855,10 +1910,10 @@ python3 src/full_stats.py         # 成品口径的总账
 
 ---
 
-## ISSUE-25　代码库巡检：六条没被发现的 bug + 项目的优化方向
+## ISSUE-27　代码库巡检：六条没被发现的 bug
 
-上一轮修完 ISSUE-24（死代码）之后，趁热把整个代码库又扫了一遍，
-专门找 ISSUE-24 那一类：**注释声明的行为与代码实际行为不一致**。
+上一轮修完 ISSUE-26（死代码）之后，趁热把整个代码库又扫了一遍，
+专门找 ISSUE-26 那一类：**注释声明的行为与代码实际行为不一致**。
 六条，全部有可复跑的验证脚本：`python3 src/audit_findings.py`（9 条断言全过）。
 
 ### F1　脉络视图画的线，一半以上在图谱里不存在（P0）
@@ -1943,7 +1998,7 @@ tier 6「教材结构图」取到 `undefined`，**回退成 tier 0「上游」�
 >
 > 顺带查出一条真的：概念**落位容器所在册 ≠ 节点自己册次**的有 **34 个**
 > （平行四边形[一下] 落在八下、催化剂[九上] 落在必修二…）。
-> 那是上游数据自身的不一致，已单列为 ISSUE-27。
+> 那是上游数据自身的不一致，已单列为 ISSUE-28。
 
 <details>
 <summary>原来的判断（保留备查）</summary>
@@ -1979,7 +2034,7 @@ for r in col["rows"]:
 
 `diagnose.py` 是回答「朋友卡在哪」的工具，它的边集来自三份**裁决前**的素材：
 `graph.json`（上游）、`lmm-merged.json`（模型）、`selfbuilt-edges.json`（自建层）。
-而页面上是**裁决后**的成品（ISSUE-24 刚把 247 组冲突 + 56 条环剪掉）。
+而页面上是**裁决后**的成品（ISSUE-26 刚把 247 组冲突 + 56 条环剪掉）。
 
 **252 个节点的前置集合不一致**：diagnose 多 321 条、页面多 14 条。
 
@@ -2037,7 +2092,7 @@ python3 src/audit_findings.py    # 9 条断言，全过 = 六条发现都还在
 
 ---
 
-## ISSUE-26　优化方向：下一步该往哪走
+## ISSUE-28　优化方向：下一步该往哪走
 
 修完前面这些，技术债基本清了（0 环、0 悬空、7 档来源、账本齐全、体检可跑）。
 剩下的问题不再是「修 bug」，是**这个项目要往哪长**。
@@ -2060,7 +2115,7 @@ python3 src/audit_findings.py    # 9 条断言，全过 = 六条发现都还在
 
 ### 二、覆盖缺口比边数值钱
 
-ISSUE-17 从 43 张结构图里挖出 **21 处覆盖缺口**（教材有、图谱没有）：
+ISSUE-25 从 43 张结构图里挖出 **21 处覆盖缺口**（教材有、图谱没有）：
 「垂线及其性质」「等分圆周」「常用逻辑用语」「和差角公式」「空间几何体」…
 
 **没有节点就没有边。** 补一条边是一件事，
@@ -2144,10 +2199,10 @@ L0 现在 20 个能力、1378 条边，但只覆盖了模型 8% 的能力表述�
 
 ---
 
-## ISSUE-27　修 ISSUE-25 的六条发现：脉络视图说真话、诊断层跟页面对齐、倒挂口径统一
+## ISSUE-29　修 ISSUE-27 的六条发现：脉络视图说真话、诊断层跟页面对齐、倒挂口径统一
 
-ISSUE-25 是巡检报告，这一���是把它逐条修掉的结果。
-**六条里修了五条，撤回一条**（F4 那个是我判断错了，理由见 ISSUE-25 的 F4 小节）。
+ISSUE-27 是巡检报告，这一���是把它逐条修掉的结果。
+**六条里修了五条，撤回一条**（F4 那个是我判断错了，理由见 ISSUE-27 的 F4 小节）。
 
 ### F1 + F2　脉络视图：从「星形连根」改成真实链（P0）
 
@@ -2263,7 +2318,7 @@ for(const [nid, v] of L.anc) edges.push([nid, v.parent, v.src, v.sus, true]);
 
 ### F4 撤回：那个是我判断错了
 
-见 ISSUE-25 的 F4 小节。`collide_order.py` 的文档明写
+见 ISSUE-27 的 F4 小节。`collide_order.py` 的文档明写
 「同册倒挂可信度低，拿这个当判据一半以上会是假阳性」，
 `flag_suspect.py` 只取 cross 是**与之一致的有意选择**。
 我当时只看到「算了 188 条、只用了 119 条」就断定是漏了，
