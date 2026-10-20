@@ -204,6 +204,24 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   outline:2px solid var(--acc);outline-offset:3px;border-radius:6px;
 }
 
+/* ================= 配色面板 ================= */
+#pal{
+  top:70px;right:38px;width:236px;padding:12px 13px;
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  backdrop-filter:blur(8px);box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:30;
+}
+#pal[hidden]{display:none}
+.palrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.palrow:last-of-type{margin-bottom:4px}
+.plab{font-size:10.5px;color:var(--muted);width:44px;flex:none}
+#pal .row{
+  display:inline-flex;align-items:center;gap:0;
+  font-size:11px;padding:4px 8px;border-radius:6px;cursor:pointer;
+  background:transparent;border:1px solid var(--line);color:var(--ink2);
+}
+#pal .row[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e;font-weight:500}
+.paltip{font-size:10px;color:var(--muted);line-height:1.5}
+
 /* ================= 二维知识脉络 ================= */
 #map{
   inset:0;background:rgba(9,10,13,.975);backdrop-filter:blur(10px);
@@ -386,7 +404,26 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   <button class="btn" id="tCore" aria-pressed="false">只看 9–10 岁</button>
   <button class="btn" id="tEdges" aria-pressed="true">显示连线</button>
   <button class="btn" id="tSpin" aria-pressed="true">自动旋转</button>
+  <button class="btn" id="tPal" aria-expanded="false" aria-controls="pal">配色</button>
   <button class="btn" id="tReset">复位</button>
+</div>
+
+<!-- 配色面板：点的颜色和线的颜色各选一种维度。
+     点的颜色：按学科 / 按学段 / 按重要度 / 单色。
+     线的颜色：按来源 / 按方向（先修→后继）/ 单色。 -->
+<div class="ui" id="pal" hidden>
+  <div class="palrow"><span class="plab">点的颜色</span>
+    <button type="button" class="row" data-pc="subject">学科</button>
+    <button type="button" class="row" data-pc="stage">学段</button>
+    <button type="button" class="row" data-pc="imp">重要度</button>
+    <button type="button" class="row" data-pc="mono">单色</button>
+  </div>
+  <div class="palrow"><span class="plab">线的颜色</span>
+    <button type="button" class="row" data-lc="source">来源</button>
+    <button type="button" class="row" data-lc="dir">方向</button>
+    <button type="button" class="row" data-lc="mono">单色</button>
+  </div>
+  <div class="paltip" id="palTip"></div>
 </div>
 
 <div class="ui" id="legend">
@@ -679,7 +716,7 @@ function drawNodes(m){
     if(activeSet.size && !on){
       // keep the rest of the cloud as a faint backdrop instead of hiding it
       ctx.globalAlpha = 0.09;
-      ctx.fillStyle = SUBJ[n.s].c;
+      ctx.fillStyle = nodeColor(n);
       ctx.beginPath(); ctx.arc(projX[idx], projY[idx], r, 0, 6.2832); ctx.fill();
       continue;
     }
@@ -687,7 +724,7 @@ function drawNodes(m){
       if(isFocus){ fill = '#ffffff'; alpha = 1; r = Math.max(r, 3.4); }
       else { fill = ACC; alpha = Math.min(1, 0.55 + (1.9 - k) * 0.26); }
     }else{
-      fill = SUBJ[n.s].c;
+      fill = nodeColor(n);
       alpha = Math.max(0.10, Math.min(0.80, 0.52 - (k - 1) * 0.30));
     }
     ctx.globalAlpha = alpha;
@@ -766,17 +803,103 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
+/* ================= 配色 ================= */
+/* 点的颜色有四种维度可选，线的颜色有三种。
+   存 localStorage —— 配色是个人偏好，刷新不该丢。 */
+const PAL = {
+  pc: localStorage.getItem('kg.pc') || 'subject',
+  lc: localStorage.getItem('kg.lc') || 'source',
+};
+const STAGE_C = { pri: '#4ade80', mid: '#60a5fa', high: '#f472b6' };
+const MAP_SRC_COLOR = ['#5b6472', '#7fd3ff', '#ffc477', '#c6a7ff', '#6ee7b7', '#ffd166'];
+const IMP_C = ['#2f3646', '#4b5b73', '#7f8fa6', '#c9a227', '#ffd166'];
+
+function stageOf(n){
+  if(n.a1 <= 6) return 'pri';      // 小学（含预备课）
+  if(n.a1 <= 9) return 'mid';      // 初中
+  return 'high';                   // 高中
+}
+function nodeColor(n){
+  if(PAL.pc === 'stage') return STAGE_C[stageOf(n)];
+  if(PAL.pc === 'imp'){
+    const c = Math.max(0, Math.min(0.9999, n.cen));
+    return IMP_C[Math.floor(c * IMP_C.length)];
+  }
+  if(PAL.pc === 'mono') return '#8b93a7';
+  return SUBJ[n.s].c;              // 学科（默认）
+}
+const PAL_NAME = { subject:'学科', stage:'学段', imp:'重要度', mono:'单色' };
+const PAL_LNAME = { source:'来源', dir:'方向', mono:'单色' };
+
+/* 边的颜色。2D 脉络用；3D 画布的连线一直是统一的淡灰 + 高亮粉，不分来源。 */
+function edgeColor(src, isAnc){
+  if(PAL.lc === 'dir') return isAnc ? '#7fd3ff' : '#ff9d6b';
+  if(PAL.lc === 'mono') return '#6b7488';
+  return MAP_SRC_COLOR[src] || MAP_SRC_COLOR[0];
+}
+
+/* 配色面板的交互 */
+const palEl = document.getElementById('pal');
+const palBtn = document.getElementById('tPal');
+function palSync(){
+  for(const b of palEl.querySelectorAll('[data-pc]'))
+    b.setAttribute('aria-pressed', String(b.dataset.pc === PAL.pc));
+  for(const b of palEl.querySelectorAll('[data-lc]'))
+    b.setAttribute('aria-pressed', String(b.dataset.lc === PAL.lc));
+  document.getElementById('palTip').textContent =
+    '点：' + PAL_NAME[PAL.pc] + ' · 线：' + PAL_LNAME[PAL.lc] + '（脉络视图）';
+}
+palBtn.addEventListener('click', e=>{
+  e.stopPropagation();
+  const open = palEl.hidden;
+  palEl.hidden = !open;
+  palBtn.setAttribute('aria-expanded', String(open));
+  if(open) palSync();
+});
+palEl.addEventListener('click', e=>{
+  const b = e.target.closest('[data-pc],[data-lc]');
+  if(!b) return;
+  if(b.dataset.pc){ PAL.pc = b.dataset.pc; localStorage.setItem('kg.pc', PAL.pc); }
+  if(b.dataset.lc){ PAL.lc = b.dataset.lc; localStorage.setItem('kg.lc', PAL.lc); }
+  palSync(); renderLegend(); markDirty();
+  if(mapRoot >= 0) mapRender();       // 脉络视图的线色跟着变
+  say('配色已改为 点:' + PAL_NAME[PAL.pc] + ' 线:' + PAL_LNAME[PAL.lc]);
+});
+document.addEventListener('pointerdown', e=>{
+  if(palEl.hidden) return;
+  if(palEl.contains(e.target) || palBtn.contains(e.target)) return;
+  palEl.hidden = true; palBtn.setAttribute('aria-expanded','false');
+});
+palSync();
+
 /* ================= legend ================= */
 const legendRows = document.getElementById('legendRows');
 /* 学科筛选原来是 <div> + click：键盘和读屏完全够不着，
    实测无障碍树里 Tab 能到的只有 4 个工具栏按钮、搜索框和源码链接。
    换成 <button> 之后，键盘可达和「已开/已关」的播报一次拿到两个 ——
    这不是只对读屏用户有意义，纯键盘用户也受益。 */
-legendRows.innerHTML = SUBJ.map((s,i)=>
-  `<button type="button" class="row on" data-s="${i}" aria-pressed="true">` +
-  `<span class="sw" style="background:${s.c}"></span>` +
-  `<span>${s.zh}</span><span class="n">${s.n}</span></button>`
-).join('');
+function renderLegend(){
+  // 点的配色换了维度，图例就得跟着换 —— 图例是「现在屏幕上是什么颜色」的说明，
+  // 不是固定的一组学科色。
+  if(PAL.pc === 'subject'){
+    legendRows.innerHTML = SUBJ.map((s,i)=>
+      `<button type="button" class="row on" data-s="${i}" aria-pressed="true">` +
+      `<span class="sw" style="background:${s.c}"></span>` +
+      `<span>${s.zh}</span><span class="n">${s.n}</span></button>`
+    ).join('');
+  }else{
+    const items = PAL.pc === 'stage'
+      ? [['小学','#4ade80'],['初中','#60a5fa'],['高中','#f472b6']]
+      : PAL.pc === 'imp'
+      ? [['不重要','#2f3646'],['较重要','#7f8fa6'],['最吃紧','#ffd166']]
+      : [['全部','#8b93a7']];
+    legendRows.innerHTML = items.map(([nm,c])=>
+      `<span class="row"><span class="sw" style="background:${c}"></span>` +
+      `<span>${nm}</span></span>`
+    ).join('');
+  }
+}
+renderLegend();
 legendRows.addEventListener('click', e=>{
   const r = e.target.closest('.row'); if(!r) return;
   const s = +r.dataset.s;
@@ -872,7 +995,7 @@ function render(){
     // 焦点不用离开输入框，读屏也能知道「现在选中的是第几条」
     return `<li class="r${i===selI?' sel':''}" role="option" id="r-${i}" ` +
       `aria-selected="${i===selI}" data-i="${i}">` +
-      `<span class="sw" style="background:${SUBJ[n.s].c}"></span>` +
+      `<span class="sw" style="background:${nodeColor(n)}"></span>` +
       `<span>${n.zh}</span><span class="bk">${n.dz}</span></li>`;
   }).join('') +
   // 视觉上的计数。对读屏是冗余的（下面 say() 会单独播），
@@ -1187,7 +1310,8 @@ addEventListener('keydown', e=>{
    全在它内部，外面（以及 puppeteer 的 evaluate）都够不着。
    二维脉络视图的代码要放在 IIFE 外面（它自己是一整块），
    就得从这里递东西出去。 */
-window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId};
+window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
+              nodeColor, edgeColor, getPal: ()=>PAL, setPal: (k,v)=>{PAL[k]=v;}};
 
 loop();
 })();
@@ -1202,7 +1326,6 @@ loop();
 
 const KG = window.__kg;
 const kgEsc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const MAP_SRC_COLOR = ['#5b6472', '#7fd3ff', '#ffc477', '#c6a7ff', '#6ee7b7', '#ffd166'];
 const MAP_COL_W = 250, MAP_ROW_H = 40;
 let mapRoot = -1, mapDepth = 2;
 
@@ -1281,13 +1404,13 @@ function mapRender(){
 
   // 边：先画，避免盖住节点
   const edges = [];
-  for(const [nid, v] of L.anc) edges.push([nid, root, v.src, v.sus]);
-  for(const [nid, v] of L.des) edges.push([root, nid, v.src, v.sus]);
+  for(const [nid, v] of L.anc) edges.push([nid, root, v.src, v.sus, true]);
+  for(const [nid, v] of L.des) edges.push([root, nid, v.src, v.sus, false]);
   /* 边的两个端点都缩到圆的边缘：
      起点从 A 圆外侧 1px 出发（不然线从圆心冒出来，被圆盖住一截，看着像没接上），
      终点停在 B 圆外侧 —— 箭头 marker 画在路径末端，
      终点压在圆心上就会被圆盖住，箭头就看不见了。 */
-  const edgeSvg = edges.map(([a,b,src,sus])=>{
+  const edgeSvg = edges.map(([a,b,src,sus,isAnc])=>{
     const A=pos.get(a), B=pos.get(b);
     if(!A || !B) return '';
     const ax=tx(A.x), ay=ty(A.y), bx=tx(B.x), by=ty(B.y);
@@ -1297,7 +1420,7 @@ function mapRender(){
     const ex = bx - dx/len*rb, ey = by - dy/len*rb;
     const mx=(sx+ex)/2;
     const cls='medge'+(sus?' sus':'');
-    const col=MAP_SRC_COLOR[src]||MAP_SRC_COLOR[0];
+    const col=KG.edgeColor(src, isAnc);
     // 箭头**直接画三角**，不用 marker。
     // marker 里的 fill="context-stroke" 在 Chrome 上不生效 ——
     // 箭头渲染成黑色，混在深色背景里根本看不见。
@@ -1330,7 +1453,7 @@ function mapRender(){
 
   // 节点
   const nodeSvg = [...pos.entries()].map(([nid,p])=>{
-    const n=KG.NODES[nid], c=KG.SUBJ[n.s].c;
+    const n=KG.NODES[nid], c=KG.nodeColor(n);
     const r = p.it.center ? 8 : 5.5;
     const dy = p.it.center ? -16 : -11;
     const tag = '<text class="mtag" x="'+tx(p.x)+'" y="'+(ty(p.y)+14)+'" text-anchor="middle">'+kgEsc(n.dz)+'</text>';

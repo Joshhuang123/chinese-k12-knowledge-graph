@@ -420,6 +420,52 @@ console.log('\n[8c] 二维知识脉络：能打开、分层正确、能钻取');
   ok(await page.evaluate(() => document.getElementById('map').hidden), 'Esc 能关闭脉络视图');
 }
 
+console.log('\n[8d] 配色：点和线的颜色都能选');
+{
+  await page.click('#tPal');
+  await sleep(300);
+  ok(await page.evaluate(() => !document.getElementById('pal').hidden), '配色面板能打开');
+  const def = await page.evaluate(() => ({
+    pc: document.querySelector('#pal [data-pc][aria-pressed="true"]')?.dataset.pc,
+    lc: document.querySelector('#pal [data-lc][aria-pressed="true"]')?.dataset.lc,
+  }));
+  ok(def.pc === 'subject' && def.lc === 'source',
+     `默认是 点:学科 / 线:来源（实际 ${def.pc}/${def.lc}）`);
+
+  // 点的配色换维度 → 图例必须跟着换
+  await page.click('#pal [data-pc="stage"]');
+  await sleep(300);
+  const lg = await page.evaluate(() =>
+    [...document.querySelectorAll('#legendRows .row')].map(e => e.textContent.trim()));
+  ok(lg.length === 3 && lg[0].includes('小学') && lg[2].includes('高中'),
+     `点的配色换维度后图例跟着换（${lg.join(' / ')}）`);
+
+  // 线的配色换「方向」→ 脉络里只剩两种颜色（先修 / 后继）
+  await page.click('#pal [data-lc="dir"]');
+  await sleep(300);
+  await page.evaluate(() => { document.getElementById('q').value = ''; });
+  await page.type('#q', '二次函数', { delay: 20 });
+  await sleep(300);
+  await page.keyboard.press('Enter');
+  await sleep(1400);
+  await page.click('#cMap');
+  await sleep(800);
+  const cols = await page.evaluate(() =>
+    [...new Set([...document.querySelectorAll('#mapSvg .medge')].map(e => e.getAttribute('stroke')))]);
+  ok(cols.length === 2, `线按方向着色，只剩两种颜色（先修/后继）（实际 ${cols.length} 种：${cols.join(',')}）`);
+
+  // 记住选择：刷新后还在
+  await page.reload({ waitUntil: 'load' });
+  await sleep(1200);
+  const kept = await page.evaluate(() => ({
+    pc: localStorage.getItem('kg.pc'), lc: localStorage.getItem('kg.lc') }));
+  ok(kept.pc === 'stage' && kept.lc === 'dir',
+     `配色选择被记住了（${kept.pc}/${kept.lc}）`);
+  // 复位，免得影响后面的用例
+  await page.evaluate(() => { localStorage.setItem('kg.pc','subject');
+                               localStorage.setItem('kg.lc','source'); });
+}
+
 console.log('\n[9] 跨学段抽检：锥形从底到顶都要能飞准');
 {
   // 单验一个节点不算数。锥形底部（小学，半径小、y 很负）和顶部（高中，半径大、y 很正）
