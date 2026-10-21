@@ -106,6 +106,15 @@ BOOKMETA = {
 }
 
 
+# alt 教材的册次名 → 图谱册次码。
+# **概念匹配必须用这个映射** —— 图谱里是 7a，教材文件叫「七上」。
+VOL_GRAPH = {
+    "七上": "7a", "七下": "7b",
+    "八上": "8a", "八下": "8b",
+    "九上": "9a", "九下": "9b",
+}
+
+
 def norm(t):
     """排版规范化：全角数字、私用区字符、空白。"""
     t = PRIVATE.sub("", t)
@@ -305,7 +314,10 @@ def main():
     sent_by_page = {}          # (key, pgno) → [句子]，供模糊匹配用
     ctext = collections.defaultdict(lambda: {
         "pages": [], "quotes": [], "kinds": [], "mentions": 0, "quality": [],
-        "chapters": set(), "meta": None})
+        "chapters": set(), "meta": None,
+        # **其他版本怎么讲这个概念**。跟 quotes 分开 ——
+        # 混在一起会让 source 字段说谎（source 写着人教版，里面却有冀教的句子）。
+        "otherEditions": {}})
 
     # **同一册可能有两份文本**（.txt 文本层 + .ocr.txt OCR）——
     # 全都跑一遍会把每页出两遍，id 还一样（页码不同但内容重复）。
@@ -359,12 +371,16 @@ def main():
             bk = stem
             subj = "math"
             key = f"{pub}-{subj}-{bk}"
+            # **图谱册次码**：概念匹配要按它筛，不能按「七上」——
+            # 图谱里数学七上是 7a，不映射的话 alt 的页一条概念都匹配不上。
+            gbk = VOL_GRAPH.get(bk, bk)
         else:
             fsubj, _, bk = stem.partition("-")
             subj = SUBJMAP.get(fsubj, fsubj)
             if not bk:
                 continue
             key = f"{subj}-{bk}"
+            gbk = bk
         # **册次码跨学科复用**（7a 既是数学七上、也是生物七上、还是物理八上）——
         # 只按册次筛会同时命中数学七下和生物七下，
         # 而且两者的页 id 都是「7b-p1」，**直接撞 id**。
@@ -415,7 +431,8 @@ def main():
             # 概念 → 教材原话
             for nm in keep:
                 for cid, name, csubj, book, bookZh in cidx[nm]:
-                    if book != bk or csubj != subj:
+                    # **按图谱册次码比**，不是按教材自己的叫法
+                    if book != gbk or csubj != subj:
                         continue
                     c = ctext[cid]
                     if c["meta"] is None:
@@ -439,10 +456,24 @@ def main():
                         # **超长的句子要截断保留** ——
                         # 原来用 `len(s) <= 120` 直接丢掉，
                         # 结果 40 个概念「页面上找到了、但一条原话都没有」。
-                        c["quotes"].append(s[:120])
-                        c["kinds"].append(k)
-                        if len(c["quotes"]) >= 24:
-                            break
+                        if is_alt:
+                            # **其他版本的引文单独放** ——
+                            # 混进 quotes 会让 source 字段说谎
+                            # （source 写着人教版，里面却有冀教的句子）。
+                            oe = c["otherEditions"].setdefault(
+                                pub, {"book": bk, "source": pathlib.Path(f).name,
+                                      "quotes": []})
+                            # 已经在主引文里出现过的一律不重复收 ——
+                            # alt/初中数学人教版 跟 rjb-math-* 是同一本书，
+                            # 收进去会让人教在「其他版本」里也出现一次。
+                            if (s[:120] not in oe["quotes"] and len(oe["quotes"]) < 6
+                                    and s[:120] not in c["quotes"]):
+                                oe["quotes"].append(s[:120])
+                        else:
+                            c["quotes"].append(s[:120])
+                            c["kinds"].append(k)
+                            if len(c["quotes"]) >= 24:
+                                break
             if len(lessons) % 500 == 0:
                 print(f"  {len(lessons)} 页…", flush=True)
 
@@ -464,7 +495,7 @@ def main():
         sub = {k: v for k, v in sent_by_page.items() if k[0] == f"{subj}-{book}"}
         if not sub:
             continue
-        got = fuzzy_concepts({nm: [(cid, nm, subj, book, bookZh)]
+        got = fuzzy_concepts({nm: [(cid, nm, subj, gbk, bookZh)]
                               for nm, cid, name, s, b, bz in items}, sub)
         for nm, m in got.items():
             fuzz[nm] = m
@@ -519,6 +550,8 @@ def main():
                            if c["quality"] else 0),
                 "match": "fuzzy" if c.get("fuzzy") else "exact",
                 "source": meta[5],
+                # **其他版本怎么讲这个概念**（出处分开，别混）
+                "otherEditions": {k: v for k, v in (c.get("otherEditions") or {}).items()},
             }, ensure_ascii=False) + "\n")
             n_c += 1
     print(f"\nlessons.jsonl       {len(lessons)} 页")
