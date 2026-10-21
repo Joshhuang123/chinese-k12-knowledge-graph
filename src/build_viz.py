@@ -19,6 +19,7 @@ from collections import Counter, defaultdict
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from books import is_reversed, rank           # noqa: E402  册次排序，跟归一化层共用一套口径
+from latex_plain import to_plain              # noqa: E402  LaTeX → 人能读的纯文本
 from order import Order           # noqa: E402  教材顺序推导，与 sweep_math.py 共用一份
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
@@ -542,9 +543,59 @@ def main():
             alt_pos[j] = [[x.get("label", ""), x.get("alt", ""),
                            x.get("chapter", "")] for x in lst]
 
+    # ── 视觉层：概念的教材公式 + 图形语义 ───────────────────────
+    # 挂在节点下标上，跟 altpos 同一套。
+    #
+    # **公式在构建期转成纯文本** —— 页面不许加载外部资源（Katex 几百 KB），
+    # 而且 `\frac{1}{2}` 直接显示出来没人读得懂。转成 `½(x-6)²+3` 才能真用。
+    #
+    # **图形描述标「据图」** —— 公式和例题是页面原文；
+    # 图形描述是模型对图的转述，教材只印了图，压根没有那段文字。
+    #
+    # **有预算**：每个概念最多 6 条公式、2 个图描述，描述截到 200 字。
+    # 超出预算的部分不塞，不是塞进去再截。
+    VISION = BASE / "data" / "concept-vision.jsonl"
+    vision = {}
+    if VISION.exists():
+        for line in VISION.open(encoding="utf-8"):
+            if not line.strip():
+                continue
+            try:
+                cv = json.loads(line)
+            except Exception:
+                continue
+            j = idx.get(cv.get("id", ""))
+            if j is None:
+                continue
+            fs = []
+            for x in cv.get("formulas", []):
+                p = to_plain(x)
+                if p and p not in fs:
+                    fs.append(p)
+                if len(fs) >= 6:
+                    break
+            gs = []
+            for g in cv.get("figureDescriptions", []):
+                d = (g.get("description") or "").strip()
+                if not d:
+                    continue
+                # **图描述里也嵌了 LaTeX** —— 模型写描述时会带上
+                # `$t/\text{时}$`、`$^\circ\text{C}$` 这种片段。
+                # 只转公式不转描述，页面上就会漏出 \text 这种源码。
+                d = to_plain(d)
+                if len(d) > 200:
+                    d = d[:198] + "…"
+                gs.append([g.get("caption", ""), d, g.get("provenance", "")])
+                if len(gs) >= 2:
+                    break
+            if fs or gs:
+                vision[j] = [fs, gs, (cv.get("bookZh") or "")[:6]]
+    else:
+        print("  ! data/concept-vision.jsonl 不存在 —— 「卡在哪」面板里不会有教材公式")
+
     payload = {"nodes": payload_nodes, "edges": payload_edges,
                "isa": isa_pairs, "chs": chs, "cns": cns,
-               "altpos": alt_pos,
+               "altpos": alt_pos, "vision": vision,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                # 画布上画的点数（含自建），但首页写的「N 个知识点」
                # 必须只数上游那批 —— 把能力节点算进「知识点」是偷换概念。

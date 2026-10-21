@@ -87,14 +87,14 @@ def page_blob(d: dict) -> str:
 
 
 def topical_blob(d: dict) -> str:
-    """页面**自己给出的结构性文本**：公式的 context、图号、表题、题干。
+    """页面**自己给出的结构性文本**：图号、表题、题干、步骤。
 
-    不含图形描述 —— 那是模型的转述，会把页面上任何名词都带出来。
+    **不含公式的 context** —— 那是模型写的描述，
+    不是教材上的字。模型会顺手用上页面上的任何词当占位
+    （「表示直线**变量**」），把泛用词的概念匹配到不相干的页。
+    公式的 context 只保留在 `formulaContexts` 里做展示，不参与匹配。
     """
     out = []
-    for f in d.get("formulas") or []:
-        if isinstance(f, dict):
-            out.append(str(f.get("context", "") or ""))
     for f in d.get("figures") or []:
         if isinstance(f, dict):
             out.append(str(f.get("caption", "") or ""))
@@ -171,7 +171,15 @@ def main() -> int:
 
     # ---- 按 (学科, 册次) 分组 ----
     def book_of(r):
-        # 'math-9a' → ('math','9a')；'alt:初中数学沪科技版:七上' → ('math','7a')
+        # 优先用 vision_pages.py 写下来的**图谱册次码**（graphBook）。
+        # 教材自己的叫法和图谱的叫法不是一回事：
+        #   教材 m1（高中必修一）-> 图谱 bx1
+        #   教材 x1（选择性必修一）-> 图谱 xzxbx1
+        #   alt 的「七上」-> 图谱 7a
+        # 册次是跨学科复用的维度，这个项目在它上面踩过三次。
+        gb = r.get("graphBook")
+        if gb:
+            return r.get("subject", "unknown"), gb
         bk = r["book"]
         if bk.startswith("alt:"):
             _, pub, vol = bk.split(":", 2)
@@ -208,6 +216,23 @@ def main() -> int:
         if len(core) >= 2 and core != nm:
             name_to_c[core].append((cid, nm, subj, book, bookZh))
 
+    # ── OCR 层的汉字正文：教材自己说的话 ────────────────────────
+    # 数学页的变量在 OCR 里是乱码，但汉字是好的 ——
+    # 「叫做二次函数」照样读得出来。这是比模型自述强得多的信号。
+    LESSONS = BASE / "data" / "lessons.jsonl"
+    ocr_text = {}
+    if LESSONS.exists():
+        for line in LESSONS.open(encoding="utf-8"):
+            try:
+                lr = json.loads(line)
+            except Exception:
+                continue
+            if lr.get("isToc"):
+                continue          # 目录页会把所有概念名都「命中」一次
+            ocr_text[(lr.get("subject"), lr.get("book"), lr.get("page"))] = \
+                lr.get("text", "") or ""
+    print(f"OCR 正文页 {len(ocr_text)}（已排除目录页）")
+
     out_f = OUT.open("w", encoding="utf-8")
     n_c = 0
     n_exact = 0
@@ -231,8 +256,16 @@ def main() -> int:
         # 那些公式跟二次函数的顶点**毫无关系**。
         tops = [topical_blob(r["data"]) for r in pgs]
         fulls = [page_blob(r["data"]) for r in pgs]
+        # **强信号 = 教材自己说的话**：
+        #   ① 视觉层的题干原文 / 图号 / 表题（抄下来的）
+        #   ② OCR 层的汉字正文（教材的正文）
+        # 弱信号（模型自己写的公式 context 和图形描述）**不参与匹配**。
+        otexts = [ocr_text.get((subj, vol, r["page"]), "") for r in pgs]
         inv = collections.defaultdict(list)
         for i, b in enumerate(tops):
+            for g2 in bigrams(b):
+                inv[g2].append(i)
+        for i, b in enumerate(otexts):
             for g2 in bigrams(b):
                 inv[g2].append(i)
 
@@ -243,6 +276,10 @@ def main() -> int:
             hit_top, hit_broad = [], []
             for i, bt in enumerate(tops):
                 if nm in bt or (core and core in bt):
+                    hit_top.append(i)
+            # OCR 正文命中也算 —— 教材自己提到这个概念的页
+            for i, ot in enumerate(otexts):
+                if i not in hit_top and (nm in ot or (core and core in ot)):
                     hit_top.append(i)
             for i, bf in enumerate(fulls):
                 if i not in hit_top and (nm in bf or (core and core in bf)):
@@ -270,6 +307,17 @@ def main() -> int:
             # 公式/表格/题目**只从 topical 页取**（broad 页跟这概念没关系）
             formulas, formula_ctx, exs, tables = [], [], [], []
             figs = []
+
+            def _rel(text):
+                """跟概念的相关度：context/图号里提到概念名的排前面。"""
+                if not text:
+                    return 1
+                if nm and nm in text:
+                    return 0
+                if core and core in text:
+                    return 0
+                return 1
+
             by_src: dict[str, dict] = {}
             for i in sorted(set(hits))[:12]:
                 r = pgs[i]
@@ -310,6 +358,17 @@ def main() -> int:
                         figs.append(x)
             for x in figs:
                 x.setdefault("tier", "topical")
+
+            # ── 按相关度排序 ──────────────────────────────────────
+            # 公式：context 里提到概念名的排前面
+            formula_ctx.sort(key=lambda fc: _rel(fc.get("context", "")))
+            formulas = []
+            for fc in formula_ctx:
+                if fc["latex"] not in formulas:
+                    formulas.append(fc["latex"])
+            # 图：图号或描述里提到概念名的排前面
+            figs.sort(key=lambda f: (_rel(f.get("caption", "") + " " + f.get("description", "")),
+                                     f.get("tier") != "topical"))
 
             rec = {
                 "id": cid,

@@ -90,7 +90,7 @@ OCR 救回了汉字，但 `S=ah` 变成「S一ah」，图形整个丢了。
 | | 产物 | 拿到什么 |
 |---|---|---|
 | **OCR 层** | `data/lessons.jsonl`（10,045 页）<br>`data/concept-text.jsonl`（1,347 个概念） | 教材**说了什么**：正文原话、章节、页码。291 个概念拿到**教材自己的定义句** |
-| **视觉层** | `data/vision-pages.jsonl`（932 页）<br>`data/concept-vision.jsonl`（275 个概念） | 教材**画了什么 / 写了什么式子**：5,979 条 LaTeX 公式、1,540 个图形语义、144 张表、2,757 道例题 |
+| **视觉层** | `data/vision-pages.jsonl`（4,390 页）<br>`data/concept-vision.jsonl`（403 个概念） | 教材**画了什么 / 写了什么式子**：20,801 条 LaTeX 公式、7,165 个图形语义、1,047 张表、11,712 道例题 |
 
 视觉层是让多模态模型**直接看渲染出来的页面**。这不是「把 PDF 抽成文本」，
 是**换了一条信息通道**——OCR 读的是**编码**，视觉读的是**版面**。
@@ -130,12 +130,14 @@ OCR  →  狔＝狓２ 之类残骸
 
 ### 七、现在在跑 / 还没做
 
-- **在跑**：其他版本教材的视觉层（45 册 7,597 页）——**跑到哪算哪**，
+- **在跑**：其他版本教材的视觉层（45 册 7,597 页）——**跑到哪算多少**，
   实际覆盖看 `data/vision-cover-alt.json`
-- **没做**：小学 / 高中 / 理化生进视觉层（人教 32 册 4,390 页里只做了初中数学 6 册）
-- **没做**：视觉层接进网站卡片（「卡在哪」面板里直接显示教材公式和图）
 - **没做**：2024 改版后的新教材（ChinaTextbook 只有改版前那一代；
   人教七下 2024 新版章号整体 +2）
+- **没做**：理化生和小学的**教材原话**层（OCR 层只覆盖了人教版 30 册，
+  其他版本的 18 本扫描件还没 OCR）
+- **没做**：公式的**竖式排版**——现在给的是纯文本 `½(x-6)²+3`，
+  能看懂，但不是真正的数学排版（引渲染库就跟「单文件、不加载外部资源」冲突）
 - **待裁决**：21 处覆盖缺口是否给上游提 issue · 156 条其他关系里 25 条疑似上下位是否补 `is_a`
 
 ---
@@ -253,6 +255,7 @@ python3 src/pdf_to_units.py            # OCR 层，约 15 秒
 python3 src/vision_pages.py --books math-9a --pages 34-64   # 视觉层，慢
 python3 src/vision_to_concepts.py      # 页面数据 → 概念
 python3 src/vision_cover.py            # 覆盖清单快照
+python3 src/latex_plain.py             # 公式转换器自检（37 条）
 ```
 
 **教材 PDF 和渲染出来的页面图都不入库**（`data/pdf-cache/` 已 gitignore）——
@@ -282,7 +285,8 @@ src/diagnose.py         「卡在哪」：杠杆 × 早晚 × 链根 × 症状�
 src/merge_prereq.py     先修边合并：七档来源 + 冲突裁决（247 组）
 src/pdf_to_units.py     教材 → OCR 层数据（10,045 页 / 1,347 概念）
 src/vision_pages.py     教材 → 视觉层数据（渲染 → 多模态读页 → LaTeX + 图形）
-src/vision_to_concepts.py  页面数据 → 概念（topical / broad 两桶）
+src/vision_to_concepts.py  页面数据 → 概念（用「教材自己说的话」匹配）
+src/latex_plain.py      LaTeX → 人能读的纯文本（½(x-6)²+3），页面不引渲染库
 src/fetch_editions.py   拉其他版本教材（9 个出版社 51 本）
 src/align_editions.py   跨版本对照：人教节 ↔ 其他版本节
 src/book_editions.py    教材版本指纹（我们引用的到底是哪一代）
@@ -477,11 +481,11 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 
 ### 验证
 
-两份测试都用真 Chrome 开真页面做端到端断言，合计 **157 项**：
+两份测试都用真 Chrome 开真页面做端到端断言，合计 **162 项**：
 
 | 文件 | 项数 | 测什么 |
 |---|---|---|
-| `src/test_search_browser.mjs` | 82 | 搜索、移动端三尺寸、页面自洽 |
+| `src/test_search_browser.mjs` | 87 | 搜索、移动端三尺寸、页面自洽 |
 | `src/test_regressions.mjs` | 75 | 真 bug 的回归，每条都有「修之前实测复现」 |
 
 项目本身零 npm 依赖，puppeteer-core 按需单装：

@@ -46,43 +46,59 @@ WORK = CACHE / "work" / "vision"
 OUT = ROOT / "data" / "vision-pages.jsonl"
 COVER = ROOT / "data" / "vision-cover.json"
 
-# 册次码 -> (pdf 文件, 学科, 中文册名)
+# 册次码 -> (pdf 文件, 学科, 中文册名, 图谱册次码)
+#
+# **第四项是图谱里的册次码**，跟第三项（教材自己的叫法）不是一回事：
+#   教材 m1（高中必修一） -> 图谱 bx1
+#   教材 x1（选择性必修一）-> 图谱 xzxbx1
+# 初中两边碰巧一样（7a/7b/8a/8b/9a/9b），所以之前一直没暴露这个坑。
+# 册次是**跨学科复用**的维度（7a 既是数学七上也是生物七上），
+# 这个项目已经在它上面踩了三次 —— 每次都是「不限定学科/版本就串了」。
 BOOKS = {
-    "math-1a": ("rjb-math-1a.pdf", "math", "一年级上册"),
-    "math-1b": ("rjb-math-1b.pdf", "math", "一年级下册"),
-    "math-2a": ("rjb-math-2a.pdf", "math", "二年级上册"),
-    "math-2b": ("rjb-math-2b.pdf", "math", "二年级下册"),
-    "math-3a": ("rjb-math-3a.pdf", "math", "三年级上册"),
-    "math-3b": ("rjb-math-3b.pdf", "math", "三年级下册"),
-    "math-4a": ("rjb-math-4a.pdf", "math", "四年级上册"),
-    "math-4b": ("rjb-math-4b.pdf", "math", "四年级下册"),
-    "math-5a": ("rjb-math-5a.pdf", "math", "五年级上册"),
-    "math-5b": ("rjb-math-5b.pdf", "math", "五年级下册"),
-    "math-6a": ("rjb-math-6a.pdf", "math", "六年级上册"),
-    "math-6b": ("rjb-math-6b.pdf", "math", "六年级下册"),
-    "math-7a": ("rjb-math-7a.pdf", "math", "七年级上册"),
-    "math-7b": ("rjb-math-7b.pdf", "math", "七年级下册"),
-    "math-8a": ("rjb-math-8a.pdf", "math", "八年级上册"),
-    "math-8b": ("rjb-math-8b.pdf", "math", "八年级下册"),
-    "math-9a": ("rjb-math-9a.pdf", "math", "九年级上册"),
-    "math-9b": ("rjb-math-9b.pdf", "math", "九年级下册"),
-    "math-m1": ("rjb-math-m1.pdf", "math", "高中必修一"),
-    "math-m2": ("rjb-math-m2.pdf", "math", "高中必修二"),
-    "math-x1": ("rjb-math-x1.pdf", "math", "高中选择性必修一"),
-    "math-x2": ("rjb-math-x2.pdf", "math", "高中选择性必修二"),
-    "math-x3": ("rjb-math-x3.pdf", "math", "高中选择性必修三"),
-    "phys-8a": ("rjb-phys-8a.pdf", "physics", "八年级上册"),
-    "phys-8b": ("rjb-phys-8b.pdf", "physics", "八年级下册"),
-    "chem-9a": ("rjb-chem-9a.pdf", "chemistry", "九年级上册"),
-    "chem-9b": ("rjb-chem-9b.pdf", "chemistry", "九年级下册"),
-    "bio-7a": ("rjb-bio-7a.pdf", "biology", "七年级上册"),
-    "bio-7b": ("rjb-bio-7b.pdf", "biology", "七年级下册"),
-    "bio-8a": ("rjb-bio-8a.pdf", "biology", "八年级上册"),
-    "bio-8b": ("rjb-bio-8b.pdf", "biology", "八年级下册"),
+    "math-1a": ("rjb-math-1a.pdf", "math", "一上册", "1a"),
+    "math-1b": ("rjb-math-1b.pdf", "math", "一下册", "1b"),
+    "math-2a": ("rjb-math-2a.pdf", "math", "二上册", "2a"),
+    "math-2b": ("rjb-math-2b.pdf", "math", "二下册", "2b"),
+    "math-3a": ("rjb-math-3a.pdf", "math", "三上册", "3a"),
+    "math-3b": ("rjb-math-3b.pdf", "math", "三下册", "3b"),
+    "math-4a": ("rjb-math-4a.pdf", "math", "四上册", "4a"),
+    "math-4b": ("rjb-math-4b.pdf", "math", "四下册", "4b"),
+    "math-5a": ("rjb-math-5a.pdf", "math", "五上册", "5a"),
+    "math-5b": ("rjb-math-5b.pdf", "math", "五下册", "5b"),
+    "math-6a": ("rjb-math-6a.pdf", "math", "六上册", "6a"),
+    "math-6b": ("rjb-math-6b.pdf", "math", "六下册", "6b"),
+    "math-7a": ("rjb-math-7a.pdf", "math", "七年级上册", "7a"),
+    "math-7b": ("rjb-math-7b.pdf", "math", "七年级下册", "7b"),
+    "math-8a": ("rjb-math-8a.pdf", "math", "八年级上册", "8a"),
+    "math-8b": ("rjb-math-8b.pdf", "math", "八年级下册", "8b"),
+    "math-9a": ("rjb-math-9a.pdf", "math", "九年级上册", "9a"),
+    "math-9b": ("rjb-math-9b.pdf", "math", "九年级下册", "9b"),
+    "math-m1": ("rjb-math-m1.pdf", "math", "高中必修一", "bx1"),
+    "math-m2": ("rjb-math-m2.pdf", "math", "高中必修二", "bx2"),
+    "math-x1": ("rjb-math-x1.pdf", "math", "高中选择性必修一", "xzxbx1"),
+    "math-x2": ("rjb-math-x2.pdf", "math", "高中选择性必修二", "xzxbx2"),
+    "math-x3": ("rjb-math-x3.pdf", "math", "高中选择性必修三", "xzxbx3"),
+    "phys-8a": ("rjb-phys-8a.pdf", "physics", "八年级上册", "8a"),
+    "phys-8b": ("rjb-phys-8b.pdf", "physics", "八年级下册", "8b"),
+    "chem-9a": ("rjb-chem-9a.pdf", "chemistry", "九年级上册", "9a"),
+    "chem-9b": ("rjb-chem-9b.pdf", "chemistry", "九年级下册", "9b"),
+    "bio-7a": ("rjb-bio-7a.pdf", "biology", "七年级上册", "7a"),
+    "bio-7b": ("rjb-bio-7b.pdf", "biology", "七年级下册", "7b"),
+    "bio-8a": ("rjb-bio-8a.pdf", "biology", "八年级上册", "8a"),
+    "bio-8b": ("rjb-bio-8b.pdf", "biology", "八年级下册", "8b"),
 }
 
 # 人教 alt 目录里的书跟 rjb-math-* 是同一批文件，别重复跑
 ALT_SKIP = {"初中数学人教版"}
+
+# alt 教材的册次名是「七上」这种，图谱里是「7a」——
+# 不映射的话，alt 的几千页一个概念都匹配不上。
+ALT_VOL_MAP = {
+    "七上": "7a", "七下": "7b",
+    "八上": "8a", "八下": "8b",
+    "九上": "9a", "九下": "9b",
+}
+
 
 PROMPT = """这是一页中国初中{subject}教材扫描件。请严格按页面原文提取，不要补充页面上没有的内容。
 
@@ -134,35 +150,62 @@ def upload(path: Path, tries: int = 3) -> str:
     raise RuntimeError(f"上传失败 {path.name}: {last}")
 
 
-def describe(urls: list[str], prompt: str, tries: int = 3) -> list[str]:
-    """批量视觉问答，返回每页一段正文。失败会重试。"""
+def _call_vision(urls: list[str], prompt: str):
+    """调一次视觉问答。返回每张图的正文（失败的为 None）。"""
     args = json.dumps(
         {"image_info": [{"url": u, "prompt": prompt} for u in urls]},
         ensure_ascii=False,
     )
+    out = run(
+        ["mcode-tools", "connector", "call", "connector__matrix__describe_images",
+         "--args", args],
+        timeout=600,
+    )
+    j = json.loads(out[out.index("{"):])
+    bodies = []
+    for r in j.get("results", []) or []:
+        if r.get("success") and r.get("description"):
+            bodies.append(r["description"])
+        else:
+            bodies.append(None)
+    # **结果条数可能少于图片数** —— 对齐要按位置补齐，不能让后面的图错位
+    while len(bodies) < len(urls):
+        bodies.append(None)
+    return bodies[:len(urls)]
+
+
+def describe(urls: list[str], prompt: str, tries: int = 3, accept=None):
+    """批量视觉问答，**失败的逐张补跑**。
+
+    `accept` 是一个判据函数：拿到正文但判据不过（比如 JSON 解析不出来），
+    也算失败，会被挑出来重跑。
+
+    为什么要有这个：批量调 5 张图，API 可能对其中某几张返回 success=false。
+    原来的重试只在「整批全空」时才触发 —— 只要有 1 张成功就整批返回，
+    那几张的空位就一直空着。实测 math-6a 连续 20 页失败就是这么来的。
+    """
+    bodies = [None] * len(urls)
+    pending = list(range(len(urls)))
     last = None
     for i in range(tries):
+        if not pending:
+            break
         try:
-            out = run(
-                ["mcode-tools", "connector", "call", "connector__matrix__describe_images",
-                 "--args", args],
-                timeout=600,
-            )
-            j = json.loads(out[out.index("{"):])
-            bodies = []
-            for r in j.get("results", []) or []:
-                if r.get("success") and r.get("description"):
-                    bodies.append(r["description"])
-                else:
-                    bodies.append(None)
-            # 整批全空也算失败，重试
-            if any(b for b in bodies):
-                return bodies
-            last = RuntimeError("返回全空")
+            got = _call_vision([urls[k] for k in pending], prompt)
         except Exception as e:
             last = e
-        time.sleep(2.0 * (i + 1))
-    raise RuntimeError(f"视觉问答失败: {last}")
+            got = [None] * len(pending)
+        still = []
+        for idx, b in zip(pending, got):
+            okk = bool(b) and (accept is None or accept(b))
+            if okk:
+                bodies[idx] = b
+            else:
+                still.append(idx)
+        pending = still
+        if pending and i < tries - 1:
+            time.sleep(1.5 * (i + 1))
+    return bodies
 
 
 def parse_json_loose(text):
@@ -237,17 +280,18 @@ def parse_pages(spec: str, total: int) -> list[int]:
 
 
 def resolve_book(code: str):
-    """返回 (pdf路径, 学科, 册次中文名, 出版社)。"""
+    """返回 (pdf路径, 学科, 册次中文名, 出版社, 图谱册次码)。"""
     if code.startswith("alt:"):
         _, pub, vol = code.split(":", 2)
         pdf = CACHE / "alt" / pub / f"{vol}.pdf"
         subject = "math" if "数学" in pub else "biology" if "生物" in pub else \
                   "chemistry" if "化学" in pub else "physics" if "物理" in pub else "unknown"
-        return pdf, subject, vol, pub
+        # alt 的册次名是「七上」这种，图谱里是「7a」
+        return pdf, subject, vol, pub, ALT_VOL_MAP.get(vol, vol)
     if code not in BOOKS:
         return None
-    fname, subject, bookzh = BOOKS[code]
-    return CACHE / fname, subject, bookzh, "人教版"
+    fname, subject, bookzh, gbook = BOOKS[code]
+    return CACHE / fname, subject, bookzh, "人教版", gbook
 
 
 def main() -> int:
@@ -303,7 +347,7 @@ def main() -> int:
             with _print_lock:
                 print(f"跳过未知册次 {code}", flush=True)
             continue
-        pdf, subject, bookzh, publisher = info
+        pdf, subject, bookzh, publisher, gbook = info
         if not pdf.exists():
             with _print_lock:
                 print(f"跳过 {code}: 没有 {pdf}", flush=True)
@@ -351,7 +395,9 @@ def main() -> int:
         recs = []
         try:
             urls = [upload(render(pdf, p, args.zoom)) for p in pages]
-            bodies = describe(urls, prompt)
+            # 判据 = 「正文能解析成 JSON」。解析不出来（模型输出被截断）
+            # 也算失败，会被挑出来单独重跑。
+            bodies = describe(urls, prompt, accept=lambda b: parse_json_loose(b) is not None)
         except Exception as e:
             bodies = [None] * len(pages)
             err = str(e)[:200]
@@ -365,6 +411,7 @@ def main() -> int:
                 "subject": subject,
                 "bookZh": bookzh,
                 "publisher": publisher,
+                "graphBook": gbook,
                 "page": p,
                 "pdf": pdf.name,
                 "ok": parsed is not None,
@@ -405,13 +452,23 @@ def main() -> int:
     fh.close()
 
     # 覆盖清单
+    # **格式跟 src/vision_cover.py 一致**（外层是 {_total,_ok,_failed,books}）。
+    # 之前这里是扁平的 {册次: {...}}，而 vision_cover.py 写的是嵌套的 ——
+    # 两个脚本各写各的格式，这个跑完整轮之后在收尾时崩了：
+    # `AttributeError: 'int' object has no attribute 'setdefault'`
+    # （读回来的 `_total` 是 int，被当成册次条目去 setdefault 了）
     cov = {}
     if cover_path.exists():
         try:
-            cov = json.loads(cover_path.read_text(encoding="utf-8"))
+            prev = json.loads(cover_path.read_text(encoding="utf-8"))
+            if isinstance(prev, dict) and "books" in prev:
+                cov = prev["books"] if isinstance(prev["books"], dict) else {}
         except Exception:
             cov = {}
     for bk, c in cov.items():
+        if not isinstance(c, dict):
+            cov[bk] = {"pages": []}
+            continue
         c.setdefault("pages", [])
     for line in out_path.open(encoding="utf-8"):
         try:

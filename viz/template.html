@@ -278,7 +278,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 }
 #map .btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e}
 /* 「卡在哪」面板 */
-#gapBody{flex:1;overflow:auto;padding:16px 22px 26px}
+#gapBody{flex:1;overflow:auto;padding:16px 22px 46px}
 #gapIntro{font-size:12.5px;color:var(--muted);line-height:1.75;margin-bottom:14px;
   padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.02)}
 #gapIntro b{color:#e8ebf2}
@@ -304,10 +304,24 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #gapList .tag.hot{border-color:#6b2b45;color:#ff8fb4;background:rgba(255,61,127,.08)}
 #gapList .tag.root{border-color:#3d4a2c;color:#b9d67f;background:rgba(185,214,127,.07)}
 #gapList .sc{font:600 12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;color:#6b7488;text-align:right}
+/* 教材原书的公式和图（视觉层） */
+#gapList .vb{margin-top:7px;padding:7px 10px;border-left:2px solid #2c3646;
+  background:rgba(120,160,255,.05);border-radius:0 6px 6px 0}
+#gapList .vb .vh{font-size:10.5px;color:#6b7488;margin-bottom:4px;letter-spacing:.02em}
+#gapList .vb .vf{font:12.5px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:#c9d4e6;word-break:break-word}
+#gapList .vb .vf span{display:inline-block;margin-right:12px}
+#gapList .vb .vg{font-size:11.5px;line-height:1.65;color:#8b93a7;margin-top:4px}
+#gapList .vb .vg b{color:#9fb0c8;font-weight:500}
+#gapList .vb .vsrc{font-size:10.5px;color:#5b6478;margin-top:4px}
 #gapFoot{margin-top:16px;font-size:11.5px;color:#6b7488;line-height:1.7}
 #gapTip{
   position:absolute;left:20px;bottom:14px;font-size:11px;color:var(--muted);
   pointer-events:none;
+  /* 条目变高（加了教材公式和图）之后，最后一条会滑到提示条底下。
+     给提示条自己的底衬和边框，别让它跟内容撞在一起。 */
+  background:rgba(11,12,16,.88);border:1px solid var(--line);
+  border-radius:20px;padding:4px 11px;
 }
 /* 脉络里的节点 */
 .mnode{cursor:pointer}
@@ -1433,6 +1447,9 @@ addEventListener('keydown', e=>{
    二维脉络视图的代码要放在 IIFE 外面（它自己是一整块），
    就得从这里递东西出去。 */
 window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
+              // **视觉层**：概念在教材原书上的公式和图。
+              // 「卡在哪」面板和选题卡都要用 —— 面板那段代码在 IIFE 外面。
+              vision: D.vision || {},
               nodeColor, edgeColor, getPal: ()=>PAL, setPal: (k,v)=>{PAL[k]=v;},
               // **脉络视图那块代码在 IIFE 外面**，要自己取配色。
               // 只递 getPal() 不够 —— PAL 本身要递出去（它是同一个对象引用，
@@ -1814,10 +1831,62 @@ function gapCardText(id, rows){
     lines.push('| ' + (i+1) + ' | ' + r.name + ' | ' + r.fo + ' | ' + r.dp +
                ' | ' + r.dist + ' | ' + r.why.replace(/<[^>]+>/g,'') + ' |');
   });
+  // 教材原书上的公式和图 —— 选题卡要能直接进内容生产
+  const withVis = rows.slice(0, 8).map(r => kgVisionText(r.nid)).filter(Boolean);
+  if(withVis.length){
+    lines.push('');
+    lines.push('## 教材原书（人教版）');
+    rows.slice(0, 8).forEach((r, i) => {
+      const t = kgVisionText(r.nid);
+      if(t) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t);
+    });
+  }
   lines.push('');
   lines.push('> 排序信号：杠杆（被依赖数）× 早晚（链深）× 是不是链根 × 离症状距离 × 覆盖薄弱。');
   lines.push('> 数据来自中文 K12 知识图谱（人教版教材排序），每条边可查来源。');
   return lines.join('\n');
+}
+
+/* 视觉层：概念在教材原书上的公式和图。
+ *
+ * **来源分两类，页面上也必须分开标**：
+ *   公式 → 教材页面上的原文，可以直接引用
+ *   图描述 → 模型对图的转述（教材只印了图，压根没有这段文字）→ 标「据图」
+ * 混在一起，下游就会拿转述当原话引用。
+ *
+ * payload 里存的公式已经是**构建期转成的人能读的纯文本**
+ * （½(x-6)²+3，不是 \frac{1}{2}(x-6)^2+3）——
+ * 页面不许加载外部资源，Katex 装不下也不该引。 */
+function kgVision(j){
+  const v = KG.vision && KG.vision[j];
+  return v || null;
+}
+function kgVisionHTML(j){
+  const v = kgVision(j);
+  if(!v) return '';
+  const fs = v[0] || [], gs = v[1] || [], bz = v[2] || '';
+  let h = '';
+  if(fs.length){
+    h += '<div class="vb"><div class="vh">教材原书上的公式</div><div class="vf">' +
+         fs.map(f => '<span>' + kgEsc(f) + '</span>').join('') + '</div></div>';
+  }
+  for(const g of gs){
+    const cap = g[0] ? g[0] + ' ' : '';
+    h += '<div class="vb"><div class="vh">教材原书上的图</div><div class="vg"><b>据图</b> · ' +
+         kgEsc(cap + g[1]) + '</div>' +
+         (bz ? '<div class="vsrc">' + kgEsc(bz) + '</div>' : '') + '</div>';
+  }
+  return h;
+}
+/* 复制出去的选题卡用的纯文本版本 */
+function kgVisionText(j){
+  const v = kgVision(j);
+  if(!v) return '';
+  const fs = v[0] || [], gs = v[1] || [], bz = v[2] || '';
+  const L = [];
+  if(fs.length) L.push('教材原书上的公式：' + fs.join('　'));
+  for(const g of gs) L.push('教材原书上的图（据图，模型转述）：' + (g[0] ? g[0] + ' ' : '') + g[1]);
+  return L.join('\n');
 }
 
 let gapRows = [];
@@ -1845,7 +1914,9 @@ function openGap(id){
       '<span class="tag">前置标注 ' + r.ann + ' 条</span>' +
       (r.fo >= 20 ? '<span class="tag hot">被 ' + r.fo + ' 个依赖</span>' : '') +
       (r.dp === 0 ? '<span class="tag root">链的根</span>' : '') +
-      '</div></div>' +
+      '</div>' +
+      kgVisionHTML(r.nid) +
+      '</div>' +
       '<div class="sc">' + r.score.toFixed(1) + '</div>' +
     '</li>').join('') ||
     '<li style="grid-template-columns:1fr;color:#8b93a7">往回 ' + GAP_DEPTH +

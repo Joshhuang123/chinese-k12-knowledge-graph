@@ -574,6 +574,57 @@ console.log('\n[8c-4] 「卡在哪」：先修闭包要排得出优先级');
   ok(/直接前置/.test(g.items[0].why) || /隔 \d+ 层/.test(g.items[0].why),
      `第一条给了人话理由（${g.items[0].why.slice(0, 50)}）`);
 
+  // ── 视觉层：面板里要能看到教材原书的公式和图 ──────────────────
+  // 「卡在哪」原来只给「先补哪一块」���判断。
+  // 有了视觉层之后，每条候选底下能直接看到**教材原书上写着什么式子**、
+  // **画了什么图** —— 这才是「要补的那一块」的真实内容。
+  const vis = await page.evaluate(() => {
+    const KG = window.__kg;
+    const lis = [...document.querySelectorAll('#gapList li[data-id]')];
+    const blocks = lis.map(li => ({
+      id: +li.dataset.id,
+      vbs: [...li.querySelectorAll('.vb')].map(vb => ({
+        head: (vb.querySelector('.vh')?.textContent || '').trim(),
+        text: (vb.textContent || '').replace(/\s+/g, ' ').trim(),
+      })),
+    }));
+    const withVis = blocks.filter(b => b.vbs.length);
+    // LaTeX 残留：这些字符在纯文本里不该出现
+    const latexish = blocks.flatMap(b => b.vbs.map(v => v.text))
+      .filter(t => /\\(frac|sqrt|left|right|begin|text|overline|cdot)|\^\{|_\{|\{|\$/.test(t));
+    // 「据图」标注：图描述必须有
+    const figBlocks = blocks.flatMap(b => b.vbs).filter(v => v.head.includes('图'));
+    const marked = figBlocks.filter(v => v.text.includes('据图'));
+    return {
+      hasMap: !!(KG.vision && Object.keys(KG.vision).length),
+      mapSize: KG.vision ? Object.keys(KG.vision).length : 0,
+      total: blocks.length,
+      withVis: withVis.length,
+      sample: withVis[0] || null,
+      latexish: latexish.slice(0, 3),
+      figCount: figBlocks.length,
+      markedCount: marked.length,
+      // 面板里某条的公式，要跟 payload 里那个概念的公式对得上
+      consistent: withVis.length ? (() => {
+        const v = KG.vision[withVis[0].id];
+        const page = withVis[0].vbs.map(x => x.text).join(' ');
+        return !v || !v[0] || !v[0].length ||
+               v[0].some(f => page.includes(f));
+      })() : false,
+    };
+  });
+  ok(vis.hasMap, `payload 里有视觉层数据（${vis.mapSize} 个概念）`);
+  ok(vis.withVis > 0,
+     `「卡在哪」面板里有 ${vis.withVis}/${vis.total} 条候选带上了教材公式或图`);
+  ok(vis.latexish.length === 0,
+     `公式是给人看的纯文本（没有 LaTeX 残留：${vis.latexish.join(' / ') || '无'}）`);
+  ok(vis.figCount > 0 && vis.markedCount === vis.figCount,
+     `图描述都标了「据图」（${vis.markedCount}/${vis.figCount}）`);
+  ok(vis.consistent, '面板上显示的公式跟 payload 里那个概念的公式对得上');
+  if (vis.sample) {
+    console.log(`      例：${vis.sample.vbs[0].head} → ${vis.sample.vbs[0].text.slice(0, 70)}`);
+  }
+
   // 选题卡：复制出来的内容要能直接进内容生产
   const card = await page.evaluate(() => {
     const KG = window.__kg;
@@ -759,13 +810,13 @@ ok(errors.length === 0, '全程零 JS 错误', errors.slice(0, 5).join('\n      
 // 数源码里的 ok( 调用行数是不准的（这个文件就有跑不到的分支）。
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_search_browser.mjs` | 82 |';
+  const want = '| `src/test_search_browser.mjs` | 87 |';
   if (!rd.includes(want)) {
-    console.log(`  ✗ README 里的 浏览器 测试项数不是 82`);
+    console.log(`  ✗ README 里的 浏览器 测试项数不是 87`);
     console.log(`      README 里没找到「${want}」`);
     fail++;
   } else {
-    console.log(`  ✓ README 里的 浏览器 测试项数是 82（与本次实跑一致）`);
+    console.log(`  ✓ README 里的 浏览器 测试项数是 87（与本次实跑一致）`);
     pass++;
   }
 }
