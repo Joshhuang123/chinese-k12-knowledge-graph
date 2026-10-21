@@ -278,7 +278,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 }
 #map .btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e}
 /* 「卡在哪」面板 */
-#gapBody{flex:1;overflow:auto;padding:16px 22px 46px}
+#gapBody{flex:1;overflow:auto;padding:16px 22px 26px}
 #gapIntro{font-size:12.5px;color:var(--muted);line-height:1.75;margin-bottom:14px;
   padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.02)}
 #gapIntro b{color:#e8ebf2}
@@ -316,12 +316,14 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #gapList .vb .vsrc{font-size:10.5px;color:#5b6478;margin-top:4px}
 #gapFoot{margin-top:16px;font-size:11.5px;color:#6b7488;line-height:1.7}
 #gapTip{
-  position:absolute;left:20px;bottom:14px;font-size:11px;color:var(--muted);
-  pointer-events:none;
-  /* 条目变高（加了教材公式和图）之后，最后一条会滑到提示条底下。
-     给提示条自己的底衬和边框，别让它跟内容撞在一起。 */
-  background:rgba(11,12,16,.88);border:1px solid var(--line);
-  border-radius:20px;padding:4px 11px;
+  /* **不做绝对定位。** #gap 是 flex 列容器，让它当最后一个 flex item
+     排在滚动区下面 —— 绝对定位会浮在内容上，条目一变高
+     （加了教材公式和图）就压住最后一条。 */
+  flex:0 0 auto;
+  font-size:11px;color:var(--muted);
+  padding:8px 22px 12px;
+  border-top:1px solid var(--line);
+  background:rgba(9,10,13,.92);
 }
 /* 脉络里的节点 */
 .mnode{cursor:pointer}
