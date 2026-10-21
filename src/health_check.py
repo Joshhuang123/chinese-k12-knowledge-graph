@@ -308,6 +308,41 @@ def layer2(g, sb, payload, html):
     else:
         warn("data/alt-align.json 不存在 —— 多版本教材对照还没生成")
 
+    # ── 给 agent 用的教材数据 ─────────────────────────────────
+    # 教材转出来的结构化数据集。id 唯一、概念 id 真实存在 ——
+    # 这两条破了，agent 拿到的就是一堆指不出位置的行。
+    LP = BASE / "data" / "lessons.jsonl"
+    CP = BASE / "data" / "concept-text.jsonl"
+    if LP.exists() and CP.exists():
+        lids, lpages = [], 0
+        for line in LP.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            lids.append(r["id"])
+            lpages += 1
+        ok(len(lids) == len(set(lids)),
+           f"lessons.jsonl 的 id 无重复（{len(lids)} 页，重复 {len(lids)-len(set(lids))} 个）")
+        ok(lpages > 5000, f"lessons.jsonl 页数够（{lpages} 页）")
+        crows = [json.loads(x) for x in CP.read_text(encoding="utf-8").splitlines() if x.strip()]
+        node_ids = {n["id"] for n in g["nodes"]}
+        ghost = [c["id"] for c in crows if c["id"] not in node_ids]
+        ok(not ghost, f"concept-text.jsonl 的概念 id 都真实存在（幽灵 {len(ghost)} 个）",
+           str(ghost[:3]))
+        ok(len(crows) > 500, f"concept-text.jsonl 覆盖够多概念（{len(crows)} 个）")
+        # 教材原话必须是真句子。
+        # **不是每个概念都必须有** —— 少数概念在教材里只以**标题**形式出现
+        # （比如「植物细胞的基本结构」在七上生物 51 页只是个标题，没有正文句子），
+        # 那种情况只记页码、不记引文是对的。所以这里查的是总量下限。
+        withq = [c for c in crows if c.get("quotes")]
+        ok(len(withq) >= 1200,
+           f"拿到教材原话的概念 {len(withq)} 个（至少要有 1,200）")
+        ok(len(withq) / len(crows) > 0.9,
+           f"拿到原话的概念占比 {len(withq)/len(crows):.0%}（标题型的不算）")
+    else:
+        warn("lessons.jsonl / concept-text.jsonl 不存在 —— 教材数据集还没生成"
+             "（跑 python3 src/pdf_to_units.py）")
+
     # git 一致性
     try:
         blob = subprocess.run(["git", "show", "HEAD:index.html"],
