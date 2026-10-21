@@ -9,6 +9,11 @@ data/raw/
 # 构建产物，由原件 + 脚本可完全复现。
 data/normalized/
 
+# ── 政府公开文件缓存不入库 ──
+# 上海市教委《教学用书目录》原件。**公开文件也不转手** ——
+# 入库的是从里面抽出来的结构化事实（data/shanghai-textbook-catalog.json）。
+data/gov/
+
 # ── 教材 PDF 缓存不入库 ──
 # src/verify_order.py 从 TapXWorld/ChinaTextbook 下载的人教社教材 PDF，
 # 只用来核对章节顺序。**每一页都印着「版权所有·未经许可不得采用任何方式

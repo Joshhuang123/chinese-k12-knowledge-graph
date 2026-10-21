@@ -1,0 +1,3005 @@
+{
+ "_source": "上海市教育委员会《2024年秋季上海市编写教学用书目录》（沪教委基〔2024〕24号 附件2），2024-08-13 发布",
+ "_url": "https://edu.sh.gov.cn/xxgk2_zdgz_jcjy_04/20240801/bb522c1b161b441281dba8bfe9296b36.html",
+ "_pdf": "https://edu.sh.gov.cn/cmsres/97/9705ef64871d45cf984f73d79cae5fd9/d5352cc408d180944636941826a5cdd3.pdf",
+ "_editionCodes": {
+  "人教社": "人民教育出版社",
+  "沪教育": "上海教育出版社",
+  "沪科技": "上海科学技术出版社",
+  "沪科教": "上海科技教育出版社",
+  "沪远东": "上海远东出版社",
+  "沪外教": "上海外语教育出版社",
+  "沪外音": "上海音乐出版社",
+  "沪音乐": "上海音乐出版社",
+  "沪书画": "上海书画出版社",
+  "华师大社": "华东师范大学出版社",
+  "沪少儿": "上海少年儿童出版社",
+  "牛津": "牛津大学出版社（上海牛津外语教育）",
+  "上教社": "上海教育出版社",
+  "上科社": "上海科学技术出版社",
+  "上外教": "上海外语教育出版社",
+  "沪教社": "上海教育出版社"
+ },
+ "entries": [
+  {
+   "num": "Ⅱ－XB－2019027",
+   "subject": "道德与法治",
+   "title": "义务教育教科书（五·四学制）·道德与法治活动册（三/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书(五·四学制)·道德与法治(三年级上册)"
+  },
+  {
+   "num": "Ⅱ－XB－2019028",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·道德与法治活动册（四/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书(五·四学制)·道德与法治(四年级上册)"
+  },
+  {
+   "num": "Ⅱ－XB－2019029",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·道德与法治活动册（五/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书(五·四学制)·道德与法治(五年级上册)"
+  },
+  {
+   "num": "Ⅱ－XB－2018020",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·语文练习部分（二/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书(五·四学制)·语文(二年级上册)"
+  },
+  {
+   "num": "Ⅱ－XB－2019021",
+   "subject": "",
+   "title": "写字（二/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2019018",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·语文练习部分（三/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书(五·四学制)·语文(三年级上册)"
+  },
+  {
+   "num": "Ⅱ－XB－2019024",
+   "subject": "",
+   "title": "写字（三/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2019019",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·语文练习部分（四/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书(五·四学制)·语文(四年级上册)"
+  },
+  {
+   "num": "Ⅱ－XB－2019025",
+   "subject": "",
+   "title": "写字（四/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2019020",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·语文练习部分（五/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书(五·四学制)·语文(五年级上册)"
+  },
+  {
+   "num": "Ⅱ－XB－2019026",
+   "subject": "",
+   "title": "写字（五/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2017019",
+   "subject": "数学",
+   "title": "数学（试用本）（二/一）",
+   "editionCode": "沪少儿",
+   "publisher": "上海少年儿童出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2017021",
+   "subject": "",
+   "title": "数学（试用本）（三/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2017023",
+   "subject": "",
+   "title": "数学（试用本）（四/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2017025",
+   "subject": "",
+   "title": "数学（试用本）（五/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－XS－2024001",
+   "subject": "英语",
+   "title": "英语（一年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "一年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－XB－2021022",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）（二/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "由学校选一种使用，含配套资源"
+  },
+  {
+   "num": "Ⅱ－XB－2017013",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）（三/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2017014",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）（四/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021023",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）（五/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2020010",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）（二/一）",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2022006",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）（三/一）",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2020012",
+   "subject": "英语",
+   "title": "英语（新世纪版）（试用本）（四/一）",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": "由学校选一种使用，含配套资源"
+  },
+  {
+   "num": "Ⅱ－XB－2020013",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）（五/一）",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2020007",
+   "subject": "劳动技术",
+   "title": "劳动技术（试用本）（四/一）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": "杨浦、虹口区学校除外"
+  },
+  {
+   "num": "Ⅱ－XB－2020008",
+   "subject": "",
+   "title": "劳动技术（试用本）（五/一）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－XX－2024002",
+   "subject": "科学",
+   "title": "义务教育教科书(五·四学制)·科学活动手册(一年级上册)",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021013",
+   "subject": "自然",
+   "title": "自然(试用本)（二/一）",
+   "editionCode": "沪远东",
+   "publisher": "上海远东出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "由学校选一种使用（杨浦、虹口区学校除外）"
+  },
+  {
+   "num": "Ⅱ－XB－2021014",
+   "subject": "",
+   "title": "自然(试用本)（三/一）",
+   "editionCode": "沪远东",
+   "publisher": "上海远东出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021015",
+   "subject": "",
+   "title": "自然(试用本)（四/一）",
+   "editionCode": "沪远东",
+   "publisher": "上海远东出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021016",
+   "subject": "",
+   "title": "自然(试用本)（五/一）",
+   "editionCode": "沪远东",
+   "publisher": "上海远东出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021018",
+   "subject": "",
+   "title": "自然（试用本）（二/一）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2011021",
+   "subject": "",
+   "title": "自然（试用本）（三/一）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2011023",
+   "subject": "",
+   "title": "自然（试用本）（四/一）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021019",
+   "subject": "",
+   "title": "自然（试用本）（五/一）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021024",
+   "subject": "音乐",
+   "title": "唱游（试用本）（二/一）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "循环使用，由学校按照班额数的120％配置到音乐专用教室，再根据耗损补订"
+  },
+  {
+   "num": "Ⅱ－XB－2021026",
+   "subject": "",
+   "title": "音乐（试用本）（三/一）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021027",
+   "subject": "",
+   "title": "音乐（试用本）（四/一）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021028",
+   "subject": "",
+   "title": "音乐（试用本）（五/一）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021025",
+   "subject": "",
+   "title": "唱游（试用本）光盘（二/一）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "供学生使用"
+  },
+  {
+   "num": "Ⅱ－XB－2019005",
+   "subject": "",
+   "title": "音乐（试用本）光盘（三/一）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2019006",
+   "subject": "",
+   "title": "音乐（试用本）光盘（四/一）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2021029",
+   "subject": "",
+   "title": "音乐（试用本）光盘（五/一）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2019014",
+   "subject": "体育与健身",
+   "title": "体育与健身（试用本）（三年级）",
+   "editionCode": "沪少儿",
+   "publisher": "上海少年儿童出版社",
+   "term": "三年级",
+   "pending": false,
+   "note": "循环使用，由学校根据每3个班级按班额数的120％配置，再根据耗损补订"
+  },
+  {
+   "num": "Ⅱ－XB－2019015",
+   "subject": "",
+   "title": "体育与健身（试用本）（四年级）",
+   "editionCode": "沪少儿",
+   "publisher": "上海少年儿童出版社",
+   "term": "四年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2019016",
+   "subject": "",
+   "title": "体育与健身（试用本）（五年级）",
+   "editionCode": "沪少儿",
+   "publisher": "上海少年儿童出版社",
+   "term": "五年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－XX－2024001",
+   "subject": "美术",
+   "title": "义务教育教科书（五·四学制）·艺术·造型·美术实践手册（一年级上册）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "一年级第一学期",
+   "pending": false,
+   "note": "含配套材料"
+  },
+  {
+   "num": "Ⅱ－XB－2022002",
+   "subject": "",
+   "title": "美术（试用本）（二/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "由学校选一种使用"
+  },
+  {
+   "num": "Ⅱ－XB－2022003",
+   "subject": "",
+   "title": "美术（试用本）（三/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2022004",
+   "subject": "",
+   "title": "美术（试用本）（四/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2022005",
+   "subject": "",
+   "title": "美术（试用本）（五/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2020003",
+   "subject": "美术",
+   "title": "美术（试用本）（二/一）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "由学校选一种使用"
+  },
+  {
+   "num": "Ⅱ－XB－2020004",
+   "subject": "",
+   "title": "美术（试用本）（三/一）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2020005",
+   "subject": "",
+   "title": "美术（试用本）（四/一）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2020006",
+   "subject": "",
+   "title": "美术（试用本）（五/一）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2023002",
+   "subject": "科学与技术",
+   "title": "科学与技术（试用本）（二/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "供杨浦区、虹口区学校使用"
+  },
+  {
+   "num": "Ⅱ－XB－2023003",
+   "subject": "",
+   "title": "科学与技术（试用本）（三/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2023004",
+   "subject": "",
+   "title": "科学与技术（试用本）（四/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XB－2023005",
+   "subject": "",
+   "title": "科学与技术（试用本）（五/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XP－2023004",
+   "subject": "",
+   "title": "暑假生活（一年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "一年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XP－2023005",
+   "subject": "",
+   "title": "暑假生活（二年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XP－2021004",
+   "subject": "",
+   "title": "暑假生活（三年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XP－2021005",
+   "subject": "",
+   "title": "暑假生活（四年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XP－2021006",
+   "subject": "",
+   "title": "暑假生活（五年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2018016",
+   "subject": "语文",
+   "title": "语文识字卡片（教师用）（一/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2018019",
+   "subject": "",
+   "title": "语文识字卡片（教师用）（二/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－XJ－2024002",
+   "subject": "数学",
+   "title": "义务教育教科书（五·四学制）·数学教学参考资料（一年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2017027",
+   "subject": "",
+   "title": "数学（试用本）教学参考资料（二/一）",
+   "editionCode": "沪少儿",
+   "publisher": "上海少年儿童出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2017029",
+   "subject": "",
+   "title": "数学（试用本）教学参考资料（三/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2017031",
+   "subject": "",
+   "title": "数学（试用本）教学参考资料（四/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2017033",
+   "subject": "",
+   "title": "数学（试用本）教学参考资料（五/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－XJ－2024001",
+   "subject": "英语",
+   "title": "英语教学参考资料（一年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "一年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－XJ－2021005",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学参考资料(二/一)",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "由学校根据课本选一种使用，教学参考资料含配套资源"
+  },
+  {
+   "num": "Ⅱ－XJ－2008024",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学挂图（二/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2017021",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学参考资料(三/一)",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2009017",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学挂图（三/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2017022",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学参考资料(四/一)",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2010008",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学挂图（四/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2021006",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学参考资料(五/一)",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2011028",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学挂图（五/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2020009",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）教学参考资料(二/一)",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2022006",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）教学参考资料(三/一)",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2020011",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）教学参考资料(四/一)",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2020012",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）教学参考资料(五/一)",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2020006",
+   "subject": "劳动技术",
+   "title": "劳动技术（试用本）教学参考资料（四/一）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": "杨浦、虹口区学校除外"
+  },
+  {
+   "num": "Ⅱ－XJ－2020007",
+   "subject": "",
+   "title": "劳动技术（试用本）教学参考资料（五/一）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2001008",
+   "subject": "自然",
+   "title": "自然（试用本）教师手册（二/一）",
+   "editionCode": "沪远东",
+   "publisher": "上海远东出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "由学校根据课本选一种使用"
+  },
+  {
+   "num": "Ⅱ－XJ－2002103",
+   "subject": "",
+   "title": "自然（试用本）教师手册（三/一）",
+   "editionCode": "沪远东",
+   "publisher": "上海远东出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2003001",
+   "subject": "",
+   "title": "自然（试用本）教师手册（四/一）",
+   "editionCode": "沪远东",
+   "publisher": "上海远东出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2004009",
+   "subject": "",
+   "title": "自然（试用本）教师手册（五/一）",
+   "editionCode": "沪远东",
+   "publisher": "上海远东出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2023002",
+   "subject": "",
+   "title": "自然（试用本）教学参考资料(二/一)",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2011033",
+   "subject": "",
+   "title": "自然（试用本）教学参考资料(三/一)",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2011035",
+   "subject": "",
+   "title": "自然（试用本）教学参考资料(四/一)",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2023003",
+   "subject": "",
+   "title": "自然（试用本）教学参考资料(五/一)",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－XJ－2024003",
+   "subject": "音乐",
+   "title": "义务教育教科书（五·四学制）·艺术·唱游·音乐教学参考资料（一年级上册）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2019002",
+   "subject": "",
+   "title": "唱游（试用本）教学参考资料(二/一)",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－XJ－2021007",
+   "subject": "",
+   "title": "音乐（试用本）教学参考资料(三/一)",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－XJ－2021008",
+   "subject": "",
+   "title": "音乐（试用本）教学参考资料(四/一)",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－XJ－2021009",
+   "subject": "",
+   "title": "音乐（试用本）教学参考资料(五/一)",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－XJ－2019011",
+   "subject": "体育与健身",
+   "title": "体育与健身（试用本）教学参考资料（一、二年级）",
+   "editionCode": "沪少儿",
+   "publisher": "上海少年儿童出版社",
+   "term": "二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2019012",
+   "subject": "",
+   "title": "体育与健身（试用本）教学参考资料（三至五年级）",
+   "editionCode": "沪少儿",
+   "publisher": "上海少年儿童出版社",
+   "term": "三至五年级",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "SD－XJ－2024004",
+   "subject": "美术",
+   "title": "义务教育教科书（五·四学制）·艺术·造型·美术教学参考资料（一年级上册）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "一年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－XJ－2022002",
+   "subject": "",
+   "title": "美术（试用本）教学参考资料（二/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": "由学校根据课本选一种使用"
+  },
+  {
+   "num": "Ⅱ－XJ－2022003",
+   "subject": "",
+   "title": "美术（试用本）教学参考资料（三/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2022004",
+   "subject": "",
+   "title": "美术（试用本）教学参考资料（四/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2022005",
+   "subject": "",
+   "title": "美术（试用本）教学参考资料（五/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2020002",
+   "subject": "",
+   "title": "美术（试用本）教学参考资料（二/一）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2020003",
+   "subject": "",
+   "title": "美术（试用本）教学参考资料（三/一）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2020004",
+   "subject": "",
+   "title": "美术（试用本）教学参考资料（四/一）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "四年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－XJ－2020005",
+   "subject": "",
+   "title": "美术（试用本）教学参考资料（五/一）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "五年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019045",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·语文练习部分（八/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书（五·四学制）·语文(八年级上册)"
+  },
+  {
+   "num": "Ⅱ－CB－2019048",
+   "subject": "",
+   "title": "写字（八/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019046",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·语文练习部分（九/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": "配套义务教育教科书（五·四学制）·语文(九年级上册)"
+  },
+  {
+   "num": "Ⅱ－CB－2019049",
+   "subject": "",
+   "title": "写字（九/一）",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024001",
+   "subject": "数学",
+   "title": "义务教育教科书（五·四学制）·数学练习部分（六年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024002",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·数学练习部分（七年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019007",
+   "subject": "",
+   "title": "数学（试用本）（八/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019008",
+   "subject": "",
+   "title": "数学练习部分（试用本）（八/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019009",
+   "subject": "",
+   "title": "数学（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019010",
+   "subject": "",
+   "title": "数学练习部分（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019011",
+   "subject": "",
+   "title": "数学（拓展Ⅱ）（试用本）（九年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019012",
+   "subject": "",
+   "title": "数学（拓展Ⅱ）练习部分（试用本）（九年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024009",
+   "subject": "英语",
+   "title": "义务教育教科书（五·四学制）·英语练习部分（六年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "SD－CX－2024010",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·英语练习部分（七年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－CB－2016003",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）（八/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": "由学校选一种使用，含配套资源"
+  },
+  {
+   "num": "Ⅱ－CB－2016009",
+   "subject": "",
+   "title": "英语练习部分（牛津上海版）（试用本）（八/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2016004",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2016010",
+   "subject": "英语",
+   "title": "英语练习部分（牛津上海版）（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": "由学校选一种使用，含配套资源"
+  },
+  {
+   "num": "Ⅱ－CB－2020019",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）（八/一）",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2020020",
+   "subject": "",
+   "title": "英语练习部分（新世纪版）（试用本）（八/一）",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2020021",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）（九/一）",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2020022",
+   "subject": "",
+   "title": "英语练习部分（新世纪版）（试用本）（九/一）",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2021022",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·中国历史地图册（第三册）",
+   "editionCode": "中图社",
+   "publisher": "",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024003",
+   "subject": "地理",
+   "title": "义务教育教科书（五·四学制）·地理练习部分（六年级上册）",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024004",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·地理练习部分（七年级上册）",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024011",
+   "subject": "科学",
+   "title": "义务教育教科书（五·四学制）·科学活动手册（六年级上册）",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024007",
+   "subject": "物理",
+   "title": "义务教育教科书（五·四学制）·物理综合活动手册（八年级上册）",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2022004",
+   "subject": "",
+   "title": "物理（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019016",
+   "subject": "",
+   "title": "物理练习部分（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024008",
+   "subject": "化学",
+   "title": "义务教育教科书（五·四学制）·化学综合活动手册（八年级上册）",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019017",
+   "subject": "",
+   "title": "化学（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2019018",
+   "subject": "",
+   "title": "化学练习部分（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024012",
+   "subject": "生物",
+   "title": "义务教育教科书（五·四学制）·生物学综合活动手册（七年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2021007",
+   "subject": "生命科学",
+   "title": "生命科学（试用本）（第一册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八或九年级",
+   "pending": false,
+   "note": "供八年级或九年级学生使用"
+  },
+  {
+   "num": "Ⅱ－CB－2019041",
+   "subject": "",
+   "title": "生命科学练习部分（试用本）（第一册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八或九年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2020003",
+   "subject": "体育与健身",
+   "title": "体育与健身（试用本）（八年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2021003",
+   "subject": "",
+   "title": "体育与健身（试用本）（九年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CX－2024005",
+   "subject": "美术",
+   "title": "义务教育教科书（五·四学制）·艺术·美术实践手册（六年级上册）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": "含配套材料"
+  },
+  {
+   "num": "SD－CX－2024006",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·艺术·美术实践手册（七年级上册）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": "含配套材料"
+  },
+  {
+   "num": "Ⅱ－CB－2020013",
+   "subject": "艺术",
+   "title": "艺术（试用本）（八/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": "循环使用，由学校按班额数的120%配置到专用教室，再根据耗损补订"
+  },
+  {
+   "num": "Ⅱ－CB－2020014",
+   "subject": "",
+   "title": "艺术（试用本）（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2020013",
+   "subject": "",
+   "title": "艺术（试用本）光盘（八/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": "供学生使用"
+  },
+  {
+   "num": "Ⅱ－CB－2020014",
+   "subject": "",
+   "title": "艺术（试用本）光盘（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CB－2020007",
+   "subject": "劳动技术",
+   "title": "劳动技术（试用本）（八年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级",
+   "pending": false,
+   "note": "由学校选一种使用"
+  },
+  {
+   "num": "Ⅱ－CB－2020010",
+   "subject": "",
+   "title": "劳动技术（试用本）（八年级）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "八年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CP－2021002",
+   "subject": "",
+   "title": "暑假生活（六年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "六年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CP－2021003",
+   "subject": "",
+   "title": "暑假生活（七年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "七年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CP－2021004",
+   "subject": "",
+   "title": "暑假生活（八年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024004",
+   "subject": "数学",
+   "title": "义务教育教科书（五•四学制）·数学教学参考资料（六年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024005",
+   "subject": "",
+   "title": "义务教育教科书（五•四学制）·数学教学参考资料（七年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2019003",
+   "subject": "",
+   "title": "数学（试用本）教学参考资料（八/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2019004",
+   "subject": "",
+   "title": "数学（试用本）教学参考资料（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2019005",
+   "subject": "",
+   "title": "数学（拓展Ⅱ）（试用本）教学参考资料（九年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024006",
+   "subject": "英语",
+   "title": "义务教育教科书（五•四学制）·英语教学参考资料（六年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "SD－CJ－2024007",
+   "subject": "",
+   "title": "义务教育教科书（五•四学制）·英语教学参考资料（七年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－CJ－2016003",
+   "subject": "英语",
+   "title": "英语（牛津上海版）（试用本）教学参考资料(八/一)",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": "由学校根据课本选一种使用，含配套资源"
+  },
+  {
+   "num": "Ⅱ－CJ－2016004",
+   "subject": "",
+   "title": "英语（牛津上海版）（试用本）教学参考资料(九/一)",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2020014",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）教学参考资料(八/一)",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2020015",
+   "subject": "",
+   "title": "英语（新世纪版）（试用本）教学参考资料(九/一)",
+   "editionCode": "沪外教沪外音",
+   "publisher": "",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024008",
+   "subject": "地理",
+   "title": "义务教育教科书（五·四学制）·地理教学参考资料（六年级上册）",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024009",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·地理教学参考资料（七年级上册）",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024010",
+   "subject": "物理",
+   "title": "义务教育教科书（五·四学制）·物理教学参考资料（八年级上册）",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2022001",
+   "subject": "",
+   "title": "物理（试用本）教学参考资料（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2015003",
+   "subject": "",
+   "title": "中学物理实验手册（初中）（试验本）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八、九年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024016",
+   "subject": "化学",
+   "title": "义务教育教科书（五·四学制）·化学教学参考资料（八年级上册）",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "八年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2019008",
+   "subject": "",
+   "title": "化学（试用本）教学参考资料（九/一）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "九年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024015",
+   "subject": "生物",
+   "title": "义务教育教科书（五·四学制）·生物学教学参考资料（七年级上册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2021003",
+   "subject": "生命科学",
+   "title": "生命科学（试用本）教学参考资料（第一册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八或九年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024013",
+   "subject": "音乐",
+   "title": "义务教育教科书（五·四学制）·艺术·音乐教学参考资料（六年级上册）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024014",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·艺术·音乐教学参考资料（七年级上册）",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "SD－CJ－2024011",
+   "subject": "美术",
+   "title": "义务教育教科书（五·四学制）·艺术·美术教学参考资料（六年级上册）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "六年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "SD－CJ－2024012",
+   "subject": "",
+   "title": "义务教育教科书（五·四学制）·艺术·美术教学参考资料（七年级上册）",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "七年级第一学期",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－CJ－2020003",
+   "subject": "体育与健身",
+   "title": "体育与健身（试用本）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八至九年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－CJ－2020006",
+   "subject": "劳动技术",
+   "title": "劳动技术（试用本）教学参考资料（八年级）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "八年级",
+   "pending": false,
+   "note": "由学校根据课本选一种使用"
+  },
+  {
+   "num": "Ⅱ－CJ－2020009",
+   "subject": "",
+   "title": "劳动技术（试用本）教学参考资料（八年级）",
+   "editionCode": "沪科教",
+   "publisher": "上海科技教育出版社",
+   "term": "八年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2019006",
+   "subject": "思想政治",
+   "title": "普通高中教科书·思想政治（必修1中国特色社会主义）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·思想政治（必修1中国特色社会主义）"
+  },
+  {
+   "num": "Ⅱ－GB－2019007",
+   "subject": "",
+   "title": "普通高中教科书·思想政治（必修2经济与社会）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·思想政治（必修2经济与社会）"
+  },
+  {
+   "num": "Ⅱ－GB－2020003",
+   "subject": "",
+   "title": "普通高中教科书·思想政治（必修4哲学与文化）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·思想政治（必修4哲学与文化）"
+  },
+  {
+   "num": "Ⅱ－GB－2021023",
+   "subject": "",
+   "title": "普通高中教科书·思想政治（选择性必修2法律与生活）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·思想政治（选择性必修2法律与生活）"
+  },
+  {
+   "num": "Ⅱ－GB－2021001",
+   "subject": "",
+   "title": "普通高中教科书·思想政治（选择性必修3逻辑与思维）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·思想政治（选择性必修3逻辑与思维）"
+  },
+  {
+   "num": "Ⅱ－GB－2019005",
+   "subject": "语文",
+   "title": "普通高中教科书·语文（必修上册）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·语文（必修上册）"
+  },
+  {
+   "num": "Ⅱ－GB－2021005",
+   "subject": "",
+   "title": "普通高中教科书·语文（选择性必修上册）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·语文（选择性必修上册）"
+  },
+  {
+   "num": "Ⅱ－GB－2021030",
+   "subject": "",
+   "title": "普通高中教科书·语文（选择性必修下册）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·语文（选择性必修下册）"
+  },
+  {
+   "num": "Ⅱ－GB－2022009",
+   "subject": "英语",
+   "title": "普通高中教科书·英语（必修第一册）练习部分",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": "由学校选一种使用，含配套资源"
+  },
+  {
+   "num": "Ⅱ－GB－2022010",
+   "subject": "",
+   "title": "普通高中教科书·英语（必修第二册）练习部分",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022011",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第一册）练习部分",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021017",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第二册）练习部分",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB-2022012",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第四册）练习部分",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022006",
+   "subject": "",
+   "title": "普通高中教科书·英语（必修第一册）练习部分",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021021",
+   "subject": "",
+   "title": "普通高中教科书·英语（必修第二册）练习部分",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022007",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第一册）练习部分",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022008",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第二册）练习部分",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB-2022015",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第四册）练习部分",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022016",
+   "subject": "历史",
+   "title": "普通高中教科书·历史（必修中外历史纲要上）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·历史（必修中外历史纲要上）"
+  },
+  {
+   "num": "Ⅱ－GB－2022025",
+   "subject": "",
+   "title": "普通高中教科书·历史（必修中外历史纲要上）地图册",
+   "editionCode": "中图社",
+   "publisher": "",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022017",
+   "subject": "历史",
+   "title": "普通高中教科书·历史（必修中外历史纲要下）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·历史（必修中外历史纲要下）"
+  },
+  {
+   "num": "Ⅱ－GB－2022026",
+   "subject": "",
+   "title": "普通高中教科书·历史（必修中外历史纲要下）地图册",
+   "editionCode": "中图社",
+   "publisher": "",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022018",
+   "subject": "",
+   "title": "普通高中教科书·历史（选择性必修3文化交流与传播）练习部分",
+   "editionCode": "人教社",
+   "publisher": "人民教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": "配套普通高中教科书·历史（选择性必修3文化交流与传播）"
+  },
+  {
+   "num": "Ⅱ－GB－2021025",
+   "subject": "",
+   "title": "普通高中教科书·历史（选择性必修3文化交流与传播）地图册",
+   "editionCode": "中图社",
+   "publisher": "",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021028",
+   "subject": "地理",
+   "title": "普通高中教科书•地理（必修第一册）练习部分",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022027",
+   "subject": "",
+   "title": "普通高中教科书•地理（选择性必修1自然地理基础）练习部分",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022030",
+   "subject": "",
+   "title": "普通高中教科书•地理（选择性必修2区域发展）练习部分",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2023001",
+   "subject": "",
+   "title": "普通高中教科书•地理（选择性必修3资源、环境与国家安全）练习部分",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022024",
+   "subject": "物理",
+   "title": "普通高中教科书·物理（必修第一册）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021035",
+   "subject": "",
+   "title": "普通高中教科书·物理（必修第三册）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022023",
+   "subject": "",
+   "title": "普通高中教科书·物理（必修部分）实验与活动部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一、高二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2023002",
+   "subject": "",
+   "title": "普通高中教科书·物理（选择性必修第二册）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2023004",
+   "subject": "",
+   "title": "普通高中教科书·物理（选择性必修第三册）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022033",
+   "subject": "",
+   "title": "普通高中教科书·物理（选择性必修部分）实验与活动部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高二、高三年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021026",
+   "subject": "化学",
+   "title": "普通高中教科书·化学（必修第一册）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021027",
+   "subject": "",
+   "title": "普通高中教科书·化学（必修第一册）实验部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021037",
+   "subject": "",
+   "title": "普通高中教科书·化学（必修第二册）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021038",
+   "subject": "",
+   "title": "普通高中教科书·化学（必修第二册）实验部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022004",
+   "subject": "",
+   "title": "普通高中教科书·化学（选择性必修第二册物质结构与性质）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2023003",
+   "subject": "",
+   "title": "普通高中教科书·化学（选择性必修第三册有机化学基础）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022031",
+   "subject": "",
+   "title": "普通高中教科书·化学（选择性必修）实验部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高二、高三年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021008",
+   "subject": "生物",
+   "title": "普通高中教科书·生物学（必修1分子与细胞）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2021002",
+   "subject": "",
+   "title": "普通高中教科书·生物学（必修1分子与细胞）实验与活动部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022005",
+   "subject": "",
+   "title": "普通高中教科书·生物学（选择性必修1稳态与调节）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022001",
+   "subject": "生物",
+   "title": "普通高中教科书·生物学（选择性必修1稳态与调节）实验与活动部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022021",
+   "subject": "",
+   "title": "普通高中教科书·生物学（选择性必修2生物与环境）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022003",
+   "subject": "",
+   "title": "普通高中教科书·生物学（选择性必修2生物与环境）实验与活动部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022032",
+   "subject": "",
+   "title": "普通高中教科书·生物学（选择性必修3生物技术与工程）练习部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GB－2022029",
+   "subject": "",
+   "title": "普通高中教科书·生物学（选择性必修3生物技术与工程）实验与活动部分",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2020005",
+   "subject": "数学",
+   "title": "普通高中教科书·数学（必修第一册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021040",
+   "subject": "",
+   "title": "普通高中教科书·数学（必修第三册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2020017",
+   "subject": "",
+   "title": "普通高中教科书·数学（必修第四册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022017",
+   "subject": "",
+   "title": "普通高中教科书·数学（选择性必修第二册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022001",
+   "subject": "",
+   "title": "普通高中教科书·数学（选择性必修第三册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022015",
+   "subject": "英语",
+   "title": "普通高中教科书·英语（必修第一册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": "由学校根据课本选用，含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2022012",
+   "subject": "",
+   "title": "普通高中教科书·英语（必修第二册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022013",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第一册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022014",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第二册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ-2022016",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第四册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022008",
+   "subject": "",
+   "title": "普通高中教科书·英语（必修第一册）教学参考资料",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022009",
+   "subject": "",
+   "title": "普通高中教科书·英语（必修第二册）教学参考资料",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022010",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第一册）教学参考资料",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022011",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第二册）教学参考资料",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ-2022019",
+   "subject": "",
+   "title": "普通高中教科书·英语（选择性必修第四册）教学参考资料",
+   "editionCode": "沪外教",
+   "publisher": "上海外语教育出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021033",
+   "subject": "地理",
+   "title": "普通高中教科书•地理（必修第一册）教学参考资料",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022027",
+   "subject": "",
+   "title": "普通高中教科书•地理（选择性必修1自然地理基础）教学参考资料",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022029",
+   "subject": "",
+   "title": "普通高中教科书•地理（选择性必修2区域发展）教学参考资料",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2023004",
+   "subject": "",
+   "title": "普通高中教科书•地理（选择性必修3资源、环境与国家安全）教学参考资料",
+   "editionCode": "中华地图",
+   "publisher": "",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021003",
+   "subject": "物理",
+   "title": "普通高中教科书·物理（必修第一册）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021041",
+   "subject": "",
+   "title": "普通高中教科书·物理（必修第三册）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2023006",
+   "subject": "",
+   "title": "普通高中教科书·物理（选择性必修第二册）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2023005",
+   "subject": "",
+   "title": "普通高中教科书·物理（选择性必修第三册）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021024",
+   "subject": "化学",
+   "title": "普通高中教科书·化学（必修第一册）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021043",
+   "subject": "",
+   "title": "普通高中教科书·化学（必修第二册）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高二年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2023003",
+   "subject": "",
+   "title": "普通高中教科书·化学（选择性必修第二册物质结构与性质）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2023009",
+   "subject": "",
+   "title": "普通高中教科书·化学（选择性必修第三册有机化学基础）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高三年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021022",
+   "subject": "生物",
+   "title": "普通高中教科书·生物学（必修1分子与细胞）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022018",
+   "subject": "",
+   "title": "普通高中教科书·生物学（选择性必修1稳态与调节）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022026",
+   "subject": "",
+   "title": "普通高中教科书·生物学（选择性必修2生物与环境）教学参考资料",
+   "editionCode": "沪科技",
+   "publisher": "上海科学技术出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021001",
+   "subject": "信息技术",
+   "title": "普通高中教科书·信息技术（必修1数据与计算）教学参考资料",
+   "editionCode": "华师大社",
+   "publisher": "华东师范大学出版社",
+   "term": "高一年级第一学期",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022020",
+   "subject": "",
+   "title": "普通高中教科书·信息技术（选择性必修1数据与数据结构）教学参考资料",
+   "editionCode": "华师大社",
+   "publisher": "华东师范大学出版社",
+   "term": "高二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022021",
+   "subject": "",
+   "title": "普通高中教科书·信息技术（选择性必修2网络基础）教学参考资料",
+   "editionCode": "华师大社",
+   "publisher": "华东师范大学出版社",
+   "term": "高二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022022",
+   "subject": "",
+   "title": "普通高中教科书·信息技术（选择性必修3数据管理与分析）教学参考资料",
+   "editionCode": "华师大社",
+   "publisher": "华东师范大学出版社",
+   "term": "高二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022023",
+   "subject": "",
+   "title": "普通高中教科书·信息技术（选择性必修4人工智能初步）教学参考资料",
+   "editionCode": "华师大社",
+   "publisher": "华东师范大学出版社",
+   "term": "高二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022024",
+   "subject": "",
+   "title": "普通高中教科书·信息技术（选择性必修5三维设计与创意）教学参考资料",
+   "editionCode": "华师大社",
+   "publisher": "华东师范大学出版社",
+   "term": "高二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022025",
+   "subject": "",
+   "title": "普通高中教科书·信息技术（选择性必修6开源硬件项目设计）教学参考资料",
+   "editionCode": "华师大社",
+   "publisher": "华东师范大学出版社",
+   "term": "高二年级",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021004",
+   "subject": "艺术",
+   "title": "普通高中教科书·艺术（必修1艺术与生活）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021005",
+   "subject": "",
+   "title": "普通高中教科书·艺术（必修2艺术与文化）（上册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021006",
+   "subject": "",
+   "title": "普通高中教科书·艺术（必修2艺术与文化）（下册）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021007",
+   "subject": "",
+   "title": "普通高中教科书·艺术（必修3艺术与科学）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021008",
+   "subject": "",
+   "title": "普通高中教科书·艺术（选择性必修1美术创意实践）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021009",
+   "subject": "",
+   "title": "普通高中教科书·艺术（选择性必修2音乐情境表演）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021010",
+   "subject": "",
+   "title": "普通高中教科书·艺术（选择性必修3舞蹈创编与表演）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021011",
+   "subject": "",
+   "title": "普通高中教科书·艺术（选择性必修4戏剧创编与表演）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021012",
+   "subject": "",
+   "title": "普通高中教科书·艺术（选择性必修5影视与数字媒体艺术实践）教学参考资料",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": "含配套资源"
+  },
+  {
+   "num": "Ⅱ－GJ－2021027",
+   "subject": "音乐",
+   "title": "普通高中教科书·音乐（必修1音乐鉴赏）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021028",
+   "subject": "",
+   "title": "普通高中教科书·音乐（必修2歌唱）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021029",
+   "subject": "",
+   "title": "普通高中教科书·音乐（必修3演奏）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021030",
+   "subject": "",
+   "title": "普通高中教科书·音乐（必修4音乐编创）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021031",
+   "subject": "",
+   "title": "普通高中教科书·音乐（必修5音乐与舞蹈）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021032",
+   "subject": "",
+   "title": "普通高中教科书·音乐（必修6音乐与戏剧）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022005",
+   "subject": "",
+   "title": "普通高中教科书·音乐（选择性必修合唱合奏）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022006",
+   "subject": "",
+   "title": "普通高中教科书·音乐（选择性必修舞蹈表演戏剧表演）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2022007",
+   "subject": "",
+   "title": "普通高中教科书·音乐（选择性必修音乐基础理论视唱练耳）教学参考资料",
+   "editionCode": "沪音乐",
+   "publisher": "上海音乐出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021023",
+   "subject": "美术",
+   "title": "普通高中教科书·美术（必修美术鉴赏）教学参考资料",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021034",
+   "subject": "",
+   "title": "普通高中教科书·美术（选择性必修1绘画）教学参考资料",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021035",
+   "subject": "",
+   "title": "普通高中教科书·美术（选择性必修2中国书画）教学参考资料",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021036",
+   "subject": "",
+   "title": "普通高中教科书·美术（选择性必修3雕塑）教学参考资料",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021037",
+   "subject": "",
+   "title": "普通高中教科书·美术（选择性必修4设计）教学参考资料",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021038",
+   "subject": "",
+   "title": "普通高中教科书·美术（选择性必修5工艺）教学参考资料",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021039",
+   "subject": "",
+   "title": "普通高中教科书·美术（选择性必修6现代媒体艺术）教学参考资料",
+   "editionCode": "沪书画",
+   "publisher": "上海书画出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021025",
+   "subject": "体育与健康",
+   "title": "普通高中·体育与健康教学参考资料（必修第一册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  },
+  {
+   "num": "Ⅱ－GJ－2021026",
+   "subject": "",
+   "title": "普通高中·体育与健康教学参考资料（必修第二册）",
+   "editionCode": "沪教育",
+   "publisher": "上海教育出版社",
+   "term": "高中",
+   "pending": false,
+   "note": ""
+  }
+ ]
+}
