@@ -361,7 +361,7 @@ def main() -> int:
             pages = pages[:args.limit]
         pages = [p for p in pages if (code, p) not in done]
         for p in pages:
-            tasks.append((code, pdf, subject, bookzh, publisher, p))
+            tasks.append((code, pdf, subject, bookzh, publisher, gbook, p))
         with _print_lock:
             print(f"{code} 共 {total} 页，本次处理 {len(pages)} 页", flush=True)
 
@@ -388,8 +388,14 @@ def main() -> int:
     t_start = time.time()
 
     def work(batch):
-        code, pdf, subject, bookzh, publisher = batch[0][0], batch[0][1], batch[0][2], batch[0][3], batch[0][4]
-        pages = [t[5] for t in batch]
+        # **gbook 必须从任务元组里取。**
+        # 之前这里只解包了 5 项，`gbook` 落到了外层循环的残留变量上 ——
+        # 循环跑完后它是**最后一册**的册次码，于是每一页的 graphBook
+        # 都写成了「xzxbx3」（高中选必三）。
+        # 后果：小学数学 12 册 + 初中理化生 8 册的概念全被当成高中，
+        # `vision_to_concepts.py` 按 graphBook 匹配，**匹配全错**。
+        code, pdf, subject, bookzh, publisher, gbook = batch[0][:6]
+        pages = [t[6] for t in batch]
         # 注意：PROMPT 里含 {"latex": ...} 这类 JSON 样例，不能用 str.format
         prompt = PROMPT.replace("{subject}", subject)
         recs = []

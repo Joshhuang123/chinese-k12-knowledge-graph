@@ -614,6 +614,36 @@ console.log('\n[8c-4] 「卡在哪」：先修闭包要排得出优先级');
     };
   });
   ok(vis.hasMap, `payload 里有视觉层数据（${vis.mapSize} 个概念）`);
+
+  // ── 教材自己标的难点（「思考」「探究」框）──────────────────
+  // 这是**教材编委会标的**，不是模型推断的 —— 面板里必须有。
+  const hrd = await page.evaluate(() => {
+    const KG = window.__kg;
+    const h = KG.hard || {};
+    const lis = [...document.querySelectorAll('#gapList li[data-id]')];
+    const blocks = lis.map(li => ({
+      id: +li.dataset.id,
+      txt: [...li.querySelectorAll('.vh2')].map(v => v.textContent.replace(/\s+/g, ' ').trim()),
+    }));
+    const withH = blocks.filter(b => b.txt.length);
+    return {
+      mapSize: Object.keys(h).length,
+      total: blocks.length,
+      withH: withH.length,
+      sample: withH[0] || null,
+      // 题干里不能有 LaTeX 源码漏出来
+      latex: withH.flatMap(b => b.txt).filter(t => /\\(frac|sqrt|neq|le|ge|text)|\$|\^\{/.test(t)),
+    };
+  });
+  ok(hrd.mapSize > 100, `payload 里有教材标的难点（${hrd.mapSize} 个概念）`);
+  ok(hrd.withH > 0,
+     `「卡在哪」面板里有 ${hrd.withH}/${hrd.total} 条候选显示了教材标的难点`);
+  ok(hrd.latex.length === 0,
+     `教材难点的题干里没有 LaTeX 源码（漏出 ${hrd.latex.length} 处）`,
+     hrd.latex.slice(0, 2).join(' / '));
+  if (hrd.sample) {
+    console.log(`      例：${hrd.sample.txt[0].slice(0, 76)}`);
+  }
   ok(vis.withVis > 0,
      `「卡在哪」面板里有 ${vis.withVis}/${vis.total} 条候选带上了教材公式或图`);
   ok(vis.latexish.length === 0,
@@ -810,13 +840,13 @@ ok(errors.length === 0, '全程零 JS 错误', errors.slice(0, 5).join('\n      
 // 数源码里的 ok( 调用行数是不准的（这个文件就有跑不到的分支）。
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_search_browser.mjs` | 87 |';
+  const want = '| `src/test_search_browser.mjs` | 90 |';
   if (!rd.includes(want)) {
-    console.log(`  ✗ README 里的 浏览器 测试项数不是 87`);
+    console.log(`  ✗ README 里的 浏览器 测试项数不是 90`);
     console.log(`      README 里没找到「${want}」`);
     fail++;
   } else {
-    console.log(`  ✓ README 里的 浏览器 测试项数是 87（与本次实跑一致）`);
+    console.log(`  ✓ README 里的 浏览器 测试项数是 90（与本次实跑一致）`);
     pass++;
   }
 }

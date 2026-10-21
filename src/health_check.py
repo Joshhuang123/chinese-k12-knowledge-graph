@@ -423,6 +423,20 @@ def layer2(g, sb, payload, html):
         bad_brace = [x for x in allf if _latex_unbalanced(x)]
         ok(not bad_brace,
            f"公式的 LaTeX 花括号都配平（不配平 {len(bad_brace)} 条）", str(bad_brace[:2]))
+
+        # ── 册次一致性：概念的视觉数据必须来自它自己那册 ──────────
+        # 这条是「graphBook 写错」那个 bug 的哨兵（见 known-issues ISSUE-35）：
+        # 曾经 4,236 页的 graphBook 全写成了「xzxbx3」，
+        # 小学数学和初中理化生的概念**全被当成高中**，匹配全错而且不报错。
+        node_book = {n["id"]: n.get("book") for n in g["nodes"]}
+        wrong = []
+        for c in crows:
+            b = node_book.get(c["id"])
+            if b and c.get("book") and c["book"] != b:
+                wrong.append(f"{c['name']}({c['book']}≠{b})")
+        ok(not wrong,
+           f"概念的视觉数据来自它自己那册（册次对不上的 {len(wrong)} 个）",
+           "、".join(wrong[:3]))
     else:
         warn("vision-pages.jsonl / concept-vision.jsonl 不存在 —— 视觉层还没生成"
              "（跑 python3 src/vision_pages.py && python3 src/vision_to_concepts.py）")
@@ -462,6 +476,46 @@ def layer2(g, sb, payload, html):
            f"README 里没有已知过期的旧数字（残留 {len(stale)} 处）", "、".join(stale))
     else:
         warn("README.md 不存在，跳过一致性检查")
+
+    # ── 教材标的难点（ISSUE-36）────────────────────────────────
+    # 「思考」「探究」框是**教材编委会自己标的难点**。
+    # 页面里带的数量必须跟数据源对得上。
+    HARD = BASE / "data" / "normalized" / "textbook-hard.json"
+    if HARD.exists():
+        hj = json.loads(HARD.read_text(encoding="utf-8"))
+        src = hj.get("concepts") or {}
+        ok(len(src) > 200,
+           f"教材标的难点挂到了 {len(src)} 个概念上（至少 200）")
+        total = sum(v.get("count", 0) for v in src.values())
+        ok(total > 500,
+           f"教材标的难点合计 {total} 处（至少 500）")
+        _hard = payload.get("hard") or {}
+        ok(len(_hard) > 0 and len(_hard) <= len(src),
+           f"页面里的教材难点映射条数对得上（{len(_hard)} / {len(src)}）")
+        # 数量得能对上（抽查前 50 条）
+        bad = []
+        for k, v in list(_hard.items())[:50]:
+            cid = payload["nodes"][int(k)][5]
+            s2 = src.get(cid)
+            if not s2 or s2.get("count") != v[0]:
+                bad.append(cid)
+        ok(not bad,
+           f"页面里的教材难点数量跟数据源一致（抽查 50 条，对不上 {len(bad)} 条）",
+           str(bad[:3]))
+    else:
+        warn("data/normalized/textbook-hard.json 不存在 —— "
+             "面板里不会有教材标的难点（跑 python3 src/explore_difficulty.py）")
+
+    # ── 页面体积预算 ───────────────────────────────────────────
+    # 视觉层 payload 涨起来的时候，页面是「悄悄」变大的 ——
+    # 单文件 HTML 装在 GitHub Pages 上，给中国学生看的，
+    # 4 MB 和 3 MB 是能感觉出来的差别。
+    # **数据层可以全留（给 agent），页面层要有预算。**
+    _vis = payload.get("vision") or {}
+    _vis_bytes = len(json.dumps(_vis, ensure_ascii=False))
+    ok(_vis_bytes <= 400_000,
+       f"页面里的视觉层 payload 在预算内（{_vis_bytes//1000} KB / 400 KB，"
+       f"{len(_vis)} 个概念）")
 
     # git 一致性
     try:

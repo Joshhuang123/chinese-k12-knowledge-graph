@@ -552,9 +552,17 @@ def main():
     # **图形描述标「据图」** —— 公式和例题是页面原文；
     # 图形描述是模型对图的转述，教材只印了图，压根没有那段文字。
     #
-    # **有预算**：每个概念最多 6 条公式、2 个图描述，描述截到 200 字。
+    # **只带「面板里可能出现」的概念** —— 「卡在哪」面板的候选
+    # 只能是「在图谱里当过别人的前置」的概念。其余带上去页面上不会显示，
+    # 白占体积。**完整数据在 data/concept-vision.jsonl 里，一个不少**（给 agent 用）。
+    #
+    # **有预算**：每个概念最多 6 条公式、1 个图描述，描述截到 160 字。
     # 超出预算的部分不塞，不是塞进去再截。
     VISION = BASE / "data" / "concept-vision.jsonl"
+    # 图谱里当过前置的节点（edge = [后继, 先修, 来源, 可疑]）
+    as_pre = set()
+    for _e in payload_edges:
+        as_pre.add(_e[1])
     vision = {}
     if VISION.exists():
         for line in VISION.open(encoding="utf-8"):
@@ -565,8 +573,8 @@ def main():
             except Exception:
                 continue
             j = idx.get(cv.get("id", ""))
-            if j is None:
-                continue
+            if j is None or j not in as_pre:
+                continue          # 面板里不可能出现，不带
             fs = []
             for x in cv.get("formulas", []):
                 p = to_plain(x)
@@ -583,19 +591,40 @@ def main():
                 # `$t/\text{时}$`、`$^\circ\text{C}$` 这种片段。
                 # 只转公式不转描述，页面上就会漏出 \text 这种源码。
                 d = to_plain(d)
-                if len(d) > 200:
-                    d = d[:198] + "…"
+                if len(d) > 160:
+                    d = d[:158] + "…"
                 gs.append([g.get("caption", ""), d, g.get("provenance", "")])
-                if len(gs) >= 2:
+                if len(gs) >= 1:
                     break
             if fs or gs:
                 vision[j] = [fs, gs, (cv.get("bookZh") or "")[:6]]
     else:
         print("  ! data/concept-vision.jsonl 不存在 —— 「卡在哪」面板里不会有教材公式")
 
+    # ── 教材标的难点（ISSUE-36）────────────────────────────────
+    # 「思考」「探究」框是**教材编委会自己标的难点** ——
+    # 面板原来只给模型的判断（杠杆/早晚/覆盖薄弱），现在多一层一手证据。
+    # 数据源：data/normalized/textbook-hard.json（src/explore_difficulty.py 生成）
+    HARD = BASE / "data" / "normalized" / "textbook-hard.json"
+    hard_map = {}
+    if HARD.exists():
+        hj = json.load(open(HARD, encoding="utf-8"))
+        for cid, h in (hj.get("concepts") or {}).items():
+            j = idx.get(cid)
+            if j is None:
+                continue
+            items = h.get("items") or []
+            # 题干里也可能有 LaTeX（模型抄的原文带 \(...\)、$...$），
+            # 一样要在构建期转成纯文本，否则页面上直接漏出源码。
+            stem = to_plain(items[0].get("stem", "")) if items else ""
+            hard_map[j] = [h.get("count", 0), stem[:90],
+                           h.get("bookZh", ""), h.get("unitName", "")]
+    else:
+        print("  ! data/normalized/textbook-hard.json 不存在 —— 面板里不会有教材标的难点")
+
     payload = {"nodes": payload_nodes, "edges": payload_edges,
                "isa": isa_pairs, "chs": chs, "cns": cns,
-               "altpos": alt_pos, "vision": vision,
+               "altpos": alt_pos, "vision": vision, "hard": hard_map,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                # 画布上画的点数（含自建），但首页写的「N 个知识点」
                # 必须只数上游那批 —— 把能力节点算进「知识点」是偷换概念。

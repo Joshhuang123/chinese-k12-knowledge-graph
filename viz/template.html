@@ -314,6 +314,14 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #gapList .vb .vg{font-size:11.5px;line-height:1.65;color:#8b93a7;margin-top:4px}
 #gapList .vb .vg b{color:#9fb0c8;font-weight:500}
 #gapList .vb .vsrc{font-size:10.5px;color:#5b6478;margin-top:4px}
+/* 教材自己标的难点（「思考」「探究」框）*/
+#gapList .vh2{
+  font-size:11.5px;line-height:1.6;color:#b9d67f;margin-top:8px;
+  padding:5px 9px;border-left:2px solid #3d4a2c;border-radius:0 6px 6px 0;
+  background:rgba(185,214,127,.05);
+}
+#gapList .vh2 b{color:#d4ec9f;font-weight:600}
+#gapList .vh2 .hq{color:#8b93a7;margin-top:3px;display:block}
 #gapFoot{margin-top:16px;font-size:11.5px;color:#6b7488;line-height:1.7}
 #gapTip{
   /* **不做绝对定位。** #gap 是 flex 列容器，让它当最后一个 flex item
@@ -1452,6 +1460,9 @@ window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
               // **视觉层**：概念在教材原书上的公式和图。
               // 「卡在哪」面板和选题卡都要用 —— 面板那段代码在 IIFE 外面。
               vision: D.vision || {},
+              // **教材自己标的难点**（「思考」「探究」框）——
+              // 面板里要显示「教材在这里标了 N 处思考/探究」。
+              hard: D.hard || {},
               nodeColor, edgeColor, getPal: ()=>PAL, setPal: (k,v)=>{PAL[k]=v;},
               // **脉络视图那块代码在 IIFE 外面**，要自己取配色。
               // 只递 getPal() 不够 —— PAL 本身要递出去（它是同一个对象引用，
@@ -1833,6 +1844,16 @@ function gapCardText(id, rows){
     lines.push('| ' + (i+1) + ' | ' + r.name + ' | ' + r.fo + ' | ' + r.dp +
                ' | ' + r.dist + ' | ' + r.why.replace(/<[^>]+>/g,'') + ' |');
   });
+  // 教材自己标的难点 —— 这是硬证据，要写进选题卡
+  const withHard = rows.slice(0, 8).map(r => kgHardText(r.nid)).filter(Boolean);
+  if (withHard.length) {
+    lines.push('');
+    lines.push('## 教材自己标的难点');
+    rows.slice(0, 8).forEach((r, i) => {
+      const t2 = kgHardText(r.nid);
+      if (t2) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t2);
+    });
+  }
   // 教材原书上的公式和图 —— 选题卡要能直接进内容生产
   const withVis = rows.slice(0, 8).map(r => kgVisionText(r.nid)).filter(Boolean);
   if(withVis.length){
@@ -1880,7 +1901,34 @@ function kgVisionHTML(j){
   }
   return h;
 }
+/* 教材自己标的难点（「思考」「探究」框）。
+ *
+ * 这是**教材编委会标的**，不是我们推断的 ——
+ * 面板原来的排序信号全是推断出来的（杠杆、早晚、覆盖薄弱），
+ * 这一条是硬证据：「教材在这里自己标了 N 次难」。
+ */
+function kgHard(j){
+  const h = KG.hard && KG.hard[j];
+  return h || null;
+}
+function kgHardHTML(j){
+  const h = kgHard(j);
+  if(!h || !h[0]) return '';
+  const where = (h[2] ? h[2] : '') + (h[3] ? ' ' + h[3] : '');
+  return '<div class="vh2"><b>教材在这里标了 ' + h[0] + ' 处思考/探究</b>'
+       + (where ? ' · ' + kgEsc(where) : '')
+       + (h[1] ? '<span class="hq">例：' + kgEsc(h[1]) + '</span>' : '')
+       + '</div>';
+}
 /* 复制出去的选题卡用的纯文本版本 */
+function kgHardText(j){
+  const h = kgHard(j);
+  if(!h || !h[0]) return '';
+  const where = (h[2] ? h[2] : '') + (h[3] ? ' ' + h[3] : '');
+  return '教材在这里标了 **' + h[0] + ' 处思考/探究**'
+       + (where ? '（' + where + '）' : '')
+       + (h[1] ? '\n\n> ' + h[1] : '');
+}
 function kgVisionText(j){
   const v = kgVision(j);
   if(!v) return '';
@@ -1917,6 +1965,7 @@ function openGap(id){
       (r.fo >= 20 ? '<span class="tag hot">被 ' + r.fo + ' 个依赖</span>' : '') +
       (r.dp === 0 ? '<span class="tag root">链的根</span>' : '') +
       '</div>' +
+      kgHardHTML(r.nid) +
       kgVisionHTML(r.nid) +
       '</div>' +
       '<div class="sc">' + r.score.toFixed(1) + '</div>' +
