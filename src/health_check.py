@@ -343,6 +343,90 @@ def layer2(g, sb, payload, html):
         warn("lessons.jsonl / concept-text.jsonl 不存在 —— 教材数据集还没生成"
              "（跑 python3 src/pdf_to_units.py）")
 
+    # ── 视觉层（ISSUE-34）────────────────────────────────────────
+    # 视觉模型读扫描页的产物，补回 OCR 丢掉的公式和图形。
+    # 这里查三件最容易坏的事：
+    #   ① 概念 id 必须真实存在（否则 agent 拿到的是指不出位置的行）
+    #   ② formulas 必须是**纯字符串**数组 —— 曾经把 formulaContexts 的
+    #      字典混进去过，agent 端 json.loads 之后类型不一致直接炸
+    #   ③ 图形描述必须标 provenance=described —— 它是**模型转述**，
+    #      不是教材原话；漏了这个标注，下游会拿它当原话引用
+    VP = BASE / "data" / "vision-pages.jsonl"
+    CV = BASE / "data" / "concept-vision.jsonl"
+    if VP.exists() and CV.exists():
+        vrows = [json.loads(x) for x in VP.read_text(encoding="utf-8").splitlines() if x.strip()]
+        vids = [r["id"] for r in vrows]
+        ok(len(vids) == len(set(vids)),
+           f"vision-pages.jsonl 的 id 无重复（{len(vids)} 页，重复 {len(vids)-len(set(vids))} 个）")
+        ok(len(vrows) >= 200, f"vision-pages.jsonl 页数够（{len(vrows)} 页）")
+        ok(all(r.get("ok") for r in vrows),
+           f"vision-pages.jsonl 每页都解析成功（失败 {sum(1 for r in vrows if not r.get('ok'))} 页）")
+
+        crows = [json.loads(x) for x in CV.read_text(encoding="utf-8").splitlines() if x.strip()]
+        node_ids = {n["id"] for n in g["nodes"]}
+        ghost = [c["id"] for c in crows if c["id"] not in node_ids]
+        ok(not ghost, f"concept-vision.jsonl 的概念 id 都真实存在（幽灵 {len(ghost)} 个）",
+           str(ghost[:3]))
+        ok(len(crows) >= 50, f"concept-vision.jsonl 覆盖够多概念（{len(crows)} 个）")
+
+        bad_type = [c["id"] for c in crows
+                    if any(not isinstance(x, str) for x in c.get("formulas", []))]
+        ok(not bad_type,
+           f"concept-vision.jsonl 的 formulas 全是字符串（混入非字符串 {len(bad_type)} 个）",
+           str(bad_type[:3]))
+
+        figs = [f for c in crows for f in c.get("figureDescriptions", [])]
+        no_prov = [f for f in figs if f.get("provenance") != "described"]
+        ok(not no_prov,
+           f"图形描述都标了 provenance=described（漏标 {len(no_prov)} 条）")
+
+        withf = [c for c in crows if c.get("formulas")]
+        ok(len(withf) >= 30,
+           f"拿到公式的概念 {len(withf)} 个（至少要有 30）")
+        latexish = [c for c in crows
+                    if any(("\\" in x or "^" in x or "_" in x) for x in c.get("formulas", []))]
+        ok(len(latexish) >= 20,
+           f"公式是 LaTeX 形态（含 \\ 或 ^ 的 {len(latexish)} 个概念）")
+
+        # **判别力最关键的一条**：视觉层的产物里绝不能有 OCR 的残骸特征。
+        # OCR 输出里大量出现**全角拉丁字母**（ｍ ｃ ｅ ｎ ｉ —— 公式字体的
+        # ToUnicode 表缺失，映射到了全角区）；只要有人把 OCR 文本当成
+        # 视觉结果灌进来，这条立刻会红。
+        #
+        # 注意：**不要**用「字母夹汉字」当判据 —— 视觉层里「三角形ABC」
+        # 「直线b与c平行」是合法的几何记号，会大量误报。
+        pua = re.compile(r"[\uE000-\uF8FF]")        # 私用区
+        fwlatin = re.compile(r"[\uFF21-\uFF3A\uFF41-\uFF5A]")  # 全角拉丁字母
+        # 公式里的**裸汉字**（没走 \text / \mathrm）。
+        # 真 OCR 会把数学符号映射成普通汉字：`狔＝狓２`、
+        # `犪狓２＋犫狓＋犮` —— 犪狓狔都是正常 CJK 码位，
+        # **私用区检测抓不到它们**（实测：注入后私用区那条仍然是绿的）。
+        # 合法 LaTeX 里的中文必须包在 \text{} / \mathrm{} 里。
+        cjk_bare = re.compile(r"[一-鿿]")
+        cjk_ok = re.compile(r"\\(?:text|mathrm|mathbf|mathit|quad|qquad)\b")
+
+        allf = [x for c in crows for x in c.get("formulas", [])]
+        bad_pua = [x for x in allf if pua.search(x)]
+        ok(not bad_pua,
+           f"公式里没有 OCR 残骸（私用区字符 {len(bad_pua)} 条）", str(bad_pua[:2]))
+        bad_fw = [x for x in allf if fwlatin.search(x)]
+        ok(not bad_fw,
+           f"公式里没有全角拉丁字母（OCR 残骸特征 {len(bad_fw)} 条）", str(bad_fw[:2]))
+        bad_cjk = [x for x in allf if cjk_bare.search(x) and not cjk_ok.search(x)]
+        # **不是零容忍**：中文教材里 `\\bar{x}_{甲}` 这种是合法的
+        # （甲乙两组数据）。所以看**占比**——
+        # 正常是十万分之一量级，OCR 灌进来就是大面积。
+        cjk_rate = len(bad_cjk) / max(len(allf), 1)
+        ok(cjk_rate < 0.02,
+           f"公式里的裸汉字占比 {cjk_rate:.3%}（<2%，OCR 灌进来会爆表）",
+           str(bad_cjk[:2]))
+        bad_brace = [x for x in allf if _latex_unbalanced(x)]
+        ok(not bad_brace,
+           f"公式的 LaTeX 花括号都配平（不配平 {len(bad_brace)} 条）", str(bad_brace[:2]))
+    else:
+        warn("vision-pages.jsonl / concept-vision.jsonl 不存在 —— 视觉层还没生成"
+             "（跑 python3 src/vision_pages.py && python3 src/vision_to_concepts.py）")
+
     # git 一致性
     try:
         blob = subprocess.run(["git", "show", "HEAD:index.html"],
@@ -398,6 +482,29 @@ def layer2(g, sb, payload, html):
         warn("build_viz.py 里没找到 COPY 列表，跳过")
 
 
+def _latex_unbalanced(s: str) -> bool:
+    """LaTeX 花括号是否配平。
+
+    **转义的大括号不算** —— `\\left. ... \\right\\}`
+    是合法 LaTeX（排版用的隐形大括号），朴素计数会把它误判成不配平。
+    """
+    d = 0
+    i, n = 0, len(s)
+    while i < n:
+        ch = s[i]
+        if ch == "\\" and i + 1 < n and s[i + 1] in "{}":
+            i += 2          # 跳过转义的大括号
+            continue
+        if ch == "{":
+            d += 1
+        elif ch == "}":
+            d -= 1
+        if d < 0:
+            return True
+        i += 1
+    return d != 0
+
+
 # ── L3 判别力自检 ───────────────────────────────────────────
 def layer3(g, sb, payload):
     """**每条断言都必须能红。** 拿检查器去做它该报错的事。"""
@@ -448,6 +555,49 @@ def layer3(g, sb, payload):
            f"（实际牺牲 {pick}）")
         ok(prio.get("model", 0) > prio.get("upstream", 0),
            "PRIORITY 表里 model 的优先级确实高于 upstream")
+
+    # 视觉层：**OCR 残骸检测器必须能红**。
+    # 视觉层的价值全在于「它不是 OCR」。如果哪天管线接错、
+    # 把 OCR 文本当成视觉结果灌进 concept-vision.jsonl，
+    # 上面那两条断言就是唯一的哨兵 —— 它们必须真的会红。
+    #
+    # 判据是**全角拉丁字母**：OCR 的公式字体的 ToUnicode 表缺失，
+    # 字母被映射到了全角区（ｍ ｃ ｅ ｎ ｉ）。实测 OCR 层 2,846 段文本里
+    # 有 190 段带全角字母，视觉层 8,601 段里 0 段。
+    #
+    # **不要用「字母夹汉字」当判据** —— 视觉层里「三角形ABC」
+    # 「直线b与c平行」是合法几何记号，会大量误报。
+    pua = re.compile(r"[\uE000-\uF8FF]")
+    fwlatin = re.compile(r"[\uFF21-\uFF3A\uFF41-\uFF5A]")
+
+    # 真 OCR 输出长这样：y = ２ｘ²，ｍ 的值（字母被映射到全角区）
+    ok(bool(fwlatin.search("y = ２ｘ²，ｍ 的值")),
+       "OCR 残骸检测器：全角拉丁字母能被认出来（真 OCR 输出确实带这个）")
+    ok(not fwlatin.search("y = 2x^2"),
+       "OCR 残骸检测器：正常 LaTeX 不误报")
+    ok(bool(pua.search("\ue000\ue001")),
+       "OCR 残骸检测器：私用区字符能被认出来")
+    ok(not pua.search("y = x^2"),
+       "OCR 残骸检测器：正常 LaTeX 不误报（私用区）")
+    # 犪狓狔是**普通汉字**，不是私用区 —— 所以还得有一条「公式里不许有裸汉字」
+    ok(bool(re.search(r"[一-鿿]", "狔＝狓２")),
+       "OCR 残骸检测器：公式里的裸汉字能被认出来（犪狓狔是普通 CJK 码位）")
+    ok(not (re.search(r"[一-鿿]", "y = \\text{时间} = \\frac{路程}{速度}")
+            and not re.search(r"\\(?:text|mathrm)\b", "y = \\text{时间} = \\frac{路程}{速度}")),
+       "OCR 残骸检测器：包在 \\text{} 里的中文不误报")
+    ok(_latex_unbalanced("y = \\frac{1}{2}x^2}"),
+       "LaTeX 配平检测器：多一个右括号能报出来")
+    ok(_latex_unbalanced("y = \\frac{1}{2x^2"),
+       "LaTeX 配平检测器：少一个右括号能报出来")
+    ok(not _latex_unbalanced("y = \\frac{1}{2}x^2"),
+       "LaTeX 配平检测器：正常公式不误报")
+    # **但裸汉字不能零容忍** —— 教材里 `\bar{x}_{甲}` 是合法的（甲乙两组数据），
+    # 所以上面那条断言看的是**占比**。这两条自检把两种情况都钉住。
+    ok(bool(re.search(r"[一-鿿]", "\\bar{x}_{甲}=7.537")),
+       "裸汉字检测器：甲/乙 这类教材合法标签同样会被标出来（所以看占比）")
+    # 转义的大括号是合法 LaTeX（排版用的隐形大括号）
+    ok(not _latex_unbalanced("y = \\left. a = b \\right\\}"),
+       "LaTeX 配平检测器：转义的大括号 \\right\\} 不误判")
 
 
 def main():

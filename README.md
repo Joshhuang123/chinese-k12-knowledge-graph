@@ -118,6 +118,24 @@ python3 src/build_viz.py     # → viz/知识图谱3D.html
 
 **注意 `validate.py` 现在会 exit 1**，这是对的——3 个环还在数据里。修得去改上游，已上报 [issue #8](https://github.com/haolpku/K12-KGraph/issues/8)。
 
+### 给 agent 用的教材数据
+
+教材 PDF 转成了结构化数据，**入库**，agent 直接下 repo 就能用：
+
+| 文件 | 内容 | 规模 |
+|---|---|---|
+| `data/lessons.jsonl` | 一页一条（教材的「课」），带章节、页码、提到的概念 | 10,045 页 |
+| `data/concept-text.jsonl` | 一个概念一条，带**教材原话**（291 个概念有定义句） | 1,347 个概念 |
+| `data/vision-pages.jsonl` | 一页一条，带**公式(LaTeX)** 和**图形语义** | 视觉层 |
+| `data/concept-vision.jsonl` | 一个概念一条，带公式和图，按出版社区分页码 | 视觉层 |
+
+后两个是**视觉层**：教材扫描件的 PDF 文本层是坏的（公式字体的 ToUnicode 表缺失），
+OCR 只能救回汉字，**公式和图形会全丢**。视觉层换成让多模态模型直接读渲染出来的页面，
+把 `y = \frac{1}{2}(x-6)^2 + 3`、顶点 `(6, 3)`、图上的对称轴虚线这些东西捞回来。
+
+**公式和例题题干是页面原文，可以直接引用；图形描述是模型转述，引用时必须标「据图」。**
+schema 和用法见 [`docs/agent-data.md`](docs/agent-data.md)。
+
 ---
 
 ## 三层结构
