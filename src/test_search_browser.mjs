@@ -752,6 +752,23 @@ console.log('\n[10] 窄屏必须保留搜索，且不能被底部抽屉压住署
 console.log('\n[11] 搜索过程中没有新的脚本报错');
 ok(errors.length === 0, '全程零 JS 错误', errors.slice(0, 5).join('\n      '));
 
+
+// ── README 里的测试项数不能烂 ─────────────────────────────────
+// 手抄的数字会过期。2026-10-21 同步 README 时就发现「103 项」早就该是 82 项。
+// **这条断言只能放在这里**：只有跑完的人才知道真实通过数是多少，
+// 数源码里的 ok( 调用行数是不准的（这个文件就有跑不到的分支）。
+{
+  const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
+  const want = '| `src/test_search_browser.mjs` | 82 |';
+  if (!rd.includes(want)) {
+    console.log(`  ✗ README 里的 浏览器 测试项数不是 82`);
+    console.log(`      README 里没找到「${want}」`);
+    fail++;
+  } else {
+    console.log(`  ✓ README 里的 浏览器 测试项数是 82（与本次实跑一致）`);
+    pass++;
+  }
+}
 await browser.close();
 console.log(`\n${'='.repeat(52)}\n通过 ${pass}，失败 ${fail}`);
 process.exit(fail ? 1 : 0);

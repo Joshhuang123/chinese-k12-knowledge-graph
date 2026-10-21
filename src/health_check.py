@@ -427,6 +427,42 @@ def layer2(g, sb, payload, html):
         warn("vision-pages.jsonl / concept-vision.jsonl 不存在 —— 视觉层还没生成"
              "（跑 python3 src/vision_pages.py && python3 src/vision_to_concepts.py）")
 
+    # ── README 数字不许烂 ──────────────────────────────────────
+    # 手抄的数字会过期，而且没人发现。2026-10-21 同步 README 时就发现
+    # 画布节点写着 7,938（实际 8,667）、先修边写着 3,408（实际 16,845）、
+    # 测试写「103 项」（实际 155 项）——三处全过期。
+    #
+    # **只查会随数据变的头条数字**，数字从数据现算。叙述性文字不查。
+    RD = BASE / "README.md"
+    if RD.exists():
+        rd = RD.read_text(encoding="utf-8")
+        claims = {
+            "画布节点数": f"{len(payload['nodes']):,}",
+            "先修边数": f"{len(payload['edges']):,}",
+        }
+        # 上游知识点数
+        up_n = len({n["id"] for n in g["nodes"]
+                    if n.get("label") in ("Concept", "Skill", "Experiment")})
+        claims["上游知识点数"] = f"{up_n:,}"
+        # **测试项数不在这里查** —— 数源码里的断言行 ≠ 运行时跑的次数
+        # （test_search_browser.mjs 有 82 处 ok( 但只跑 81 条）。
+        # 那条断言放在两个测试脚本自己的末尾：它们跑完之后手里是真实 pass 数。
+        missing = [f"{k}={v}" for k, v in claims.items() if v not in rd]
+        ok(not missing,
+           f"README 里的头条数字跟当前数据一致（{len(claims)} 项）",
+           "README 里没找到：" + "、".join(missing))
+        # 反向：这些是**已知过期**的旧数字，不该再出现在 README 里
+        # （「进展」一节里作为「起点」出现的 7,938 / 3,408 除外，
+        #   那里有明确的「起点 → 现在」对照表）
+        stale = []
+        for old in ("7,938 个知识点", "3,408 条先修边", "103 项"):
+            if old in rd:
+                stale.append(old)
+        ok(not stale,
+           f"README 里没有已知过期的旧数字（残留 {len(stale)} 处）", "、".join(stale))
+    else:
+        warn("README.md 不存在，跳过一致性检查")
+
     # git 一致性
     try:
         blob = subprocess.run(["git", "show", "HEAD:index.html"],
