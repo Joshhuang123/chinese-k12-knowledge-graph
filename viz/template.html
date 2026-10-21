@@ -314,6 +314,9 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #gapList .vb .vg{font-size:11.5px;line-height:1.65;color:#8b93a7;margin-top:4px}
 #gapList .vb .vg b{color:#9fb0c8;font-weight:500}
 #gapList .vb .vsrc{font-size:10.5px;color:#5b6478;margin-top:4px}
+/* 沪教版那�� —— 换个颜色，跟人教版版区分开 */
+#gapList .vb.alt{border-left-color:#3d4a2c;background:rgba(185,214,127,.05)}
+#gapList .vb.alt .vh{color:#b9d67f}
 /* 教材自己标的难点（「思考」「探究」框）*/
 #gapList .vh2{
   font-size:11.5px;line-height:1.6;color:#b9d67f;margin-top:8px;
@@ -1460,6 +1463,9 @@ window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
               // **视觉层**：概念在教材原书上的公式和图。
               // 「卡在哪」面板和选题卡都要用 —— 面板那段代码在 IIFE 外面。
               vision: D.vision || {},
+              // **上海教材（沪教版/沪科版）的公式和图** ——
+              // 人教和沪教是两套教材，各看各的。
+              visionAlt: D.visionAlt || {},
               // **教材自己标的难点**（「思考」「探究」框）——
               // 面板里要显示「教材在这里标了 N 处思考/探究」。
               hard: D.hard || {},
@@ -1856,6 +1862,7 @@ function gapCardText(id, rows){
   }
   // 教材原书上的公式和图 —— 选题卡要能直接进内容生产
   const withVis = rows.slice(0, 8).map(r => kgVisionText(r.nid)).filter(Boolean);
+  // 上海教材的写法也带上（沪教版/沪科版跟人教版是两套教材）
   if(withVis.length){
     lines.push('');
     lines.push('## 教材原书（人教版）');
@@ -1886,18 +1893,35 @@ function kgVision(j){
 }
 function kgVisionHTML(j){
   const v = kgVision(j);
-  if(!v) return '';
-  const fs = v[0] || [], gs = v[1] || [], bz = v[2] || '';
+  const va = KG.visionAlt && KG.visionAlt[j];
   let h = '';
-  if(fs.length){
-    h += '<div class="vb"><div class="vh">教材原书上的公式</div><div class="vf">' +
-         fs.map(f => '<span>' + kgEsc(f) + '</span>').join('') + '</div></div>';
+  if(v){
+    const fs = v[0] || [], gs = v[1] || [], bz = v[2] || '';
+    if(fs.length){
+      h += '<div class="vb"><div class="vh">教材原书上的公式</div><div class="vf">' +
+           fs.map(f => '<span>' + kgEsc(f) + '</span>').join('') + '</div></div>';
+    }
+    for(const g of gs){
+      const cap = g[0] ? g[0] + ' ' : '';
+      h += '<div class="vb"><div class="vh">教材原书上的图</div><div class="vg"><b>据图</b> · ' +
+           kgEsc(cap + g[1]) + '</div>' +
+           (bz ? '<div class="vsrc">' + kgEsc(bz) + '</div>' : '') + '</div>';
+    }
   }
-  for(const g of gs){
-    const cap = g[0] ? g[0] + ' ' : '';
-    h += '<div class="vb"><div class="vh">教材原书上的图</div><div class="vg"><b>据图</b> · ' +
-         kgEsc(cap + g[1]) + '</div>' +
-         (bz ? '<div class="vsrc">' + kgEsc(bz) + '</div>' : '') + '</div>';
+  // **上海教材单独一块** —— 沪教版和沪科版跟人教版是两套教材，
+  // 上海的孩子看人教版的公式没用，反过来也一样。
+  if(va){
+    const af = va[0] || [], ag = va[1] || [], bz = va[2] || '';
+    if(af.length){
+      h += '<div class="vb alt"><div class="vh">沪教版怎么写</div><div class="vf">' +
+           af.map(f => '<span>' + kgEsc(f) + '</span>').join('') + '</div></div>';
+    }
+    for(const g of ag){
+      const cap = g[0] ? g[0] + ' ' : '';
+      h += '<div class="vb alt"><div class="vh">沪教版的图</div><div class="vg"><b>据图</b> · ' +
+           kgEsc(cap + g[1]) + '</div>' +
+           (bz ? '<div class="vsrc">' + kgEsc(bz) + '</div>' : '') + '</div>';
+    }
   }
   return h;
 }
@@ -1931,11 +1955,18 @@ function kgHardText(j){
 }
 function kgVisionText(j){
   const v = kgVision(j);
-  if(!v) return '';
-  const fs = v[0] || [], gs = v[1] || [], bz = v[2] || '';
+  const va = KG.visionAlt && KG.visionAlt[j];
   const L = [];
-  if(fs.length) L.push('教材原书上的公式：' + fs.join('　'));
-  for(const g of gs) L.push('教材原书上的图（据图，模型转述）：' + (g[0] ? g[0] + ' ' : '') + g[1]);
+  if(v){
+    const fs = v[0] || [], gs = v[1] || [];
+    if(fs.length) L.push('教材原书上的公式：' + fs.join('　'));
+    for(const g of gs) L.push('教材原书上的图（据图，模型转述）：' + (g[0] ? g[0] + ' ' : '') + g[1]);
+  }
+  if(va){
+    const af = va[0] || [], ag = va[1] || [];
+    if(af.length) L.push('沪教版怎么写：' + af.join('　'));
+    for(const g of ag) L.push('沪教版的图（据图，模型转述）：' + (g[0] ? g[0] + ' ' : '') + g[1]);
+  }
   return L.join('\n');
 }
 

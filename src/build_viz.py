@@ -598,6 +598,43 @@ def main():
                     break
             if fs or gs:
                 vision[j] = [fs, gs, (cv.get("bookZh") or "")[:6]]
+
+    # ── 视觉层（上海教材：沪教版/沪科版）──────────────────────────
+    # **跟人教版分开** —— 两套教材，混一起出处说不清。
+    # 同一册里两个版本覆盖的概念都不一样（人教七上「第1章 有理数」起，
+    # 沪教七上「第10章 整式的加减」起）。
+    vision_alt = {}
+    if VISION.exists():
+        for line in VISION.open(encoding="utf-8"):
+            if not line.strip():
+                continue
+            try:
+                cv = json.loads(line)
+            except Exception:
+                continue
+            j = idx.get(cv.get("id", ""))
+            if j is None:
+                continue
+            af = []
+            for x in cv.get("altFormulas", []) or []:
+                p = to_plain(x)
+                if p and p not in af:
+                    af.append(p)
+                if len(af) >= 4:
+                    break
+            ag = []
+            for g in cv.get("altFigures", []) or []:
+                d = (g.get("description") or "").strip()
+                if not d:
+                    continue
+                d = to_plain(d)
+                if len(d) > 160:
+                    d = d[:158] + "…"
+                ag.append([g.get("caption", ""), d])
+                if len(ag) >= 1:
+                    break
+            if af or ag:
+                vision_alt[j] = [af, ag, (cv.get("bookZh") or "")[:6]]
     else:
         print("  ! data/concept-vision.jsonl 不存在 —— 「卡在哪」面板里不会有教材公式")
 
@@ -624,7 +661,7 @@ def main():
 
     payload = {"nodes": payload_nodes, "edges": payload_edges,
                "isa": isa_pairs, "chs": chs, "cns": cns,
-               "altpos": alt_pos, "vision": vision, "hard": hard_map,
+               "altpos": alt_pos, "vision": vision, "visionAlt": vision_alt, "hard": hard_map,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                # 画布上画的点数（含自建），但首页写的「N 个知识点」
                # 必须只数上游那批 —— 把能力节点算进「知识点」是偷换概念。

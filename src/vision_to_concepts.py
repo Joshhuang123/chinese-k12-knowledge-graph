@@ -316,6 +316,8 @@ def main() -> int:
             # 公式/表格/题目**只从 topical 页取**（broad 页跟这概念没关系）
             formulas, formula_ctx, exs, tables = [], [], [], []
             figs = []
+            # **上海教材单独放** —— 人教和沪教是两套教材，混一起出处就说不清了
+            alt_formulas, alt_formula_ctx, alt_figs = [], [], []
 
             def _rel(text):
                 """跟概念的相关度：context/图号里提到概念名的排前面。"""
@@ -337,14 +339,24 @@ def main() -> int:
                                              "pages": []})
                 s2["pages"].append(r["page"])
                 f1, fc1, g1, e1, t1 = collect(r)
+                is_sh = str(src).startswith("sh-")
                 for x in f1:
-                    if x not in formulas:
+                    if is_sh:
+                        if x not in alt_formulas:
+                            alt_formulas.append(x)
+                    elif x not in formulas:
                         formulas.append(x)
                 for x in fc1:
-                    if x not in formula_ctx:
+                    if is_sh:
+                        if x not in alt_formula_ctx:
+                            alt_formula_ctx.append(x)
+                    elif x not in formula_ctx:
                         formula_ctx.append(x)
                 for x in g1:
-                    if x not in figs:
+                    if is_sh:
+                        if x not in alt_figs:
+                            alt_figs.append(x)
+                    elif x not in figs:
                         figs.append(x)
                 for x in e1:
                     if x not in exs:
@@ -376,6 +388,11 @@ def main() -> int:
             for fc in formula_ctx:
                 if fc["latex"] not in formulas:
                     formulas.append(fc["latex"])
+            alt_formula_ctx.sort(key=lambda fc: _rel(fc.get("context", "")))
+            alt_formulas = []
+            for fc in alt_formula_ctx:
+                if fc["latex"] not in alt_formulas:
+                    alt_formulas.append(fc["latex"])
             # 图：图号或描述里提到概念名的排前面
             figs.sort(key=lambda f: (_rel(f.get("caption", "") + " " + f.get("description", "")),
                                      f.get("tier") != "topical"))
@@ -397,6 +414,13 @@ def main() -> int:
                 "formulas": formulas[:30],
                 "formulaContexts": formula_ctx[:30],
                 "figureDescriptions": figs[:12],
+                # **上海教材（沪教版/沪科版）的公式和图** ——
+                # 人教和沪教是两套教材，混一起出处说不清。
+                "altFormulas": alt_formulas[:20],
+                "altFormulaContexts": alt_formula_ctx[:20],
+                "altFigures": alt_figs[:8],
+                "altPages": sorted({p for k, v in by_src.items()
+                                    if str(k).startswith("sh-") for p in v["pages"]}),
                 "exercises": exs[:12],
                 "tables": tables[:6],
                 "counts": {

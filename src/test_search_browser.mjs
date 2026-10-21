@@ -615,6 +615,34 @@ console.log('\n[8c-4] 「卡在哪」：先修闭包要排得出优先级');
   });
   ok(vis.hasMap, `payload 里有视觉层数据（${vis.mapSize} 个概念）`);
 
+  // ── 沪教版：人教和沪教是两套教材，各看各的 ────────────────────
+  const alt = await page.evaluate(() => {
+    const KG = window.__kg;
+    const a = KG.visionAlt || {};
+    const lis = [...document.querySelectorAll('#gapList li[data-id]')];
+    const blocks = lis.map(li => ({
+      id: +li.dataset.id,
+      alt: [...li.querySelectorAll('.vb.alt')].map(v => v.textContent.replace(/\s+/g, ' ').trim()),
+    }));
+    const withAlt = blocks.filter(b => b.alt.length);
+    return {
+      mapSize: Object.keys(a).length,
+      total: blocks.length,
+      withAlt: withAlt.length,
+      sample: withAlt[0] || null,
+      // 沪教版那块里也不能有 LaTeX 源码
+      latex: withAlt.flatMap(b => b.alt).filter(t => /\\[A-Za-z]+/.test(t)),
+    };
+  });
+  ok(alt.mapSize > 100, `payload 里有沪教版的教材数据（${alt.mapSize} 个概念）`);
+  ok(alt.withAlt > 0,
+     `「卡在哪」面板里有 ${alt.withAlt}/${alt.total} 条候选同时显示了沪教版的写法`);
+  ok(alt.latex.length === 0,
+     `沪教版那块的公式也是纯文本（残留 ${alt.latex.length} 处）`);
+  if (alt.sample) {
+    console.log(`      例：${alt.sample.alt[0].slice(0, 76)}`);
+  }
+
   // ── 教材自己标的难点（「思考」「探究」框）──────────────────
   // 这是**教材编委会标的**，不是模型推断的 —— 面板里必须有。
   const hrd = await page.evaluate(() => {
@@ -840,13 +868,13 @@ ok(errors.length === 0, '全程零 JS 错误', errors.slice(0, 5).join('\n      
 // 数源码里的 ok( 调用行数是不准的（这个文件就有跑不到的分支）。
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_search_browser.mjs` | 90 |';
+  const want = '| `src/test_search_browser.mjs` | 93 |';
   if (!rd.includes(want)) {
-    console.log(`  ✗ README 里的 浏览器 测试项数不是 90`);
+    console.log(`  ✗ README 里的 浏览器 测试项数不是 93`);
     console.log(`      README 里没找到「${want}」`);
     fail++;
   } else {
-    console.log(`  ✓ README 里的 浏览器 测试项数是 90（与本次实跑一致）`);
+    console.log(`  ✓ README 里的 浏览器 测试项数是 93（与本次实跑一致）`);
     pass++;
   }
 }

@@ -44,7 +44,21 @@ SINGLE = {
     "leqslant": "≤", "geqslant": "≥", "leqslant": "≤", "geqslant": "≥",
     "approx": "≈", "equiv": "≡", "propto": "∝", "sim": "∼", "simeq": "≃",
     "cong": "≅", "backsim": "∽", "odot": "⊙", "circ": "°", "degree": "°",
-    "bigcirc": "⊙",
+    "bigcirc": "⊙", "prime": "′", "dprime": "″", "backprime": "‵",
+    # ── 沪教版实测补的一批 ──
+    "in": "∈", "notin": "∉", "ni": "∋",
+    "overrightarrow": "→", "overleftarrow": "←", "Longleftrightarrow": "⟺",
+    "iff": "⟺", "implies": "⟹", "impliedby": "⟸",
+    "langle": "⟨", "rangle": "⟩", "lvert": "|", "rvert": "|", "lVert": "‖",
+    "rVert": "‖", "overgroup": "⟮", "overbracket": "⟦",
+    "lg": "lg", "varnothing": "∅", "infty": "∞", "dotsm": "⋯",
+    "ll": "≪", "gg": "≫", "preceq": "⪯", "succeq": "⪰",
+    "vdash": "⊢", "dashv": "⊣", "models": "⊨", "therefore": "∴",
+    "cup": "∪", "cap": "∩", "complement": "∁", "setminus": "∖",
+    "because": "∵", "square": "□", "bullet": "•", "blacksquare": "■",
+    "vartriangle": "△", "triangle": "△", "perp": "⊥", "parallel": "∥",
+    "sum": "∑", "prod": "∏", "int": "∫", "oint": "∮", "partial": "∂",
+    "nabla": "∇", "pm": "±", "mp": "∓", "cdot": "·", "times": "×", "div": "÷",
     "therefore": "∴", "because": "∵", "square": "□", "star": "⋆",
     # 关系
     "rightarrow": "→", "to": "→", "leftarrow": "←", "Rightarrow": "⇒",
@@ -82,14 +96,21 @@ ACCENT = {
 # ── 丢弃表：纯排版命令，连内容一起丢 ─────────────────────────────────
 DROP_CMD = {"left", "right", "quad", "qquad", "hspace", "phantom",
             "mathrel", "displaystyle", "limits", "!", ",", ";", ":", " ",
-            "hline"}          # hline 是表格横线，纯排版（实测出现 16 次）
+            "hline",           # hline 是表格横线，纯排版（实测 16 次）
+            "smash", "mkern", "mspace", "nobreak", "allowbreak",
+            "nonumber", "notag", "phantom2",
+            "big", "Big", "bigg", "Bigg", "bigl", "bigr", "Bigl",
+            "Bigr", "pr", "pmod", "tfrac2"}
 
 # ── 保留表：命令丢掉，组里的内容留着 ─────────────────────────────────
 # **分两种**：文字类原样留（转了没意义），数学类要递归转。
 RAW_CONTENT = {"text", "mathrm", "mathbf", "mathit", "operatorname", "textbf",
                "mathcal", "mathsf", "rm", "textnormal", "textit",
                "boxed"}         # boxed 是给公式加框，内容要留（实测 12 次）
-CONVERT_CONTENT = {"overbrace", "underbrace", "overarc", "overparen"}
+CONVERT_CONTENT = {"overbrace", "underbrace", "overarc", "overparen",
+                   # ── 沪教版实测补的排版类命令：丢掉命令，内容留下 ──
+                   "boldsymbol", "mathnormal", "mathrel", "mathopen",
+                   "mathclose", "mathpunct", "mathbin", "mathrm2"}
 KEEP_CONTENT = RAW_CONTENT | CONVERT_CONTENT
 
 # 环境名，成对丢弃
@@ -277,12 +298,12 @@ def _convert(s: str, depth: int = 0) -> str:
                 i = j
                 continue
             # 转义符号 \{ \} \\ \% \$ \& \_ \# \,
-            m2 = re.match(r"\\([\\{}$%&_#, ])", s[i:])
+            m2 = re.match(r"\\([\\{}$%&_#, ;:!])", s[i:])
             if m2:
                 c = m2.group(1)
                 out.append({"\\": " ", "{": "{", "}": "}", "$": "", "%": "%",
                             "&": "＆", "_": "_", "#": "#", ",": " ",
-                            " ": " "}.get(c, c))
+                            " ": " ", ";": " ", ":": " ", "!": ""}.get(c, c))
                 i += m2.end()
                 continue
             out.append("\\")

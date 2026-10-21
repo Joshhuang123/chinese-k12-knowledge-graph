@@ -424,6 +424,16 @@ def layer2(g, sb, payload, html):
         ok(not bad_brace,
            f"公式的 LaTeX 花括号都配平（不配平 {len(bad_brace)} 条）", str(bad_brace[:2]))
 
+        # **沪教版那部分也不能有 LaTeX 残留**（页面会把它转成人能读的纯文本）
+        _alt = payload.get("visionAlt") or {}
+        _altf = [x for v in _alt.values() for x in (v[0] if v else [])]
+        _alt_bad = [x for x in _altf
+                    if pua.search(x) or fwlatin.search(x)
+                    or re.search(r"\\[A-Za-z]+", x)]
+        ok(not _alt_bad,
+           f"沪教版的公式也是纯文本（残留 {len(_alt_bad)} 条 / 共 {len(_altf)} 条）",
+           str(_alt_bad[:2]))
+
         # ── 册次一致性：概念的视觉数据必须来自它自己那册 ──────────
         # 这条是「graphBook 写错」那个 bug 的哨兵（见 known-issues ISSUE-35）：
         # 曾经 4,236 页的 graphBook 全写成了「xzxbx3」，
@@ -512,10 +522,12 @@ def layer2(g, sb, payload, html):
     # 4 MB 和 3 MB 是能感觉出来的差别。
     # **数据层可以全留（给 agent），页面层要有预算。**
     _vis = payload.get("vision") or {}
-    _vis_bytes = len(json.dumps(_vis, ensure_ascii=False))
+    _vis_alt = payload.get("visionAlt") or {}
+    _vis_bytes = len(json.dumps(_vis, ensure_ascii=False)) + \
+        len(json.dumps(_vis_alt, ensure_ascii=False))
     ok(_vis_bytes <= 400_000,
        f"页面里的视觉层 payload 在预算内（{_vis_bytes//1000} KB / 400 KB，"
-       f"{len(_vis)} 个概念）")
+       f"人教 {len(_vis)} + 沪教 {len(_vis_alt)} 个概念）")
 
     # git 一致性
     try:
