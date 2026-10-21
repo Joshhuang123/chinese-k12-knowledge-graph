@@ -36,6 +36,11 @@ import sys
 BASE = pathlib.Path(__file__).resolve().parent.parent
 GRAPH = BASE / "data" / "normalized" / "graph.json"
 VPAGES = BASE / "data" / "vision-pages.jsonl"
+# 上海教材（沪教版/沪科版）—— 视觉层从国家中小学智慧教育平台的页图来。
+# **按 graphBook 匹配人教版的概念**（两边册次码对齐，但内容覆盖不一样：
+# 人教版七上从「第1章 有理数」起，沪教版七上从「第10章 整式的加减」起）。
+# 挂上去之后能直接读出：**同一个册次，两个版本覆盖的概念不一样。**
+VPAGES_SH = BASE / "data" / "vision-pages-sh.jsonl"
 OUT = BASE / "data" / "concept-vision.jsonl"
 
 SUBJ_ZH = {"math": "数学", "biology": "生物", "chemistry": "化学", "physics": "物理"}
@@ -159,15 +164,19 @@ def main() -> int:
 
     # ---- 读视觉页 ----
     pages = []
-    for line in VPAGES.open(encoding="utf-8"):
-        try:
-            r = json.loads(line)
-        except Exception:
+    for src_file in (VPAGES, VPAGES_SH):
+        if not src_file.exists():
             continue
-        if not r.get("ok") or not r.get("data"):
-            continue
-        pages.append(r)
-    print(f"视觉页 {len(pages)} 页（可解析）")
+        for line in src_file.open(encoding="utf-8"):
+            try:
+                r = json.loads(line)
+            except Exception:
+                continue
+            if not r.get("ok") or not r.get("data"):
+                continue
+            pages.append(r)
+    n_sh = sum(1 for p in pages if str(p.get("book", "")).startswith("sh-"))
+    print(f"视觉页 {len(pages)} 页（可解析）· 人教/其他 {len(pages)-n_sh} · 上海 {n_sh}")
 
     # ---- 按 (学科, 册次) 分组 ----
     def book_of(r):
@@ -324,6 +333,7 @@ def main() -> int:
                 src = r["book"]
                 s2 = by_src.setdefault(src, {"publisher": r.get("publisher", ""),
                                              "bookZh": r.get("bookZh", ""),
+                                             "edition": r.get("edition", ""),
                                              "pages": []})
                 s2["pages"].append(r["page"])
                 f1, fc1, g1, e1, t1 = collect(r)
@@ -381,6 +391,7 @@ def main() -> int:
                 "broadPages": sorted(set(pgs[i]["page"] for i in hit_broad)),
                 "bySource": {k: {"publisher": v["publisher"],
                                  "bookZh": v["bookZh"],
+                                 "edition": v.get("edition", ""),
                                  "pages": sorted(set(v["pages"]))}
                              for k, v in sorted(by_src.items())},
                 "formulas": formulas[:30],

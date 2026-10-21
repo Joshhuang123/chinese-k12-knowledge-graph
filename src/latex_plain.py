@@ -44,6 +44,7 @@ SINGLE = {
     "leqslant": "≤", "geqslant": "≥", "leqslant": "≤", "geqslant": "≥",
     "approx": "≈", "equiv": "≡", "propto": "∝", "sim": "∼", "simeq": "≃",
     "cong": "≅", "backsim": "∽", "odot": "⊙", "circ": "°", "degree": "°",
+    "bigcirc": "⊙",
     "therefore": "∴", "because": "∵", "square": "□", "star": "⋆",
     # 关系
     "rightarrow": "→", "to": "→", "leftarrow": "←", "Rightarrow": "⇒",
@@ -80,12 +81,14 @@ ACCENT = {
 
 # ── 丢弃表：纯排版命令，连内容一起丢 ─────────────────────────────────
 DROP_CMD = {"left", "right", "quad", "qquad", "hspace", "phantom",
-            "mathrel", "displaystyle", "limits", "!", ",", ";", ":", " "}
+            "mathrel", "displaystyle", "limits", "!", ",", ";", ":", " ",
+            "hline"}          # hline 是表格横线，纯排版（实测出现 16 次）
 
 # ── 保留表：命令丢掉，组里的内容留着 ─────────────────────────────────
 # **分两种**：文字类原样留（转了没意义），数学类要递归转。
 RAW_CONTENT = {"text", "mathrm", "mathbf", "mathit", "operatorname", "textbf",
-               "mathcal", "mathsf", "rm", "textnormal", "textit"}
+               "mathcal", "mathsf", "rm", "textnormal", "textit",
+               "boxed"}         # boxed 是给公式加框，内容要留（实测 12 次）
 CONVERT_CONTENT = {"overbrace", "underbrace", "overarc", "overparen"}
 KEEP_CONTENT = RAW_CONTENT | CONVERT_CONTENT
 
