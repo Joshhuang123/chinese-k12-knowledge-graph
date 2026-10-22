@@ -247,11 +247,43 @@ ok(path.nondecreasing, '顺序是从最基础开始');
 ok(path.hasPos > 0, `${path.hasPos} 个前置标出了上海教材的位置`);
 console.log(`      例：${path.sample}`);
 
+// ── 上下位（is_a）───────────────────────────────────────────
+// 图谱里 855 对 is_a 落在上海集合内 —— 之前 payload 里 isa 是空的，
+// 卡片上「更一般的概念」永远是空的。
+console.log('\n[8] 上下位：更一般的概念');
+const isaPick = await page.evaluate(() => {
+  const K = window.__kg;
+  const names = K.NODES.map(n => n.zh);
+  for (const [a, b] of K.D.isa) {
+    if (names[a] && names[b]) return { name: names[a], gen: names[b] };
+  }
+  return null;
+});
+ok(isaPick !== null, `payload 里有 is_a 对（${isaPick ? isaPick.name + ' → ' + isaPick.gen : ''}）`);
+if (isaPick) {
+  await page.evaluate(() => { document.getElementById('q').value = ''; });
+  await page.click('#q');
+  await page.type('#q', isaPick.name, { delay: 20 });
+  await sleep(600);
+  await page.keyboard.press('Enter');
+  await sleep(1600);
+  const sup = await page.evaluate(() => {
+    const b = document.querySelector('#cChain [data-b="sup"]');
+    return {
+      n: b ? +(b.querySelector('.n')?.textContent || 0) : 0,
+      // 行是 .ct 块的**兄弟节点**，不是它的子节点
+      rows: [...document.querySelectorAll('#cChain .dep')].map(x => x.textContent.replace(/\s+/g, ' ').trim()),
+    };
+  });
+  ok(sup.n > 0, `「更一般的概念」这一栏不再是空的（${sup.n} 条）`);
+  ok(sup.rows.some(r => r.includes(isaPick.gen)), `列出了更一般的概念：${isaPick.gen}`);
+}
+
 // ── README 里的测试项数不能烂 ────────────────────────────────
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_shanghai_site.mjs` | 42 |';
-  ok(rd.includes(want), `README 里的 上海版 测试项数是 42（${rd.includes(want) ? '一致' : '不一致'}）`);
+  const want = '| `src/test_shanghai_site.mjs` | 45 |';
+  ok(rd.includes(want), `README 里的 上海版 测试项数是 45（${rd.includes(want) ? '一致' : '不一致'}）`);
 }
 
 await page.screenshot({ path: resolve(BASE, 'data/pdf-cache/work/shanghai-site.png') });

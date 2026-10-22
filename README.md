@@ -702,13 +702,13 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 
 ### 验证
 
-三份测试都用真 Chrome 开真页面做端到端断言，合计 **213 项**：
+三份测试都用真 Chrome 开真页面做端到端断言，合计 **216 项**：
 
 | 文件 | 项数 | 测什么 |
 |---|---|---|
 | `src/test_search_browser.mjs` | 93 | 搜索、移动端三尺寸、页面自洽 |
 | `src/test_regressions.mjs` | 86 | 真 bug 的回归，每条都有「修之前实测复现」 |
-| `src/test_shanghai_site.mjs` | 42 | 上海版页面起得来、搜得到、教材位置对、「卡在哪」排得出候选、零 JS 错误 |
+| `src/test_shanghai_site.mjs` | 45 | 上海版页面起得来、搜得到、教材位置对、「卡在哪」排得出候选、零 JS 错误 |
 
 项目本身零 npm 依赖，puppeteer-core 按需单装：
 
