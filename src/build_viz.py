@@ -392,6 +392,11 @@ def main():
         props = n.get("props") or {}
         desc = (props.get("definition") or props.get("description")
                 or props.get("steps") or props.get("formula") or "")
+        # **标出处** —— 这个定义是**数据集里的**，不是教材原文
+        # （ISSUE-15 查过：上游定义跟教材印的不是一个说法）。
+        # 卡片上不标，读者会当成教材原话。
+        if desc:
+            desc = "图谱定义：" + desc
         if isinstance(desc, list):
             desc = "；".join(str(x) for x in desc[:3])
         chp, chn = book_order(n["id"])

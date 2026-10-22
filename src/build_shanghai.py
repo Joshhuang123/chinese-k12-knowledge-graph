@@ -188,6 +188,8 @@ def main() -> int:
         # 两个都要。位置在下面的「教材顺序」栏里也有，但那儿是节与节相邻，
         # 这里给的是「这个概念在哪本书哪一节第几页」—— 翻书的时候用。
         desc = n.get("desc") or n.get("def") or ""
+        if desc:
+            desc = "图谱定义：" + desc
         if sec:
             bits = [b for b in (sec.get("chapter"), sec.get("chapterName"),
                                 sec.get("section"), sec.get("sectionName")) if b]
