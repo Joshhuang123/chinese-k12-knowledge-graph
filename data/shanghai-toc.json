@@ -1,0 +1,4040 @@
+{
+ "_source": "上海教材目录页 —— 视觉模型读版式（不是 OCR，tesseract 在彩色目录上太脏）",
+ "books": {
+  "sh-hk-数学-s-7a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+   "edition": "沪科版",
+   "subject": "数学",
+   "graphBook": "7a",
+   "bookId": "sh-hk-数学-s-7a",
+   "tocPages": [
+    5,
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "有理数",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "正数和负数",
+       "startPage": 2
+      },
+      {
+       "no": "1.2",
+       "name": "数轴、相反数和绝对值",
+       "startPage": 8
+      },
+      {
+       "no": "1.3",
+       "name": "有理数的大小",
+       "startPage": 15
+      },
+      {
+       "no": "1.4",
+       "name": "有理数的加减",
+       "startPage": 19
+      },
+      {
+       "no": "1.5",
+       "name": "有理数的乘除",
+       "startPage": 32
+      },
+      {
+       "no": "",
+       "name": "数学拓展 翻币游戏中的数学推理",
+       "startPage": 41
+      },
+      {
+       "no": "1.6",
+       "name": "有理数的乘方",
+       "startPage": 42
+      },
+      {
+       "no": "1.7",
+       "name": "近似数",
+       "startPage": 49
+      },
+      {
+       "no": "",
+       "name": "数学史话 负数",
+       "startPage": 53
+      },
+      {
+       "no": "",
+       "name": "数学活动 二维码与幂",
+       "startPage": 54
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 56
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 58
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "整式及其加减",
+     "startPage": 61,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "代数式",
+       "startPage": 62
+      },
+      {
+       "no": "2.2",
+       "name": "整式加减",
+       "startPage": 74
+      },
+      {
+       "no": "",
+       "name": "数学活动 探索规律",
+       "startPage": 82
+      },
+      {
+       "no": "",
+       "name": "数学拓展 归纳推理",
+       "startPage": 82
+      },
+      {
+       "no": "",
+       "name": "数学史话 数学符号",
+       "startPage": 84
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 86
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 87
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "一次方程与方程组",
+     "startPage": 91,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "方程",
+       "startPage": 92
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "3.2",
+       "name": "一元一次方程及其解法",
+       "startPage": 98
+      },
+      {
+       "no": "3.3",
+       "name": "一元一次方程的应用",
+       "startPage": 103
+      },
+      {
+       "no": "3.4",
+       "name": "二元一次方程组及其解法",
+       "startPage": 108
+      },
+      {
+       "no": "3.5",
+       "name": "二元一次方程组的应用",
+       "startPage": 118
+      },
+      {
+       "no": "*3.6",
+       "name": "三元一次方程组及其解法",
+       "startPage": 124
+      },
+      {
+       "no": "",
+       "name": "数学史话 “方程”的由来",
+       "startPage": 129
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 131
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 132
+      },
+      {
+       "no": "5.3",
+       "name": "用统计图描述数据",
+       "startPage": 185
+      },
+      {
+       "no": "5.4",
+       "name": "从图表中的数据获取信息",
+       "startPage": 190
+      },
+      {
+       "no": "附录1",
+       "name": "常用的单位及其符号",
+       "startPage": 218
+      },
+      {
+       "no": "附录2",
+       "name": "部分中英文词汇对照表",
+       "startPage": 220
+      },
+      {
+       "no": "附录3",
+       "name": "手工纸",
+       "startPage": 223
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "几何图形初步",
+     "startPage": 137,
+     "sections": [
+      {
+       "no": "4.1",
+       "name": "几何图形",
+       "startPage": 138
+      },
+      {
+       "no": "",
+       "name": "数学活动 制作正多面体",
+       "startPage": 142
+      },
+      {
+       "no": "4.2",
+       "name": "线段、射线、直线",
+       "startPage": 143
+      },
+      {
+       "no": "4.3",
+       "name": "线段的长短",
+       "startPage": 148
+      },
+      {
+       "no": "4.4",
+       "name": "角",
+       "startPage": 153
+      },
+      {
+       "no": "4.5",
+       "name": "角的比较与补(余)角",
+       "startPage": 157
+      },
+      {
+       "no": "",
+       "name": "阅读与欣赏 生物中的最佳角",
+       "startPage": 164
+      },
+      {
+       "no": "",
+       "name": "数学活动 画图",
+       "startPage": 166
+      },
+      {
+       "no": "",
+       "name": "数学史话 “几何”的由来",
+       "startPage": 166
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 168
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 169
+      }
+     ]
+    },
+    {
+     "no": "第5章",
+     "name": "数据的收集与整理",
+     "startPage": 172,
+     "sections": [
+      {
+       "no": "5.1",
+       "name": "数据的收集",
+       "startPage": 173
+      },
+      {
+       "no": "",
+       "name": "阅读与欣赏 数据收集的重要性",
+       "startPage": 176
+      },
+      {
+       "no": "5.2",
+       "name": "数据的整理",
+       "startPage": 178
+      },
+      {
+       "no": "",
+       "name": "数学活动 字母统计",
+       "startPage": 183
+      }
+     ]
+    }
+   ],
+   "totalPages": 238
+  },
+  "sh-hk-数学-s-7b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+   "edition": "沪科版",
+   "subject": "数学",
+   "graphBook": "7b",
+   "bookId": "sh-hk-数学-s-7b",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第6章",
+     "name": "实数",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "6.1",
+       "name": "平方根、立方根",
+       "startPage": 2
+      },
+      {
+       "no": "6.2",
+       "name": "无理数和实数",
+       "startPage": 9
+      },
+      {
+       "no": "",
+       "name": "数学活动 探究将无限循环小数化为分数",
+       "startPage": 17
+      },
+      {
+       "no": "",
+       "name": "信息技术应用 求√7的近似值",
+       "startPage": 18
+      },
+      {
+       "no": "",
+       "name": "数学史话 无理数漫谈",
+       "startPage": 20
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 22
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 23
+      }
+     ]
+    },
+    {
+     "no": "第7章",
+     "name": "一元一次不等式与不等式组",
+     "startPage": 26,
+     "sections": [
+      {
+       "no": "7.1",
+       "name": "不等式及其基本性质",
+       "startPage": 27
+      },
+      {
+       "no": "7.2",
+       "name": "一元一次不等式",
+       "startPage": 34
+      },
+      {
+       "no": "",
+       "name": "数学活动 饮品促销方案分析",
+       "startPage": 40
+      },
+      {
+       "no": "7.3",
+       "name": "一元一次不等式组",
+       "startPage": 41
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 45
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 46
+      }
+     ]
+    },
+    {
+     "no": "第8章",
+     "name": "整式乘法与因式分解",
+     "startPage": 50,
+     "sections": [
+      {
+       "no": "8.1",
+       "name": "幂的运算",
+       "startPage": 51
+      },
+      {
+       "no": "8.2",
+       "name": "整式乘法",
+       "startPage": 65
+      },
+      {
+       "no": "",
+       "name": "数学活动 求最大乘积",
+       "startPage": 73
+      },
+      {
+       "no": "8.3",
+       "name": "完全平方公式与平方差公式",
+       "startPage": 74
+      },
+      {
+       "no": "8.4",
+       "name": "因式分解",
+       "startPage": 80
+      },
+      {
+       "no": "",
+       "name": "数学拓展 巧用因式分解",
+       "startPage": 87
+      },
+      {
+       "no": "",
+       "name": "数学史话 杨辉三角",
+       "startPage": 89
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 91
+      }
+     ]
+    },
+    {
+     "no": "第9章",
+     "name": "分式",
+     "startPage": 96,
+     "sections": [
+      {
+       "no": "9.1",
+       "name": "分式及其基本性质",
+       "startPage": 97
+      },
+      {
+       "no": "",
+       "name": "数学拓展 类比推理",
+       "startPage": 103
+      },
+      {
+       "no": "9.2",
+       "name": "分式的运算",
+       "startPage": 105
+      },
+      {
+       "no": "9.3",
+       "name": "分式方程",
+       "startPage": 115
+      },
+      {
+       "no": "",
+       "name": "数学拓展 两个等式的研究",
+       "startPage": 120
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 122
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 123
+      }
+     ]
+    },
+    {
+     "no": "第10章",
+     "name": "相交线、平行线与平移",
+     "startPage": 127,
+     "sections": [
+      {
+       "no": "10.1",
+       "name": "相交线",
+       "startPage": 128
+      },
+      {
+       "no": "",
+       "name": "数学活动 怎样铺设节省材料",
+       "startPage": 135
+      },
+      {
+       "no": "10.2",
+       "name": "平行线的判定",
+       "startPage": 136
+      },
+      {
+       "no": "10.3",
+       "name": "平行线的性质",
+       "startPage": 144
+      },
+      {
+       "no": "10.4",
+       "name": "平移",
+       "startPage": 148
+      },
+      {
+       "no": "",
+       "name": "信息技术应用 探究平移的基本性质",
+       "startPage": 151
+      },
+      {
+       "no": "",
+       "name": "数学活动 钥匙复制原理",
+       "startPage": 152
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 153
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 154
+      }
+     ]
+    },
+    {
+     "no": "综合与实践",
+     "name": "简单的排队问题",
+     "startPage": 158,
+     "sections": []
+    },
+    {
+     "no": "附录",
+     "name": "部分中英文词汇对照表",
+     "startPage": 166,
+     "sections": []
+    }
+   ],
+   "totalPages": 177
+  },
+  "sh-hk-数学-s-8a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级上册",
+   "edition": "沪科版",
+   "subject": "数学",
+   "graphBook": "8a",
+   "bookId": "sh-hk-数学-s-8a",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第 11 章",
+     "name": "平面直角坐标系",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "11.1",
+       "name": "平面内点的坐标",
+       "startPage": 2
+      },
+      {
+       "no": "",
+       "name": "数学拓展 确定台风中心位置",
+       "startPage": 13
+      },
+      {
+       "no": "",
+       "name": "数学史话 笛卡儿",
+       "startPage": 14
+      },
+      {
+       "no": "11.2",
+       "name": "图形在坐标系中的平移",
+       "startPage": 15
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 19
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 20
+      }
+     ]
+    },
+    {
+     "no": "第 12 章",
+     "name": "函数与一次函数",
+     "startPage": 23,
+     "sections": [
+      {
+       "no": "12.1",
+       "name": "函数",
+       "startPage": 24
+      },
+      {
+       "no": "12.2",
+       "name": "一次函数",
+       "startPage": 35
+      },
+      {
+       "no": "12.3",
+       "name": "一次函数与二元一次方程",
+       "startPage": 49
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 56
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 57
+      }
+     ]
+    },
+    {
+     "no": "第 13 章",
+     "name": "三角形中的边角关系、命题与证明",
+     "startPage": 63,
+     "sections": [
+      {
+       "no": "13.1",
+       "name": "三角形中的边角关系",
+       "startPage": 64
+      },
+      {
+       "no": "13.2",
+       "name": "命题与证明",
+       "startPage": 73
+      },
+      {
+       "no": "",
+       "name": "数学拓展 梅森素数",
+       "startPage": 84
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 85
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 86
+      }
+     ]
+    },
+    {
+     "no": "第 14 章",
+     "name": "全等三角形",
+     "startPage": 90,
+     "sections": [
+      {
+       "no": "14.1",
+       "name": "全等三角形及其性质",
+       "startPage": 91
+      },
+      {
+       "no": "14.2",
+       "name": "三角形全等的判定",
+       "startPage": 94
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "",
+     "startPage": 112,
+     "sections": [
+      {
+       "no": "",
+       "name": "信息技术应用 判定三角形全等时为什么没有“SSA”",
+       "startPage": 112
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 114
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 115
+      }
+     ]
+    },
+    {
+     "no": "第 15 章",
+     "name": "轴对称图形与等腰三角形",
+     "startPage": 119,
+     "sections": [
+      {
+       "no": "15.1",
+       "name": "轴对称图形",
+       "startPage": 120
+      },
+      {
+       "no": "",
+       "name": "数学活动 画图",
+       "startPage": 129
+      },
+      {
+       "no": "",
+       "name": "信息技术应用 探究关于某条直线对称的两点坐标变化的规律",
+       "startPage": 130
+      },
+      {
+       "no": "15.2",
+       "name": "线段的垂直平分线",
+       "startPage": 132
+      },
+      {
+       "no": "15.3",
+       "name": "角的平分线",
+       "startPage": 137
+      },
+      {
+       "no": "15.4",
+       "name": "等腰三角形",
+       "startPage": 144
+      },
+      {
+       "no": "",
+       "name": "数学活动 剪纸",
+       "startPage": 154
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 155
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 156
+      },
+      {
+       "no": "",
+       "name": "综合与实践 绘制校园平面地图",
+       "startPage": 161
+      },
+      {
+       "no": "",
+       "name": "综合与实践 天安门广场的升旗时刻",
+       "startPage": 163
+      },
+      {
+       "no": "",
+       "name": "综合与实践 趋势统计图",
+       "startPage": 165
+      },
+      {
+       "no": "",
+       "name": "附录 部分中英文词汇对照表",
+       "startPage": 168
+      }
+     ]
+    }
+   ],
+   "totalPages": 180
+  },
+  "sh-hk-数学-s-8b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+   "edition": "沪科版",
+   "subject": "数学",
+   "graphBook": "8b",
+   "bookId": "sh-hk-数学-s-8b",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第 16 章",
+     "name": "二次根式",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "16.1",
+       "name": "二次根式及其性质",
+       "startPage": 2
+      },
+      {
+       "no": "16.2",
+       "name": "二次根式的运算",
+       "startPage": 6
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 15
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 16
+      }
+     ]
+    },
+    {
+     "no": "第 17 章",
+     "name": "一元二次方程及其应用",
+     "startPage": 19,
+     "sections": [
+      {
+       "no": "17.1",
+       "name": "一元二次方程",
+       "startPage": 20
+      },
+      {
+       "no": "17.2",
+       "name": "一元二次方程的解法",
+       "startPage": 24
+      },
+      {
+       "no": "",
+       "name": "数学活动 挪球游戏",
+       "startPage": 31
+      },
+      {
+       "no": "17.3",
+       "name": "一元二次方程根的判别式",
+       "startPage": 33
+      },
+      {
+       "no": "17.4",
+       "name": "一元二次方程的根与系数的关系",
+       "startPage": 36
+      },
+      {
+       "no": "",
+       "name": "数学拓展 二次三项式的因式分解",
+       "startPage": 39
+      },
+      {
+       "no": "17.5",
+       "name": "一元二次方程的应用",
+       "startPage": 40
+      },
+      {
+       "no": "",
+       "name": "数学史话 一元高次方程",
+       "startPage": 45
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 46
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 47
+      }
+     ]
+    },
+    {
+     "no": "第 18 章",
+     "name": "勾股定理及其逆定理",
+     "startPage": 50,
+     "sections": [
+      {
+       "no": "18.1",
+       "name": "勾股定理",
+       "startPage": 51
+      },
+      {
+       "no": "",
+       "name": "数学活动 利用勾股定理进行尺规作图",
+       "startPage": 57
+      },
+      {
+       "no": "18.2",
+       "name": "勾股定理的逆定理",
+       "startPage": 58
+      },
+      {
+       "no": "",
+       "name": "数学拓展 两点之间的距离公式",
+       "startPage": 62
+      },
+      {
+       "no": "",
+       "name": "数学史话 勾股定理",
+       "startPage": 64
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 66
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 66
+      }
+     ]
+    },
+    {
+     "no": "第19章",
+     "name": "四边形",
+     "startPage": 72,
+     "sections": [
+      {
+       "no": "19.1",
+       "name": "多边形",
+       "startPage": 73
+      },
+      {
+       "no": "",
+       "name": "数学史话 三角形的内角和与多边形的本质",
+       "startPage": 79
+      },
+      {
+       "no": "19.2",
+       "name": "平行四边形",
+       "startPage": 80
+      },
+      {
+       "no": "",
+       "name": "数学拓展 三角形的重心",
+       "startPage": 93
+      },
+      {
+       "no": "19.3",
+       "name": "矩形、菱形、正方形",
+       "startPage": 96
+      },
+      {
+       "no": "",
+       "name": "数学活动 切割后组拼正方形",
+       "startPage": 108
+      },
+      {
+       "no": "",
+       "name": "阅读与欣赏 完美矩形与完美正方形",
+       "startPage": 108
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 110
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 111
+      }
+     ]
+    },
+    {
+     "no": "第20章",
+     "name": "数据的初步分析",
+     "startPage": 117,
+     "sections": [
+      {
+       "no": "20.1",
+       "name": "数据的频数分布",
+       "startPage": 118
+      },
+      {
+       "no": "",
+       "name": "数学活动 对课外作业时间的统计分析",
+       "startPage": 125
+      },
+      {
+       "no": "",
+       "name": "阅读与欣赏 地理中的统计图——平面正三角坐标图",
+       "startPage": 125
+      },
+      {
+       "no": "20.2",
+       "name": "数据的集中趋势",
+       "startPage": 128
+      },
+      {
+       "no": "20.3",
+       "name": "数据的离散程度",
+       "startPage": 144
+      },
+      {
+       "no": "20.4",
+       "name": "四分位数和箱线图",
+       "startPage": 153
+      },
+      {
+       "no": "20.5",
+       "name": "数据分组",
+       "startPage": 161
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 166
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 168
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "综合与实践 多边形的镶嵌",
+     "startPage": 177,
+     "sections": []
+    },
+    {
+     "no": "",
+     "name": "综合与实践 体质健康测试中的数据分析",
+     "startPage": 180,
+     "sections": []
+    },
+    {
+     "no": "",
+     "name": "附录 部分中英文词汇对照表",
+     "startPage": 183,
+     "sections": []
+    }
+   ],
+   "totalPages": 194
+  },
+  "sh-hk-数学-s-9a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+   "edition": "沪科版",
+   "subject": "数学",
+   "graphBook": "9a",
+   "bookId": "sh-hk-数学-s-9a",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第 21 章",
+     "name": "二次函数与反比例函数",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "21.1",
+       "name": "二次函数",
+       "startPage": 2
+      },
+      {
+       "no": "21.2",
+       "name": "二次函数的图象和性质",
+       "startPage": 6
+      },
+      {
+       "no": "21.3",
+       "name": "二次函数与一元二次方程",
+       "startPage": 31
+      },
+      {
+       "no": "",
+       "name": "数学拓展 由二次函数的图象认识一元二次不等式的解集",
+       "startPage": 35
+      },
+      {
+       "no": "21.4",
+       "name": "二次函数的应用",
+       "startPage": 36
+      },
+      {
+       "no": "",
+       "name": "数学拓展 商品市场的均衡问题",
+       "startPage": 44
+      },
+      {
+       "no": "21.5",
+       "name": "反比例函数",
+       "startPage": 46
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 59
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 62
+      }
+     ]
+    },
+    {
+     "no": "第 22 章",
+     "name": "相似形",
+     "startPage": 70,
+     "sections": [
+      {
+       "no": "22.1",
+       "name": "相似多边形",
+       "startPage": 71
+      },
+      {
+       "no": "",
+       "name": "数学活动 书本形状与无理数",
+       "startPage": 75
+      },
+      {
+       "no": "22.2",
+       "name": "比例线段",
+       "startPage": 76
+      },
+      {
+       "no": "",
+       "name": "阅读与欣赏 奇妙的黄金数",
+       "startPage": 84
+      },
+      {
+       "no": "",
+       "name": "数学史话 人民的数学家——华罗庚",
+       "startPage": 87
+      },
+      {
+       "no": "22.3",
+       "name": "相似三角形的判定",
+       "startPage": 89
+      },
+      {
+       "no": "22.4",
+       "name": "相似三角形的性质",
+       "startPage": 102
+      },
+      {
+       "no": "",
+       "name": "数学活动 矩形对角线穿过的小正方形个数",
+       "startPage": 108
+      },
+      {
+       "no": "22.5",
+       "name": "简单的位似图形",
+       "startPage": 110
+      },
+      {
+       "no": "",
+       "name": "数学活动 反向位似图形",
+       "startPage": 115
+      },
+      {
+       "no": "",
+       "name": "数学史话 出入相补原理",
+       "startPage": 115
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 118
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 120
+      }
+     ]
+    },
+    {
+     "no": "第 23 章",
+     "name": "解直角三角形",
+     "startPage": 125,
+     "sections": [
+      {
+       "no": "23.1",
+       "name": "锐角三角函数",
+       "startPage": 126
+      },
+      {
+       "no": "23.2",
+       "name": "解直角三角形及其应用",
+       "startPage": 139
+      },
+      {
+       "no": "",
+       "name": "数学活动 问题出在哪里",
+       "startPage": 150
+      },
+      {
+       "no": "",
+       "name": "数学拓展 海伦—秦九韶公式",
+       "startPage": 150
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 152
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 153
+      },
+      {
+       "no": "",
+       "name": "综合与实践 获取最大利润",
+       "startPage": 159
+      },
+      {
+       "no": "",
+       "name": "综合与实践 商场促销活动",
+       "startPage": 161
+      },
+      {
+       "no": "",
+       "name": "综合与实践 测量物体的高度",
+       "startPage": 164
+      },
+      {
+       "no": "",
+       "name": "附录 部分中英文词汇对照表",
+       "startPage": 167
+      }
+     ]
+    }
+   ],
+   "totalPages": 178
+  },
+  "sh-hk-数学-s-9b": {
+   "title": "义务教育教科书·数学九年级下册",
+   "edition": "沪科版",
+   "subject": "数学",
+   "graphBook": "9b",
+   "bookId": "sh-hk-数学-s-9b",
+   "tocPages": [
+    4,
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第24章",
+     "name": "圆",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "24.1",
+       "name": "旋转",
+       "startPage": 2
+      },
+      {
+       "no": "",
+       "name": "阅读与欣赏 在平面直角坐标系中对图形进行旋转变换",
+       "startPage": 7
+      },
+      {
+       "no": "",
+       "name": "数学活动 设计图案(一)",
+       "startPage": 8
+      },
+      {
+       "no": "24.2",
+       "name": "圆的基本性质",
+       "startPage": 12
+      },
+      {
+       "no": "24.3",
+       "name": "圆周角",
+       "startPage": 27
+      },
+      {
+       "no": "24.4",
+       "name": "直线与圆的位置关系",
+       "startPage": 33
+      },
+      {
+       "no": "24.5",
+       "name": "三角形的内切圆",
+       "startPage": 42
+      },
+      {
+       "no": "24.6",
+       "name": "正多边形与圆",
+       "startPage": 47
+      },
+      {
+       "no": "24.7",
+       "name": "弧长与扇形面积",
+       "startPage": 53
+      },
+      {
+       "no": "",
+       "name": "数学史话 圆周率π",
+       "startPage": 58
+      },
+      {
+       "no": "",
+       "name": "数学活动 设计图案(二)",
+       "startPage": 59
+      },
+      {
+       "no": "24.8",
+       "name": "综合与实践 进球线路与最佳射门角",
+       "startPage": 62
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 65
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 67
+      }
+     ]
+    },
+    {
+     "no": "第25章",
+     "name": "投影与视图",
+     "startPage": 72,
+     "sections": [
+      {
+       "no": "25.1",
+       "name": "投影",
+       "startPage": 73
+      },
+      {
+       "no": "25.2",
+       "name": "三视图",
+       "startPage": 80
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 86
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 87
+      }
+     ]
+    },
+    {
+     "no": "第26章",
+     "name": "概率初步",
+     "startPage": 90,
+     "sections": [
+      {
+       "no": "26.1",
+       "name": "随机事件",
+       "startPage": 91
+      },
+      {
+       "no": "26.2",
+       "name": "等可能情形下的概率计算",
+       "startPage": 95
+      },
+      {
+       "no": "26.3",
+       "name": "用频率估计概率",
+       "startPage": 104
+      },
+      {
+       "no": "",
+       "name": "数学活动 投针实验",
+       "startPage": 107
+      },
+      {
+       "no": "26.4",
+       "name": "综合与实践 概率在遗传学中的应用",
+       "startPage": 110
+      },
+      {
+       "no": "",
+       "name": "阅读与思考 几何概率",
+       "startPage": 112
+      },
+      {
+       "no": "",
+       "name": "数学史话 概率论的产生与发展",
+       "startPage": 114
+      },
+      {
+       "no": "",
+       "name": "小结·评价",
+       "startPage": 115
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 116
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录 部分中英文词汇索引",
+     "startPage": 118,
+     "sections": []
+    },
+    {
+     "no": "",
+     "name": "后记",
+     "startPage": 119,
+     "sections": []
+    }
+   ],
+   "totalPages": 126
+  },
+  "sh-hj-数学-s-bx1": {
+   "title": "普通高中教科书·数学必修 第一册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "bx1",
+   "bookId": "sh-hj-数学-s-bx1",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "集合与逻辑",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "集合初步",
+       "startPage": 2
+      },
+      {
+       "no": "1.2",
+       "name": "常用逻辑用语",
+       "startPage": 14
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 22
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 22
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "等式与不等式",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "等式与不等式的性质",
+       "startPage": 26
+      },
+      {
+       "no": "2.2",
+       "name": "不等式的求解",
+       "startPage": 37
+      },
+      {
+       "no": "2.3",
+       "name": "基本不等式及其应用",
+       "startPage": 50
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 59
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 60
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "幂、指数与对数",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "幂与指数",
+       "startPage": 64
+      },
+      {
+       "no": "3.2",
+       "name": "对数",
+       "startPage": 70
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 81
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 81
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "幂函数、指数函数与对数函数",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "4.1",
+       "name": "幂函数",
+       "startPage": 84
+      },
+      {
+       "no": "4.2",
+       "name": "指数函数",
+       "startPage": 91
+      },
+      {
+       "no": "4.3",
+       "name": "对数函数",
+       "startPage": 99
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 109
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 109
+      }
+     ]
+    },
+    {
+     "no": "第5章",
+     "name": "函数的概念、性质及应用",
+     "startPage": 114,
+     "sections": [
+      {
+       "no": "5.1",
+       "name": "函数",
+       "startPage": 114
+      },
+      {
+       "no": "5.2",
+       "name": "函数的基本性质",
+       "startPage": 124
+      },
+      {
+       "no": "5.3",
+       "name": "函数的应用",
+       "startPage": 137
+      },
+      {
+       "no": "*5.4",
+       "name": "反函数",
+       "startPage": 146
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 151
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 152
+      }
+     ]
+    }
+   ],
+   "totalPages": 162
+  },
+  "sh-hj-数学-s-bx2": {
+   "title": "普通高中教科书·数学必修 第二册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "bx2",
+   "bookId": "sh-hj-数学-s-bx2",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第6章",
+     "name": "三角",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "6.1",
+       "name": "正弦、余弦、正切、余切",
+       "startPage": 2
+      },
+      {
+       "no": "6.2",
+       "name": "常用三角公式",
+       "startPage": 27
+      },
+      {
+       "no": "6.3",
+       "name": "解三角形",
+       "startPage": 43
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 56
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 57
+      }
+     ]
+    },
+    {
+     "no": "第7章",
+     "name": "三角函数",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "7.1",
+       "name": "正弦函数的图像与性质",
+       "startPage": 62
+      },
+      {
+       "no": "7.2",
+       "name": "余弦函数的图像与性质",
+       "startPage": 78
+      },
+      {
+       "no": "7.3",
+       "name": "函数 y = Asin (ωx + φ) 的图像",
+       "startPage": 82
+      },
+      {
+       "no": "7.4",
+       "name": "正切函数的图像与性质",
+       "startPage": 89
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 94
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 94
+      }
+     ]
+    },
+    {
+     "no": "第8章",
+     "name": "平面向量",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "8.1",
+       "name": "向量的概念和线性运算",
+       "startPage": 98
+      },
+      {
+       "no": "8.2",
+       "name": "向量的数量积",
+       "startPage": 110
+      },
+      {
+       "no": "8.3",
+       "name": "向量的坐标表示",
+       "startPage": 117
+      },
+      {
+       "no": "8.4",
+       "name": "向量的应用",
+       "startPage": 127
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 134
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 135
+      }
+     ]
+    },
+    {
+     "no": "第9章",
+     "name": "复数",
+     "startPage": 140,
+     "sections": [
+      {
+       "no": "9.1",
+       "name": "复数及其四则运算",
+       "startPage": 140
+      },
+      {
+       "no": "9.2",
+       "name": "复数的几何意义",
+       "startPage": 150
+      },
+      {
+       "no": "9.3",
+       "name": "实系数一元二次方程",
+       "startPage": 158
+      },
+      {
+       "no": "*9.4",
+       "name": "复数的三角形式",
+       "startPage": 162
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 172
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 173
+      }
+     ]
+    }
+   ],
+   "totalPages": 186
+  },
+  "sh-hj-数学-s-bx3": {
+   "title": "普通高中教科书·数学必修 第三册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "bx3",
+   "bookId": "sh-hj-数学-s-bx3",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第 10 章",
+     "name": "空间直线与平面",
+     "startPage": 2,
+     "sections": [
+      {
+       "no": "10.1",
+       "name": "平面及其基本性质",
+       "startPage": 2
+      },
+      {
+       "no": "10.2",
+       "name": "直线与直线的位置关系",
+       "startPage": 13
+      },
+      {
+       "no": "10.3",
+       "name": "直线与平面的位置关系",
+       "startPage": 25
+      },
+      {
+       "no": "10.4",
+       "name": "平面与平面的位置关系",
+       "startPage": 38
+      },
+      {
+       "no": "*10.5",
+       "name": "异面直线间的距离",
+       "startPage": 45
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 49
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 50
+      }
+     ]
+    },
+    {
+     "no": "第 11 章",
+     "name": "简单几何体",
+     "startPage": 58,
+     "sections": [
+      {
+       "no": "11.1",
+       "name": "柱体",
+       "startPage": 58
+      },
+      {
+       "no": "11.2",
+       "name": "锥体",
+       "startPage": 67
+      },
+      {
+       "no": "11.3",
+       "name": "多面体与旋转体",
+       "startPage": 77
+      },
+      {
+       "no": "11.4",
+       "name": "球",
+       "startPage": 83
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 90
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 91
+      }
+     ]
+    },
+    {
+     "no": "第 12 章",
+     "name": "概率初步",
+     "startPage": 96,
+     "sections": [
+      {
+       "no": "12.1",
+       "name": "随机现象与样本空间",
+       "startPage": 96
+      },
+      {
+       "no": "12.2",
+       "name": "古典概型",
+       "startPage": 103
+      },
+      {
+       "no": "12.3",
+       "name": "频率与概率",
+       "startPage": 115
+      },
+      {
+       "no": "12.4",
+       "name": "随机事件的独立性",
+       "startPage": 120
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 128
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 128
+      }
+     ]
+    },
+    {
+     "no": "第 13 章",
+     "name": "统计",
+     "startPage": 132,
+     "sections": [
+      {
+       "no": "13.1",
+       "name": "总体与样本",
+       "startPage": 132
+      },
+      {
+       "no": "13.2",
+       "name": "数据的获取",
+       "startPage": 135
+      },
+      {
+       "no": "13.3",
+       "name": "抽样方法",
+       "startPage": 139
+      },
+      {
+       "no": "13.4",
+       "name": "统计图表",
+       "startPage": 147
+      },
+      {
+       "no": "13.5",
+       "name": "统计估计",
+       "startPage": 159
+      },
+      {
+       "no": "13.6",
+       "name": "统计活动",
+       "startPage": 177
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 181
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 181
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 185,
+     "sections": []
+    }
+   ],
+   "totalPages": 194
+  },
+  "sh-hj-数学-s-bx4": {
+   "title": "普通高中教科书·数学必修 第四册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "bx4",
+   "bookId": "sh-hj-数学-s-bx4",
+   "tocPages": [
+    6
+   ],
+   "chapters": [
+    {
+     "no": "",
+     "name": "引论",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "第1部分",
+     "name": "数学建模活动案例",
+     "startPage": 6,
+     "sections": [
+      {
+       "no": "1",
+       "name": "红绿灯管理",
+       "startPage": 6
+      },
+      {
+       "no": "2",
+       "name": "“诱人”的优惠券",
+       "startPage": 10
+      },
+      {
+       "no": "3",
+       "name": "车辆转弯时的安全隐患",
+       "startPage": 15
+      },
+      {
+       "no": "4",
+       "name": "雨中行",
+       "startPage": 22
+      }
+     ]
+    },
+    {
+     "no": "第2部分",
+     "name": "数学建模活动 A",
+     "startPage": 30,
+     "sections": [
+      {
+       "no": "5",
+       "name": "出租车运价",
+       "startPage": 30
+      },
+      {
+       "no": "6",
+       "name": "家具搬运",
+       "startPage": 32
+      },
+      {
+       "no": "7",
+       "name": "登山行程设计",
+       "startPage": 34
+      }
+     ]
+    },
+    {
+     "no": "第3部分",
+     "name": "数学建模活动 B",
+     "startPage": 38,
+     "sections": [
+      {
+       "no": "8",
+       "name": "包装彩带",
+       "startPage": 38
+      },
+      {
+       "no": "9",
+       "name": "削菠萝",
+       "startPage": 39
+      },
+      {
+       "no": "10",
+       "name": "高度测量",
+       "startPage": 40
+      },
+      {
+       "no": "11",
+       "name": "外卖与环保",
+       "startPage": 42
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 43,
+     "sections": [
+      {
+       "no": "附录1",
+       "name": "数学建模活动报告的写作",
+       "startPage": 43
+      },
+      {
+       "no": "附录2",
+       "name": "数学建模活动报告样例",
+       "startPage": 44
+      },
+      {
+       "no": "附录3",
+       "name": "有关数学建模活动中数学内容的说明",
+       "startPage": 47
+      }
+     ]
+    }
+   ],
+   "totalPages": 56
+  },
+  "sh-hj-数学-s-xzxbx1": {
+   "title": "普通高中教科书·数学选择性必修 第一册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "xzxbx1",
+   "bookId": "sh-hj-数学-s-xzxbx1",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "平面直角坐标系中的直线",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "直线的倾斜角与斜率",
+       "startPage": 2
+      },
+      {
+       "no": "1.2",
+       "name": "直线的方程",
+       "startPage": 6
+      },
+      {
+       "no": "1.3",
+       "name": "两条直线的位置关系",
+       "startPage": 16
+      },
+      {
+       "no": "1.4",
+       "name": "点到直线的距离",
+       "startPage": 25
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 30
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 31
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "圆锥曲线",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "圆",
+       "startPage": 34
+      },
+      {
+       "no": "2.2",
+       "name": "椭圆",
+       "startPage": 48
+      },
+      {
+       "no": "2.3",
+       "name": "双曲线",
+       "startPage": 56
+      },
+      {
+       "no": "2.4",
+       "name": "抛物线",
+       "startPage": 66
+      },
+      {
+       "no": "*2.5",
+       "name": "曲线与方程",
+       "startPage": 74
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 89
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 90
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "空间向量及其应用",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "空间向量及其运算",
+       "startPage": 96
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "3.2",
+       "name": "空间向量基本定理",
+       "startPage": 103
+      },
+      {
+       "no": "3.3",
+       "name": "空间向量的坐标表示",
+       "startPage": 108
+      },
+      {
+       "no": "3.4",
+       "name": "空间向量在立体几何中的应用",
+       "startPage": 114
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 125
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 126
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "数列",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "4.1",
+       "name": "等差数列",
+       "startPage": 132
+      },
+      {
+       "no": "4.2",
+       "name": "等比数列",
+       "startPage": 140
+      },
+      {
+       "no": "4.3",
+       "name": "数列",
+       "startPage": 151
+      },
+      {
+       "no": "4.4",
+       "name": "数学归纳法",
+       "startPage": 161
+      },
+      {
+       "no": "*4.5",
+       "name": "用迭代序列求√2的近似值",
+       "startPage": 169
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 173
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 173
+      }
+     ]
+    }
+   ],
+   "totalPages": 185
+  },
+  "sh-hj-数学-s-xzxbx3": {
+   "title": "普通高中教科书·数学选择性必修 第三册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "xzxbx3",
+   "bookId": "sh-hj-数学-s-xzxbx3",
+   "tocPages": [
+    6
+   ],
+   "chapters": [
+    {
+     "no": "",
+     "name": "引论",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "第 1 部分",
+     "name": "数学建模活动案例",
+     "startPage": 4,
+     "sections": [
+      {
+       "no": "1",
+       "name": "刹车距离",
+       "startPage": 4
+      },
+      {
+       "no": "2",
+       "name": "易拉罐的设计",
+       "startPage": 8
+      },
+      {
+       "no": "3",
+       "name": "珠穆朗玛峰顶上有多少氧气",
+       "startPage": 12
+      },
+      {
+       "no": "4",
+       "name": "水葫芦的生长",
+       "startPage": 20
+      }
+     ]
+    },
+    {
+     "no": "第 2 部分",
+     "name": "数学建模活动 A",
+     "startPage": 28,
+     "sections": [
+      {
+       "no": "5",
+       "name": "铅球投掷",
+       "startPage": 28
+      },
+      {
+       "no": "6",
+       "name": "电梯调度",
+       "startPage": 31
+      }
+     ]
+    },
+    {
+     "no": "第 3 部分",
+     "name": "数学建模活动 B",
+     "startPage": 34,
+     "sections": [
+      {
+       "no": "7",
+       "name": "存款计划",
+       "startPage": 34
+      },
+      {
+       "no": "8",
+       "name": "民生巨变 40 年",
+       "startPage": 35
+      },
+      {
+       "no": "9",
+       "name": "教室里的照明",
+       "startPage": 37
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 38,
+     "sections": [
+      {
+       "no": "附录 1",
+       "name": "数学建模活动报告的写作",
+       "startPage": 38
+      },
+      {
+       "no": "附录 2",
+       "name": "数学建模活动报告样例",
+       "startPage": 39
+      },
+      {
+       "no": "附录 3",
+       "name": "有关数学建模活动中数学内容的说明",
+       "startPage": 41
+      }
+     ]
+    }
+   ],
+   "totalPages": 50
+  },
+  "sh-hj-数学-s-xzxbx2": {
+   "title": "普通高中教科书·数学选择性必修 第二册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "xzxbx2",
+   "bookId": "sh-hj-数学-s-xzxbx2",
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第5章",
+     "name": "导数及其应用",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "5.1",
+       "name": "导数的概念及意义",
+       "startPage": 2
+      },
+      {
+       "no": "5.2",
+       "name": "导数的运算",
+       "startPage": 12
+      },
+      {
+       "no": "5.3",
+       "name": "导数的应用",
+       "startPage": 21
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 36
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 37
+      }
+     ]
+    },
+    {
+     "no": "第6章",
+     "name": "计数原理",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "6.1",
+       "name": "乘法原理与加法原理",
+       "startPage": 40
+      },
+      {
+       "no": "6.2",
+       "name": "排列",
+       "startPage": 46
+      },
+      {
+       "no": "6.3",
+       "name": "组合",
+       "startPage": 57
+      },
+      {
+       "no": "6.4",
+       "name": "计数原理在古典概率中的应用",
+       "startPage": 66
+      },
+      {
+       "no": "6.5",
+       "name": "二项式定理",
+       "startPage": 69
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 76
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 76
+      }
+     ]
+    },
+    {
+     "no": "第7章",
+     "name": "概率初步（续）",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "7.1",
+       "name": "条件概率与相关公式",
+       "startPage": 80
+      },
+      {
+       "no": "7.2",
+       "name": "随机变量的分布与特征",
+       "startPage": 89
+      },
+      {
+       "no": "7.3",
+       "name": "常用分布",
+       "startPage": 101
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 112
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 113
+      }
+     ]
+    },
+    {
+     "no": "第 8 章",
+     "name": "成对数据的统计分析",
+     "startPage": 116,
+     "sections": [
+      {
+       "no": "8.1",
+       "name": "成对数据的相关分析",
+       "startPage": 116
+      },
+      {
+       "no": "8.2",
+       "name": "一元线性回归分析",
+       "startPage": 125
+      },
+      {
+       "no": "8.3",
+       "name": "2×2 列联表",
+       "startPage": 138
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 146
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 146
+      }
+     ]
+    }
+   ],
+   "totalPages": 162
+  },
+  "sh-hj-数学-w-1a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学一年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "1a",
+   "bookId": "sh-hj-数学-w-1a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "1",
+     "name": "我是小学生",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "2",
+     "name": "认识图形",
+     "startPage": 4,
+     "sections": []
+    },
+    {
+     "no": "3",
+     "name": "10以内的数",
+     "startPage": 8,
+     "sections": []
+    },
+    {
+     "no": "4",
+     "name": "10以内数的加减法",
+     "startPage": 29,
+     "sections": []
+    },
+    {
+     "no": "5",
+     "name": "20以内的数",
+     "startPage": 49,
+     "sections": []
+    },
+    {
+     "no": "6",
+     "name": "20以内数的加减法（一）",
+     "startPage": 56,
+     "sections": []
+    },
+    {
+     "no": "7",
+     "name": "复习",
+     "startPage": 67,
+     "sections": []
+    }
+   ],
+   "totalPages": 91
+  },
+  "sh-hj-数学-w-7a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学七年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "7a",
+   "bookId": "sh-hj-数学-w-7a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第 10 章",
+     "name": "整式的加减",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "10.1",
+       "name": "整式",
+       "startPage": 2
+      },
+      {
+       "no": "10.2",
+       "name": "合并同类项",
+       "startPage": 5
+      },
+      {
+       "no": "10.3",
+       "name": "整式的加法和减法",
+       "startPage": 10
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 14
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 15
+      }
+     ]
+    },
+    {
+     "no": "第 11 章",
+     "name": "整式的乘除",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "11.1",
+       "name": "整式的乘法",
+       "startPage": 18
+      },
+      {
+       "no": "11.2",
+       "name": "乘法公式",
+       "startPage": 33
+      },
+      {
+       "no": "11.3",
+       "name": "整式的除法",
+       "startPage": 42
+      },
+      {
+       "no": "",
+       "name": "阅读材料",
+       "startPage": 49
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 52
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 53
+      }
+     ]
+    },
+    {
+     "no": "第 12 章",
+     "name": "因式分解",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "12.1",
+       "name": "因式分解的意义",
+       "startPage": 55
+      },
+      {
+       "no": "12.2",
+       "name": "因式分解的方法",
+       "startPage": 58
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 71
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 72
+      }
+     ]
+    },
+    {
+     "no": "第13章",
+     "name": "分式",
+     "startPage": 76,
+     "sections": [
+      {
+       "no": "13.1",
+       "name": "分式及其性质",
+       "startPage": 76
+      },
+      {
+       "no": "13.2",
+       "name": "分式的运算",
+       "startPage": 82
+      },
+      {
+       "no": "13.3",
+       "name": "分式方程",
+       "startPage": 93
+      },
+      {
+       "no": "",
+       "name": "阅读材料 把一个分式写成几个分式的和",
+       "startPage": 100
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 102
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 103
+      }
+     ]
+    },
+    {
+     "no": "第14章",
+     "name": "图形的运动",
+     "startPage": 106,
+     "sections": [
+      {
+       "no": "14.1",
+       "name": "平移",
+       "startPage": 106
+      },
+      {
+       "no": "14.2",
+       "name": "旋转",
+       "startPage": 114
+      },
+      {
+       "no": "14.3",
+       "name": "轴对称",
+       "startPage": 119
+      },
+      {
+       "no": "14.4",
+       "name": "中心对称",
+       "startPage": 126
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 131
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 132
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "综合与实践",
+     "startPage": 136,
+     "sections": [
+      {
+       "no": "",
+       "name": "从传统连续纹样到现代镶嵌图案",
+       "startPage": 136
+      },
+      {
+       "no": "",
+       "name": "制订“阅读之星”评选方案",
+       "startPage": 141
+      }
+     ]
+    },
+    {
+     "no": "附录",
+     "name": "部分中英文词汇索引",
+     "startPage": 144,
+     "sections": []
+    }
+   ],
+   "totalPages": 154
+  },
+  "sh-hj-数学-w-6a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学六年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "6a",
+   "bookId": "sh-hj-数学-w-6a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "有理数",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "有理数的引入",
+       "startPage": 2
+      },
+      {
+       "no": "1.2",
+       "name": "有理数的加法与减法",
+       "startPage": 16
+      },
+      {
+       "no": "1.3",
+       "name": "有理数的乘法与除法",
+       "startPage": 27
+      },
+      {
+       "no": "1.4",
+       "name": "有理数的乘方",
+       "startPage": 38
+      },
+      {
+       "no": "1.5",
+       "name": "有理数的混合运算",
+       "startPage": 42
+      },
+      {
+       "no": "",
+       "name": "阅读材料",
+       "startPage": 50
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 52
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 53
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "简单的代数式",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "用字母表示数",
+       "startPage": 57
+      },
+      {
+       "no": "2.2",
+       "name": "代数式与代数式的值",
+       "startPage": 61
+      },
+      {
+       "no": "2.3",
+       "name": "一次式",
+       "startPage": 67
+      },
+      {
+       "no": "",
+       "name": "阅读材料",
+       "startPage": 76
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 77
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 78
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "一元一次方程",
+     "startPage": 81,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "方程与列方程",
+       "startPage": 81
+      },
+      {
+       "no": "3.2",
+       "name": "一元一次方程及其解法",
+       "startPage": 85
+      },
+      {
+       "no": "3.3",
+       "name": "一元一次方程的应用",
+       "startPage": 97
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 108
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 109
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "线段与角",
+     "startPage": 112,
+     "sections": [
+      {
+       "no": "4.1",
+       "name": "线段",
+       "startPage": 112
+      },
+      {
+       "no": "4.2",
+       "name": "角",
+       "startPage": 123
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 140
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 141
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "综合与实践",
+     "startPage": 144,
+     "sections": [
+      {
+       "no": "",
+       "name": "你的膳食健康吗？",
+       "startPage": 144
+      },
+      {
+       "no": "",
+       "name": "上海一日游计划制订",
+       "startPage": 148
+      }
+     ]
+    },
+    {
+     "no": "附录",
+     "name": "部分中英文词汇索引",
+     "startPage": 151,
+     "sections": []
+    }
+   ],
+   "totalPages": 162
+  },
+  "sh-hj-数学-w-1b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学一年级下册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "1b",
+   "bookId": "sh-hj-数学-w-1b",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "1",
+     "name": "20以内的数加减法（二）",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "2",
+     "name": "100以内的数",
+     "startPage": 16,
+     "sections": []
+    },
+    {
+     "no": "3",
+     "name": "时间的初步认识",
+     "startPage": 39,
+     "sections": []
+    },
+    {
+     "no": "4",
+     "name": "100以内数的加减法（一）",
+     "startPage": 43,
+     "sections": []
+    },
+    {
+     "no": "5",
+     "name": "长度的比较与测量",
+     "startPage": 56,
+     "sections": []
+    },
+    {
+     "no": "6",
+     "name": "身体上的尺子",
+     "startPage": 65,
+     "sections": []
+    },
+    {
+     "no": "7",
+     "name": "数学广场",
+     "startPage": 72,
+     "sections": []
+    },
+    {
+     "no": "8",
+     "name": "复习",
+     "startPage": 75,
+     "sections": []
+    }
+   ],
+   "totalPages": 94
+  },
+  "sh-hj-数学-w-6b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学六年级下册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "6b",
+   "bookId": "sh-hj-数学-w-6b",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第5章",
+     "name": "比与比例",
+     "startPage": 2,
+     "sections": [
+      {
+       "no": "5.1",
+       "name": "比、比例及其性质",
+       "startPage": 2
+      },
+      {
+       "no": "5.2",
+       "name": "百分数",
+       "startPage": 14
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 26
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 27
+      }
+     ]
+    },
+    {
+     "no": "第6章",
+     "name": "圆与扇形",
+     "startPage": 30,
+     "sections": [
+      {
+       "no": "6.1",
+       "name": "圆的周长与弧长",
+       "startPage": 30
+      },
+      {
+       "no": "6.2",
+       "name": "圆与扇形的面积",
+       "startPage": 39
+      },
+      {
+       "no": "",
+       "name": "阅读材料：圆周率的历史",
+       "startPage": 48
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 50
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 51
+      }
+     ]
+    },
+    {
+     "no": "第7章",
+     "name": "可能性与统计图表",
+     "startPage": 54,
+     "sections": [
+      {
+       "no": "7.1",
+       "name": "随机现象及其结果的可能性",
+       "startPage": 54
+      },
+      {
+       "no": "7.2",
+       "name": "数据的收集、整理与表达",
+       "startPage": 58
+      },
+      {
+       "no": "7.3",
+       "name": "百分数的统计意义",
+       "startPage": 70
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 77
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 78
+      }
+     ]
+    },
+    {
+     "no": "第8章",
+     "name": "圆柱与圆锥",
+     "startPage": 83,
+     "sections": [
+      {
+       "no": "8.1",
+       "name": "圆柱及其侧面展开图",
+       "startPage": 83
+      },
+      {
+       "no": "8.2",
+       "name": "圆锥及其侧面展开图",
+       "startPage": 91
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 100
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 101
+      }
+     ]
+    },
+    {
+     "no": "第9章",
+     "name": "二元一次方程组",
+     "startPage": 104,
+     "sections": [
+      {
+       "no": "9.1",
+       "name": "二元一次方程组的概念",
+       "startPage": 104
+      },
+      {
+       "no": "9.2",
+       "name": "二元一次方程组的解法",
+       "startPage": 107
+      },
+      {
+       "no": "9.3",
+       "name": "二元一次方程组的应用",
+       "startPage": 113
+      },
+      {
+       "no": "9.4",
+       "name": "简单的三元一次方程组",
+       "startPage": 120
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 123
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 124
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "综合与实践",
+     "startPage": 127,
+     "sections": [
+      {
+       "no": "",
+       "name": "旋转的齿轮",
+       "startPage": 127
+      },
+      {
+       "no": "",
+       "name": "中国的能源生产与消费",
+       "startPage": 131
+      }
+     ]
+    },
+    {
+     "no": "附录",
+     "name": "部分中英文词汇索引",
+     "startPage": 135,
+     "sections": []
+    }
+   ],
+   "totalPages": 146
+  },
+  "sh-hj-数学-w-7b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学七年级下册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "7b",
+   "bookId": "sh-hj-数学-w-7b",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第 15 章",
+     "name": "一元一次不等式",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "15.1",
+       "name": "不等式及其性质",
+       "startPage": 2
+      },
+      {
+       "no": "15.2",
+       "name": "一元一次不等式",
+       "startPage": 7
+      },
+      {
+       "no": "15.3",
+       "name": "一元一次不等式组",
+       "startPage": 15
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 21
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 22
+      }
+     ]
+    },
+    {
+     "no": "第 16 章",
+     "name": "相交线与平行线",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "16.1",
+       "name": "相交线",
+       "startPage": 25
+      },
+      {
+       "no": "16.2",
+       "name": "平行线",
+       "startPage": 35
+      },
+      {
+       "no": "16.3",
+       "name": "命题与证明",
+       "startPage": 53
+      },
+      {
+       "no": "",
+       "name": "阅读材料",
+       "startPage": 59
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 60
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 61
+      }
+     ]
+    },
+    {
+     "no": "第 17 章",
+     "name": "三角形",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "17.1",
+       "name": "三角形的有关概念",
+       "startPage": 65
+      },
+      {
+       "no": "17.2",
+       "name": "三角形的内角和",
+       "startPage": 72
+      },
+      {
+       "no": "17.3",
+       "name": "全等三角形及其性质",
+       "startPage": 82
+      },
+      {
+       "no": "17.4",
+       "name": "三角形全等的判定",
+       "startPage": 86
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 108
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 109
+      }
+     ]
+    },
+    {
+     "no": "第18章",
+     "name": "等腰三角形",
+     "startPage": 114,
+     "sections": [
+      {
+       "no": "18.1",
+       "name": "等腰三角形的性质",
+       "startPage": 114
+      },
+      {
+       "no": "18.2",
+       "name": "等腰三角形的判定",
+       "startPage": 122
+      },
+      {
+       "no": "18.3",
+       "name": "等边三角形",
+       "startPage": 128
+      },
+      {
+       "no": "18.4",
+       "name": "线段的垂直平分线",
+       "startPage": 132
+      },
+      {
+       "no": "",
+       "name": "阅读材料 到三个定点距离之和最小的点",
+       "startPage": 139
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 141
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 142
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "综合与实践",
+     "startPage": 146,
+     "sections": [
+      {
+       "no": "",
+       "name": "积木可以叠多远？",
+       "startPage": 146
+      },
+      {
+       "no": "",
+       "name": "田径比赛中的数学",
+       "startPage": 151
+      }
+     ]
+    },
+    {
+     "no": "附录",
+     "name": "部分中英文词汇索引",
+     "startPage": 154,
+     "sections": []
+    }
+   ],
+   "totalPages": 166
+  },
+  "sh-hj-数学-w-2a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学二年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "2a",
+   "bookId": "sh-hj-数学-w-2a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "1",
+     "name": "100以内的加减法（二）",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "2",
+     "name": "欢乐购物街",
+     "startPage": 28,
+     "sections": []
+    },
+    {
+     "no": "3",
+     "name": "表内乘法",
+     "startPage": 33,
+     "sections": []
+    },
+    {
+     "no": "4",
+     "name": "我的学校我的家",
+     "startPage": 67,
+     "sections": []
+    },
+    {
+     "no": "5",
+     "name": "分类",
+     "startPage": 71,
+     "sections": []
+    },
+    {
+     "no": "6",
+     "name": "数学广场",
+     "startPage": 76,
+     "sections": []
+    },
+    {
+     "no": "7",
+     "name": "复习",
+     "startPage": 80,
+     "sections": []
+    }
+   ],
+   "totalPages": 104
+  },
+  "sh-hj-数学-w-8a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学八年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "8a",
+   "bookId": "sh-hj-数学-w-8a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第19章",
+     "name": "实数",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "19.1",
+       "name": "平方根与立方根",
+       "startPage": 2
+      },
+      {
+       "no": "19.2",
+       "name": "实数",
+       "startPage": 11
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 31
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 32
+      }
+     ]
+    },
+    {
+     "no": "第20章",
+     "name": "二次根式",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "20.1",
+       "name": "二次根式及其性质",
+       "startPage": 36
+      },
+      {
+       "no": "20.2",
+       "name": "二次根式的运算",
+       "startPage": 43
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 55
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 56
+      }
+     ]
+    },
+    {
+     "no": "第21章",
+     "name": "一元二次方程",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "21.1",
+       "name": "一元二次方程的概念",
+       "startPage": 59
+      },
+      {
+       "no": "21.2",
+       "name": "一元二次方程的解法",
+       "startPage": 63
+      },
+      {
+       "no": "21.3",
+       "name": "一元二次方程的判别式",
+       "startPage": 78
+      },
+      {
+       "no": "21.4",
+       "name": "一元二次方程的根与系数的关系",
+       "startPage": 83
+      },
+      {
+       "no": "21.5",
+       "name": "一元二次方程的应用",
+       "startPage": 88
+      },
+      {
+       "no": "",
+       "name": "阅读材料 一元高次方程的求解之路",
+       "startPage": 102
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 103
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 104
+      }
+     ]
+    },
+    {
+     "no": "第 22 章",
+     "name": "直角三角形",
+     "startPage": 109,
+     "sections": [
+      {
+       "no": "22.1",
+       "name": "直角三角形",
+       "startPage": 109
+      },
+      {
+       "no": "22.2",
+       "name": "角平分线",
+       "startPage": 117
+      },
+      {
+       "no": "22.3",
+       "name": "勾股定理",
+       "startPage": 124
+      },
+      {
+       "no": "",
+       "name": "阅读材料 勾股定理简史",
+       "startPage": 136
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 138
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 139
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "综合与实践",
+     "startPage": 143,
+     "sections": [
+      {
+       "no": "",
+       "name": "理财小课堂",
+       "startPage": 143
+      },
+      {
+       "no": "",
+       "name": "“勾股定理”证明中的中国智慧",
+       "startPage": 146
+      }
+     ]
+    },
+    {
+     "no": "附录",
+     "name": "部分中英文词汇索引",
+     "startPage": 148,
+     "sections": []
+    }
+   ],
+   "totalPages": 158
+  },
+  "sh-hj-数学-w-2b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学二年级下册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "2b",
+   "bookId": "sh-hj-数学-w-2b",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "1",
+     "name": "表内除法",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "2",
+     "name": "万以内的数",
+     "startPage": 28,
+     "sections": []
+    },
+    {
+     "no": "3",
+     "name": "时间在哪里",
+     "startPage": 52,
+     "sections": []
+    },
+    {
+     "no": "4",
+     "name": "两位数与三位数的加减法",
+     "startPage": 58,
+     "sections": []
+    },
+    {
+     "no": "5",
+     "name": "数学广场",
+     "startPage": 79,
+     "sections": []
+    },
+    {
+     "no": "6",
+     "name": "复习",
+     "startPage": 83,
+     "sections": []
+    }
+   ],
+   "totalPages": 99
+  },
+  "sh-hj-数学-w-9a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学九年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "9a",
+   "bookId": "sh-hj-数学-w-9a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第27章",
+     "name": "二次函数",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "27.1",
+       "name": "二次函数的概念",
+       "startPage": 2
+      },
+      {
+       "no": "27.2",
+       "name": "二次函数的图像与性质",
+       "startPage": 5
+      },
+      {
+       "no": "27.3",
+       "name": "确定二次函数的表达式",
+       "startPage": 21
+      },
+      {
+       "no": "27.4",
+       "name": "二次函数与一元二次方程",
+       "startPage": 26
+      },
+      {
+       "no": "27.5",
+       "name": "二次函数的简单应用",
+       "startPage": 33
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 38
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 40
+      }
+     ]
+    },
+    {
+     "no": "第28章",
+     "name": "相似三角形",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "28.1",
+       "name": "成比例的线段",
+       "startPage": 44
+      },
+      {
+       "no": "28.2",
+       "name": "相似三角形",
+       "startPage": 54
+      },
+      {
+       "no": "28.3",
+       "name": "相似多边形",
+       "startPage": 69
+      },
+      {
+       "no": "28.4",
+       "name": "位似多边形",
+       "startPage": 72
+      },
+      {
+       "no": "",
+       "name": "阅读材料",
+       "startPage": 78
+      },
+      {
+       "no": "",
+       "name": "黄金分割",
+       "startPage": null
+      },
+      {
+       "no": "",
+       "name": "三角形的垂心",
+       "startPage": null
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 82
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 83
+      }
+     ]
+    },
+    {
+     "no": "第 29 章",
+     "name": "三角初步",
+     "startPage": 86,
+     "sections": [
+      {
+       "no": "29.1",
+       "name": "锐角的正弦、余弦与正切",
+       "startPage": 86
+      },
+      {
+       "no": "29.2",
+       "name": "解直角三角形",
+       "startPage": 97
+      },
+      {
+       "no": "",
+       "name": "阅读材料 直角三角形中锐角的正弦、余弦与正切之间的关系",
+       "startPage": 107
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 108
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 109
+      }
+     ]
+    },
+    {
+     "no": "第 30 章",
+     "name": "投影与视图",
+     "startPage": 113,
+     "sections": [
+      {
+       "no": "30.1",
+       "name": "投影",
+       "startPage": 113
+      },
+      {
+       "no": "30.2",
+       "name": "三视图",
+       "startPage": 123
+      },
+      {
+       "no": "30.3",
+       "name": "立体模型的制作",
+       "startPage": 136
+      },
+      {
+       "no": "",
+       "name": "内容提要",
+       "startPage": 141
+      },
+      {
+       "no": "",
+       "name": "复习题",
+       "startPage": 142
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "综合与实践",
+     "startPage": 145,
+     "sections": [
+      {
+       "no": "",
+       "name": "探寻测量高度的方法",
+       "startPage": 145
+      },
+      {
+       "no": "",
+       "name": "城市原点",
+       "startPage": 148
+      }
+     ]
+    },
+    {
+     "no": "附录",
+     "name": "部分中英文词汇索引",
+     "startPage": 151,
+     "sections": []
+    }
+   ],
+   "totalPages": 162
+  },
+  "sh-hj-数学-w-3a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学三年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "3a",
+   "bookId": "sh-hj-数学-w-3a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "1",
+     "name": "两步四则运算与应用题",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "2",
+     "name": "用一位数乘",
+     "startPage": 12,
+     "sections": []
+    },
+    {
+     "no": "3",
+     "name": "三角形与四边形",
+     "startPage": 27,
+     "sections": []
+    },
+    {
+     "no": "4",
+     "name": "用一位数除",
+     "startPage": 38,
+     "sections": []
+    },
+    {
+     "no": "5",
+     "name": "年、月、日的秘密",
+     "startPage": 67,
+     "sections": []
+    },
+    {
+     "no": "6",
+     "name": "周长",
+     "startPage": 75,
+     "sections": []
+    },
+    {
+     "no": "7",
+     "name": "马拉松的路线设计",
+     "startPage": 87,
+     "sections": []
+    },
+    {
+     "no": "8",
+     "name": "数学广场",
+     "startPage": 98,
+     "sections": []
+    },
+    {
+     "no": "9",
+     "name": "复习",
+     "startPage": 103,
+     "sections": []
+    }
+   ],
+   "totalPages": 124
+  },
+  "sh-hj-数学-w-4a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学四年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "4a",
+   "bookId": "sh-hj-数学-w-4a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "1",
+     "name": "运算关系与运算律",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "2",
+     "name": "四面八方的学问",
+     "startPage": 21,
+     "sections": []
+    },
+    {
+     "no": "3",
+     "name": "整数的四则运算与应用题",
+     "startPage": 25,
+     "sections": []
+    },
+    {
+     "no": "4",
+     "name": "大数的认识与改写",
+     "startPage": 40,
+     "sections": []
+    },
+    {
+     "no": "5",
+     "name": "度量衡的故事",
+     "startPage": 52,
+     "sections": []
+    },
+    {
+     "no": "6",
+     "name": "分数的初步认识",
+     "startPage": 58,
+     "sections": []
+    },
+    {
+     "no": "7",
+     "name": "线与角",
+     "startPage": 78,
+     "sections": []
+    },
+    {
+     "no": "8",
+     "name": "数学广场",
+     "startPage": 103,
+     "sections": []
+    },
+    {
+     "no": "9",
+     "name": "复习",
+     "startPage": 107,
+     "sections": []
+    }
+   ],
+   "totalPages": 126
+  },
+  "sh-hj-数学-w-5a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学五年级上册",
+   "edition": "沪教版",
+   "subject": "数学",
+   "graphBook": "5a",
+   "bookId": "sh-hj-数学-w-5a",
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "1",
+     "name": "小数的乘法与除法",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "2",
+     "name": "小数的应用",
+     "startPage": 23,
+     "sections": []
+    },
+    {
+     "no": "3",
+     "name": "平均数",
+     "startPage": 29,
+     "sections": []
+    },
+    {
+     "no": "4",
+     "name": "制订旅行方案",
+     "startPage": 38,
+     "sections": []
+    },
+    {
+     "no": "5",
+     "name": "面积的计算",
+     "startPage": 43,
+     "sections": []
+    },
+    {
+     "no": "6",
+     "name": "课间体育活动",
+     "startPage": 63,
+     "sections": []
+    },
+    {
+     "no": "7",
+     "name": "因数与倍数",
+     "startPage": 67,
+     "sections": []
+    },
+    {
+     "no": "8",
+     "name": "数学广场",
+     "startPage": 98,
+     "sections": []
+    },
+    {
+     "no": "9",
+     "name": "复习",
+     "startPage": 102,
+     "sections": []
+    }
+   ],
+   "totalPages": 118
+  }
+ }
+}

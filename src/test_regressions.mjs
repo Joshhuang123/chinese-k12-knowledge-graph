@@ -685,6 +685,76 @@ console.log('\n【17】教材顺序链：每个知识点都要能顺着单元往
   await p.close();
 }
 
+console.log('\n【18】点不可点的单元行不能报错');
+{
+  // 「上一/下一单元」里，**空单元**（里面没有可点的概念）渲染成
+  // `<div class="dep flat">` —— 它没有 data-jump。
+  //
+  // 原来的点击处理是 `e.target.closest('.dep')`，div 也能匹配上，
+  // 于是 `+b.dataset.jump` = NaN，`jump(NaN)` 的两道闸
+  // （`NaN < 0` / `NaN >= N`）都拦不住 ——
+  // `NODES[NaN]` 是 undefined，`n.x` 直接抛 TypeError，**整张卡片的点击就废了**。
+  //
+  // 上海版第一次点「上一单元」就撞上了（那边的空单元更多）。
+  // 修法是只认 `button.dep`。
+  const { p, errs } = await fresh();
+
+  // 先找一个「邻居是空单元」的知识点
+  const target = await p.evaluate(() => {
+    const D = JSON.parse(document.getElementById('data').textContent);
+    for (let i = 0; i < D.nodes.length; i++) {
+      const gi = D.nodes[i][14];
+      if (gi < 0) continue;
+      const c = D.cns[gi];
+      if (!c) continue;
+      for (const g of (c[2] !== undefined ? [] : [])) { /* noop */ }
+      // 同一学科组里的前后邻居
+      const grp = D.cns.map((x, k) => [k, x[2]]).filter(z => z[1] === c[2]).map(z => z[0]);
+      const k = grp.indexOf(gi);
+      for (const nb of [grp[k - 1], grp[k + 1]]) {
+        if (nb === undefined) continue;
+        if (D.cns[nb][3] < 0) return { i, name: D.nodes[i][1], emptyUnit: D.cns[nb][0] };
+      }
+    }
+    return null;
+  });
+  ok(target !== null,
+     target ? `找到一个邻居是空单元的知识点（${target.name}）` : '主站里没有空单元，跳过');
+
+  if (target) {
+    await p.evaluate((i) => {
+      const K = window.__kg;
+      K.cardId && K.cardId();
+      // 直接跳到那个点
+      document.getElementById('q').value = '';
+      const inp = document.getElementById('q');
+      inp.focus();
+      window.__kg && window.__kg.NODES;
+    }, target.i);
+    // 用搜索打开（跟人一样的路径）
+    await p.evaluate((name) => {
+      const inp = document.getElementById('q');
+      inp.focus();
+      inp.value = name;
+      inp.dispatchEvent(new Event('input', { bubbles: true }));
+    }, target.name);
+    await sleep(500);
+    await p.keyboard.press('Enter');
+    await sleep(1600);
+
+    const flat = await p.evaluate(() => {
+      const d = document.querySelector('#cChain .dep.flat');
+      if (!d) return false;
+      d.click();
+      return true;
+    });
+    await sleep(500);
+    ok(flat, '卡片上确实渲染出了不可点的单元行');
+    ok(errs.length === 0, `点它不报错（${JSON.stringify(errs.slice(0, 2))}）`);
+  }
+  await p.close();
+}
+
 
 // ── README 里的测试项数不能烂 ─────────────────────────────────
 // 手抄的数字会过期。2026-10-21 同步 README 时就发现「103 项」早就该是 75 项。
@@ -692,13 +762,13 @@ console.log('\n【17】教材顺序链：每个知识点都要能顺着单元往
 // 数源码里的 ok( 调用行数是不准的（这个文件就有跑不到的分支）。
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_regressions.mjs` | 75 |';
+  const want = '| `src/test_regressions.mjs` | 78 |';
   if (!rd.includes(want)) {
-    console.log(`  ✗ README 里的 回归 测试项数不是 75`);
+    console.log(`  ✗ README 里的 回归 测试项数不是 78`);
     console.log(`      README 里没找到「${want}」`);
     fail++;
   } else {
-    console.log(`  ✓ README 里的 回归 测试项数是 75（与本次实跑一致）`);
+    console.log(`  ✓ README 里的 回归 测试项数是 78（与本次实跑一致）`);
     pass++;
   }
 }

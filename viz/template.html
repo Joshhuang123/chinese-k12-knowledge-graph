@@ -490,7 +490,8 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
     <span class="attr2">边上的徽标分得出哪条来自数据集、哪条是我们补的。<br>
     K12-KGraph 本身是跨国的知识点集，这里按<b>人教版</b>教材排序 —— 两套是分开的，留着做对照。</span><br>
     <b>可视化与校验</b> 本项目自建 · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
-    · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a><br>
+    · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a>
+    · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a><br>
     <span class="attr2">数据质量页把倒挂、覆盖缺口、可疑边、裁决账本全摊开 —— 有问题的边不藏。</span>
   </div>
 </div>
@@ -613,7 +614,11 @@ const NODES = D.nodes.map(a => ({
   i:a[0], zh:a[1], en:a[2], s:a[3], dz:a[4], de:a[5],
   a1:a[6], a2:a[7], cen:a[8], core:a[9], desc:a[10], evn:a[11],
   chp:a[12]||[], chn:a[13]||[],               // leads_to 标为前置/后继的章
-  oc: a[14] === undefined ? -1 : a[14]         // 它所属的单元在 CNS 里的下标
+  oc: a[14] === undefined ? -1 : a[14],        // 它所属的单元在 CNS 里的下标
+  /* 学段：0 小学 1 初中 2 高中。**-1 = 没给，按年级号推**（人教版口径）。
+     上海版必须逐节点给 —— 沪教版五四制六年级已经是初中，
+     沪科版六三制六年级还是小学，同一个年级号学段不一样。 */
+  stg: a[15] === undefined ? -1 : a[15]
 }));
 const CHS = D.chs || [];
 /* 教材顺序单元表：[名字, 册次, 学科下标, 里面第一个可点的概念下标]。
@@ -946,6 +951,10 @@ const MAP_SRC_COLOR = ['#5b6472', '#7fd3ff', '#ffc477', '#c6a7ff',
 const IMP_C = ['#2f3646', '#4b5b73', '#7f8fa6', '#c9a227', '#ffd166'];
 
 function stageOf(n){
+  // **学段优先用节点自带的 a[15]** —— 上海两套学制并存，
+  // 同一个年级号在沪教版（五四制）和沪科版（六三制）里学段不同，
+  // 拿年级号比大小一定有一边是错的。没带这个字段的（人教版口径）才回退。
+  if(n.stg >= 0) return ['pri','mid','high'][n.stg];
   if(n.a1 <= 6) return 'pri';      // 小学（含预备课）
   if(n.a1 <= 9) return 'mid';      // 初中
   return 'high';                   // 高中
@@ -1231,7 +1240,12 @@ addEventListener('keydown', e=>{
 
 // 卡片里的依赖项：点一下就跳到那个知识点，顺着链条往下走
 document.getElementById('card').addEventListener('click', e=>{
-  const b = e.target.closest('.dep'); if(!b) return;
+  /* **只认 button**。不可点的单元行渲染成 `<div class="dep flat">`，
+     它没有 data-jump —— `+b.dataset.jump` 就是 NaN，
+     `jump(NaN)` 的两道闸（NaN<0 / NaN>=N）都拦不住，
+     于是 `NODES[NaN]` 是 undefined，`n.x` 直接抛 TypeError。
+     （上海版第一次点「上一单元」就撞上了：那个单元里没有可点的概念。） */
+  const b = e.target.closest('button.dep'); if(!b) return;
   jump(+b.dataset.jump);
 });
 

@@ -55,6 +55,29 @@ SINGLE = {
     "ll": "≪", "gg": "≫", "preceq": "⪯", "succeq": "⪰",
     "vdash": "⊢", "dashv": "⊣", "models": "⊨", "therefore": "∴",
     "cup": "∪", "cap": "∩", "complement": "∁", "setminus": "∖",
+    # ── 全库扫描补的一批 ──
+    # 箭头
+    "xrightarrow": "→", "xrightarrow": "→", "longrightarrow": "→",
+    "Longrightarrow": "⇒", "Longleftarrow": "⇐", "longleftarrow": "←",
+    "longleftrightarrow": "↔", "Uparrow": "⇑", "Downarrow": "⇓",
+    "nRightarrow": "↛", "nLeftarrow": "⇍", "twoheadrightarrow": "↠",
+    "hookrightarrow": "↪", "twoheadleftarrow": "⇜", "nearrow": "↗",
+    "searrow": "↘", "swarrow": "↙", "nwarrow": "↖",
+    # 逻辑 / 集合
+    "forall": "∀", "exists": "∃", "nexists": "∄", "neg": "¬",
+    "subset": "⊂", "supset": "⊃", "subseteq": "⊆", "supseteq": "⊇",
+    "nsubseteq": "⊄", "propto2": "∝", "models2": "⊨",
+    # 几何
+    "Box": "□", "checkmark": "✓", "bot": "⊥", "top": "⊤",
+    "bigstar": "★", "blacktriangle": "▲", "blacktriangledown": "▼",
+    "blacklozenge": "◆", "lozenge": "◊", "bigcirc2": "⊙",
+    "wideparen": "⌢", "frown": "⌢", "flat": "―",
+    # 希腊字母
+    "varphi": "φ", "chi": "χ", "eta": "η", "nu": "ν", "mu2": "μ",
+    "varPhi": "Φ", "varOmega": "Ω", "varSigma": "Σ", "varepsilon": "ε",
+    "vartheta": "ϑ", "varsigma": "ς", "varpi": "ϖ", "digamma": "ϝ",
+    "textasciicircum": "^", "textquotesingle": "'", "textasciitilde": "~",
+    "textbackslash": "\\", "textunderscore": "_", "textbar": "|",
     "because": "∵", "square": "□", "bullet": "•", "blacksquare": "■",
     "vartriangle": "△", "triangle": "△", "perp": "⊥", "parallel": "∥",
     "sum": "∑", "prod": "∏", "int": "∫", "oint": "∮", "partial": "∂",
@@ -100,7 +123,15 @@ DROP_CMD = {"left", "right", "quad", "qquad", "hspace", "phantom",
             "smash", "mkern", "mspace", "nobreak", "allowbreak",
             "nonumber", "notag", "phantom2",
             "big", "Big", "bigg", "Bigg", "bigl", "bigr", "Bigl",
-            "Bigr", "pr", "pmod", "tfrac2"}
+            "Bigr", "pr", "pmod", "tfrac2",
+            # ── 全库扫描补的一批：纯排版，丢掉 ──
+            "Large", "large", "huge", "Huge", "Huge", "tiny",
+            "scriptsize", "footnotesize", "small", "normalsize",
+            "mskip", "kern", "middle", "arg", "colon", "textasciicircum",
+            "textquoteright", "textquotesingle", "textasciitilde",
+            "textbackslash", "textunderscore", "textbar", "textless",
+            "textgreater", "textbraceleft", "textbraceright",
+            "not", "cancel", "phantom3", "mathchoice", "linebreak"}
 
 # ── 保留表：命令丢掉，组里的内容留着 ─────────────────────────────────
 # **分两种**：文字类原样留（转了没意义），数学类要递归转。
@@ -117,7 +148,7 @@ KEEP_CONTENT = RAW_CONTENT | CONVERT_CONTENT
 ENV_CMD = {"begin", "end"}
 
 # 这些命令取**第二个**参数显示：\overset{上}{下} 显示的是「下」
-SECOND_GROUP = {"overset", "stackrel"}
+SECOND_GROUP = {"overset", "stackrel", "underset", "enclose"}
 
 SUP = {"0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴",
        "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹",

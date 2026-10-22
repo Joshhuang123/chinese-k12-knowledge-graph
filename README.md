@@ -8,7 +8,10 @@
 
 **在线玩**：https://joshhuang123.github.io/chinese-k12-knowledge-graph/ （GitHub Pages）
 
-**本地玩**：双击 `index.html` 或 `viz/知识图谱3D.html`
+**上海版**：https://joshhuang123.github.io/chinese-k12-knowledge-graph/shanghai.html
+（上海的孩子按**沪教版/沪科版**教材的顺序看，同一套前置关系 + 教材原页上的公式和难点）
+
+**本地玩**：双击 `index.html` 或 `viz/知识图谱3D.html`（上海版是 `shanghai.html`）
 
 ---
 
@@ -289,14 +292,35 @@ python3 src/health_check.py  # 上线体检：数据层 + 构建层 + 判别力�
 
 | 文件 | 内容 | 规模 |
 |---|---|---|
-| `data/lessons.jsonl` | 一页一条（教材的「课」），带章节、页码、提到的概念 | 10,045 页 |
-| `data/concept-text.jsonl` | 一个概念一条，带**教材原话**（291 个概念有定义句） | 1,347 个概念 |
-| `data/vision-pages.jsonl` | 一页一条，带**公式(LaTeX)** 和**图形语义** | 932 页 |
-| `data/concept-vision.jsonl` | 一个概念一条，带公式和图，按出版社区分页码 | 275 个概念 |
+| `data/lessons.jsonl` | 一页一条（教材的「课」），带章节、页码、提到的概念 | 12,939 页 |
+| `data/concept-text.jsonl` | 一个概念一条，带**教材原话**（291 个概念有定义句） | 1,361 个概念 |
+| `data/vision-pages.jsonl` | 一页一条，带**公式(LaTeX)** 和**图形语义** | 4,390 页 |
+| `data/concept-vision.jsonl` | 一个概念一条，带公式和图，按出版社区分页码 | 2,012 个概念 |
 
 后两个是**视觉层**：教材扫描件的 PDF 文本层是坏的（公式字体的 ToUnicode 表缺失），
 OCR 只能救回汉字，**公式和图形会全丢**。视觉层换成让多模态模型直接读渲染出来的页面，
 把 `y = \frac{1}{2}(x-6)^2 + 3`、顶点 `(6, 3)`、图上的对称轴虚线这些东西捞回来。
+
+### 上海教材（沪教版 / 沪科版）
+
+上海的孩子用的是**另一套教材** —— 沪教版（上海教育出版社，五四学制）和
+沪科版（上海科学技术出版社，六三制）。教材里没有现成的知识图谱，
+所以这一层是**从上海教材本身长出来的**：
+
+| 文件 | 内容 | 规模 |
+|---|---|---|
+| `data/shanghai-textbooks.json` | 上海教材清单（contentId / 页数 / 页图基址） | 61 本 |
+| `data/vision-pages-sh.jsonl` | 一页一条，带公式和图 | 3,789 页 |
+| `data/concept-vision-sh.jsonl` | 沪教概念，**按书**分册，带公式/图/习题和**判据** | 569 个概念 / 941 个书-概念对 |
+| `data/shanghai-toc.json` | **教材自己的目录**（视觉模型读的，521 节） | 26 本 |
+| `data/shanghai-graph.json` | 上海版图谱：节点 / 单元链 / 先修边 | 892 节点 / 1,908 边 |
+
+**判据不靠「页面里出现过」** —— 概念名「小数」「分子」「等式」在 20 本书的题干里
+都出现过，它们不是「这本书教这个概念」的证据。所以沪教这一侧用四个信号：
+**目录**（教材自己写的目录，最硬的证据）、**目录近似**、**集中**
+（在这本书里成片出现，且占它在全部 26 本沪教书里命中数的 1/3 以上）、
+**同册**（人教图谱里的家 == 这本书的册次）。详见
+[`known-issues.md` 的 ISSUE-40](known-issues.md)。
 
 **公式和例题题干是页面原文，可以直接引用；图形描述是模型转述，引用时必须标「据图」。**
 schema 和用法见 [`docs/agent-data.md`](docs/agent-data.md)。
@@ -335,12 +359,13 @@ known-issues.md        已知问题清单
 后面这几层是后来加的，**都不动原始数据**，只从上面三层长出来：
 
 ```
-src/health_check.py     上线体检：三层 + 判别力自检（72 项）
+src/health_check.py     上线体检：三层 + 判别力自检（80 项）
 src/diagnose.py         「卡在哪」：杠杆 × 早晚 × 链根 × 症状距离 × 覆盖薄弱
 src/merge_prereq.py     先修边合并：七档来源 + 冲突裁决（247 组）
-src/pdf_to_units.py     教材 → OCR 层数据（10,045 页 / 1,347 概念）
+src/pdf_to_units.py     教材 → OCR 层数据（12,939 页 / 1,361 概念）
 src/vision_pages.py     教材 → 视觉层数据（渲染 → 多模态读页 → LaTeX + 图形）
 src/vision_to_concepts.py  页面数据 → 概念（用「教材自己说的话」匹配）
+src/vision_to_concepts_sh.py 上海教材 → 概念（目录 + 集中度 + 同册，四信号）
 src/latex_plain.py      LaTeX → 人能读的纯文本（½(x-6)²+3），页面不引渲染库
 src/fetch_editions.py   拉其他版本教材（9 个出版社 51 本）
 src/align_editions.py   跨版本对照：人教节 ↔ 其他版本节
@@ -350,11 +375,19 @@ src/explore_difficulty.py  教材难度 × 图谱覆盖 → 内容缺口地图
 src/explore_formula_dep.py 跨节公式引用（教材自己划的关联）
 src/hujiao_fetch.py      上海教材（沪教版/沪科版）：清单 + 页图
 src/vision_images.py     对已下载页图跑视觉层（上海教材用）
+src/shanghai_toc_vision.py 上海教材目录（视觉模型读目录页，tesseract 读不动）
+src/shanghai_graph.py    上海版图谱：节点 / 单元链 / 先修边
+src/build_shanghai.py    上海版站点 → shanghai.html（复用同一个模板）
+src/test_shanghai_site.mjs 上海版站点测试（15 项）
 src/build_quality.py    数据质量公开页 quality.html
-data/lessons.jsonl      教材正文（入库，10,045 页）
-data/concept-text.jsonl 概念的教材原话（入库，1,347 概念）
-data/vision-pages.jsonl 页面的公式与图形（入库，932 页）
-data/concept-vision.jsonl 概念的公式与图形（入库，275 概念）
+data/lessons.jsonl      教材正文（入库，12,939 页）
+data/concept-text.jsonl 概念的教材原话（入库，1,361 概念）
+data/vision-pages.jsonl 页面的公式与图形（入库，4,390 页）
+data/concept-vision.jsonl 概念的公式与图形（入库，2,012 概念）
+data/vision-pages-sh.jsonl 上海教材页的公式与图形（入库，3,789 页）
+data/concept-vision-sh.jsonl 上海教材概念（入库，569 概念）
+data/shanghai-toc.json  上海教材自己的目录（入库，26 本 / 521 节）
+data/shanghai-graph.json 上海版图谱（入库，892 节点 / 1,908 边）
 data/pdf-cache/         教材 PDF 缓存 + 渲染图（**不入库**，版权）
 ```
 
@@ -541,12 +574,13 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 
 ### 验证
 
-两份测试都用真 Chrome 开真页面做端到端断言，合计 **168 项**：
+三份测试都用真 Chrome 开真页面做端到端断言，合计 **201 项**：
 
 | 文件 | 项数 | 测什么 |
 |---|---|---|
 | `src/test_search_browser.mjs` | 93 | 搜索、移动端三尺寸、页面自洽 |
-| `src/test_regressions.mjs` | 75 | 真 bug 的回归，每条都有「修之前实测复现」 |
+| `src/test_regressions.mjs` | 78 | 真 bug 的回归，每条都有「修之前实测复现」 |
+| `src/test_shanghai_site.mjs` | 30 | 上海版页面起得来、搜得到、教材位置对、「卡在哪」排得出候选、零 JS 错误 |
 
 项目本身零 npm 依赖，puppeteer-core 按需单装：
 
@@ -554,6 +588,7 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 npm install puppeteer-core@23 --prefix /tmp/kg-test
 NODE_PATH=/tmp/kg-test/node_modules node src/test_regressions.mjs
 NODE_PATH=/tmp/kg-test/node_modules node src/test_search_browser.mjs
+NODE_PATH=/tmp/kg-test/node_modules node src/test_shanghai_site.mjs
 ```
 
 其中四项不是测搜索，是测**页面自己有没有说谎**——这四条全是被真抓出来的，
