@@ -484,6 +484,27 @@ def layer2(g, sb, payload, html):
                 stale.append(old)
         ok(not stale,
            f"README 里没有已知过期的旧数字（残留 {len(stale)} 处）", "、".join(stale))
+
+        # ── 上海版的数字同样不许烂 ──────────────────────────────
+        # 上海站的规模也是从数据现算的，README 里写的数
+        # 必须跟 `data/shanghai-graph.json` 对得上 ——
+        # 否则改了一份数据，README 还在说上一版的规模，没人发现。
+        SG = BASE / "data" / "shanghai-graph.json"
+        if SG.exists():
+            sg = json.load(open(SG, encoding="utf-8"))
+            n_sh = sum(1 for n in sg["nodes"] if n.get("kind") == "sh")
+            n_pre = sum(1 for n in sg["nodes"] if n.get("kind") != "sh")
+            sh_claims = {
+                "上海版节点数": f"{len(sg['nodes']):,}",
+                "上海版边数": f"{len(sg['edges']):,}",
+                "上海版单元数": f"{len(sg['units']):,}",
+                "上海版沪教概念数": f"{n_sh:,}",
+                "上海版前置补充数": f"{n_pre:,}",
+            }
+            miss2 = [f"{k}={v}" for k, v in sh_claims.items() if v not in rd]
+            ok(not miss2,
+               f"README 里的上海版数字跟当前数据一致（{len(sh_claims)} 项）",
+               "README 里没找到：" + "、".join(miss2))
     else:
         warn("README.md 不存在，跳过一致性检查")
 
