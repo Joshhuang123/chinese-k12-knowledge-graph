@@ -208,6 +208,15 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 /* 图例从 div 改成 button 之后要抹掉浏览器默认样式。
    这不只是为了好看：button 默认 focus ring 在暗背景上几乎看不见，
    而键盘用户能不能看见自己在哪，是无障碍的底线而不是美观问题。 */
+/* **图例行数多的时候分两列** ——
+   #attr（署名）是 fixed 在 bottom:192px 的，图例是 fixed 在 bottom:34px。
+   6 行以内图例不到 158px 高，够不着署名；
+   9 行（上海版五个学科 × 两套版别）就长到 190px，正好压到署名上。
+   两列一排，高度减半，谁也不碰谁。 */
+#legendRows.two-col{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+#legendRows.two-col .row{min-width:0;padding:1.5px 0}
+#legendRows.two-col .row span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 #legend button.row{
   appearance:none;-webkit-appearance:none;background:none;border:0;
   font:inherit;color:inherit;text-align:left;width:100%;
@@ -1025,6 +1034,8 @@ const legendRows = document.getElementById('legendRows');
 function renderLegend(){
   // 点的配色换了维度，图例就得跟着换 —— 图例是「现在屏幕上是什么颜色」的说明，
   // 不是固定的一组学科色。
+  // **行数多就分两列**（见 CSS 里的说明）。
+  legendRows.classList.toggle('two-col', PAL.pc === 'subject' && SUBJ.length > 6);
   if(PAL.pc === 'subject'){
     legendRows.innerHTML = SUBJ.map((s,i)=>
       `<button type="button" class="row on" data-s="${i}" aria-pressed="true">` +

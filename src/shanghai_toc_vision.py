@@ -72,14 +72,33 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--subject", default="", help="只跑某个学科（中文名，如 物理）")
+    ap.add_argument("--force", action="store_true", help="重读已读过的书")
     args = ap.parse_args()
 
     books = json.load(open(BASE / "data" / "shanghai-textbooks.json",
                            encoding="utf-8"))["books"]
-    math_books = [b for b in books if b["subject"] in ("数学", "math")]
+    if args.subject:
+        books = [b for b in books if b["subject"] == args.subject]
+    # **所有学科都要读** —— 原来只跑数学，
+    # 物理/化学/生物/科学的目录页跟数学的目录页长得一样，
+    # 同一套提示词就能读。
+    sel_books = books
+
+    # 已经有结果的书，除非 --force，否则不重读（读目录要调 API，别白花钱）
+    prev = {}
+    outp = pathlib.Path(args.out)
+    if outp.exists():
+        try:
+            prev = json.load(open(outp, encoding="utf-8")).get("books", {})
+        except Exception:
+            prev = {}
+    if not args.force:
+        sel_books = [b for b in sel_books if b["bookId"] not in prev]
+    print(f"要读 {len(sel_books)} 本（已有 {len(prev)} 本，跳过）", flush=True)
 
     by_slug = {}
-    for b in math_books:
+    for b in sel_books:
         slug = re.sub(r"[^\w一-鿿]+", "_", b["title"])[:30] + "_" + b["contentId"][:8]
         by_slug[slug] = b
 
@@ -114,7 +133,7 @@ def main() -> int:
     # 合并同一本书的多页目录
     result = {}
     for bid, lst in per_book.items():
-        b = next(x for x in math_books if x["bookId"] == bid)
+        b = next(x for x in sel_books if x["bookId"] == bid)
         chapters = []
         index = {}
         for p, chs in sorted(lst):
@@ -138,16 +157,23 @@ def main() -> int:
         result[bid] = {
             "title": b["title"], "edition": b["edition"], "subject": b["subject"],
             "graphBook": b.get("graphBook"), "bookId": bid,
+            "system": b.get("system"),
+            "totalPages": b.get("pages"),
             "tocPages": [p for p, _ in sorted(lst)],
             "chapters": chapters,
         }
         print(f"  ✓ {bid:26s} {len(chapters)} 章 {nsec:>3d} 节  {b['title'][:36]}")
 
-    pathlib.Path(args.out).write_text(json.dumps({
+    # **合并** —— 原来每次跑都整份覆盖，
+    # 只跑物理就把数学的目录全冲掉了。
+    merged = dict(prev)
+    merged.update(result)
+    outp.write_text(json.dumps({
         "_source": "上海教材目录页 —— 视觉模型读版式（不是 OCR，tesseract 在彩色目录上太脏）",
-        "books": result,
+        "books": merged,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"\n{len(result)} 本 → {args.out}  用时 {int(time.time()-t0)}s")
+    print(f"\n本次 {len(result)} 本，合计 {len(merged)} 本 → {args.out}  "
+          f"用时 {int(time.time()-t0)}s")
     return 0
 
 

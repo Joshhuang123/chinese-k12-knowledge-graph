@@ -55,6 +55,21 @@ OUT = BASE / "data" / "concept-vision-sh.jsonl"
 # 「集中」信号的阈值：命中页数下限 + 占全书命中数的份额下限
 MIN_HITS = 2
 MIN_SHARE = 0.34
+
+# **每种教材的候选概念来自哪几个学科**。
+#
+# 上海的小学「科学」是**物理+化学+生物的合流**（物质、生物、地球、技术），
+# 而 K12-KGraph 里没有「科学」这个学科 —— 只有 math/physics/chemistry/biology。
+# 所以小学科学的书，候选集取**这三个学科的全集**。
+#
+# 其余学科一对一。**不这么分的话，小学科学一本书都匹配不上**（候选集为空）。
+SUBJECT_CANDIDATES = {
+    "math": ["math"],
+    "physics": ["physics"],
+    "chemistry": ["chemistry"],
+    "biology": ["biology"],
+    "science": ["physics", "chemistry", "biology"],
+}
 # 「目录近似」的相似度下限
 MIN_TOC_RATIO = 0.80
 
@@ -176,6 +191,12 @@ def main() -> int:
     for c in concepts:
         by_subj[c["subject"]].append(c)
 
+    def candidates_of(subj):
+        out = []
+        for s2 in SUBJECT_CANDIDATES.get(subj, [subj]):
+            out += by_subj.get(s2, [])
+        return out
+
     # ── 3. 目录 ────────────────────────────────────────────────
     toc_books = json.load(open(TOC, encoding="utf-8"))["books"] if TOC.exists() else {}
 
@@ -188,7 +209,7 @@ def main() -> int:
         tops_by_book[bid] = tops
         subj = pgs[0].get("subject", "math")
         blob_pages = [i for i, t in enumerate(tops) if t]
-        for c in by_subj.get(subj, []):
+        for c in candidates_of(subj):
             nm = c["name"]
             core = strip_paren(nm) or nm
             n = 0
@@ -199,9 +220,12 @@ def main() -> int:
             if n:
                 hits[bid][c["id"]] = n
     total_hits = collections.Counter()
+    best_book = {}
     for bid, cnt in hits.items():
         for cid, n in cnt.items():
             total_hits[cid] += n
+            if n > hits.get(best_book.get(cid, ""), {}).get(cid, -1):
+                best_book[cid] = bid
     print(f"命中统计完成（{sum(total_hits.values())} 个 book×concept 命中对）")
 
     # ── 5. 逐本匹配 ────────────────────────────────────────────
@@ -229,7 +253,7 @@ def main() -> int:
                     toc_names.append(c["name"])
 
         picked = []
-        for c in by_subj.get(subj, []):
+        for c in candidates_of(subj):
             nm = c["name"]
             core = strip_paren(nm) or nm
             h = hits[bid].get(c["id"], 0)
@@ -253,9 +277,17 @@ def main() -> int:
                     if difflib.SequenceMatcher(None, core, label).ratio() >= MIN_TOC_RATIO:
                         near = True
                         break
-            # ③ 集中：这本书里成片出现，且占它全部命中的份额够大
+            # ③ 集中：这本书里成片出现，且**它在这本书里的命中最多**、份额够大
+            #
+            # 「命中最多」这半句是加给多学科之后才有的必要条件：
+            # 以前全是数学书，分母在一个学科里；现在小学科学和初中物理
+            # 都在讲「浮力」，一个概念会横跨好几个书。
+            # 只看份额的话，两个书都摊薄，谁都不达标，
+            # 于是「它在这本书里讲得最多」这个事实被漏掉了。
             share = h / total_hits[c["id"]] if total_hits.get(c["id"]) else 0.0
-            conc = h >= MIN_HITS and share >= MIN_SHARE
+            best_bid = best_book.get(c["id"])
+            conc = (h >= MIN_HITS and share >= MIN_SHARE
+                    and (best_bid is None or best_bid == bid))
             # ④ 同册：人教图谱里的家 == 这本书的册次
             same = c["vol"] == gvol and h >= 1
             ev = []

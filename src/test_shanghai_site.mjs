@@ -172,11 +172,56 @@ const vb = await page.evaluate(() => {
 ok(vb.has, '「二次函数」的教材公式挂在正确的下标上');
 ok(vb.keys > 300, `payload 里有 ${vb.keys} 个带教材数据的节点`);
 
+// ── 其他学科 ────────────────────────────────────────────────
+// 上海的孩子不止学数学。物理/化学/生物/科学都要在，
+// 而且**教材顺序链不能跨版别** —— 沪教版七上和沪科版七上是两套教材，
+// 「上一单元」从一套跳到另一套就是错的。
+console.log('\n[6] 其他学科与版别');
+const subj = await page.evaluate(() => {
+  const K = window.__kg;
+  const byS = {};
+  for (const n of K.NODES) {
+    const s = K.SUBJ[n.s]?.zh || '?';
+    byS[s] = (byS[s] || 0) + 1;
+  }
+  // 每个教材顺序链的组内是不是只有一套版别
+  const CNS = K.D.cns;
+  const groups = {};
+  CNS.forEach((c, i) => { (groups[c[2]] = groups[c[2]] || []).push(c[1]); });
+  // 判据不能靠「义务教育」四个字 —— 短的册次标签（沪教版·七上）
+  // 里没有那四个字，会把义务教育误判成高中。
+  const mixed = Object.entries(groups).filter(([, titles]) =>
+    new Set(titles.map(t => t.includes('普通高中') ? '高中' : '义务')).size > 1).length;
+  return { byS, groups: Object.keys(groups).length, mixed };
+});
+const names = Object.keys(subj.byS);
+ok(names.length >= 4, `画布上有 ${names.length} 个学科/版别组合（${names.join(' · ')}）`);
+ok(names.some(n => n.includes('物理')), '物理在');
+ok(names.some(n => n.includes('化学')), '化学在');
+ok(names.some(n => n.includes('生物')), '生物在');
+ok(subj.mixed === 0, `教材顺序链没有跨学段串（${subj.mixed} 组串了）`);
+
+// 物理的教材位置要能读出来
+await page.evaluate(() => { document.getElementById('q').value = ''; });
+await page.click('#q');
+await page.type('#q', '浮力', { delay: 20 });
+await sleep(500);
+await page.keyboard.press('Enter');
+await sleep(1600);
+const phys = await page.evaluate(() => ({
+  open: document.getElementById('card')?.classList.contains('on'),
+  eyebrow: document.getElementById('cEyebrow')?.textContent || '',
+  desc: document.getElementById('cDesc')?.textContent || '',
+}));
+ok(phys.open, '搜「浮力」卡片打开了');
+ok(/沪科版|沪教版/.test(phys.eyebrow), `「浮力」标的是上海教材（${phys.eyebrow}）`);
+ok(/教材位置|\d/.test(phys.desc), `「浮力」写得出教材位置（${phys.desc.slice(0, 40)}）`);
+
 // ── README 里的测试项数不能烂 ────────────────────────────────
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_shanghai_site.mjs` | 30 |';
-  ok(rd.includes(want), `README 里的 上海版 测试项数是 30（${rd.includes(want) ? '一致' : '不一致'}）`);
+  const want = '| `src/test_shanghai_site.mjs` | 38 |';
+  ok(rd.includes(want), `README 里的 上海版 测试项数是 38（${rd.includes(want) ? '一致' : '不一致'}）`);
 }
 
 await page.screenshot({ path: resolve(BASE, 'data/pdf-cache/work/shanghai-site.png') });

@@ -28,6 +28,7 @@
 from __future__ import annotations
 
 import argparse
+import collections
 import concurrent.futures
 import json
 import os
@@ -55,7 +56,9 @@ SH_PUBS = {
     "上海教育出版社": "沪教版",
     "上海科学技术出版社": "沪科版",
 }
-SUBJ_WANT = {"数学", "物理", "化学", "科学"}
+# **上海的科学是「小学科学」**（五·四学制，一~六年级），
+# 初中生物叫「生物学」，教材是**沪教版**的。
+SUBJ_WANT = {"数学", "物理", "化学", "生物", "科学"}
 
 
 def get_json(url, tries=3):
@@ -126,8 +129,15 @@ def subject_of(it):
     """
     t = (it.get("global_title") or {}).get("zh-CN", "")
     for s in SUBJ_WANT:
-        if s in t:
-            return s
+        if s not in t:
+            continue
+        # **「艺术与科学」不是科学教材** ——
+        # 上海的高中「艺术必修3 艺术与科学」里含「科学」两个字，
+        # 按字面认就把它当成科学教材收进来了。
+        # 学科词得是**标题的主体**，不是碰巧出现在书名里。
+        if s == "科学" and "艺术" in t:
+            continue
+        return s
     return ""
 
 
@@ -150,10 +160,16 @@ BOOK_GUESS = [
     # 跟「必修第一册」撞成同一个 id。
     (re.compile(r"必修\s*第一册"), "bx1"), (re.compile(r"必修\s*第二册"), "bx2"),
     (re.compile(r"必修\s*第三册"), "bx3"), (re.compile(r"必修\s*第四册"), "bx4"),
-    # **数字版**：高中化学/物理的选必修是「选择性必修1 化学反应原理」这种
+    # **数字版**：高中化学/物理/生物的选必修是「选择性必修1 化学反应原理」这种
     (re.compile(r"选择性必修\s*1(?![\d])"), "xzxbx1"),
     (re.compile(r"选择性必修\s*2(?![\d])"), "xzxbx2"),
     (re.compile(r"选择性必修\s*3(?![\d])"), "xzxbx3"),
+    # **「必修1 分子与细胞」这种数字版必修**（沪科版高中生物学）——
+    # 不认的话 graphBook 是空的，后面按册次分组全乱。
+    (re.compile(r"必修\s*1(?![\d])"), "bx1"),
+    (re.compile(r"必修\s*2(?![\d])"), "bx2"),
+    (re.compile(r"必修\s*3(?![\d])"), "bx3"),
+    (re.compile(r"必修\s*4(?![\d])"), "bx4"),
     # 全一册：初中物理/化学的「九年级全一册」对上图谱的 '9'（物理就是这么记的）
     (re.compile(r"八年级全一册"), "8"),
     (re.compile(r"九年级全一册"), "9"),
@@ -191,7 +207,8 @@ def main() -> int:
     items = load_index()
     print(f"索引 {len(items)} 本")
 
-    want = {"数学": "math", "物理": "physics", "化学": "chemistry", "科学": "science"}
+    want = {"数学": "math", "物理": "physics", "化学": "chemistry",
+            "生物": "biology", "科学": "science"}
     if args.only:
         args.only = args.only.lower()
 
@@ -241,6 +258,43 @@ def main() -> int:
     for b in sel[:20]:
         print(f"  {b['edition']:5s} {b['subject']:4s} {b['title'][:46]:48s} {b.get('pages')} 页")
 
+    # ── 图谱册次码 + 学制（要在去重前算好）────────────────────
+    # **册次码跨学科复用，而且跨版本复用** ——
+    # 「八年级全一册」和「八年级上册 + 八年级下册」是**同一本教材**的两种形态。
+    # 上海的物理两种都有：全一册是旧版（无「2022修订」前缀），分册是新版。
+    # 同一本下两遍，站点里会出现两套内容重叠的单元链。
+    for b in sel:
+        b["graphBook"] = guess_graph_book(b["title"])
+        # **学制也要进 id**：沪科版物理有六三制和五四学制两套，册次码一样。
+        b["system"] = "w" if ("五•四学制" in b["title"] or "五四学制" in b["title"]) else "s"
+
+    # ── 全一册 vs 分册：同一本教材只留分册 ─────────────────────
+    def grade_no(b):
+        m = re.match(r"^(\d)", b.get("graphBook") or "")
+        return int(m.group(1)) if m else None
+
+    has_fen = collections.defaultdict(list)
+    for b in sel:
+        g = grade_no(b)
+        if g is None:
+            continue
+        if re.match(r"^\d[ab]$", b.get("graphBook") or ""):
+            # **键里必须带学科** —— 少了学科，沪科版物理的「八上」
+            # 会把沪科版化学的「八年级全一册」当成同一本书删掉。
+            # 册次码跨学科复用，这坑本项目已经踩过五次。
+            has_fen[(b["edition"], b["subject"], b["system"], g)].append(b)
+    drop = set()
+    for b in sel:
+        g = grade_no(b)
+        if g is None or re.match(r"^\d[ab]$", b.get("graphBook") or ""):
+            continue
+        if has_fen.get((b["edition"], b["subject"], b["system"], g)):
+            drop.add(b["contentId"])
+    if drop:
+        n0 = len(sel)
+        sel = [b for b in sel if b["contentId"] not in drop]
+        print(f"全一册/分册重复去掉 {n0 - len(sel)} 本（同版别同学制同年级，留新版分册）")
+
     # ── 图谱册次码 + book id ────────────────────────────────────
     # **版别必须进 id** —— 沪教版和沪科版的册次码是一样的（都是 7a/7b/…），
     # 只按册次码建 id 的话两套书的同名页会互相覆盖。
@@ -264,13 +318,11 @@ def main() -> int:
         print(f"平台重复条目去掉 {dropped} 本（取页数多的那个）")
 
     for b in sel:
-        b["graphBook"] = guess_graph_book(b["title"])
         ed_code = {"沪教版": "hj", "沪科版": "hk"}.get(b["edition"], "x")
         # **id 必须带学科和学制**：
         #   学科 —— 沪科版「数学八上」「物理八上」册次码一样
         #   学制 —— 沪科版物理有六三制和五四学制两套，册次码也一样
         # 少任何一个维度都会互相覆盖。
-        b["system"] = "w" if ("五•四学制" in b["title"] or "五四学制" in b["title"]) else "s"
         b["bookId"] = (f"sh-{ed_code}-{b['subject']}-{b['system']}"
                        f"-{b['graphBook'] or 'x'}")
 

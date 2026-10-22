@@ -41,18 +41,29 @@ TPL = BASE / "viz" / "template.html"
 SG = BASE / "data" / "shanghai-graph.json"
 OUT = BASE / "shanghai.html"
 
-# **学科分三个**：沪教版 / 沪科版 / 前置补充。
-# 上海的孩子手上主要是沪教版，沪科版（六三制）是另一套。
-# 「前置补充」是灰的 —— 那些概念沪教版页面上没单独出现，
+# **按「学科 × 版别」分色**。
+#
+# 为什么不再按学科分：上海的教材是**两套并行**的 ——
+# 沪教版（上海教育出版社，五四学制）和沪科版（上海科学技术出版社，六三制）。
+# 同一个「数学七上」，两边的章号和内容都不一样，
+# 画成同一个颜色就看不出「这是哪套教材的树」。
+#
+# 「前置补充」是灰的 —— 那些概念上海教材页面上没单独出现，
 # 它们只是沪教概念的前置，标成灰色才不冒充「上海教材里学的」。
 SUBJECTS = [
     ("math-hj", "数学·沪教版", "#7fd3ff"),
     ("math-hk", "数学·沪科版", "#6bb7ff"),
-    ("math-pre", "前置补充", "#8b93a7"),
-    ("physics", "物理", "#ff9d6b"),
-    ("chemistry", "化学", "#b9d67f"),
-    ("biology", "生物", "#c9a0ff"),
+    ("physics-hk", "物理·沪科版", "#ff9d6b"),
+    ("chemistry-hj", "化学·沪教版", "#7fd3a0"),
+    ("chemistry-hk", "化学·沪科版", "#b9d67f"),
+    ("biology-hj", "生物·沪教版", "#c9a0ff"),
+    ("biology-hk", "生物·沪科版", "#a0c8ff"),
+    ("science-hk", "科学·沪科版", "#ffd166"),
+    ("pre", "前置补充", "#8b93a7"),
 ]
+# 教材的中文学科 → 配色键的前缀
+SUBJ_KEY = {"数学": "math", "物理": "physics", "化学": "chemistry",
+            "生物": "biology", "科学": "science"}
 ACC = "#ff3d7f"
 STAGE_ZH = ["小学", "初中", "高中"]
 
@@ -87,7 +98,8 @@ def main() -> int:
             continue
         ch_index[key] = len(chs)
         name = u["chapterName"] or u["sectionName"]
-        chs.append([f"{u['chapter']} {name}".strip(), u["bookTitle"][:18]])
+        chs.append([f"{u['chapter']} {name}".strip(),
+                    f"{u['edition']}·{u.get('volName') or u['graphBook']}"])
     print(f"章 {len(chs)} 个")
 
     # ── 2. 单元链（节）─────────────────────────────────────────
@@ -97,18 +109,40 @@ def main() -> int:
     # 「上一/下一单元」会在两套教材之间乱跳，第四位的可点下标也会指错。
     cns = []
     unit_index = {}
-    # 学科下标：沪教版 / 沪科版 / 前置补充
+    # 学科下标：**学科 × 版别**。教材顺序链按这个分组，
+    # 所以「上一/下一单元」永远在同一套教材里走，
+    # 不会从沪教版七上跳到沪科版七上。
     def subj_ix(bid: str) -> int:
-        if bid.startswith("sh-hj-"):
-            return 0
-        if bid.startswith("sh-hk-"):
-            return 1
-        return 2
+        parts = (bid or "").split("-")
+        subj = parts[2] if len(parts) > 2 else ""
+        ed = "hj" if (len(parts) > 1 and parts[1] == "hj") else "hk"
+        key = f"{SUBJ_KEY.get(subj, subj)}-{ed}"
+        for i, (k, _, _) in enumerate(SUBJECTS):
+            if k == key:
+                return i
+        return len(SUBJECTS) - 1        # 前置补充
+
+    def chain_key(bid: str) -> str:
+        """**教材顺序链的分组键：学科 × 版别 × 学制**。
+
+        为什么学制也要进键：沪科版物理**六三制和五四学制两套都有**
+        （8a/8b/9a/9b 各两本），是**两套并行的课程**。
+        只按「学科+版别」分组的话，「上一单元」会从六三制的八上
+        跳到五四学制的八上 —— 那是两本完全不同的书。
+        """
+        parts = (bid or "").split("-")
+        subj = parts[2] if len(parts) > 2 else ""
+        ed = "hj" if (len(parts) > 1 and parts[1] == "hj") else "hk"
+        sys_ = parts[3] if len(parts) > 3 else "s"
+        return f"{SUBJ_KEY.get(subj, subj)}-{ed}-{sys_}"
     first_concept = {}
     for i, u in enumerate(units):
         unit_index[(u["bookId"], u["section"], u["sectionName"], u["page"])] = i
         name = u["sectionName"] or u["chapterName"]
-        cns.append([name, u["bookTitle"][:18], subj_ix(u["bookId"]), -1])
+        # 第三位是**链组键**（字符串），不是学科下标 ——
+        # 模板拿它给「上一/下一单元」分组，节点的颜色另走 n.s。
+        cns.append([name, f"{u['edition']}·{u.get('volName') or u['graphBook']}",
+                    chain_key(u["bookId"]), -1])
     print(f"单元 {len(cns)} 个")
 
     # ── 3. 节点 ────────────────────────────────────────────────
@@ -127,9 +161,9 @@ def main() -> int:
     for i, (nid, (n, best)) in enumerate(ordered):
         idx_of[nid] = i
         if n["kind"] == "pre":
-            si = 2
+            si = len(SUBJECTS) - 1
         else:
-            si = 0 if n["mainBook"].startswith("sh-hj-") else 1
+            si = subj_ix(n["mainBook"])
         # 册次显示：沪教版·七上 / 沪科版·八下 / 人教版·七上（前置补充）
         if n["kind"] == "sh":
             b = n["books"][n["mainBook"]]
@@ -177,24 +211,35 @@ def main() -> int:
 
     # ── 5. 教材公式 / 图 / 难点（沪教版的）────────────────────
     # **按 (书, 页) 存** —— 按书存的话每个节点会挂上整本书的公式。
+    # **公式/图/习题去概念层取**（data/concept-vision-sh.jsonl），
+    # 不从图谱文件里抄 —— 抄一份就大一倍，两份还可能对不上。
+    CVIS = BASE / "data" / "concept-vision-sh.jsonl"
+    cvis = {}
+    if CVIS.exists():
+        for line in CVIS.open(encoding="utf-8"):
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            cvis[r["id"]] = r
     node_vision = {}
     node_hard = {}
     for n in nodes_src:
         fs, gs, bz = [], [], ""
         hn, hstem = 0, ""
+        cv = cvis.get(n["id"]) or {}
         for bid, b in (n.get("books") or {}).items():
-            for pg in (b.get("pages") or []):
-                for f in (b.get("formulas") or []):
-                    p = to_plain(f)
-                    if p and p not in fs:
-                        fs.append(p)
-                for g in (b.get("figures") or []):
-                    d = to_plain((g.get("description") or "").strip())
-                    if d:
-                        if len(d) > 160:
-                            d = d[:158] + "…"
-                        gs.append([g.get("caption", ""), d, g.get("provenance", "described")])
-            for ex in (b.get("exercises") or []):
+            cb = (cv.get("books") or {}).get(bid) or {}
+            for f in (cb.get("formulas") or []):
+                p = to_plain(f)
+                if p and p not in fs:
+                    fs.append(p)
+            for g in (cb.get("figures") or []):
+                d = to_plain((g.get("description") or "").strip())
+                if d:
+                    if len(d) > 160:
+                        d = d[:158] + "…"
+                    gs.append([g.get("caption", ""), d, g.get("provenance", "described")])
+            for ex in (cb.get("exercises") or []):
                 t = ex.get("type") or ""
                 if any(k in t for k in ("思考", "探究", "讨论")):
                     hn += 1
@@ -237,13 +282,21 @@ def main() -> int:
     }
 
     blob = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
+    # **payload 有预算** —— 数据层全留，页面层精选。
+    # 概念一多，公式和图描述是按节点堆起来的，页面会越滚越大。
+    # 超预算就是「该少塞点东西了」的信号，不是「硬盘装得下就没事」。
+    BUDGET = 1_600_000
+    if len(blob) > BUDGET:
+        raise SystemExit(f"payload {len(blob)//1024} KB 超过预算 {BUDGET//1024} KB —— "
+                         f"先查是不是公式/图描述没截够")
+    print(f"payload {len(blob)//1024} KB / 预算 {BUDGET//1024} KB")
     html = TPL.read_text(encoding="utf-8").replace("__DATA__", blob)
 
     # ── 7. 文案：换成上海口径 ──────────────────────────────────
     # **替换失配即中止** —— 一条文案没命中就报出来，不让它静默留在页面上。
     GRADE_MAP = ("const GRADE_ZH=" + json.dumps(GRADE_ZH, ensure_ascii=False) + ";\n")
     COPY = [
-        ("美英课程标准 · ", "按沪教版教材排序 · "),
+        ("美英课程标准 · ", "按上海教材排序 · "),
         # **GRADE_ZH 要在全局** —— 卡片眉标和轴标签两处都要用它，
         # 塞进画轴的函数里的话卡片那边就 ReferenceError。
         ("const SUBJ = D.subjects, ACC = D.acc;",
@@ -255,7 +308,7 @@ def main() -> int:
          "下面这根锥形从小学一年级长到高三——越往上，概念越大越抽象。"),
         ("高度是年龄", "高度是年级"),
         ("共 <b>__N_TOPIC__</b> 个知识点（另有 <b>__N_SELF__</b> 个我们补的能力节点与自建概念），其中 <b>__N_CORE__</b> 个属于 9–10 岁核心",
-         "沪教版教材里出现的 <b>__N_TOPIC__</b> 个知识点，我们另外补了 <b>__N_SELF__</b> 个它们的前置概念（灰点），其中 <b>__N_CORE__</b> 个是初中"),
+         "上海教材里出现的 <b>__N_TOPIC__</b> 个知识点，我们另外补了 <b>__N_SELF__</b> 个它们的前置概念（灰点），其中 <b>__N_CORE__</b> 个是初中"),
         ("只看 9–10 岁", "只看初中"),
         ("<span class=\"hi\">9–10 岁核心</span>", "<span class=\"hi\">初中</span>"),
         ("<span>低年级基础</span>", "<span>其他学段</span>"),
@@ -265,7 +318,7 @@ def main() -> int:
          "ctx.fillText(GRADE_ZH[age] || age, sx, sy);"),
         # **出处**：人教版那一页写的是「人教版教材排序」，上海版得说清楚是沪教版。
         ("K12-KGraph 本身是跨国的知识点集，这里按<b>人教版</b>教材排序 —— 两套是分开的，留着做对照。",
-         "K12-KGraph 本身是跨国的知识点集，这里按<b>沪教版</b>教材排序 —— 节点、页码、公式全部来自上海教材本身。"),
+         "K12-KGraph 本身是跨国的知识点集，这里按<b>沪教版/沪科版</b>教材排序 —— 节点、页码、公式全部来自上海教材本身。"),
         # 卡片眉标：原来拼的是「· 3–3 岁」
         # 教材按年级分，不按岁数。
         ("s.zh + ' · ' + n.dz + ' · ' + n.a1 + '–' + n.a2 + ' 岁'",

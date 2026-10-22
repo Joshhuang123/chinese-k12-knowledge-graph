@@ -62,6 +62,12 @@ OUT = BASE / "data" / "shanghai-graph.json"
 
 STAGE_ZH = ["小学", "初中", "高中"]
 
+# 教材的中文学科 → 图谱的英文学科。
+# **「科学」没有对应的图谱学科** —— 上海的小学科学是物理+化学+生物的合流，
+# 候选集在 vision_to_concepts_sh.py 里按这个思路取三个学科的全集。
+SUBJ_EN = {"数学": "math", "物理": "physics", "化学": "chemistry",
+           "生物": "biology", "科学": "science"}
+
 # 册次码 → (年级层, 学期名)
 # 义务教育：年级号就是年级层（1..9）
 # 高中：**沿用上游图谱的约定**（bx1=10 / bx2=11 / bx3=12 / xzxbx1=11 /
@@ -80,6 +86,12 @@ VOL_CN.update({k: v[1] for k, v in VOL_HIGH.items()})
 # 高中册次的教学先后（必修一~四 → 选必一~三）
 HIGH_ORDER = {k: i for i, k in enumerate(
     ["bx1", "bx2", "bx3", "bx4", "xzxbx1", "xzxbx2", "xzxbx3"])}
+
+
+def book_subj(bookId: str) -> str:
+    """bookId 里取中文学科：sh-{版别}-{学科}-{学制}-{册次}"""
+    parts = (bookId or "").split("-")
+    return parts[2] if len(parts) > 2 else ""
 
 
 def grade_of_vol(vol: str, system: str):
@@ -115,6 +127,9 @@ def main() -> int:
     for bid, b in toc.items():
         secs = []
         for c in b.get("chapters", []):
+            cno = c.get("no", "")
+            cname = c.get("name", "")
+            got = 0
             for s in c.get("sections", []):
                 pg = s.get("startPage")
                 if pg is None:
@@ -122,10 +137,22 @@ def main() -> int:
                 if pg is None:
                     continue
                 secs.append({
-                    "chapter": c.get("no", ""), "chapterName": c.get("name", ""),
+                    "chapter": cno, "chapterName": cname,
                     "section": s.get("no", ""), "sectionName": s.get("name", ""),
                     "page": int(pg),
                 })
+                got += 1
+            # **小学教材只有单元、没有小节** ——
+            # 目录里那一章本身就是最小的编排单位，
+            # 不把它当单元的话，���学那 9 本一本书都排不出顺序。
+            if not got:
+                pg = c.get("startPage")
+                if pg is not None:
+                    secs.append({
+                        "chapter": cno, "chapterName": cname,
+                        "section": "", "sectionName": cname,
+                        "page": int(pg),
+                    })
         secs.sort(key=lambda x: x["page"])
         book_units[bid] = secs
         n_pages = b.get("totalPages") or 0
@@ -179,22 +206,30 @@ def main() -> int:
                 "evidence": b.get("evidence", []),
                 "pages": sorted(b.get("pages") or []),
                 "sections": secs,
-                "formulas": (b.get("formulas") or [])[:12],
-                "figures": (b.get("figures") or [])[:6],
-                "exercises": (b.get("exercises") or [])[:8],
+                # **公式/图/习题不在这儿存** ——
+                # 它们在 data/concept-vision-sh.jsonl 里已经有了，
+                # 这里再抄一份，图谱文件就白白大一倍（21 MB → 11 MB）。
+                # 这一层只管「连接」：哪个概念在哪本书哪一节哪一页。
             }
         if not books:
             continue
         # 一个概念可能在多本书里（沪教版 + 沪科版）→ 取**年级最早**的那本当主位置；
         # 同年级时**沪教版优先** —— 上海的主教材是沪教版（上海教育出版社，五四学制），
         # 沪科版（六三制）只在部分学校用。
-        main_bid = min(books, key=lambda b: (
+        #
+        # **先按学科筛** —— 小学科学和初中物理都在讲「浮力」，
+        # 不筛的话一个物理概念可能被挂到科学书上，颜色也就串了。
+        csubj = c.get("subject") or "math"
+        same = [b for b in books if SUBJ_EN.get(book_subj(b), "") == csubj]
+        pool = same or list(books)
+        main_bid = min(pool, key=lambda b: (
             books[b]["grade"],
             0 if books[b]["edition"] == "沪教版" else 1,
             books[b]["system"]))
         mb = books[main_bid]
         nodes[cid] = {
             "id": cid, "name": c["name"], "subject": c.get("subject") or "math",
+            "bookSubject": book_subj(main_bid),
             "kind": "sh",
             "grade": mb["grade"], "stage": mb["stage"],
             "mainBook": main_bid,
@@ -256,7 +291,8 @@ def main() -> int:
                   "textbook": "教材缺口"}.get(n.get("source") or n.get("label"), "自建")
             nodes[cid] = {
                 "id": cid, "name": n["name"],
-                "subject": n.get("subject") or "math", "kind": kind,
+                "subject": n.get("subject") or "math",
+                "bookSubject": "", "kind": kind,
                 "grade": 0, "stage": 0, "mainBook": "", "books": {},
                 "bookTitles": [], "editions": [],
                 "sections": [], "pages": [], "evidence": [],
@@ -275,6 +311,7 @@ def main() -> int:
         nodes[cid] = {
             "id": cid, "name": n["name"], "subject": n.get("subject") or "math",
             "kind": "pre",
+            "bookSubject": "",
             "grade": grade, "stage": stage,
             "mainBook": "", "books": {},
             "bookTitles": [n.get("bookZh") or ""],
@@ -318,15 +355,37 @@ def main() -> int:
         max_pri = 5 if system == "w" else 6
         return (0 if g <= max_pri else 1, g, sem)
 
+    # **册序要按学段排** —— 小学(1~5) 必须在 初中(6~9) 前面，
+    # 初中必须在 高中 前面。少了学段这一维，
+    # 必修一（s- 开头）会排到小学一年级（w- 开头）前面。
+    def order_key(bid):
+        b = toc.get(bid) or {}
+        gvol = b.get("graphBook", "") or ""
+        system = "w" if "-w-" in bid else "s"
+        if gvol.startswith("bx") or gvol.startswith("xzxbx"):
+            return (2, HIGH_ORDER.get(gvol, 99), 0)
+        m = re.match(r"^(\d)([ab]?)$", gvol)
+        if not m:
+            return (1, 99, 0)
+        g = int(m.group(1))
+        sem = 0 if m.group(2) in ("a", "") else 1
+        max_pri = 5 if system == "w" else 6
+        return (0 if g <= max_pri else 1, g, sem)
+
     units = []
-    for bid in sorted(book_units, key=book_order_key):
+    for bid in sorted(book_units, key=order_key):
         secs = book_units[bid]
         b = toc[bid]
         for i, s in enumerate(secs):
+            gvol = b.get("graphBook", "")
             units.append({
                 "bookId": bid, "edition": b.get("edition", ""),
                 "bookTitle": b.get("title", ""),
-                "graphBook": b.get("graphBook", ""),
+                "graphBook": gvol,
+                # **短标签** —— 完整书名在页面上截断成
+                # 「（根据2022年版课程标准修订）义务」，谁也看不懂。
+                "volName": VOL_HIGH.get(gvol, (0, VOL_CN.get(gvol, gvol)))[1],
+                "subject": book_subj(bid),
                 "index": i, **s,
             })
 

@@ -4035,6 +4035,5783 @@
     }
    ],
    "totalPages": 118
+  },
+  "sh-hk-物理-s-8b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书·物理八年级下册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "8b",
+   "bookId": "sh-hk-物理-s-8b",
+   "system": "s",
+   "totalPages": 146,
+   "tocPages": [
+    4,
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第六章",
+     "name": "力和机械",
+     "startPage": 2,
+     "sections": [
+      {
+       "no": "6.1",
+       "name": "力",
+       "startPage": 2
+      },
+      {
+       "no": "6.2",
+       "name": "弹力 力的测量和表示",
+       "startPage": 8
+      },
+      {
+       "no": "6.3",
+       "name": "重力",
+       "startPage": 13
+      },
+      {
+       "no": "6.4",
+       "name": "摩擦力",
+       "startPage": 19
+      },
+      {
+       "no": "6.5",
+       "name": "杠杆",
+       "startPage": 25
+      },
+      {
+       "no": "6.6",
+       "name": "滑轮",
+       "startPage": 32
+      }
+     ]
+    },
+    {
+     "no": "第七章",
+     "name": "运动和力",
+     "startPage": 39,
+     "sections": [
+      {
+       "no": "7.1",
+       "name": "运动的描述",
+       "startPage": 39
+      },
+      {
+       "no": "7.2",
+       "name": "运动的快慢 速度",
+       "startPage": 44
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 制订一个提高自己短跑速度的计划",
+       "startPage": 50
+      },
+      {
+       "no": "7.3",
+       "name": "牛顿第一定律 惯性",
+       "startPage": 53
+      },
+      {
+       "no": "7.4",
+       "name": "同一直线上二力的合成",
+       "startPage": 59
+      },
+      {
+       "no": "7.5",
+       "name": "运动和力",
+       "startPage": 63
+      }
+     ]
+    },
+    {
+     "no": "第八章",
+     "name": "压强",
+     "startPage": 70,
+     "sections": [
+      {
+       "no": "8.1",
+       "name": "压强",
+       "startPage": 70
+      },
+      {
+       "no": "8.2",
+       "name": "液体的压强",
+       "startPage": 77
+      },
+      {
+       "no": "8.3",
+       "name": "大气压强与人类生活",
+       "startPage": 84
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 研究航天服",
+       "startPage": 90
+      },
+      {
+       "no": "8.4",
+       "name": "流体的压强与流速的关系",
+       "startPage": 92
+      }
+     ]
+    },
+    {
+     "no": "第九章",
+     "name": "浮力",
+     "startPage": 99,
+     "sections": [
+      {
+       "no": "9.1",
+       "name": "浮力",
+       "startPage": 99
+      },
+      {
+       "no": "9.2",
+       "name": "阿基米德原理",
+       "startPage": 105
+      },
+      {
+       "no": "9.3",
+       "name": "物体的浮沉",
+       "startPage": 111
+      }
+     ]
+    },
+    {
+     "no": "第十章",
+     "name": "从粒子到宇宙",
+     "startPage": 116,
+     "sections": [
+      {
+       "no": "10.1",
+       "name": "探索微观",
+       "startPage": 116
+      },
+      {
+       "no": "10.2",
+       "name": "分子动理论的初步知识",
+       "startPage": 123
+      },
+      {
+       "no": "10.3",
+       "name": "探索宇宙",
+       "startPage": 129
+      },
+      {
+       "no": "10.4",
+       "name": "浩瀚的宇宙",
+       "startPage": 134
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 为“天宫课堂”设计一个小实验",
+       "startPage": 137
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-9a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书·物理九年级上册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "9a",
+   "bookId": "sh-hk-物理-s-9a",
+   "system": "s",
+   "totalPages": 122,
+   "tocPages": [
+    4,
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第十一章",
+     "name": "功与机械能",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "11.1",
+       "name": "功",
+       "startPage": 2
+      },
+      {
+       "no": "11.2",
+       "name": "功率",
+       "startPage": 7
+      },
+      {
+       "no": "11.3",
+       "name": "机械效率",
+       "startPage": 11
+      },
+      {
+       "no": "11.4",
+       "name": "动能和势能",
+       "startPage": 15
+      }
+     ]
+    },
+    {
+     "no": "第十二章",
+     "name": "内能与热机",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "12.1",
+       "name": "内能",
+       "startPage": 23
+      },
+      {
+       "no": "12.2",
+       "name": "热量与热值",
+       "startPage": 27
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 科学安排饮食与运动",
+       "startPage": 31
+      },
+      {
+       "no": "12.3",
+       "name": "物质的比热容",
+       "startPage": 33
+      },
+      {
+       "no": "12.4",
+       "name": "热机与社会发展",
+       "startPage": 38
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 燃油汽车与电动汽车的对比研究",
+       "startPage": 43
+      }
+     ]
+    },
+    {
+     "no": "第十三章",
+     "name": "简单电路",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "13.1",
+       "name": "两种电荷",
+       "startPage": 46
+      },
+      {
+       "no": "13.2",
+       "name": "电路的组成和连接方式",
+       "startPage": 51
+      },
+      {
+       "no": "13.3",
+       "name": "电流与电流的测量",
+       "startPage": 59
+      },
+      {
+       "no": "13.4",
+       "name": "串联、并联电路中电流的特点",
+       "startPage": 64
+      },
+      {
+       "no": "13.5",
+       "name": "电压与电压的测量",
+       "startPage": 68
+      },
+      {
+       "no": "13.6",
+       "name": "串联、并联电路中电压的特点",
+       "startPage": 73
+      }
+     ]
+    },
+    {
+     "no": "第十四章",
+     "name": "欧姆定律",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "14.1",
+       "name": "电阻",
+       "startPage": 77
+      },
+      {
+       "no": "14.2",
+       "name": "欧姆定律",
+       "startPage": 83
+      },
+      {
+       "no": "14.3",
+       "name": "欧姆定律的应用",
+       "startPage": 89
+      }
+     ]
+    },
+    {
+     "no": "第十五章",
+     "name": "电能与电功率",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "15.1",
+       "name": "电能与电功",
+       "startPage": 96
+      },
+      {
+       "no": "15.2",
+       "name": "电功率",
+       "startPage": 100
+      },
+      {
+       "no": "15.3",
+       "name": "用电器的正确使用",
+       "startPage": 104
+      },
+      {
+       "no": "15.4",
+       "name": "焦耳定律",
+       "startPage": 109
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 探索家用电器节能和环保的有关问题",
+       "startPage": 112
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-9b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书·物理九年级下册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "9b",
+   "bookId": "sh-hk-物理-s-9b",
+   "system": "s",
+   "totalPages": 106,
+   "tocPages": [
+    4,
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "第十六章",
+     "name": "磁场 电磁铁",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "16.1",
+       "name": "永磁体的磁场",
+       "startPage": 2
+      },
+      {
+       "no": "16.2",
+       "name": "电流的磁场",
+       "startPage": 9
+      },
+      {
+       "no": "16.3",
+       "name": "电磁铁",
+       "startPage": 13
+      },
+      {
+       "no": "16.4",
+       "name": "电磁继电器与自动控制",
+       "startPage": 18
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 设计家庭养花自动浇水装置",
+       "startPage": 20
+      }
+     ]
+    },
+    {
+     "no": "第十七章",
+     "name": "电动机与发电机",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "17.1",
+       "name": "关于电动机转动的猜想",
+       "startPage": 24
+      },
+      {
+       "no": "17.2",
+       "name": "电动机转动的原理",
+       "startPage": 28
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 高铁提速的可行性分析",
+       "startPage": 32
+      },
+      {
+       "no": "17.3",
+       "name": "发电机发电的原理",
+       "startPage": 34
+      }
+     ]
+    },
+    {
+     "no": "第十八章",
+     "name": "家庭电路与安全用电",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "18.1",
+       "name": "家庭电路",
+       "startPage": 41
+      },
+      {
+       "no": "18.2",
+       "name": "安全用电",
+       "startPage": 47
+      },
+      {
+       "no": "18.3",
+       "name": "电能与社会发展",
+       "startPage": 52
+      }
+     ]
+    },
+    {
+     "no": "第十九章",
+     "name": "电磁波与信息时代",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "19.1",
+       "name": "电磁波",
+       "startPage": 56
+      },
+      {
+       "no": "19.2",
+       "name": "广播电视与通信",
+       "startPage": 62
+      },
+      {
+       "no": "19.3",
+       "name": "走进互联网",
+       "startPage": 68
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 让家中的无线网络更流畅",
+       "startPage": 71
+      }
+     ]
+    },
+    {
+     "no": "第二十章",
+     "name": "能源与能量守恒",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "20.1",
+       "name": "能源",
+       "startPage": 74
+      },
+      {
+       "no": "20.2",
+       "name": "开发新能源",
+       "startPage": 79
+      },
+      {
+       "no": "20.3",
+       "name": "能量的转化与能量守恒",
+       "startPage": 87
+      },
+      {
+       "no": "20.4",
+       "name": "能源、环境与可持续发展",
+       "startPage": 93
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 新能源汽车发展前景和趋势的研究",
+       "startPage": 96
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hj-化学-s-9a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书•化学九年级上册",
+   "edition": "沪教版",
+   "subject": "化学",
+   "graphBook": "9a",
+   "bookId": "sh-hj-化学-s-9a",
+   "system": "s",
+   "totalPages": 212,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "认识化学科学",
+       "startPage": 2
+      },
+      {
+       "no": "第2节",
+       "name": "化学研究什么",
+       "startPage": 14
+      },
+      {
+       "no": "第3节",
+       "name": "怎样学习化学",
+       "startPage": 24
+      },
+      {
+       "no": "",
+       "name": "整理与归纳",
+       "startPage": 32
+      },
+      {
+       "no": "",
+       "name": "本章作业",
+       "startPage": 33
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "",
+     "startPage": 112,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "化学反应发生的条件",
+       "startPage": 112
+      },
+      {
+       "no": "第2节",
+       "name": "化学反应中的质量关系",
+       "startPage": 122
+      },
+      {
+       "no": "第3节",
+       "name": "化学方程式的书写及应用",
+       "startPage": 128
+      },
+      {
+       "no": "",
+       "name": "基础实验3 燃烧条件的探究",
+       "startPage": 134
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动3 调查家用燃料的变迁与合理使用",
+       "startPage": 136
+      },
+      {
+       "no": "",
+       "name": "整理与归纳",
+       "startPage": 138
+      },
+      {
+       "no": "",
+       "name": "本章作业",
+       "startPage": 139
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hj-化学-s-9b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书·化学九年级下册",
+   "edition": "沪教版",
+   "subject": "化学",
+   "graphBook": "9b",
+   "bookId": "sh-hj-化学-s-9b",
+   "system": "s",
+   "totalPages": 132,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第7章",
+     "name": "",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "物质在水中的溶解",
+       "startPage": 2
+      },
+      {
+       "no": "第2节",
+       "name": "溶液组成的表示",
+       "startPage": 10
+      },
+      {
+       "no": "第3节",
+       "name": "饱和溶液和不饱和溶液",
+       "startPage": 18
+      },
+      {
+       "no": "第4节",
+       "name": "物质的溶解性",
+       "startPage": 24
+      },
+      {
+       "no": "基础实验6",
+       "name": "配制一定溶质质量分数的氯化钠溶液",
+       "startPage": 32
+      },
+      {
+       "no": "基础实验7",
+       "name": "粗盐的初步提纯",
+       "startPage": 34
+      },
+      {
+       "no": "跨学科实践活动6",
+       "name": "发热袋的模拟制作",
+       "startPage": 36
+      },
+      {
+       "no": "",
+       "name": "整理与归纳",
+       "startPage": 38
+      },
+      {
+       "no": "",
+       "name": "本章作业",
+       "startPage": 39
+      }
+     ]
+    },
+    {
+     "no": "第9章",
+     "name": "",
+     "startPage": 84,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "化学与人类健康",
+       "startPage": 84
+      },
+      {
+       "no": "第2节",
+       "name": "能源的综合利用",
+       "startPage": 92
+      },
+      {
+       "no": "第3节",
+       "name": "新型材料的研制",
+       "startPage": 102
+      },
+      {
+       "no": "第4节",
+       "name": "环境污染的防治",
+       "startPage": 110
+      },
+      {
+       "no": "",
+       "name": "整理与归纳",
+       "startPage": 119
+      },
+      {
+       "no": "",
+       "name": "本章作业",
+       "startPage": 120
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-bx1": {
+   "title": "普通高中教科书·物理必修 第一册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "bx1",
+   "bookId": "sh-hk-物理-s-bx1",
+   "system": "s",
+   "totalPages": 122,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第一章",
+     "name": "运动的描述",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "质点 物理模型",
+       "startPage": 2
+      },
+      {
+       "no": "第二节",
+       "name": "位置的变化 位移",
+       "startPage": 5
+      },
+      {
+       "no": "第三节",
+       "name": "位置变化的快慢 速度",
+       "startPage": 12
+      },
+      {
+       "no": "第四节",
+       "name": "速度变化的快慢 加速度",
+       "startPage": 18
+      }
+     ]
+    },
+    {
+     "no": "第二章",
+     "name": "匀变速直线运动",
+     "startPage": 28,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "伽利略对落体运动的研究",
+       "startPage": 29
+      },
+      {
+       "no": "第二节",
+       "name": "自由落体运动的规律",
+       "startPage": 34
+      },
+      {
+       "no": "第三节",
+       "name": "匀变速直线运动的规律",
+       "startPage": 39
+      }
+     ]
+    },
+    {
+     "no": "第三章",
+     "name": "相互作用与力的平衡",
+     "startPage": 50,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "生活中常见的力",
+       "startPage": 51
+      },
+      {
+       "no": "第二节",
+       "name": "力的合成",
+       "startPage": 60
+      },
+      {
+       "no": "第三节",
+       "name": "力的分解",
+       "startPage": 65
+      },
+      {
+       "no": "第四节",
+       "name": "共点力的平衡",
+       "startPage": 70
+      }
+     ]
+    },
+    {
+     "no": "第四章",
+     "name": "牛顿运动定律",
+     "startPage": 79,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "牛顿第一定律",
+       "startPage": 80
+      },
+      {
+       "no": "第二节",
+       "name": "牛顿第二定律",
+       "startPage": 84
+      },
+      {
+       "no": "第三节",
+       "name": "力学单位制",
+       "startPage": 91
+      },
+      {
+       "no": "第四节",
+       "name": "牛顿第三定律",
+       "startPage": 95
+      },
+      {
+       "no": "第五节",
+       "name": "牛顿运动定律的应用",
+       "startPage": 99
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-bx2": {
+   "title": "普通高中教科书·物理必修 第二册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "bx2",
+   "bookId": "sh-hk-物理-s-bx2",
+   "system": "s",
+   "totalPages": 125,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第五章",
+     "name": "曲线运动",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "曲线运动",
+       "startPage": 2
+      },
+      {
+       "no": "第二节",
+       "name": "平抛运动",
+       "startPage": 6
+      },
+      {
+       "no": "第三节",
+       "name": "圆周运动",
+       "startPage": 13
+      },
+      {
+       "no": "第四节",
+       "name": "向心力 向心加速度",
+       "startPage": 18
+      },
+      {
+       "no": "第五节",
+       "name": "圆周运动的应用",
+       "startPage": 25
+      }
+     ]
+    },
+    {
+     "no": "第六章",
+     "name": "万有引力定律",
+     "startPage": 35,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "行星的运动",
+       "startPage": 36
+      },
+      {
+       "no": "第二节",
+       "name": "万有引力定律",
+       "startPage": 40
+      },
+      {
+       "no": "第三节",
+       "name": "万有引力定律的应用",
+       "startPage": 44
+      }
+     ]
+    },
+    {
+     "no": "第七章",
+     "name": "机械能守恒定律",
+     "startPage": 54,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "功",
+       "startPage": 55
+      },
+      {
+       "no": "第二节",
+       "name": "功率",
+       "startPage": 62
+      },
+      {
+       "no": "第三节",
+       "name": "动能 动能定理",
+       "startPage": 68
+      },
+      {
+       "no": "第四节",
+       "name": "重力势能",
+       "startPage": 73
+      },
+      {
+       "no": "第五节",
+       "name": "机械能守恒定律",
+       "startPage": 80
+      }
+     ]
+    },
+    {
+     "no": "第八章",
+     "name": "牛顿力学的局限性与相对论初步",
+     "startPage": 91,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "牛顿力学的局限性",
+       "startPage": 92
+      },
+      {
+       "no": "第二节",
+       "name": "相对论初步",
+       "startPage": 96
+      },
+      {
+       "no": "第三节",
+       "name": "宇宙的起源与演化",
+       "startPage": 107
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-bx3": {
+   "title": "普通高中教科书·物理必修 第三册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "bx3",
+   "bookId": "sh-hk-物理-s-bx3",
+   "system": "s",
+   "totalPages": 150,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第九章",
+     "name": "静电场",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "静电现象 电荷",
+       "startPage": 2
+      },
+      {
+       "no": "第二节",
+       "name": "电荷的相互作用 库仑定律",
+       "startPage": 7
+      },
+      {
+       "no": "第三节",
+       "name": "电场力 电场强度",
+       "startPage": 13
+      },
+      {
+       "no": "第四节",
+       "name": "电势能 电势",
+       "startPage": 20
+      },
+      {
+       "no": "第五节",
+       "name": "带电粒子在电场中的运动",
+       "startPage": 26
+      },
+      {
+       "no": "第六节",
+       "name": "电容 电容器",
+       "startPage": 33
+      },
+      {
+       "no": "第七节",
+       "name": "静电的利用与防范",
+       "startPage": 40
+      }
+     ]
+    },
+    {
+     "no": "第十章",
+     "name": "电路及其应用",
+     "startPage": 48,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "简单串联、并联组合电路",
+       "startPage": 49
+      },
+      {
+       "no": "第二节",
+       "name": "电阻定律",
+       "startPage": 55
+      },
+      {
+       "no": "第三节",
+       "name": "测量金属丝的电阻率",
+       "startPage": 60
+      },
+      {
+       "no": "第四节",
+       "name": "多用电表",
+       "startPage": 67
+      },
+      {
+       "no": "第五节",
+       "name": "闭合电路欧姆定律、电源电动势及内阻",
+       "startPage": 72
+      },
+      {
+       "no": "第六节",
+       "name": "电源电动势和内阻的测量",
+       "startPage": 77
+      },
+      {
+       "no": "第七节",
+       "name": "电功、电功率及焦耳定律",
+       "startPage": 81
+      },
+      {
+       "no": "第八节",
+       "name": "家庭电路",
+       "startPage": 86
+      }
+     ]
+    },
+    {
+     "no": "第十一章",
+     "name": "电磁场与电磁波初步",
+     "startPage": 95,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "磁现象 磁感线",
+       "startPage": 96
+      },
+      {
+       "no": "第二节",
+       "name": "电流的磁场 磁感应强度",
+       "startPage": 100
+      },
+      {
+       "no": "第三节",
+       "name": "磁通量 电磁感应现象",
+       "startPage": 106
+      },
+      {
+       "no": "第四节",
+       "name": "电磁场与电磁波",
+       "startPage": 112
+      }
+     ]
+    },
+    {
+     "no": "第十二章",
+     "name": "能源与可持续发展",
+     "startPage": 121,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "能源及其应用",
+       "startPage": 122
+      },
+      {
+       "no": "第二节",
+       "name": "能量的转化",
+       "startPage": 129
+      },
+      {
+       "no": "第三节",
+       "name": "能源与环境",
+       "startPage": 133
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-xzxbx1": {
+   "title": "普通高中教科书·物理选择性必修 第一册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "xzxbx1",
+   "bookId": "sh-hk-物理-s-xzxbx1",
+   "system": "s",
+   "totalPages": 109,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第一章",
+     "name": "动量",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "相互作用中的守恒量 动量",
+       "startPage": 2
+      },
+      {
+       "no": "第二节",
+       "name": "物体动量变化的原因 动量定理",
+       "startPage": 6
+      },
+      {
+       "no": "第三节",
+       "name": "动量守恒定律",
+       "startPage": 11
+      }
+     ]
+    },
+    {
+     "no": "第二章",
+     "name": "机械振动",
+     "startPage": 22,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "机械振动 简谐运动",
+       "startPage": 23
+      },
+      {
+       "no": "第二节",
+       "name": "简谐运动的回复力和能量",
+       "startPage": 28
+      },
+      {
+       "no": "第三节",
+       "name": "单摆",
+       "startPage": 32
+      },
+      {
+       "no": "第四节",
+       "name": "受迫振动 共振",
+       "startPage": 38
+      }
+     ]
+    },
+    {
+     "no": "第三章",
+     "name": "机械波",
+     "startPage": 44,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "机械波的形成和传播",
+       "startPage": 45
+      },
+      {
+       "no": "第二节",
+       "name": "机械波的描述",
+       "startPage": 49
+      },
+      {
+       "no": "第三节",
+       "name": "机械波的反射和折射",
+       "startPage": 54
+      },
+      {
+       "no": "第四节",
+       "name": "机械波的干涉和衍射",
+       "startPage": 57
+      },
+      {
+       "no": "第五节",
+       "name": "多普勒效应",
+       "startPage": 63
+      }
+     ]
+    },
+    {
+     "no": "第四章",
+     "name": "光",
+     "startPage": 70,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "光的折射",
+       "startPage": 71
+      },
+      {
+       "no": "第二节",
+       "name": "全反射",
+       "startPage": 78
+      },
+      {
+       "no": "第三节",
+       "name": "光的干涉",
+       "startPage": 81
+      },
+      {
+       "no": "第四节",
+       "name": "光的衍射和偏振",
+       "startPage": 87
+      },
+      {
+       "no": "第五节",
+       "name": "激光",
+       "startPage": 92
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-xzxbx2": {
+   "title": "普通高中教科书·物理选择性必修 第二册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "xzxbx2",
+   "bookId": "sh-hk-物理-s-xzxbx2",
+   "system": "s",
+   "totalPages": 138,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第五章",
+     "name": "磁场",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "安培力",
+       "startPage": 2
+      },
+      {
+       "no": "第二节",
+       "name": "洛伦兹力",
+       "startPage": 10
+      },
+      {
+       "no": "第三节",
+       "name": "带电粒子在匀强磁场中的圆周运动",
+       "startPage": 16
+      }
+     ]
+    },
+    {
+     "no": "第六章",
+     "name": "电磁感应定律",
+     "startPage": 29,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "楞次定律",
+       "startPage": 30
+      },
+      {
+       "no": "第二节",
+       "name": "法拉第电磁感应定律",
+       "startPage": 38
+      }
+     ]
+    },
+    {
+     "no": "第七章",
+     "name": "电磁感应定律的应用",
+     "startPage": 55,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "自感现象和涡流现象",
+       "startPage": 56
+      },
+      {
+       "no": "第二节",
+       "name": "交变电流",
+       "startPage": 62
+      },
+      {
+       "no": "第三节",
+       "name": "变压器",
+       "startPage": 69
+      },
+      {
+       "no": "第四节",
+       "name": "发电机和电动机",
+       "startPage": 77
+      }
+     ]
+    },
+    {
+     "no": "第八章",
+     "name": "电磁振荡与电磁波",
+     "startPage": 85,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "麦克斯韦电磁场理论",
+       "startPage": 86
+      },
+      {
+       "no": "第二节",
+       "name": "电磁波的产生与发射",
+       "startPage": 91
+      },
+      {
+       "no": "第三节",
+       "name": "电磁波的传播和接收",
+       "startPage": 95
+      },
+      {
+       "no": "第四节",
+       "name": "电磁波的应用",
+       "startPage": 102
+      }
+     ]
+    },
+    {
+     "no": "第九章",
+     "name": "传感器",
+     "startPage": 111,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "传感器及其敏感元件",
+       "startPage": 112
+      },
+      {
+       "no": "第二节",
+       "name": "常见传感器的工作原理",
+       "startPage": 116
+      },
+      {
+       "no": "第三节",
+       "name": "传感器的应用",
+       "startPage": 122
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-xzxbx3": {
+   "title": "普通高中教科书·物理选择性必修 第三册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "xzxbx3",
+   "bookId": "sh-hk-物理-s-xzxbx3",
+   "system": "s",
+   "totalPages": 129,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第十章",
+     "name": "分子动理论",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "分子的大小",
+       "startPage": 2
+      },
+      {
+       "no": "第二节",
+       "name": "分子的运动 分子间的相互作用",
+       "startPage": 6
+      },
+      {
+       "no": "第三节",
+       "name": "分子运动速率分布的统计规律",
+       "startPage": 10
+      }
+     ]
+    },
+    {
+     "no": "第十一章",
+     "name": "气体、液体和固体",
+     "startPage": 15,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "气体的状态",
+       "startPage": 16
+      },
+      {
+       "no": "第二节",
+       "name": "气体的等温变化",
+       "startPage": 19
+      },
+      {
+       "no": "第三节",
+       "name": "气体的等容变化和等压变化",
+       "startPage": 24
+      },
+      {
+       "no": "第四节",
+       "name": "液体的基本性质",
+       "startPage": 29
+      },
+      {
+       "no": "第五节",
+       "name": "固体的基本性质",
+       "startPage": 34
+      },
+      {
+       "no": "第六节",
+       "name": "材料及其应用简介",
+       "startPage": 39
+      }
+     ]
+    },
+    {
+     "no": "第十二章",
+     "name": "热力学定律",
+     "startPage": 46,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "物体的内能",
+       "startPage": 47
+      },
+      {
+       "no": "第二节",
+       "name": "能量的转化与守恒",
+       "startPage": 51
+      },
+      {
+       "no": "第三节",
+       "name": "能量转化的方向性",
+       "startPage": 55
+      }
+     ]
+    },
+    {
+     "no": "第十三章",
+     "name": "原子结构",
+     "startPage": 62,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "电子的发现",
+       "startPage": 63
+      },
+      {
+       "no": "第二节",
+       "name": "原子的核式结构模型",
+       "startPage": 66
+      },
+      {
+       "no": "第三节",
+       "name": "玻尔的原子模型",
+       "startPage": 70
+      }
+     ]
+    },
+    {
+     "no": "第十四章",
+     "name": "微观粒子的波粒二象性",
+     "startPage": 79,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "光电效应 光子说",
+       "startPage": 80
+      },
+      {
+       "no": "第二节",
+       "name": "波粒二象性",
+       "startPage": 86
+      },
+      {
+       "no": "第三节",
+       "name": "原子结构的量子力学模型",
+       "startPage": 90
+      }
+     ]
+    },
+    {
+     "no": "第十五章",
+     "name": "原子核",
+     "startPage": 95,
+     "sections": [
+      {
+       "no": "第一节",
+       "name": "天然放射现象 原子核的衰变",
+       "startPage": 96
+      },
+      {
+       "no": "第二节",
+       "name": "原子核的组成",
+       "startPage": 99
+      },
+      {
+       "no": "第三节",
+       "name": "核能及其应用",
+       "startPage": 104
+      },
+      {
+       "no": "第四节",
+       "name": "粒子物理简介",
+       "startPage": 112
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-化学-s-bx1": {
+   "title": "普通高中教科书·化学必修 第一册",
+   "edition": "沪科版",
+   "subject": "化学",
+   "graphBook": "bx1",
+   "bookId": "sh-hk-化学-s-bx1",
+   "system": "s",
+   "totalPages": 154,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "",
+     "name": "绪言",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "第1章",
+     "name": "化学研究的天地",
+     "startPage": 5,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "物质的分类",
+       "startPage": 7
+      },
+      {
+       "no": "1.2",
+       "name": "物质的量",
+       "startPage": 15
+      },
+      {
+       "no": "1.3",
+       "name": "化学中常用的实验方法",
+       "startPage": 22
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 34
+      },
+      {
+       "no": "",
+       "name": "项目学习活动 如何测定气体摩尔体积",
+       "startPage": 38
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "海洋中的卤素资源",
+     "startPage": 41,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "海水中的氯",
+       "startPage": 43
+      },
+      {
+       "no": "2.2",
+       "name": "氧化还原反应和离子反应",
+       "startPage": 53
+      },
+      {
+       "no": "2.3",
+       "name": "溴和碘的提取",
+       "startPage": 63
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 69
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "硫、氮及其循环",
+     "startPage": 73,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "硫及其重要化合物",
+       "startPage": 75
+      },
+      {
+       "no": "3.2",
+       "name": "氮及其重要化合物",
+       "startPage": 84
+      },
+      {
+       "no": "3.3",
+       "name": "硫循环和氮循环",
+       "startPage": 91
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 99
+      },
+      {
+       "no": "",
+       "name": "项目学习活动 如何测定硫酸铜晶体中结晶水的含量",
+       "startPage": 102
+      }
+     ]
+    },
+    {
+     "no": "第 4 章",
+     "name": "原子结构和化学键",
+     "startPage": 105,
+     "sections": [
+      {
+       "no": "4.1",
+       "name": "元素周期表和元素周期律",
+       "startPage": 107
+      },
+      {
+       "no": "4.2",
+       "name": "原子结构",
+       "startPage": 119
+      },
+      {
+       "no": "4.3",
+       "name": "核外电子排布",
+       "startPage": 127
+      },
+      {
+       "no": "4.4",
+       "name": "化学键",
+       "startPage": 133
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 139
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 143,
+     "sections": [
+      {
+       "no": "I",
+       "name": "酸、碱和盐的溶解性表（293 K）",
+       "startPage": 143
+      },
+      {
+       "no": "II",
+       "name": "化学词汇中英文对照表",
+       "startPage": 144
+      },
+      {
+       "no": "III",
+       "name": "学生必做实验索引",
+       "startPage": 145
+      },
+      {
+       "no": "IV",
+       "name": "元素周期表",
+       "startPage": 146
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-化学-s-bx2": {
+   "title": "普通高中教科书·化学必修 第二册",
+   "edition": "沪科版",
+   "subject": "化学",
+   "graphBook": "bx2",
+   "bookId": "sh-hk-化学-s-bx2",
+   "system": "s",
+   "totalPages": 124,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第5章",
+     "name": "金属及其化合物",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "5.1",
+       "name": "金属的性质",
+       "startPage": 3
+      },
+      {
+       "no": "5.2",
+       "name": "重要的金属化合物",
+       "startPage": 12
+      },
+      {
+       "no": "5.3",
+       "name": "化学变化中的能量变化",
+       "startPage": 24
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 31
+      },
+      {
+       "no": "",
+       "name": "项目学习活动 如何测定菠菜中铁元素的含量",
+       "startPage": 35
+      }
+     ]
+    },
+    {
+     "no": "第6章",
+     "name": "化学反应速率和化学平衡",
+     "startPage": 39,
+     "sections": [
+      {
+       "no": "6.1",
+       "name": "化学反应速率",
+       "startPage": 41
+      },
+      {
+       "no": "6.2",
+       "name": "化学平衡",
+       "startPage": 50
+      },
+      {
+       "no": "6.3",
+       "name": "化工生产",
+       "startPage": 56
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 64
+      }
+     ]
+    },
+    {
+     "no": "第7章",
+     "name": "常见的有机化合物",
+     "startPage": 69,
+     "sections": [
+      {
+       "no": "7.1",
+       "name": "饱和烃",
+       "startPage": 71
+      },
+      {
+       "no": "7.2",
+       "name": "不饱和烃",
+       "startPage": 80
+      },
+      {
+       "no": "7.3",
+       "name": "乙醇和乙酸",
+       "startPage": 91
+      },
+      {
+       "no": "7.4",
+       "name": "糖、油脂和蛋白质",
+       "startPage": 98
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 105
+      },
+      {
+       "no": "",
+       "name": "项目学习活动 如何利用数据库探究有机分子的空间结构",
+       "startPage": 111
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 114,
+     "sections": [
+      {
+       "no": "I",
+       "name": "化学词汇中英文对照表",
+       "startPage": 114
+      },
+      {
+       "no": "II",
+       "name": "学生必做实验索引",
+       "startPage": 115
+      },
+      {
+       "no": "III",
+       "name": "元素周期表",
+       "startPage": 116
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-化学-s-xzxbx1": {
+   "title": "普通高中教科书·化学选择性必修1 化学反应原理",
+   "edition": "沪科版",
+   "subject": "化学",
+   "graphBook": "xzxbx1",
+   "bookId": "sh-hk-化学-s-xzxbx1",
+   "system": "s",
+   "totalPages": 130,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第 1 章",
+     "name": "化学反应的热效应",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "化学反应与能量变化",
+       "startPage": 3
+      },
+      {
+       "no": "1.2",
+       "name": "反应热的测量和计算",
+       "startPage": 10
+      },
+      {
+       "no": "1.3",
+       "name": "燃料的合理利用",
+       "startPage": 17
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 21
+      }
+     ]
+    },
+    {
+     "no": "第 2 章",
+     "name": "化学反应的方向、限度和速率",
+     "startPage": 25,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "化学反应的方向",
+       "startPage": 27
+      },
+      {
+       "no": "2.2",
+       "name": "化学反应的限度",
+       "startPage": 32
+      },
+      {
+       "no": "2.3",
+       "name": "化学反应的速率",
+       "startPage": 41
+      },
+      {
+       "no": "2.4",
+       "name": "工业合成氨",
+       "startPage": 46
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 53
+      }
+     ]
+    },
+    {
+     "no": "第 3 章",
+     "name": "水溶液中的离子反应与平衡",
+     "startPage": 57,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "水的电离和溶液的酸碱性",
+       "startPage": 59
+      },
+      {
+       "no": "3.2",
+       "name": "弱电解质的电离平衡",
+       "startPage": 64
+      },
+      {
+       "no": "3.3",
+       "name": "酸碱中和与盐类水解",
+       "startPage": 68
+      },
+      {
+       "no": "3.4",
+       "name": "难溶电解质的沉淀溶解平衡",
+       "startPage": 75
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 81
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "氧化还原反应和电化学",
+     "startPage": 83,
+     "sections": [
+      {
+       "no": "4.1",
+       "name": "氧化还原反应",
+       "startPage": 85
+      },
+      {
+       "no": "4.2",
+       "name": "原电池和化学电源",
+       "startPage": 89
+      },
+      {
+       "no": "4.3",
+       "name": "电解池",
+       "startPage": 100
+      },
+      {
+       "no": "4.4",
+       "name": "金属的电化学腐蚀与防护",
+       "startPage": 108
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 112
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 115,
+     "sections": [
+      {
+       "no": "I",
+       "name": "一些化学反应的 ΔH 和 ΔS ( 298 K, 100 kPa )",
+       "startPage": 115
+      },
+      {
+       "no": "II",
+       "name": "酸、碱和盐的溶解性表 ( 20℃ )",
+       "startPage": 116
+      },
+      {
+       "no": "III",
+       "name": "化学词汇中英文对照表",
+       "startPage": 117
+      },
+      {
+       "no": "IV",
+       "name": "学生必做实验索引",
+       "startPage": 118
+      },
+      {
+       "no": "V",
+       "name": "元素周期表",
+       "startPage": 119
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-化学-s-xzxbx2": {
+   "title": "普通高中教科书·化学选择性必修2 物质结构与性质",
+   "edition": "沪科版",
+   "subject": "化学",
+   "graphBook": "xzxbx2",
+   "bookId": "sh-hk-化学-s-xzxbx2",
+   "system": "s",
+   "totalPages": 106,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "原子结构与性质",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "氢原子结构模型",
+       "startPage": 3
+      },
+      {
+       "no": "1.2",
+       "name": "多电子原子核外电子的排布",
+       "startPage": 12
+      },
+      {
+       "no": "1.3",
+       "name": "元素周期律",
+       "startPage": 17
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 26
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "分子结构与性质",
+     "startPage": 29,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "共价分子的空间结构",
+       "startPage": 31
+      },
+      {
+       "no": "2.2",
+       "name": "分子结构与物质的性质",
+       "startPage": 45
+      },
+      {
+       "no": "2.3",
+       "name": "配位化合物和超分子",
+       "startPage": 56
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 65
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "晶体结构与性质",
+     "startPage": 69,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "金属晶体",
+       "startPage": 71
+      },
+      {
+       "no": "3.2",
+       "name": "离子晶体",
+       "startPage": 80
+      },
+      {
+       "no": "3.3",
+       "name": "共价晶体和分子晶体",
+       "startPage": 85
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 94
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 98,
+     "sections": [
+      {
+       "no": "Ⅰ",
+       "name": "化学词汇中英文对照表",
+       "startPage": 98
+      },
+      {
+       "no": "Ⅱ",
+       "name": "学生必做实验索引",
+       "startPage": 98
+      },
+      {
+       "no": "Ⅲ",
+       "name": "元素周期表",
+       "startPage": 99
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-化学-s-xzxbx3": {
+   "title": "普通高中教科书·化学选择性必修3 有机化学基础",
+   "edition": "沪科版",
+   "subject": "化学",
+   "graphBook": "xzxbx3",
+   "bookId": "sh-hk-化学-s-xzxbx3",
+   "system": "s",
+   "totalPages": 134,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "认识有机化学",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "有机化学的建立和发展",
+       "startPage": 3
+      },
+      {
+       "no": "1.2",
+       "name": "有机化合物的结构",
+       "startPage": 8
+      },
+      {
+       "no": "1.3",
+       "name": "有机化合物的命名",
+       "startPage": 16
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 21
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "烃和卤代烃",
+     "startPage": 23,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "脂肪烃",
+       "startPage": 25
+      },
+      {
+       "no": "2.2",
+       "name": "芳香烃",
+       "startPage": 31
+      },
+      {
+       "no": "2.3",
+       "name": "卤代烃",
+       "startPage": 37
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 42
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "烃的含氧衍生物",
+     "startPage": 45,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "醇和酚",
+       "startPage": 47
+      },
+      {
+       "no": "3.2",
+       "name": "醛和酮",
+       "startPage": 55
+      },
+      {
+       "no": "3.3",
+       "name": "羧酸及其衍生物",
+       "startPage": 62
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 69
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "生物大分子与合成高分子",
+     "startPage": 73,
+     "sections": [
+      {
+       "no": "4.1",
+       "name": "生物大分子",
+       "startPage": 75
+      },
+      {
+       "no": "4.2",
+       "name": "合成高分子",
+       "startPage": 87
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 98
+      }
+     ]
+    },
+    {
+     "no": "第5章",
+     "name": "有机化合物的合成与研究",
+     "startPage": 101,
+     "sections": [
+      {
+       "no": "5.1",
+       "name": "有机合成初步",
+       "startPage": 103
+      },
+      {
+       "no": "5.2",
+       "name": "研究有机化合物的一般方法",
+       "startPage": 111
+      },
+      {
+       "no": "",
+       "name": "本章复习",
+       "startPage": 119
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 124,
+     "sections": [
+      {
+       "no": "Ⅰ",
+       "name": "化学词汇中英文对照表",
+       "startPage": 124
+      },
+      {
+       "no": "Ⅱ",
+       "name": "学生必做实验索引",
+       "startPage": 126
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-生物-s-bx1": {
+   "title": "普通高中教科书·生物学必修1 分子与细胞",
+   "edition": "沪科版",
+   "subject": "生物",
+   "graphBook": "bx1",
+   "bookId": "sh-hk-生物-s-bx1",
+   "system": "s",
+   "totalPages": 134,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "走进生物学",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生物学是与人类生活密切相关的自然科学",
+       "startPage": 2
+      },
+      {
+       "no": "第2节",
+       "name": "实验探究是学习生物学的重要途径",
+       "startPage": 8
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-1 用高倍镜观察动植物细胞",
+       "startPage": 12
+      },
+      {
+       "no": "第3节",
+       "name": "细胞是生物体结构的基本单位",
+       "startPage": 15
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "细胞的分子组成",
+     "startPage": 23,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "C、H、O、N、P、S等元素组成复杂的生物分子",
+       "startPage": 24
+      },
+      {
+       "no": "第2节",
+       "name": "蛋白质和核酸是重要的生物大分子",
+       "startPage": 28
+      },
+      {
+       "no": "第3节",
+       "name": "糖类和脂质是细胞的结构成分和能源物质",
+       "startPage": 35
+      },
+      {
+       "no": "",
+       "name": "探究·实验 2-1 检测生物组织中的还原糖、脂肪和蛋白质",
+       "startPage": 39
+      },
+      {
+       "no": "第4节",
+       "name": "水和无机盐是生命活动的必需物质",
+       "startPage": 42
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "细胞的结构",
+     "startPage": 49,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "细胞由质膜包裹",
+       "startPage": 50
+      },
+      {
+       "no": "第2节",
+       "name": "细胞各部分结构既分工又合作",
+       "startPage": 55
+      },
+      {
+       "no": "",
+       "name": "探究·实验 3-1 观察叶绿体和细胞质流动",
+       "startPage": 59
+      },
+      {
+       "no": "",
+       "name": "探究·建模 3-2 制作真核细胞的结构模型",
+       "startPage": 63
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "细胞的代谢",
+     "startPage": 69,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "细胞通过质膜与外界进行物质交换",
+       "startPage": 70
+      },
+      {
+       "no": "",
+       "name": "探究·实验 4-1 观察外界溶液对植物细胞质壁分离和复原的影响",
+       "startPage": 74
+      },
+      {
+       "no": "第2节",
+       "name": "酶催化细胞的化学反应",
+       "startPage": 76
+      },
+      {
+       "no": "",
+       "name": "探究·实验 4-2 探究温度对淀粉酶活性的影响",
+       "startPage": 79
+      },
+      {
+       "no": "第3节",
+       "name": "细胞通过分解有机分子获取能量",
+       "startPage": 82
+      },
+      {
+       "no": "第4节",
+       "name": "叶绿体将光能转换并储存在糖分子中",
+       "startPage": 88
+      },
+      {
+       "no": "",
+       "name": "探究·实验 4-3 叶绿体色素的提取分离及叶绿素含量的测定",
+       "startPage": 91
+      },
+      {
+       "no": "",
+       "name": "探究·设计 4-4 探究影响光合作用强度的环境条件",
+       "startPage": 98
+      }
+     ]
+    },
+    {
+     "no": "第5章",
+     "name": "细胞的生命进程",
+     "startPage": 105,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "细胞通过分裂实现增殖",
+       "startPage": 106
+      },
+      {
+       "no": "",
+       "name": "探究·实验 5-1 观察植物根尖细胞有丝分裂",
+       "startPage": 109
+      },
+      {
+       "no": "第2节",
+       "name": "细胞通过分化形成多细胞生物体",
+       "startPage": 114
+      },
+      {
+       "no": "第3节",
+       "name": "细胞衰老和死亡是自然的生理过程",
+       "startPage": 119
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-生物-s-bx2": {
+   "title": "普通高中教科书·生物学必修2 遗传与进化",
+   "edition": "沪科版",
+   "subject": "生物",
+   "graphBook": "bx2",
+   "bookId": "sh-hk-生物-s-bx2",
+   "system": "s",
+   "totalPages": 130,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "遗传的分子基础",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "DNA 是主要的遗传物质",
+       "startPage": 2
+      },
+      {
+       "no": "",
+       "name": "探究·活动 1-1 探讨 DNA 分子双螺旋结构的发现过程并制作模型",
+       "startPage": 7
+      },
+      {
+       "no": "第2节",
+       "name": "遗传信息通过复制和表达进行传递",
+       "startPage": 10
+      },
+      {
+       "no": "第3节",
+       "name": "基因选择性表达导致细胞的差异化",
+       "startPage": 20
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "有性生殖中的遗传信息传递",
+     "startPage": 29,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "有性生殖中遗传信息通过配子传递给子代",
+       "startPage": 30
+      },
+      {
+       "no": "",
+       "name": "探究·建模 2-1 模拟减数分裂过程中染色体的变化",
+       "startPage": 34
+      },
+      {
+       "no": "第2节",
+       "name": "亲代基因传递给子代遵循特定规律",
+       "startPage": 38
+      },
+      {
+       "no": "",
+       "name": "探究·建模 2-2 模拟植物花色性状分离",
+       "startPage": 42
+      },
+      {
+       "no": "第3节",
+       "name": "性染色体上的基因传递与性别相关联",
+       "startPage": 47
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "可遗传的变异",
+     "startPage": 57,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "基因重组造成变异的多样性",
+       "startPage": 58
+      },
+      {
+       "no": "第2节",
+       "name": "基因突变是生物变异的根本来源",
+       "startPage": 63
+      },
+      {
+       "no": "第3节",
+       "name": "染色体变异会导致性状变化",
+       "startPage": 70
+      },
+      {
+       "no": "第4节",
+       "name": "人类遗传病可以检测和预防",
+       "startPage": 80
+      },
+      {
+       "no": "",
+       "name": "探究·活动 3-1 人类常见遗传病的调查分析和预防宣传",
+       "startPage": 86
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "生物的进化",
+     "startPage": 91,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "多种证据表明生物具有共同祖先",
+       "startPage": 92
+      },
+      {
+       "no": "第2节",
+       "name": "生物进化理论在不断发展",
+       "startPage": 99
+      },
+      {
+       "no": "",
+       "name": "探究·活动 4-1 探讨细菌耐药性与抗生素使用的关系",
+       "startPage": 102
+      },
+      {
+       "no": "",
+       "name": "探究·建模 4-2 模拟自然选择对种群基因频率的影响",
+       "startPage": 106
+      },
+      {
+       "no": "第3节",
+       "name": "物种形成和灭绝是进化过程中的必然事件",
+       "startPage": 110
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-生物-s-xzxbx1": {
+   "title": "普通高中教科书·生物学选择性必修1 稳态与调节",
+   "edition": "沪科版",
+   "subject": "生物",
+   "graphBook": "xzxbx1",
+   "bookId": "sh-hk-生物-s-xzxbx1",
+   "system": "s",
+   "totalPages": 122,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "人体的内环境和稳态",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "内环境是机体细胞赖以生存的环境",
+       "startPage": 2
+      },
+      {
+       "no": "第2节",
+       "name": "内环境稳态是机体细胞生命活动的保障",
+       "startPage": 7
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-1 探究生物体维持pH稳定的机制",
+       "startPage": 11
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "人体的神经调节",
+     "startPage": 19,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "反射是神经调节的基本方式",
+       "startPage": 20
+      },
+      {
+       "no": "第2节",
+       "name": "神经调节过程涉及信息的转换及传递",
+       "startPage": 23
+      },
+      {
+       "no": "第3节",
+       "name": "神经中枢调控机体的生命活动",
+       "startPage": 30
+      },
+      {
+       "no": "第4节",
+       "name": "条件反射是大脑的高级调节功能",
+       "startPage": 36
+      },
+      {
+       "no": "",
+       "name": "探究·活动 2-1 成瘾的生理基础及危害",
+       "startPage": 39
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "人体的体液调节",
+     "startPage": 45,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "激素调节是体液调节的主要形式",
+       "startPage": 46
+      },
+      {
+       "no": "",
+       "name": "探究·活动 3-1 模拟诊疗",
+       "startPage": 48
+      },
+      {
+       "no": "第2节",
+       "name": "激素通过反馈调节和分级调节维持稳态",
+       "startPage": 51
+      },
+      {
+       "no": "",
+       "name": "探究·活动 3-2 认识生活中使用激素类物质对人体健康的影响",
+       "startPage": 54
+      },
+      {
+       "no": "第3节",
+       "name": "神经调节与体液调节共同维持稳态",
+       "startPage": 56
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "人体的免疫调节",
+     "startPage": 65,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "免疫系统是免疫调节的基础",
+       "startPage": 66
+      },
+      {
+       "no": "第2节",
+       "name": "免疫系统具有防御功能",
+       "startPage": 73
+      },
+      {
+       "no": "",
+       "name": "探究·建模 4-1 构建炎症反应的概念模型",
+       "startPage": 74
+      },
+      {
+       "no": "第3节",
+       "name": "B、T淋巴细胞参与特异性免疫应答",
+       "startPage": 78
+      },
+      {
+       "no": "第4节",
+       "name": "免疫功能异常可能引发疾病",
+       "startPage": 83
+      }
+     ]
+    },
+    {
+     "no": "第5章",
+     "name": "植物生命活动的调节",
+     "startPage": 91,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生长素对植物生长的调节作用",
+       "startPage": 92
+      },
+      {
+       "no": "第2节",
+       "name": "植物激素及其类似物调节植物的生命活动",
+       "startPage": 99
+      },
+      {
+       "no": "",
+       "name": "探究·实验 5-1 探究乙烯利对香蕉的催熟效果",
+       "startPage": 101
+      },
+      {
+       "no": "",
+       "name": "探究·实验 5-2 探究植物生长素类似物对扦插枝条生根的作用",
+       "startPage": 105
+      },
+      {
+       "no": "第3节",
+       "name": "环境因素参与植物生命活动的调节",
+       "startPage": 108
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-生物-s-xzxbx2": {
+   "title": "普通高中教科书·生物学选择性必修2 生物与环境",
+   "edition": "沪科版",
+   "subject": "生物",
+   "graphBook": "xzxbx2",
+   "bookId": "sh-hk-生物-s-xzxbx2",
+   "system": "s",
+   "totalPages": 118,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "种群和群落",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "种群特征及其影响因素",
+       "startPage": 2
+      },
+      {
+       "no": "第2节",
+       "name": "用数学方法描述种群数量的变动规律",
+       "startPage": 9
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-1 探究培养液中酵母菌种群数量的变化规律",
+       "startPage": 14
+      },
+      {
+       "no": "第3节",
+       "name": "群落是多物种种群形成的复杂空间结构",
+       "startPage": 17
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-2 探究土壤中动物类群的丰富度",
+       "startPage": 20
+      },
+      {
+       "no": "",
+       "name": "探究·活动 1-3 调查城市常见鸟类生态位",
+       "startPage": 26
+      },
+      {
+       "no": "第4节",
+       "name": "群落演替是生物与环境相互作用的结果",
+       "startPage": 28
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "生态系统的结构与功能",
+     "startPage": 35,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生态系统各组分紧密联系成一体",
+       "startPage": 36
+      },
+      {
+       "no": "第2节",
+       "name": "能量在单向流动中逐级递减",
+       "startPage": 42
+      },
+      {
+       "no": "第3节",
+       "name": "物质在生态系统中循环利用",
+       "startPage": 49
+      },
+      {
+       "no": "",
+       "name": "探究·活动 2-1 调查本地一个生态系统的能量流动或物质循环",
+       "startPage": 53
+      },
+      {
+       "no": "第4节",
+       "name": "生态系统运行离不开信息传递",
+       "startPage": 55
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "生态系统的相对稳定性",
+     "startPage": 63,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生态系统具有维持动态平衡的能力",
+       "startPage": 64
+      },
+      {
+       "no": "",
+       "name": "探究·实验 3-1 设计并制作生态瓶",
+       "startPage": 68
+      },
+      {
+       "no": "第2节",
+       "name": "生态系统的稳定性受到各种干扰的影响",
+       "startPage": 71
+      },
+      {
+       "no": "",
+       "name": "探究·活动 3-2 设计保持和提高某个生态系统稳定性的方案",
+       "startPage": 75
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "生态环境的保护",
+     "startPage": 81,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "人口增长影响生态环境",
+       "startPage": 82
+      },
+      {
+       "no": "",
+       "name": "探究·活动 4-1 调查身边的环境问题",
+       "startPage": 87
+      },
+      {
+       "no": "第2节",
+       "name": "生物多样性关系到生态系统稳定及人类生存和发展",
+       "startPage": 89
+      },
+      {
+       "no": "",
+       "name": "探究·活动 4-2 探讨身边的生物多样性保护现状",
+       "startPage": 95
+      },
+      {
+       "no": "第3节",
+       "name": "保护环境实现人与自然和谐共生",
+       "startPage": 99
+      },
+      {
+       "no": "",
+       "name": "探究·活动 4-3 了解身边的人工生态系统",
+       "startPage": 101
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-生物-s-xzxbx3": {
+   "title": "普通高中教科书·生物学选择性必修3 生物技术与工程",
+   "edition": "沪科版",
+   "subject": "生物",
+   "graphBook": "xzxbx3",
+   "bookId": "sh-hk-生物-s-xzxbx3",
+   "system": "s",
+   "totalPages": 130,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1章",
+     "name": "发酵工程",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "获得纯种微生物是发酵工程的基础",
+       "startPage": 2
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-1 酵母浸粉胨葡萄糖培养基的配制",
+       "startPage": 6
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-2 酵母的分离和纯化",
+       "startPage": 8
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-3 土壤中分解尿素细菌的分离与计数",
+       "startPage": 12
+      },
+      {
+       "no": "第2节",
+       "name": "发酵工程为人类提供多样化生物产品",
+       "startPage": 15
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-4 果酒和果醋的制作",
+       "startPage": 17
+      },
+      {
+       "no": "",
+       "name": "探究·实验 1-5 酸奶的制作",
+       "startPage": 19
+      },
+      {
+       "no": "",
+       "name": "探究·活动 1-6 虚拟仿真：发酵条件对微生物发酵的影响",
+       "startPage": 24
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "细胞工程",
+     "startPage": 33,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "利用植物细胞工程培育新植株",
+       "startPage": 34
+      },
+      {
+       "no": "",
+       "name": "探究·实验 2-1 月季的快速繁殖",
+       "startPage": 39
+      },
+      {
+       "no": "第2节",
+       "name": "利用动物细胞工程改良动物细胞",
+       "startPage": 43
+      },
+      {
+       "no": "",
+       "name": "探究·活动 2-2 收集单克隆抗体的应用实例",
+       "startPage": 47
+      },
+      {
+       "no": "第3节",
+       "name": "利用胚胎工程快速繁育优良动物品种",
+       "startPage": 57
+      }
+     ]
+    },
+    {
+     "no": "第 3 章",
+     "name": "基因工程",
+     "startPage": 65,
+     "sections": [
+      {
+       "no": "第 1 节",
+       "name": "基因工程赋予生物新的遗传特性",
+       "startPage": 66
+      },
+      {
+       "no": "第 2 节",
+       "name": "基因工程是一种重组 DNA 技术",
+       "startPage": 73
+      },
+      {
+       "no": "",
+       "name": "探究·建模 3-1 模拟限制性内切核酸酶的切割作用",
+       "startPage": 75
+      },
+      {
+       "no": "",
+       "name": "探究·实验 3-2 DNA 的提取和鉴定",
+       "startPage": 79
+      },
+      {
+       "no": "",
+       "name": "探究·实验 3-3 PCR 扩增 DNA 的原理和操作",
+       "startPage": 81
+      },
+      {
+       "no": "",
+       "name": "探究·建模 3-4 模拟 DNA 分子重组",
+       "startPage": 83
+      },
+      {
+       "no": "",
+       "name": "探究·实验 3-5 PCR 扩增产物的凝胶电泳鉴定",
+       "startPage": 86
+      },
+      {
+       "no": "第 3 节",
+       "name": "蛋白质工程是基因工程的延伸",
+       "startPage": 89
+      }
+     ]
+    },
+    {
+     "no": "第 4 章",
+     "name": "生物技术安全与伦理",
+     "startPage": 103,
+     "sections": [
+      {
+       "no": "第 1 节",
+       "name": "转基因产品的安全性引发社会广泛关注",
+       "startPage": 104
+      },
+      {
+       "no": "",
+       "name": "探究·活动 4-1 辩论：转基因食品是否安全？",
+       "startPage": 109
+      },
+      {
+       "no": "第 2 节",
+       "name": "生殖性克隆人带来诸多伦理问题",
+       "startPage": 111
+      },
+      {
+       "no": "",
+       "name": "探究·活动 4-2 讨论：你是否支持设计试管婴儿？",
+       "startPage": 113
+      },
+      {
+       "no": "第 3 节",
+       "name": "全面禁止生物武器",
+       "startPage": 115
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-化学-w-8": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•化学八年级全一册",
+   "edition": "沪科版",
+   "subject": "化学",
+   "graphBook": "8",
+   "bookId": "sh-hk-化学-w-8",
+   "system": "w",
+   "totalPages": 186,
+   "tocPages": [
+    5,
+    6,
+    9
+   ],
+   "chapters": [
+    {
+     "no": "主题一",
+     "name": "化学的魅力",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "专题1",
+       "name": "化学使生活更美好",
+       "startPage": 2
+      },
+      {
+       "no": "课题1",
+       "name": "开启化学之门",
+       "startPage": 3
+      },
+      {
+       "no": "课题2",
+       "name": "通用的化学语言",
+       "startPage": 14
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 生活垃圾的分类与回收利用",
+       "startPage": 20
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 23
+      },
+      {
+       "no": "专题2",
+       "name": "体验化学实验探究",
+       "startPage": 26
+      },
+      {
+       "no": "课题1",
+       "name": "走进化学实验室",
+       "startPage": 27
+      },
+      {
+       "no": "课题2",
+       "name": "学习开展化学实验探究",
+       "startPage": 41
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 微型空气质量“检测站”的组装与使用",
+       "startPage": 48
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 51
+      }
+     ]
+    },
+    {
+     "no": "主题二",
+     "name": "常见的物质（上）",
+     "startPage": 55,
+     "sections": [
+      {
+       "no": "专题3",
+       "name": "空气、氧气、二氧化碳",
+       "startPage": 56
+      },
+      {
+       "no": "课题1",
+       "name": "空气的成分",
+       "startPage": 57
+      },
+      {
+       "no": "课题2",
+       "name": "氧气和二氧化碳的性质",
+       "startPage": 63
+      },
+      {
+       "no": "课题3",
+       "name": "氧气和二氧化碳的制备",
+       "startPage": 73
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 基于特定需求设计和制作简易供氧器",
+       "startPage": 81
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 84
+      }
+     ]
+    },
+    {
+     "no": "专题4",
+     "name": "水的性质与组成",
+     "startPage": 88,
+     "sections": [
+      {
+       "no": "课题1",
+       "name": "水的性质",
+       "startPage": 89
+      },
+      {
+       "no": "课题2",
+       "name": "水的自然循环与人工净化",
+       "startPage": 95
+      },
+      {
+       "no": "课题3",
+       "name": "水的组成",
+       "startPage": 103
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 水质检测及自制净水器",
+       "startPage": 108
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 111
+      }
+     ]
+    },
+    {
+     "no": "专题5",
+     "name": "物质的微观构成",
+     "startPage": 114,
+     "sections": [
+      {
+       "no": "课题1",
+       "name": "构成物质的微观粒子",
+       "startPage": 115
+      },
+      {
+       "no": "课题2",
+       "name": "组成物质的元素",
+       "startPage": 123
+      },
+      {
+       "no": "课题3",
+       "name": "结构多样的碳单质",
+       "startPage": 133
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 制作模型并展示科学家探索物质组成与结构的历程",
+       "startPage": 142
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 145
+      }
+     ]
+    },
+    {
+     "no": "专题6",
+     "name": "化学变化及其表示",
+     "startPage": 150,
+     "sections": [
+      {
+       "no": "课题1",
+       "name": "化学反应中各物质间的定量关系",
+       "startPage": 151
+      },
+      {
+       "no": "课题2",
+       "name": "化学反应的表示及基本类型",
+       "startPage": 157
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 基于碳中和理念设计低碳行动方案",
+       "startPage": 165
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 168
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 171,
+     "sections": []
+    },
+    {
+     "no": "专题1",
+     "name": "化学使生活更美好",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "课题1",
+       "name": "开启化学之门",
+       "startPage": null
+      },
+      {
+       "no": "课题2",
+       "name": "通用的化学语言",
+       "startPage": null
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 生活垃圾的分类与回收利用",
+       "startPage": null
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-1a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学一年级上册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "1a",
+   "bookId": "sh-hk-科学-w-1a",
+   "system": "w",
+   "totalPages": 94,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "",
+     "name": "走进科学课",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "第1单元",
+     "name": "感知世界",
+     "startPage": 11,
+     "sections": [
+      {
+       "no": "1",
+       "name": "人有哪些感官",
+       "startPage": 13
+      },
+      {
+       "no": "2",
+       "name": "感官怎样发挥作用",
+       "startPage": 18
+      }
+     ]
+    },
+    {
+     "no": "第2单元",
+     "name": "认识物体",
+     "startPage": 25,
+     "sections": [
+      {
+       "no": "1",
+       "name": "物体有哪些特征",
+       "startPage": 27
+      },
+      {
+       "no": "2",
+       "name": "怎样比较长短和轻重",
+       "startPage": 31
+      },
+      {
+       "no": "3",
+       "name": "怎样给物体分类",
+       "startPage": 35
+      }
+     ]
+    },
+    {
+     "no": "第3单元",
+     "name": "生机勃勃的大自然",
+     "startPage": 39,
+     "sections": [
+      {
+       "no": "1",
+       "name": "你认识哪些动植物",
+       "startPage": 41
+      },
+      {
+       "no": "2",
+       "name": "怎样观察动植物",
+       "startPage": 45
+      },
+      {
+       "no": "3",
+       "name": "动植物与我们的生活有什么关系",
+       "startPage": 48
+      }
+     ]
+    },
+    {
+     "no": "第4单元",
+     "name": "天气知多少",
+     "startPage": 53,
+     "sections": [
+      {
+       "no": "1",
+       "name": "天气现象有哪些",
+       "startPage": 55
+      },
+      {
+       "no": "2",
+       "name": "天气变化会带来哪些影响",
+       "startPage": 59
+      }
+     ]
+    },
+    {
+     "no": "第5单元",
+     "name": "从秋天到冬天",
+     "startPage": 67,
+     "sections": [
+      {
+       "no": "1",
+       "name": "秋天里会发生什么",
+       "startPage": 69
+      },
+      {
+       "no": "2",
+       "name": "冬天里会发生什么",
+       "startPage": 73
+      }
+     ]
+    },
+    {
+     "no": "第6单元",
+     "name": "小小工程师——植物标识牌",
+     "startPage": 80,
+     "sections": [
+      {
+       "no": "1",
+       "name": "明确任务并设计方案",
+       "startPage": 81
+      },
+      {
+       "no": "2",
+       "name": "制作并展示",
+       "startPage": 83
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-6a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学六年级上册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "6a",
+   "bookId": "sh-hk-科学-w-6a",
+   "system": "w",
+   "totalPages": 102,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1单元",
+     "name": "变化的物质世界",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1",
+       "name": "物质的性质及检测",
+       "startPage": 3
+      },
+      {
+       "no": "2",
+       "name": "物质的变化",
+       "startPage": 9
+      }
+     ]
+    },
+    {
+     "no": "第2单元",
+     "name": "能与生活",
+     "startPage": 16,
+     "sections": [
+      {
+       "no": "1",
+       "name": "生活中的热传递",
+       "startPage": 18
+      },
+      {
+       "no": "2",
+       "name": "生活中的声与光",
+       "startPage": 29
+      },
+      {
+       "no": "3",
+       "name": "生活中的电",
+       "startPage": 33
+      },
+      {
+       "no": "4",
+       "name": "能源及其利用",
+       "startPage": 39
+      }
+     ]
+    },
+    {
+     "no": "第3单元",
+     "name": "生命的延续",
+     "startPage": 46,
+     "sections": [
+      {
+       "no": "1",
+       "name": "细胞与生殖",
+       "startPage": 48
+      },
+      {
+       "no": "2",
+       "name": "多种多样的生物",
+       "startPage": 56
+      },
+      {
+       "no": "3",
+       "name": "生物的进化",
+       "startPage": 64
+      }
+     ]
+    },
+    {
+     "no": "第4单元",
+     "name": "小小工程师——节能小屋",
+     "startPage": 73,
+     "sections": [
+      {
+       "no": "1",
+       "name": "确定节能小屋的工程问题",
+       "startPage": 74
+      },
+      {
+       "no": "2",
+       "name": "节能小屋的设计和优化",
+       "startPage": 80
+      },
+      {
+       "no": "3",
+       "name": "制作节能小屋模型",
+       "startPage": 84
+      },
+      {
+       "no": "4",
+       "name": "发布节能小屋设计成果",
+       "startPage": 92
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hj-生物-w-7a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•生物学七年级上册",
+   "edition": "沪教版",
+   "subject": "生物",
+   "graphBook": "7a",
+   "bookId": "sh-hj-生物-w-7a",
+   "system": "w",
+   "totalPages": 134,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "序章",
+     "name": "走进生命世界",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "第一单元",
+     "name": "生物体的结构层次",
+     "startPage": 9,
+     "sections": []
+    },
+    {
+     "no": "第1章",
+     "name": "生物体的基本单位",
+     "startPage": 11,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "细胞的基本结构",
+       "startPage": 12
+      },
+      {
+       "no": "第2节",
+       "name": "细胞的生命活动和功能",
+       "startPage": 20
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "生物体的结构",
+     "startPage": 29,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "细胞的分裂和分化",
+       "startPage": 30
+      },
+      {
+       "no": "第2节",
+       "name": "生物体的构成",
+       "startPage": 35
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "绿色开花植物的生命周期",
+     "startPage": 53,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "植物的种子",
+       "startPage": 54
+      },
+      {
+       "no": "第2节",
+       "name": "植物的生长",
+       "startPage": 62
+      },
+      {
+       "no": "第3节",
+       "name": "植物的繁殖",
+       "startPage": 70
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "植物的物质运输与水循环",
+     "startPage": 85,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "植物的物质运输",
+       "startPage": 86
+      },
+      {
+       "no": "第2节",
+       "name": "植物与水循环",
+       "startPage": 93
+      }
+     ]
+    },
+    {
+     "no": "第5章",
+     "name": "植物的生命活动与碳氧平衡",
+     "startPage": 103,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "植物的光合作用",
+       "startPage": 104
+      },
+      {
+       "no": "第2节",
+       "name": "植物的呼吸作用",
+       "startPage": 113
+      },
+      {
+       "no": "第3节",
+       "name": "植物与碳氧平衡",
+       "startPage": 117
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-s-8a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书•物理八年级上册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "8a",
+   "bookId": "sh-hk-物理-s-8a",
+   "system": "s",
+   "totalPages": 154,
+   "tocPages": [
+    6,
+    7,
+    8
+   ],
+   "chapters": [
+    {
+     "no": "第一章",
+     "name": "走进物理世界",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "1.1",
+       "name": "神奇的物理学",
+       "startPage": 2
+      },
+      {
+       "no": "1.2",
+       "name": "测量长度和时间",
+       "startPage": 9
+      },
+      {
+       "no": "1.3",
+       "name": "长度和时间测量的应用",
+       "startPage": 16
+      },
+      {
+       "no": "1.4",
+       "name": "尝试科学探究",
+       "startPage": 20
+      }
+     ]
+    },
+    {
+     "no": "第二章",
+     "name": "声音与环境",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "2.1",
+       "name": "声音的产生与传播",
+       "startPage": 26
+      },
+      {
+       "no": "2.2",
+       "name": "音调",
+       "startPage": 32
+      },
+      {
+       "no": "2.3",
+       "name": "响度与音色",
+       "startPage": 37
+      },
+      {
+       "no": "2.4",
+       "name": "让声音为人类服务",
+       "startPage": 42
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 关于社区噪声污染控制的建议",
+       "startPage": 46
+      }
+     ]
+    },
+    {
+     "no": "第三章",
+     "name": "光和眼睛",
+     "startPage": null,
+     "sections": [
+      {
+       "no": "3.1",
+       "name": "光的传播与色散",
+       "startPage": 50
+      },
+      {
+       "no": "3.2",
+       "name": "光的反射定律",
+       "startPage": 55
+      },
+      {
+       "no": "3.3",
+       "name": "平面镜成像特点",
+       "startPage": 61
+      },
+      {
+       "no": "3.4",
+       "name": "光的折射规律",
+       "startPage": 66
+      },
+      {
+       "no": "3.5",
+       "name": "奇妙的透镜",
+       "startPage": 71
+      },
+      {
+       "no": "3.6",
+       "name": "凸透镜成像规律",
+       "startPage": 76
+      },
+      {
+       "no": "3.7",
+       "name": "眼睛与光学仪器",
+       "startPage": 80
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 用“水透镜”探究近视眼的形成原因",
+       "startPage": 81
+      }
+     ]
+    },
+    {
+     "no": "第四章",
+     "name": "物质的形态及其变化",
+     "startPage": 88,
+     "sections": [
+      {
+       "no": "4.1",
+       "name": "从全球变暖谈起",
+       "startPage": 88
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 当地产生“热岛效应”的原因调查",
+       "startPage": 94
+      },
+      {
+       "no": "4.2",
+       "name": "汽化和液化",
+       "startPage": 96
+      },
+      {
+       "no": "4.3",
+       "name": "熔化和凝固",
+       "startPage": 104
+      },
+      {
+       "no": "4.4",
+       "name": "升华和凝华",
+       "startPage": 109
+      },
+      {
+       "no": "4.5",
+       "name": "水循环与水资源",
+       "startPage": 112
+      }
+     ]
+    },
+    {
+     "no": "第五章",
+     "name": "质量与密度",
+     "startPage": 119,
+     "sections": [
+      {
+       "no": "5.1",
+       "name": "物体的质量",
+       "startPage": 119
+      },
+      {
+       "no": "5.2",
+       "name": "物质的密度",
+       "startPage": 126
+      },
+      {
+       "no": "5.3",
+       "name": "密度知识的应用",
+       "startPage": 129
+      },
+      {
+       "no": "5.4",
+       "name": "物质的一些物理属性",
+       "startPage": 136
+      },
+      {
+       "no": "5.5",
+       "name": "新材料及其应用",
+       "startPage": 141
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 1. 浓墨涂层大量吸收电磁波的实验研究",
+       "startPage": 142
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 2. 探究二极管的单向导电性",
+       "startPage": 142
+      },
+      {
+       "no": "",
+       "name": "跨学科实践 3. 调查超导材料的研究进展与应用前景",
+       "startPage": 143
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-w-8a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•物理八年级上册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "8a",
+   "bookId": "sh-hk-物理-w-8a",
+   "system": "w",
+   "totalPages": 157,
+   "tocPages": [
+    6,
+    7,
+    8
+   ],
+   "chapters": [
+    {
+     "no": "序言",
+     "name": "踏上物理学奇妙旅途",
+     "startPage": 1,
+     "sections": []
+    },
+    {
+     "no": "第1章",
+     "name": "测量",
+     "startPage": 7,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "长度的测量",
+       "startPage": 8
+      },
+      {
+       "no": "第2节",
+       "name": "时间的测量",
+       "startPage": 15
+      },
+      {
+       "no": "第3节",
+       "name": "质量的测量",
+       "startPage": 20
+      },
+      {
+       "no": "",
+       "name": "跨学科实践·体质的测量与评价",
+       "startPage": 25
+      }
+     ]
+    },
+    {
+     "no": "第2章",
+     "name": "机械运动",
+     "startPage": 30,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "运动与静止",
+       "startPage": 31
+      },
+      {
+       "no": "第2节",
+       "name": "运动的快慢",
+       "startPage": 35
+      },
+      {
+       "no": "第3节",
+       "name": "速度的测量",
+       "startPage": 40
+      }
+     ]
+    },
+    {
+     "no": "第3章",
+     "name": "声现象",
+     "startPage": 47,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "声音的产生和传播",
+       "startPage": 48
+      },
+      {
+       "no": "第2节",
+       "name": "声音的特性",
+       "startPage": 54
+      },
+      {
+       "no": "第3节",
+       "name": "声波的应用和控制",
+       "startPage": 61
+      },
+      {
+       "no": "",
+       "name": "跨学科实践·简单乐器的制作",
+       "startPage": 66
+      }
+     ]
+    },
+    {
+     "no": "第4章",
+     "name": "光现象",
+     "startPage": 72,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "光的反射",
+       "startPage": 73
+      },
+      {
+       "no": "第2节",
+       "name": "平面镜成像",
+       "startPage": 82
+      },
+      {
+       "no": "第3节",
+       "name": "光的折射",
+       "startPage": 89
+      },
+      {
+       "no": "第4节",
+       "name": "凸透镜成像",
+       "startPage": 95
+      },
+      {
+       "no": "第5节",
+       "name": "透镜的应用",
+       "startPage": 103
+      }
+     ]
+    },
+    {
+     "no": "第5章",
+     "name": "运动和力",
+     "startPage": 114,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "力",
+       "startPage": 115
+      },
+      {
+       "no": "第2节",
+       "name": "弹力 重力",
+       "startPage": 120
+      },
+      {
+       "no": "第3节",
+       "name": "二力合成 二力平衡",
+       "startPage": 126
+      },
+      {
+       "no": "第4节",
+       "name": "摩擦力",
+       "startPage": 132
+      },
+      {
+       "no": "第5节",
+       "name": "牛顿第一定律",
+       "startPage": 137
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-1b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学一年级下册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "1b",
+   "bookId": "sh-hk-科学-w-1b",
+   "system": "w",
+   "totalPages": 94,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1单元",
+     "name": "动物运动会",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1",
+       "name": "谁是游泳高手",
+       "startPage": 3
+      },
+      {
+       "no": "2",
+       "name": "谁是跑跳健将",
+       "startPage": 6
+      },
+      {
+       "no": "3",
+       "name": "谁是飞行能手",
+       "startPage": 8
+      }
+     ]
+    },
+    {
+     "no": "第2单元",
+     "name": "常见植物博览会",
+     "startPage": 14,
+     "sections": [
+      {
+       "no": "1",
+       "name": "身边的常见植物有哪些",
+       "startPage": 16
+      },
+      {
+       "no": "2",
+       "name": "常见植物的特征有哪些",
+       "startPage": 20
+      }
+     ]
+    },
+    {
+     "no": "第3单元",
+     "name": "季节的变化",
+     "startPage": 29,
+     "sections": [
+      {
+       "no": "1",
+       "name": "春天里会发生什么",
+       "startPage": 31
+      },
+      {
+       "no": "2",
+       "name": "夏天里会发生什么",
+       "startPage": 36
+      },
+      {
+       "no": "3",
+       "name": "季节变化有哪些规律",
+       "startPage": 40
+      }
+     ]
+    },
+    {
+     "no": "第4单元",
+     "name": "看不见的空气",
+     "startPage": 48,
+     "sections": [
+      {
+       "no": "1",
+       "name": "空气在哪里",
+       "startPage": 50
+      },
+      {
+       "no": "2",
+       "name": "空气是什么样的",
+       "startPage": 54
+      },
+      {
+       "no": "3",
+       "name": "为什么空气很重要",
+       "startPage": 57
+      }
+     ]
+    },
+    {
+     "no": "第5单元",
+     "name": "身边的材料",
+     "startPage": 62,
+     "sections": [
+      {
+       "no": "1",
+       "name": "身边物品是用哪些材料做的",
+       "startPage": 64
+      },
+      {
+       "no": "2",
+       "name": "木材、塑料和金属各有什么特点",
+       "startPage": 68
+      },
+      {
+       "no": "3",
+       "name": "纸有什么特点",
+       "startPage": 74
+      }
+     ]
+    },
+    {
+     "no": "第6单元",
+     "name": "小小工程师——创意花盆",
+     "startPage": 80,
+     "sections": [
+      {
+       "no": "1",
+       "name": "怎样的花盆适合植物",
+       "startPage": 81
+      },
+      {
+       "no": "2",
+       "name": "设计和制作创意花盆",
+       "startPage": 83
+      },
+      {
+       "no": "3",
+       "name": "展示和评价创意花盆",
+       "startPage": 86
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-6b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学六年级下册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "6b",
+   "bookId": "sh-hk-科学-w-6b",
+   "system": "w",
+   "totalPages": 94,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1单元",
+     "name": "人体与健康",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1",
+       "name": "食物与营养",
+       "startPage": 3
+      },
+      {
+       "no": "2",
+       "name": "脑与协调",
+       "startPage": 13
+      },
+      {
+       "no": "3",
+       "name": "平衡与健康",
+       "startPage": 22
+      }
+     ]
+    },
+    {
+     "no": "第2单元",
+     "name": "步入青春期",
+     "startPage": 27,
+     "sections": [
+      {
+       "no": "1",
+       "name": "从新生命走向成熟",
+       "startPage": 29
+      },
+      {
+       "no": "2",
+       "name": "青春期的变化",
+       "startPage": 33
+      },
+      {
+       "no": "3",
+       "name": "青春期保健",
+       "startPage": 39
+      }
+     ]
+    },
+    {
+     "no": "第3单元",
+     "name": "宇宙探秘",
+     "startPage": 46,
+     "sections": [
+      {
+       "no": "1",
+       "name": "太阳系",
+       "startPage": 48
+      },
+      {
+       "no": "2",
+       "name": "恒星与星座",
+       "startPage": 54
+      },
+      {
+       "no": "3",
+       "name": "太空探索",
+       "startPage": 59
+      }
+     ]
+    },
+    {
+     "no": "第4单元",
+     "name": "小小工程师——火星车",
+     "startPage": 72,
+     "sections": [
+      {
+       "no": "1",
+       "name": "确定火星车的工程问题",
+       "startPage": 73
+      },
+      {
+       "no": "2",
+       "name": "设计火星车方案",
+       "startPage": 76
+      },
+      {
+       "no": "3",
+       "name": "制作火星车",
+       "startPage": 81
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hj-生物-w-7b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•生物学七年级下册",
+   "edition": "沪教版",
+   "subject": "生物",
+   "graphBook": "7b",
+   "bookId": "sh-hj-生物-w-7b",
+   "system": "w",
+   "totalPages": 158,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第6章",
+     "name": "生物的分类",
+     "startPage": 3,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生物的分类等级",
+       "startPage": 4
+      },
+      {
+       "no": "第2节",
+       "name": "生物的基本分类单位",
+       "startPage": 10
+      }
+     ]
+    },
+    {
+     "no": "第7章",
+     "name": "藻类、植物与动物",
+     "startPage": 19,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "藻类与植物的特征及类群",
+       "startPage": 20
+      },
+      {
+       "no": "第2节",
+       "name": "动物的特征及类群",
+       "startPage": 29
+      },
+      {
+       "no": "第3节",
+       "name": "动植物对人类的影响",
+       "startPage": 47
+      }
+     ]
+    },
+    {
+     "no": "第8章",
+     "name": "生物圈中的微生物",
+     "startPage": 55,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "真菌——有成形细胞核的生物",
+       "startPage": 56
+      },
+      {
+       "no": "第2节",
+       "name": "细菌——无成形细胞核的生物",
+       "startPage": 63
+      },
+      {
+       "no": "第3节",
+       "name": "病毒——无细胞结构的生物",
+       "startPage": 70
+      }
+     ]
+    },
+    {
+     "no": "第9章",
+     "name": "生物的多样性及其保护",
+     "startPage": 85,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "认识生物的多样性",
+       "startPage": 86
+      },
+      {
+       "no": "第2节",
+       "name": "保护生物的多样性",
+       "startPage": 93
+      }
+     ]
+    },
+    {
+     "no": "第10章",
+     "name": "生物与环境",
+     "startPage": 105,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生物与环境的关系",
+       "startPage": 106
+      },
+      {
+       "no": "第2节",
+       "name": "生态系统的组成与功能",
+       "startPage": 113
+      },
+      {
+       "no": "第3节",
+       "name": "生物圈是最大的生态系统",
+       "startPage": 121
+      }
+     ]
+    },
+    {
+     "no": "第11章",
+     "name": "环境保护与生态安全",
+     "startPage": 129,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生态系统的自我调节",
+       "startPage": 130
+      },
+      {
+       "no": "第2节",
+       "name": "生态安全与可持续发展",
+       "startPage": 139
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-w-8b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•物理八年级下册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "8b",
+   "bookId": "sh-hk-物理-w-8b",
+   "system": "w",
+   "totalPages": 138,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第6章",
+     "name": "密度与压强",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "物质的密度",
+       "startPage": 2
+      },
+      {
+       "no": "第2节",
+       "name": "固体、液体密度的测量",
+       "startPage": 8
+      },
+      {
+       "no": "第3节",
+       "name": "压力与压强",
+       "startPage": 13
+      },
+      {
+       "no": "第4节",
+       "name": "液体压强",
+       "startPage": 19
+      },
+      {
+       "no": "第5节",
+       "name": "大气压强",
+       "startPage": 27
+      },
+      {
+       "no": "第6节",
+       "name": "流体压强与流速的关系",
+       "startPage": 32
+      }
+     ]
+    },
+    {
+     "no": "第7章",
+     "name": "浮力",
+     "startPage": 40,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "浮力",
+       "startPage": 41
+      },
+      {
+       "no": "第2节",
+       "name": "阿基米德原理",
+       "startPage": 46
+      },
+      {
+       "no": "第3节",
+       "name": "浮沉的条件及应用",
+       "startPage": 52
+      },
+      {
+       "no": "",
+       "name": "跨学科实践·我国造船技术的发展",
+       "startPage": 57
+      }
+     ]
+    },
+    {
+     "no": "第8章",
+     "name": "简单机械 功和能",
+     "startPage": 63,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "杠杆",
+       "startPage": 64
+      },
+      {
+       "no": "第2节",
+       "name": "滑轮",
+       "startPage": 72
+      },
+      {
+       "no": "第3节",
+       "name": "功与功率",
+       "startPage": 77
+      },
+      {
+       "no": "第4节",
+       "name": "机械能及其转化",
+       "startPage": 84
+      },
+      {
+       "no": "第5节",
+       "name": "机械效率",
+       "startPage": 90
+      },
+      {
+       "no": "",
+       "name": "跨学科实践·斜拉桥的原理与模型制作",
+       "startPage": 94
+      }
+     ]
+    },
+    {
+     "no": "第9章",
+     "name": "物态变化",
+     "startPage": 103,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "温度",
+       "startPage": 104
+      },
+      {
+       "no": "第2节",
+       "name": "汽化和液化",
+       "startPage": 111
+      },
+      {
+       "no": "第3节",
+       "name": "熔化和凝固",
+       "startPage": 117
+      },
+      {
+       "no": "第4节",
+       "name": "升华和凝华",
+       "startPage": 122
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-2a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学二年级上册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "2a",
+   "bookId": "sh-hk-科学-w-2a",
+   "system": "w",
+   "totalPages": 86,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1单元",
+     "name": "我们离不开水",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1",
+       "name": "水在哪里",
+       "startPage": 3
+      },
+      {
+       "no": "2",
+       "name": "水是怎样的",
+       "startPage": 6
+      },
+      {
+       "no": "3",
+       "name": "为什么水很重要",
+       "startPage": 11
+      }
+     ]
+    },
+    {
+     "no": "第2单元",
+     "name": "位置与方向",
+     "startPage": 16,
+     "sections": [
+      {
+       "no": "1",
+       "name": "如何判断位置",
+       "startPage": 18
+      },
+      {
+       "no": "2",
+       "name": "如何判断方向",
+       "startPage": 23
+      }
+     ]
+    },
+    {
+     "no": "第3单元",
+     "name": "推和拉",
+     "startPage": 30,
+     "sections": [
+      {
+       "no": "1",
+       "name": "推和拉都要用力吗",
+       "startPage": 32
+      },
+      {
+       "no": "2",
+       "name": "施加推力还是拉力",
+       "startPage": 36
+      }
+     ]
+    },
+    {
+     "no": "第4单元",
+     "name": "小小工程师——纸桥",
+     "startPage": 42,
+     "sections": [
+      {
+       "no": "1",
+       "name": "制作纸桥并发现问题",
+       "startPage": 43
+      },
+      {
+       "no": "2",
+       "name": "提高纸桥的承重本领",
+       "startPage": 46
+      }
+     ]
+    },
+    {
+     "no": "第5单元",
+     "name": "衣服材料",
+     "startPage": 49,
+     "sections": [
+      {
+       "no": "1",
+       "name": "你了解衣服吗",
+       "startPage": 51
+      },
+      {
+       "no": "2",
+       "name": "做衣服的材料有哪些",
+       "startPage": 54
+      },
+      {
+       "no": "3",
+       "name": "衣服是怎样制成的",
+       "startPage": 61
+      }
+     ]
+    },
+    {
+     "no": "第6单元",
+     "name": "动物的生存",
+     "startPage": 67,
+     "sections": [
+      {
+       "no": "1",
+       "name": "动物住在哪里",
+       "startPage": 69
+      },
+      {
+       "no": "2",
+       "name": "动物如何获取食物",
+       "startPage": 73
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hj-生物-w-8a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•生物学八年级上册",
+   "edition": "沪教版",
+   "subject": "生物",
+   "graphBook": "8a",
+   "bookId": "sh-hj-生物-w-8a",
+   "system": "w",
+   "totalPages": 147,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第12章",
+     "name": "消化系统与营养摄取",
+     "startPage": 3,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "食物中的营养物质",
+       "startPage": 4
+      },
+      {
+       "no": "第2节",
+       "name": "食物的消化和吸收",
+       "startPage": 11
+      }
+     ]
+    },
+    {
+     "no": "第13章",
+     "name": "血液循环系统与物质运输",
+     "startPage": 23,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "血液的组成和功能",
+       "startPage": 24
+      },
+      {
+       "no": "第2节",
+       "name": "血管与心脏",
+       "startPage": 30
+      },
+      {
+       "no": "第3节",
+       "name": "血液循环与物质运输",
+       "startPage": 37
+      }
+     ]
+    },
+    {
+     "no": "第14章",
+     "name": "呼吸系统与气体交换",
+     "startPage": 43,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "呼吸与呼吸系统",
+       "startPage": 44
+      },
+      {
+       "no": "第2节",
+       "name": "呼吸运动与气体交换",
+       "startPage": 50
+      }
+     ]
+    },
+    {
+     "no": "第15章",
+     "name": "泌尿系统与废物排泄",
+     "startPage": 59,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "泌尿系统的结构",
+       "startPage": 60
+      },
+      {
+       "no": "第2节",
+       "name": "代谢产物的排泄",
+       "startPage": 65
+      }
+     ]
+    },
+    {
+     "no": "第16章",
+     "name": "神经系统与神经调节",
+     "startPage": 75,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "神经系统的组成",
+       "startPage": 76
+      },
+      {
+       "no": "第2节",
+       "name": "神经系统与人体运动",
+       "startPage": 83
+      },
+      {
+       "no": "第3节",
+       "name": "人体主要的感觉器官",
+       "startPage": 87
+      }
+     ]
+    },
+    {
+     "no": "第17章",
+     "name": "内分泌系统与激素调节",
+     "startPage": 97,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "人体的激素",
+       "startPage": 98
+      },
+      {
+       "no": "第2节",
+       "name": "性激素与青春期",
+       "startPage": 106
+      }
+     ]
+    },
+    {
+     "no": "第18章",
+     "name": "免疫系统与免疫防御",
+     "startPage": 115,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "人体的三道防线",
+       "startPage": 116
+      },
+      {
+       "no": "第2节",
+       "name": "疫苗与免疫",
+       "startPage": 124
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-w-9a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•物理九年级上册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "9a",
+   "bookId": "sh-hk-物理-w-9a",
+   "system": "w",
+   "totalPages": 129,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第10章",
+     "name": "内能",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "热量 比热容",
+       "startPage": 2
+      },
+      {
+       "no": "第2节",
+       "name": "内能",
+       "startPage": 9
+      },
+      {
+       "no": "第3节",
+       "name": "热机及其工作原理",
+       "startPage": 14
+      },
+      {
+       "no": "第4节",
+       "name": "热机的效率",
+       "startPage": 19
+      },
+      {
+       "no": "",
+       "name": "跨学科实践·城市“热岛效应”的调研",
+       "startPage": 24
+      }
+     ]
+    },
+    {
+     "no": "第11章",
+     "name": "静电与电流",
+     "startPage": 30,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "简单的静电现象",
+       "startPage": 31
+      },
+      {
+       "no": "第2节",
+       "name": "电流",
+       "startPage": 36
+      },
+      {
+       "no": "第3节",
+       "name": "电压",
+       "startPage": 44
+      },
+      {
+       "no": "第4节",
+       "name": "串联电路和并联电路",
+       "startPage": 49
+      },
+      {
+       "no": "第5节",
+       "name": "串联电路和并联电路中电流、电压的特点",
+       "startPage": 55
+      }
+     ]
+    },
+    {
+     "no": "第12章",
+     "name": "欧姆定律",
+     "startPage": 66,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "电阻 变阻器",
+       "startPage": 67
+      },
+      {
+       "no": "第2节",
+       "name": "电流与电压、电阻的关系",
+       "startPage": 74
+      },
+      {
+       "no": "第3节",
+       "name": "电阻的测量",
+       "startPage": 80
+      },
+      {
+       "no": "第4节",
+       "name": "电阻的串联和并联",
+       "startPage": 84
+      },
+      {
+       "no": "",
+       "name": "半导体材料的应用",
+       "startPage": 91
+      }
+     ]
+    },
+    {
+     "no": "第13章",
+     "name": "电功率",
+     "startPage": 98,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "电功",
+       "startPage": 99
+      },
+      {
+       "no": "第2节",
+       "name": "电功率",
+       "startPage": 104
+      },
+      {
+       "no": "第3节",
+       "name": "焦耳定律",
+       "startPage": 108
+      },
+      {
+       "no": "第4节",
+       "name": "家庭电路",
+       "startPage": 113
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-化学-w-9": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•化学九年级全一册",
+   "edition": "沪科版",
+   "subject": "化学",
+   "graphBook": "9",
+   "bookId": "sh-hk-化学-w-9",
+   "system": "w",
+   "totalPages": 154,
+   "tocPages": [
+    5,
+    6
+   ],
+   "chapters": [
+    {
+     "no": "专题7",
+     "name": "溶液",
+     "startPage": 2,
+     "sections": [
+      {
+       "no": "课题1",
+       "name": "初探溶液",
+       "startPage": 3
+      },
+      {
+       "no": "课题2",
+       "name": "探究物质的溶解性",
+       "startPage": 10
+      },
+      {
+       "no": "课题3",
+       "name": "学会定量表示溶液的组成",
+       "startPage": 20
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 海洋资源的综合利用与制盐",
+       "startPage": 26
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 29
+      }
+     ]
+    },
+    {
+     "no": "专题8",
+     "name": "酸、碱、盐",
+     "startPage": 32,
+     "sections": [
+      {
+       "no": "课题1",
+       "name": "初识酸和碱",
+       "startPage": 33
+      },
+      {
+       "no": "课题2",
+       "name": "认识酸、碱、盐的性质与应用",
+       "startPage": 42
+      },
+      {
+       "no": "课题3",
+       "name": "调节土壤酸碱性与施用营养元素",
+       "startPage": 55
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 探究土壤酸碱性对植物生长的影响",
+       "startPage": 65
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 69
+      }
+     ]
+    },
+    {
+     "no": "主题六",
+     "name": "物质的化学变化（下）",
+     "startPage": 73,
+     "sections": []
+    },
+    {
+     "no": "专题9",
+     "name": "化学反应的调控",
+     "startPage": 74,
+     "sections": [
+      {
+       "no": "课题1",
+       "name": "认识燃烧与燃料",
+       "startPage": 75
+      },
+      {
+       "no": "课题2",
+       "name": "调控燃烧的方法",
+       "startPage": 83
+      },
+      {
+       "no": "课题3",
+       "name": "防止金属腐蚀的措施",
+       "startPage": 89
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 调查家用燃料的变迁与合理使用",
+       "startPage": 98
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 101
+      }
+     ]
+    },
+    {
+     "no": "专题10",
+     "name": "化学与人类社会进步",
+     "startPage": 104,
+     "sections": [
+      {
+       "no": "课题1",
+       "name": "化学引领新能源的开发",
+       "startPage": 105
+      },
+      {
+       "no": "课题2",
+       "name": "健康生活离不开化学",
+       "startPage": 112
+      },
+      {
+       "no": "课题3",
+       "name": "化学为人类提供丰富的材料",
+       "startPage": 120
+      },
+      {
+       "no": "",
+       "name": "跨学科实践活动 调查我国航天科技领域中新型材料、新型能源的应用",
+       "startPage": 133
+      },
+      {
+       "no": "",
+       "name": "专题复习",
+       "startPage": 137
+      }
+     ]
+    },
+    {
+     "no": "",
+     "name": "附录",
+     "startPage": 140,
+     "sections": []
+    }
+   ]
+  },
+  "sh-hj-生物-w-8b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•生物学八年级下册",
+   "edition": "沪教版",
+   "subject": "生物",
+   "graphBook": "8b",
+   "bookId": "sh-hj-生物-w-8b",
+   "system": "w",
+   "totalPages": 142,
+   "tocPages": [
+    6,
+    7
+   ],
+   "chapters": [
+    {
+     "no": "第19章",
+     "name": "生活方式与人体健康",
+     "startPage": 3,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "科学饮食与人体健康",
+       "startPage": 4
+      },
+      {
+       "no": "第2节",
+       "name": "行为选择与人体健康",
+       "startPage": 10
+      }
+     ]
+    },
+    {
+     "no": "第20章",
+     "name": "疾病预防与人体健康",
+     "startPage": 17,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "非传染病与人体健康",
+       "startPage": 18
+      },
+      {
+       "no": "第2节",
+       "name": "传染病及其预防",
+       "startPage": 22
+      }
+     ]
+    },
+    {
+     "no": "第21章",
+     "name": "医疗措施与人体健康",
+     "startPage": 31,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生活中的合理用药",
+       "startPage": 32
+      },
+      {
+       "no": "第2节",
+       "name": "家庭急救常识",
+       "startPage": 36
+      }
+     ]
+    },
+    {
+     "no": "第22章",
+     "name": "生物的生殖与延续",
+     "startPage": 49,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生物的生殖方式",
+       "startPage": 50
+      },
+      {
+       "no": "第2节",
+       "name": "人类的生殖",
+       "startPage": 56
+      }
+     ]
+    },
+    {
+     "no": "第23章",
+     "name": "生物的遗传与变异",
+     "startPage": 65,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "遗传的物质基础",
+       "startPage": 66
+      },
+      {
+       "no": "第2节",
+       "name": "遗传信息的传递",
+       "startPage": 71
+      },
+      {
+       "no": "第3节",
+       "name": "生物性状的决定因素",
+       "startPage": 76
+      },
+      {
+       "no": "第4节",
+       "name": "人类的染色体组成与性别决定",
+       "startPage": 84
+      },
+      {
+       "no": "第5节",
+       "name": "生物的变异与应用",
+       "startPage": 90
+      }
+     ]
+    },
+    {
+     "no": "第24章",
+     "name": "生命的起源与进化",
+     "startPage": 101,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "生命的起源",
+       "startPage": 102
+      },
+      {
+       "no": "第2节",
+       "name": "生物进化的历程",
+       "startPage": 106
+      },
+      {
+       "no": "第3节",
+       "name": "生物进化的动力",
+       "startPage": 113
+      },
+      {
+       "no": "第4节",
+       "name": "人类的起源与进化",
+       "startPage": 120
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-物理-w-9b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•物理九年级下册",
+   "edition": "沪科版",
+   "subject": "物理",
+   "graphBook": "9b",
+   "bookId": "sh-hk-物理-w-9b",
+   "system": "w",
+   "totalPages": 105,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第14章",
+     "name": "电与磁",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "磁场",
+       "startPage": 2
+      },
+      {
+       "no": "第2节",
+       "name": "电流的磁场",
+       "startPage": 10
+      },
+      {
+       "no": "第3节",
+       "name": "通电导线在磁场中受到的作用力",
+       "startPage": 18
+      },
+      {
+       "no": "第4节",
+       "name": "电磁感应",
+       "startPage": 23
+      },
+      {
+       "no": "",
+       "name": "跨学科实践·风力发电的应用",
+       "startPage": 28
+      }
+     ]
+    },
+    {
+     "no": "第15章",
+     "name": "电磁波及其应用",
+     "startPage": 34,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "电磁波",
+       "startPage": 35
+      },
+      {
+       "no": "第2节",
+       "name": "电磁波的应用",
+       "startPage": 40
+      },
+      {
+       "no": "",
+       "name": "跨学科实践·信息的编码与传递",
+       "startPage": 46
+      }
+     ]
+    },
+    {
+     "no": "第16章",
+     "name": "从原子到星系",
+     "startPage": 52,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "原子 原子结构",
+       "startPage": 53
+      },
+      {
+       "no": "第2节",
+       "name": "地球 太阳系",
+       "startPage": 59
+      },
+      {
+       "no": "第3节",
+       "name": "银河系 宇宙",
+       "startPage": 64
+      }
+     ]
+    },
+    {
+     "no": "第17章",
+     "name": "能量的转移和转化 能源",
+     "startPage": 73,
+     "sections": [
+      {
+       "no": "第1节",
+       "name": "能量的转移和转化",
+       "startPage": 74
+      },
+      {
+       "no": "第2节",
+       "name": "能源的开发与利用",
+       "startPage": 79
+      },
+      {
+       "no": "第3节",
+       "name": "能源与可持续发展",
+       "startPage": 84
+      },
+      {
+       "no": "",
+       "name": "跨学科实践·我国核科学技术的发展",
+       "startPage": 91
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-2b": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学二年级下册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "2b",
+   "bookId": "sh-hk-科学-w-2b",
+   "system": "w",
+   "totalPages": 86,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1单元",
+     "name": "植物的生存",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1",
+       "name": "植物生存的地方都有什么",
+       "startPage": 3
+      },
+      {
+       "no": "2",
+       "name": "植物的生存需要什么",
+       "startPage": 7
+      }
+     ]
+    },
+    {
+     "no": "第2单元",
+     "name": "房屋的材料",
+     "startPage": 17,
+     "sections": [
+      {
+       "no": "1",
+       "name": "建造房屋的材料有哪些",
+       "startPage": 19
+      },
+      {
+       "no": "2",
+       "name": "房屋的材料有什么特点",
+       "startPage": 26
+      }
+     ]
+    },
+    {
+     "no": "第3单元",
+     "name": "玩磁铁",
+     "startPage": 32,
+     "sections": [
+      {
+       "no": "1",
+       "name": "磁铁有什么本领",
+       "startPage": 34
+      },
+      {
+       "no": "2",
+       "name": "磁铁有什么奇妙之处",
+       "startPage": 40
+      }
+     ]
+    },
+    {
+     "no": "第4单元",
+     "name": "我们的生活环境",
+     "startPage": 46,
+     "sections": [
+      {
+       "no": "1",
+       "name": "人类生活与自然环境有怎样的关系",
+       "startPage": 48
+      },
+      {
+       "no": "2",
+       "name": "人类活动对自然环境有什么影响",
+       "startPage": 51
+      },
+      {
+       "no": "3",
+       "name": "如何做到绿色生活",
+       "startPage": 55
+      }
+     ]
+    },
+    {
+     "no": "第5单元",
+     "name": "小小工程师——为它们造个家",
+     "startPage": 61,
+     "sections": [
+      {
+       "no": "1",
+       "name": "明确问题和设计方案",
+       "startPage": 62
+      },
+      {
+       "no": "2",
+       "name": "制作与展示",
+       "startPage": 64
+      }
+     ]
+    },
+    {
+     "no": "第6单元",
+     "name": "地球、太阳和月亮",
+     "startPage": 68,
+     "sections": [
+      {
+       "no": "1",
+       "name": "你了解地球吗",
+       "startPage": 70
+      },
+      {
+       "no": "2",
+       "name": "你观测过太阳和月亮吗",
+       "startPage": 73
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-3a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学三年级上册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "3a",
+   "bookId": "sh-hk-科学-w-3a",
+   "system": "w",
+   "totalPages": 102,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1单元",
+     "name": "多样的生物",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1",
+       "name": "生物与非生物有哪些不同",
+       "startPage": 3
+      },
+      {
+       "no": "2",
+       "name": "不同类别的动物有哪些特征",
+       "startPage": 8
+      },
+      {
+       "no": "3",
+       "name": "植物有哪些共同特征",
+       "startPage": 18
+      }
+     ]
+    },
+    {
+     "no": "第2单元",
+     "name": "测量与变化",
+     "startPage": 25,
+     "sections": [
+      {
+       "no": "1",
+       "name": "怎样测量",
+       "startPage": 27
+      },
+      {
+       "no": "2",
+       "name": "它们发生了什么变化",
+       "startPage": 37
+      },
+      {
+       "no": "3",
+       "name": "物质在水中的变化一样吗",
+       "startPage": 40
+      }
+     ]
+    },
+    {
+     "no": "第3单元",
+     "name": "空气与风",
+     "startPage": 48,
+     "sections": [
+      {
+       "no": "1",
+       "name": "空气有体积和质量吗",
+       "startPage": 50
+      },
+      {
+       "no": "2",
+       "name": "热气球为什么会上升",
+       "startPage": 55
+      },
+      {
+       "no": "3",
+       "name": "风是怎样形成的",
+       "startPage": 59
+      }
+     ]
+    },
+    {
+     "no": "第4单元",
+     "name": "小小工程师——“风力起重机”",
+     "startPage": 66,
+     "sections": [
+      {
+       "no": "1",
+       "name": "认识风力起重机",
+       "startPage": 67
+      },
+      {
+       "no": "2",
+       "name": "设计与制作风力起重机模型",
+       "startPage": 72
+      },
+      {
+       "no": "3",
+       "name": "测试、改进、展示风力起重机模型",
+       "startPage": 77
+      }
+     ]
+    },
+    {
+     "no": "第5单元",
+     "name": "磁铁的两极",
+     "startPage": 80,
+     "sections": [
+      {
+       "no": "1",
+       "name": "磁铁的两端有什么奥秘",
+       "startPage": 82
+      },
+      {
+       "no": "2",
+       "name": "指南针为什么能指南北",
+       "startPage": 87
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-4a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学四年级上册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "4a",
+   "bookId": "sh-hk-科学-w-4a",
+   "system": "w",
+   "totalPages": 90,
+   "tocPages": [
+    4,
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第1单元",
+     "name": "光与影",
+     "startPage": 1,
+     "sections": [
+      {
+       "no": "1",
+       "name": "影子是怎样形成的",
+       "startPage": 3
+      },
+      {
+       "no": "2",
+       "name": "光是怎样传播的",
+       "startPage": 8
+      }
+     ]
+    },
+    {
+     "no": "第2单元",
+     "name": "电和电路",
+     "startPage": 20,
+     "sections": [
+      {
+       "no": "1",
+       "name": "灯是怎么亮的",
+       "startPage": 22
+      },
+      {
+       "no": "2",
+       "name": "生活中怎样安全用电",
+       "startPage": 28
+      }
+     ]
+    },
+    {
+     "no": "第3单元",
+     "name": "小小工程师——红绿灯模型",
+     "startPage": 34,
+     "sections": [
+      {
+       "no": "1",
+       "name": "制作红绿灯模型需要考虑的问题",
+       "startPage": 35
+      },
+      {
+       "no": "2",
+       "name": "设计制作红绿灯模型",
+       "startPage": 39
+      }
+     ]
+    },
+    {
+     "no": "第4单元",
+     "name": "生活中的能量",
+     "startPage": 43,
+     "sections": [
+      {
+       "no": "1",
+       "name": "热是一种能吗",
+       "startPage": 45
+      },
+      {
+       "no": "2",
+       "name": "还有哪些常见的能",
+       "startPage": 55
+      }
+     ]
+    },
+    {
+     "no": "第5单元",
+     "name": "地球上的资源",
+     "startPage": 65,
+     "sections": [
+      {
+       "no": "1",
+       "name": "土壤有什么秘密",
+       "startPage": 67
+      },
+      {
+       "no": "2",
+       "name": "矿物有哪些用途",
+       "startPage": 74
+      },
+      {
+       "no": "3",
+       "name": "地球上有多少水",
+       "startPage": 78
+      }
+     ]
+    }
+   ]
+  },
+  "sh-hk-科学-w-5a": {
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学五年级上册",
+   "edition": "沪科版",
+   "subject": "科学",
+   "graphBook": "5a",
+   "bookId": "sh-hk-科学-w-5a",
+   "system": "w",
+   "totalPages": 102,
+   "tocPages": [
+    5
+   ],
+   "chapters": [
+    {
+     "no": "第4单元",
+     "name": "生物的家园",
+     "startPage": 58,
+     "sections": [
+      {
+       "no": "1",
+       "name": "栖息地为生物生存提供了哪些条件",
+       "startPage": 60
+      },
+      {
+       "no": "2",
+       "name": "生物如何维持生存",
+       "startPage": 64
+      },
+      {
+       "no": "3",
+       "name": "如何实现人与自然和谐相处",
+       "startPage": 68
+      }
+     ]
+    },
+    {
+     "no": "第5单元",
+     "name": "健康生活",
+     "startPage": 77,
+     "sections": [
+      {
+       "no": "1",
+       "name": "生命活动需要哪些营养物质",
+       "startPage": 79
+      },
+      {
+       "no": "2",
+       "name": "疾病对健康生活有怎样的影响",
+       "startPage": 86
+      }
+     ]
+    }
+   ]
   }
  }
 }

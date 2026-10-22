@@ -76,30 +76,6 @@
    "bookId": "sh-hk-数学-s-9b"
   },
   {
-   "contentId": "d64fa52e-4eb4-4ebf-8387-924faa20e7e0",
-   "title": "（根据2022年版课程标准修订）义务教育教科书•物理八年级全一册",
-   "publisher": "上海科学技术出版社",
-   "edition": "沪科版",
-   "subject": "物理",
-   "imageBase": "https://r3-ndr.ykt.cbern.com.cn/edu_product/esp/assets/d64fa52e-4eb4-4ebf-8387-924faa20e7e0.t/zh-CN/1787023114726/transcode/image",
-   "pages": 318,
-   "graphBook": "8",
-   "system": "s",
-   "bookId": "sh-hk-物理-s-8"
-  },
-  {
-   "contentId": "2d14b2f0-5a5c-48e7-8c1b-9928e63fd975",
-   "title": "（根据2022年版课程标准修订）义务教育教科书·物理九年级全一册",
-   "publisher": "上海科学技术出版社",
-   "edition": "沪科版",
-   "subject": "物理",
-   "imageBase": "https://r3-ndr.ykt.cbern.com.cn/edu_product/esp/assets/2d14b2f0-5a5c-48e7-8c1b-9928e63fd975.t/zh-CN/1787023114249/transcode/image",
-   "pages": 230,
-   "graphBook": "9",
-   "system": "s",
-   "bookId": "sh-hk-物理-s-9"
-  },
-  {
    "contentId": "3bd13b9e-89fd-4bd1-b718-ac501dae2f59",
    "title": "（根据2022年版课程标准修订）义务教育教科书·物理八年级下册",
    "publisher": "上海科学技术出版社",
@@ -364,16 +340,64 @@
    "bookId": "sh-hk-化学-s-xzxbx3"
   },
   {
-   "contentId": "784622ef-0812-48e0-aa77-e0c701336161",
-   "title": "普通高中教科书·艺术必修3 艺术与科学",
-   "publisher": "上海教育出版社",
-   "edition": "沪教版",
-   "subject": "科学",
-   "imageBase": "https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/784622ef-0812-48e0-aa77-e0c701336161.t/zh-CN/1787023668284/transcode/image",
-   "pages": 114,
-   "graphBook": "",
+   "contentId": "449c3aba-0d7e-4620-81b0-82fb1d893bd3",
+   "title": "普通高中教科书·生物学必修1 分子与细胞",
+   "publisher": "上海科学技术出版社",
+   "edition": "沪科版",
+   "subject": "生物",
+   "imageBase": "https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/449c3aba-0d7e-4620-81b0-82fb1d893bd3.t/zh-CN/1787291654030/transcode/image",
+   "pages": 134,
+   "graphBook": "bx1",
    "system": "s",
-   "bookId": "sh-hj-科学-s-x"
+   "bookId": "sh-hk-生物-s-bx1"
+  },
+  {
+   "contentId": "3a133cab-78f3-4359-83e8-72aaf9dba364",
+   "title": "普通高中教科书·生物学必修2 遗传与进化",
+   "publisher": "上海科学技术出版社",
+   "edition": "沪科版",
+   "subject": "生物",
+   "imageBase": "https://r3-ndr.ykt.cbern.com.cn/edu_product/esp/assets/3a133cab-78f3-4359-83e8-72aaf9dba364.t/zh-CN/1772437661427/transcode/image",
+   "pages": 130,
+   "graphBook": "bx2",
+   "system": "s",
+   "bookId": "sh-hk-生物-s-bx2"
+  },
+  {
+   "contentId": "adc5c83a-40bb-41b1-8c90-aaafa49d5234",
+   "title": "普通高中教科书·生物学选择性必修1 稳态与调节",
+   "publisher": "上海科学技术出版社",
+   "edition": "沪科版",
+   "subject": "生物",
+   "imageBase": "https://r1-ndr.ykt.cbern.com.cn/edu_product/esp/assets/adc5c83a-40bb-41b1-8c90-aaafa49d5234.t/zh-CN/1787023129187/transcode/image",
+   "pages": 122,
+   "graphBook": "xzxbx1",
+   "system": "s",
+   "bookId": "sh-hk-生物-s-xzxbx1"
+  },
+  {
+   "contentId": "17df4d83-2991-4963-a827-f531089b5ecc",
+   "title": "普通高中教科书·生物学选择性必修2 生物与环境",
+   "publisher": "上海科学技术出版社",
+   "edition": "沪科版",
+   "subject": "生物",
+   "imageBase": "https://r1-ndr.ykt.cbern.com.cn/edu_product/esp/assets/17df4d83-2991-4963-a827-f531089b5ecc.t/zh-CN/1787023660569/transcode/image",
+   "pages": 118,
+   "graphBook": "xzxbx2",
+   "system": "s",
+   "bookId": "sh-hk-生物-s-xzxbx2"
+  },
+  {
+   "contentId": "72db80ff-063e-4afc-a027-f2e0d9ecc26d",
+   "title": "普通高中教科书·生物学选择性必修3 生物技术与工程",
+   "publisher": "上海科学技术出版社",
+   "edition": "沪科版",
+   "subject": "生物",
+   "imageBase": "https://r1-ndr.ykt.cbern.com.cn/edu_product/esp/assets/72db80ff-063e-4afc-a027-f2e0d9ecc26d.t/zh-CN/1787291654265/transcode/image",
+   "pages": 130,
+   "graphBook": "xzxbx3",
+   "system": "s",
+   "bookId": "sh-hk-生物-s-xzxbx3"
   },
   {
    "contentId": "561c947a-b8b7-7b91-11d5-98dbb04e2e82",
@@ -422,6 +446,18 @@
    "graphBook": "6a",
    "system": "w",
    "bookId": "sh-hk-科学-w-6a"
+  },
+  {
+   "contentId": "31dc29ef-e02f-4cf7-0837-40b8ceab2304",
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•生物学七年级上册",
+   "publisher": "上海教育出版社",
+   "edition": "沪教版",
+   "subject": "生物",
+   "imageBase": "https://r3-ndr.ykt.cbern.com.cn/edu_product/esp/assets/31dc29ef-e02f-4cf7-0837-40b8ceab2304.t/zh-CN/1787020570335/transcode/image",
+   "pages": 134,
+   "graphBook": "7a",
+   "system": "w",
+   "bookId": "sh-hj-生物-w-7a"
   },
   {
    "contentId": "18deb512-b4c0-54cf-6fc1-6974f55fa02e",
@@ -508,6 +544,18 @@
    "bookId": "sh-hk-科学-w-6b"
   },
   {
+   "contentId": "dffe0037-89b6-68a3-f55e-42cf82bc3dea",
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•生物学七年级下册",
+   "publisher": "上海教育出版社",
+   "edition": "沪教版",
+   "subject": "生物",
+   "imageBase": "https://r3-ndr.ykt.cbern.com.cn/edu_product/esp/assets/dffe0037-89b6-68a3-f55e-42cf82bc3dea.t/zh-CN/1772437012528/transcode/image",
+   "pages": 158,
+   "graphBook": "7b",
+   "system": "w",
+   "bookId": "sh-hj-生物-w-7b"
+  },
+  {
    "contentId": "12118d5e-0af8-b9c9-9f3b-d2d901f8c5a2",
    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学一年级下册",
    "publisher": "上海教育出版社",
@@ -580,6 +628,18 @@
    "bookId": "sh-hj-数学-w-2a"
   },
   {
+   "contentId": "4a112e52-8305-9bac-341a-6fc0c1dc8784",
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•生物学八年级上册",
+   "publisher": "上海教育出版社",
+   "edition": "沪教版",
+   "subject": "生物",
+   "imageBase": "https://r1-ndr.ykt.cbern.com.cn/edu_product/esp/assets/4a112e52-8305-9bac-341a-6fc0c1dc8784.t/zh-CN/1787020570980/transcode/image",
+   "pages": 147,
+   "graphBook": "8a",
+   "system": "w",
+   "bookId": "sh-hj-生物-w-8a"
+  },
+  {
    "contentId": "dfeb4d8c-b711-0605-a182-3911b978ed59",
    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学八年级上册",
    "publisher": "上海教育出版社",
@@ -614,6 +674,18 @@
    "graphBook": "9",
    "system": "w",
    "bookId": "sh-hk-化学-w-9"
+  },
+  {
+   "contentId": "27333a96-6aa9-a8e4-a83a-898590909941",
+   "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•生物学八年级下册",
+   "publisher": "上海教育出版社",
+   "edition": "沪教版",
+   "subject": "生物",
+   "imageBase": "https://r3-ndr.ykt.cbern.com.cn/edu_product/esp/assets/27333a96-6aa9-a8e4-a83a-898590909941.t/zh-CN/1772113323331/transcode/image",
+   "pages": 142,
+   "graphBook": "8b",
+   "system": "w",
+   "bookId": "sh-hj-生物-w-8b"
   },
   {
    "contentId": "91c824ab-4983-62fd-c264-3b2fe8a5881f",
