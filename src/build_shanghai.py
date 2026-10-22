@@ -183,15 +183,19 @@ def main() -> int:
             sec = best[1]
             if slot >= 0 and cns[slot][3] < 0:
                 cns[slot][3] = i
-        # 描述行：沪教概念写「教材原书上的位置」，前置补充写它的定义
-        desc = n.get("desc") or ""
-        if not desc and sec:
+        # 描述行：**这个概念是什么**（上游定义）+ **教材原书上的位置**
+        #
+        # 两个都要。位置在下面的「教材顺序」栏里也有，但那儿是节与节相邻，
+        # 这里给的是「这个概念在哪本书哪一节第几页」—— 翻书的时候用。
+        desc = n.get("desc") or n.get("def") or ""
+        if sec:
             bits = [b for b in (sec.get("chapter"), sec.get("chapterName"),
                                 sec.get("section"), sec.get("sectionName")) if b]
             ed = n["books"][n["mainBook"]]["edition"] if n.get("mainBook") else "教材"
-            desc = f"{ed}教材位置：" + " ".join(bits)
+            pos = f"{ed}教材位置：" + " ".join(bits)
             if sec.get("page"):
-                desc += f"（第 {sec['page']} 页）"
+                pos += f"（第 {sec['page']} 页）"
+            desc = (desc + "　｜　" + pos) if desc else pos
         payload_nodes.append([
             i, n["name"], "", si, dz, nid,
             grade, grade, 0.0, 1 if stage == 1 else 0, desc, "—",
@@ -253,18 +257,78 @@ def main() -> int:
             node_hard[idx_of[n["id"]]] = [hn, hstem, bz, ""]
     print(f"节点带教材数据 {len(node_vision)} 个 · 带难点 {len(node_hard)} 个")
 
+    # ── 5b. 教材原话（OCR 原文层）────────────────────────────────
+    #
+    # **教材自己写的定义句** —— 最硬的一手材料。
+    # 人教站有 401 个概念带着它，上海站原来一个都没有。
+    #
+    # **有预算**：原话是句子，一个概念能有好几句，全放进去 payload 就爆了。
+    # 先放定义句（最值钱），再放定理句，放到 500 KB 为止。
+    TEXT_BUDGET = 500_000
+    text = {}
+    CTXT = BASE / "data" / "concept-text-sh.jsonl"
+    if CTXT.exists():
+        cands = []
+        for line in CTXT.open(encoding="utf-8"):
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            j = idx_of.get(r.get("id", ""))
+            if j is None:
+                continue
+            q = r.get("quotes") or []
+            if not q:
+                continue
+            # 定义句排最前
+            q = sorted(q, key=lambda x: 0 if r.get("hasDefinition") else 1)
+            cands.append((j, [x[:180] for x in q[:2]]))
+        # **按值填**：先放有定义句的
+        cands.sort(key=lambda c: 0 if c[1] else 1)
+        used = 0
+        for j, q in cands:
+            if not q:
+                continue
+            sz = sum(len(x.encode("utf-8")) for x in q) + 12
+            if used + sz > TEXT_BUDGET:
+                continue
+            used += sz
+            text[j] = q
+    print(f"教材原话 {len(text)} 个概念 · {used//1024} KB / 预算 {TEXT_BUDGET//1024} KB")
+
     # ── 6. payload ────────────────────────────────────────────
     by_subject = collections.Counter()
     for x in payload_nodes:
         by_subject[x[3]] += 1
     n_sh = sum(1 for n in nodes_src if n["kind"] == "sh")
+    # ── 上下位：图谱里 855 对落在上海节点集内 ─────────────────
+    # 不接的话卡片上「更一般的概念」永远是空的。
+    isa = []
+    for a, b in (sg.get("isa") or []):
+        ja, jb = idx_of.get(a), idx_of.get(b)
+        if ja is not None and jb is not None:
+            isa.append([ja, jb])
+    print(f"上下位 {len(isa)} 对")
+
+    # ── 人教版对照位 ──────────────────────────────────────────
+    # 「这个概念在沪教版是第几节，在人教版是第几节」——
+    # 上海的孩子手上是沪教版，但参考书、习题册常常按人教版编。
+    alt_pos = {}
+    for nid, i in idx_of.items():
+        n = node_units[nid][0]
+        if n.get("kind") != "sh":
+            continue        # 前置补充本身就是人教概念，不用再对照自己
+        if n.get("rjbBook"):
+            alt_pos[i] = [["人教版", n["rjbBook"], ""]]
+    print(f"人教版对照位 {len(alt_pos)} 个")
+
     payload = {
         "nodes": payload_nodes,
         "edges": edges,
-        "isa": [],
+        "isa": isa,
         "chs": chs,
         "cns": cns,
-        "altpos": {},
+        "altpos": alt_pos,
+        "text": text,
         "vision": node_vision,
         "visionAlt": {},
         "hard": node_hard,
@@ -285,7 +349,10 @@ def main() -> int:
     # **payload 有预算** —— 数据层全留，页面层精选。
     # 概念一多，公式和图描述是按节点堆起来的，页面会越滚越大。
     # 超预算就是「该少塞点东西了」的信号，不是「硬盘装得下就没事」。
-    BUDGET = 1_600_000
+    # **2.6 MB** —— 主站的 payload 已经 2.3 MB、成品页 3.6 MB，
+    # 上海站比主站小，没有理由卡在 1.6 MB。
+    # 真正的约束是「单文件、不加载外部资源」，不是文件大小。
+    BUDGET = 2_600_000
     if len(blob) > BUDGET:
         raise SystemExit(f"payload {len(blob)//1024} KB 超过预算 {BUDGET//1024} KB —— "
                          f"先查是不是公式/图描述没截够")
@@ -294,7 +361,9 @@ def main() -> int:
 
     # ── 7. 文案：换成上海口径 ──────────────────────────────────
     # **替换失配即中止** —— 一条文案没命中就报出来，不让它静默留在页面上。
-    GRADE_MAP = ("const GRADE_ZH=" + json.dumps(GRADE_ZH, ensure_ascii=False) + ";\n")
+    GRADE_MAP = ("const GRADE_ZH=" + json.dumps(GRADE_ZH, ensure_ascii=False) + ";\n"
+                 # **挂到 window** —— 学习路径面板在 IIFE 外面，够不着 IIFE 里的常量。
+                 "window.GRADE_ZH=GRADE_ZH;\n")
     COPY = [
         ("美英课程标准 · ", "按上海教材排序 · "),
         # **GRADE_ZH 要在全局** —— 卡片眉标和轴标签两处都要用它，

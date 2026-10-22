@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>上海版 · 数据质量</title>
+<style>
+:root{--bg:#0b0c10;--panel:#14171e;--line:#242a35;--fg:#e8ebf2;--muted:#8b93a7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font:15px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:38px 22px 70px}
+h1{font-size:30px;margin:0 0 6px;font-weight:700}
+.sub{color:var(--muted);font-size:13.5px;margin:0 0 26px}
+a{color:#7fd3ff}
+.nav{margin-bottom:26px;font-size:13px}
+.nav a{margin-right:16px;text-decoration:none;color:#7fd3ff}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:11px;margin-bottom:34px}
+.c{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
+.c .lab{font-size:11.5px;color:var(--muted)}
+.c .num{font:700 27px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;color:#ff3d7f}
+.c .sub{font-size:11px;margin:3px 0 0}
+h2{font-size:19px;margin:34px 0 6px;padding-top:18px;border-top:1px solid var(--line)}
+.note{color:var(--muted);font-size:12.5px;margin:0 0 13px;line-height:1.75}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:8px}
+th{text-align:left;font-weight:600;color:#9fb0c8;border-bottom:1px solid var(--line);
+  padding:7px 9px;font-size:11.5px;white-space:nowrap}
+td{padding:6px 9px;border-bottom:1px solid #191d25;vertical-align:top}
+td.empty{color:#6b7488;text-align:center;padding:16px}
+tr:hover td{background:rgba(255,255,255,.025)}
+.bar{display:inline-block;width:70px;height:5px;background:#22262f;border-radius:3px;overflow:hidden;margin-right:7px;vertical-align:1px}
+.bar i{display:block;height:100%;background:#7fd3ff}
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:12px;line-height:1.9}
+code{background:#191d25;padding:1px 5px;border-radius:4px;font-size:11.5px}
+</style></head>
+<body><div class="wrap">
+<h1>上海版 · 数据质量</h1>
+<p class="sub">这个站的数据是<b>从上海教材本身长出来的</b>（国家中小学智慧教育平台的页图 +
+视觉模型 + 视觉层读的目录）。这一页把它的账摊开。</p>
+<div class="nav">
+  <a href="./shanghai.html">← 上海版站点</a>
+  <a href="./index.html">主站</a>
+  <a href="./quality.html">主站数据质量</a>
+</div>
+
+<div class="cards"><div class="c"><div class="lab">沪教概念</div><div class="num">2,373</div><div class="sub">教材页面上认出来的</div></div><div class="c"><div class="lab">教材位置</div><div class="num">2,247</div><div class="sub">能定位到章/节/页</div></div><div class="c"><div class="lab">带教材公式</div><div class="num">2,150</div><div class="sub">书-概念对</div></div><div class="c"><div class="lab">带教材原话</div><div class="num">590</div><div class="sub">教材自己写的定义句</div></div><div class="c"><div class="lab">带教材难点</div><div class="num">2,231</div><div class="sub">书-概念对</div></div><div class="c"><div class="lab">图谱 0 前置</div><div class="num">354</div><div class="sub">有教材难点的单元</div></div></div>
+
+<h2>内容缺口地图：教材标了难点，而图谱前置薄</h2>
+<p class="note">
+两个信号都是一手的：<b>教材标的难点</b>是教材编委会自己标的「思考」「探究」框；
+<b>图谱的先修覆盖</b>是那个概念在图谱里的前置闭包里有多少是「0 前置」——
+图谱在这一片是空的。<br>
+<b>教材标了难点、图谱前置薄 = 最该补内容的地方。</b>
+排序按教材标的难点数从多到少。
+</p>
+<table class=""><thead><tr><th>册</th><th>节</th><th>教材标难点</th><th>概念</th><th>0前置</th><th>前置覆盖</th></tr></thead><tbody><tr><td>沪科版 bx2</td><td>化学平衡</td><td><b style="color:#ff9db8">2</b></td><td>3</td><td>2</td><td><span class="bar"><i style="width:33%"></i></span> 0.33</td></tr><tr><td>沪科版 6a</td><td>发布节能小屋设计成果</td><td><b style="color:#ff9db8">2</b></td><td>2</td><td>1</td><td><span class="bar"><i style="width:50%"></i></span> 0.50</td></tr><tr><td>沪科版 7a</td><td>数据的收集</td><td><b style="color:#ff9db8">2</b></td><td>2</td><td>1</td><td><span class="bar"><i style="width:50%"></i></span> 0.50</td></tr><tr><td>沪教版 7b</td><td>三角形的内角和</td><td><b style="color:#ff9db8">2</b></td><td>2</td><td>1</td><td><span class="bar"><i style="width:50%"></i></span> 0.50</td></tr><tr><td>沪科版 4a</td><td>热是一种能吗</td><td><b style="color:#ff9db8">1</b></td><td>1</td><td>1</td><td><span class="bar"><i style="width:0%"></i></span> 0.00</td></tr><tr><td>沪科版 7a</td><td>用统计图描述数据</td><td><b style="color:#ff9db8">1</b></td><td>1</td><td>1</td><td><span class="bar"><i style="width:0%"></i></span> 0.00</td></tr><tr><td>沪科版 8b</td><td>阅读与欣赏 地理中的统计图——平面正三角坐标图</td><td><b style="color:#ff9db8">1</b></td><td>1</td><td>1</td><td><span class="bar"><i style="width:0%"></i></span> 0.00</td></tr><tr><td>沪科版 9b</td><td>电流的磁场</td><td><b style="color:#ff9db8">1</b></td><td>1</td><td>1</td><td><span class="bar"><i style="width:0%"></i></span> 0.00</td></tr><tr><td>沪科版 xzxbx3</td><td>分子运动速率分布的统计规律</td><td><b style="color:#ff9db8">1</b></td><td>2</td><td>2</td><td><span class="bar"><i style="width:0%"></i></span> 0.00</td></tr><tr><td>沪科版 3a</td><td>风是怎样形成的</td><td><b style="color:#ff9db8">2</b></td><td>3</td><td>1</td><td><span class="bar"><i style="width:66%"></i></span> 0.67</td></tr><tr><td>沪教版 9b</td><td>整理与归纳</td><td><b style="color:#ff9db8">2</b></td><td>3</td><td>1</td><td><span class="bar"><i style="width:66%"></i></span> 0.67</td></tr><tr><td>沪科版 8</td><td>空气、氧气、二氧化碳</td><td><b style="color:#ff9db8">2</b></td><td>4</td><td>1</td><td><span class="bar"><i style="width:75%"></i></span> 0.75</td></tr><tr><td>沪科版 9b</td><td>家庭电路</td><td><b style="color:#ff9db8">2</b></td><td>4</td><td>1</td><td><span class="bar"><i style="width:75%"></i></span> 0.75</td></tr><tr><td>沪科版 xzxbx1</td><td>化学反应的速率</td><td><b style="color:#ff9db8">2</b></td><td>4</td><td>1</td><td><span class="bar"><i style="width:75%"></i></span> 0.75</td></tr><tr><td>沪科版 8a</td><td>信息技术应用 探究关于某条直线对称的两点坐标变化</td><td><b style="color:#ff9db8">1</b></td><td>2</td><td>1</td><td><span class="bar"><i style="width:50%"></i></span> 0.50</td></tr><tr><td>沪教版 8a</td><td>实数</td><td><b style="color:#ff9db8">1</b></td><td>2</td><td>1</td><td><span class="bar"><i style="width:50%"></i></span> 0.50</td></tr><tr><td>沪科版 8</td><td>空气的成分</td><td><b style="color:#ff9db8">1</b></td><td>2</td><td>1</td><td><span class="bar"><i style="width:50%"></i></span> 0.50</td></tr><tr><td>沪科版 bx2</td><td>功率</td><td><b style="color:#ff9db8">1</b></td><td>2</td><td>1</td><td><span class="bar"><i style="width:50%"></i></span> 0.50</td></tr><tr><td>沪教版 9a</td><td>整理与归纳</td><td><b style="color:#ff9db8">2</b></td><td>9</td><td>2</td><td><span class="bar"><i style="width:77%"></i></span> 0.78</td></tr><tr><td>沪科版 bx1</td><td>化学中常用的实验方法</td><td><b style="color:#ff9db8">2</b></td><td>5</td><td>1</td><td><span class="bar"><i style="width:80%"></i></span> 0.80</td></tr><tr><td>沪科版 8b</td><td>数据分组</td><td><b style="color:#ff9db8">1</b></td><td>3</td><td>1</td><td><span class="bar"><i style="width:66%"></i></span> 0.67</td></tr><tr><td>沪科版 9a</td><td>锐角三角函数</td><td><b style="color:#ff9db8">3</b></td><td>10</td><td>1</td><td><span class="bar"><i style="width:90%"></i></span> 0.90</td></tr><tr><td>沪科版 8</td><td>水的组成</td><td><b style="color:#ff9db8">2</b></td><td>8</td><td>1</td><td><span class="bar"><i style="width:87%"></i></span> 0.88</td></tr><tr><td>沪科版 bx1</td><td>糖类和脂质是细胞的结构成分和能源物质</td><td><b style="color:#ff9db8">1</b></td><td>4</td><td>1</td><td><span class="bar"><i style="width:75%"></i></span> 0.75</td></tr><tr><td>沪科版 bx3</td><td>电场力 电场强度</td><td><b style="color:#ff9db8">1</b></td><td>4</td><td>1</td><td><span class="bar"><i style="width:75%"></i></span> 0.75</td></tr><tr><td>沪科版 xzxbx1</td><td>机械波的干涉和衍射</td><td><b style="color:#ff9db8">1</b></td><td>13</td><td>3</td><td><span class="bar"><i style="width:76%"></i></span> 0.77</td></tr><tr><td>沪科版 bx1</td><td>海水中的氯</td><td><b style="color:#ff9db8">1</b></td><td>10</td><td>2</td><td><span class="bar"><i style="width:80%"></i></span> 0.80</td></tr><tr><td>沪科版 bx1</td><td>细胞通过质膜与外界进行物质交换</td><td><b style="color:#ff9db8">1</b></td><td>5</td><td>1</td><td><span class="bar"><i style="width:80%"></i></span> 0.80</td></tr><tr><td>沪科版 xzxbx2</td><td>共价晶体和分子晶体</td><td><b style="color:#ff9db8">1</b></td><td>5</td><td>1</td><td><span class="bar"><i style="width:80%"></i></span> 0.80</td></tr><tr><td>沪科版 8b</td><td>数据的离散程度</td><td><b style="color:#ff9db8">1</b></td><td>6</td><td>1</td><td><span class="bar"><i style="width:83%"></i></span> 0.83</td></tr><tr><td>沪科版 8b</td><td>运动的描述</td><td><b style="color:#ff9db8">1</b></td><td>6</td><td>1</td><td><span class="bar"><i style="width:83%"></i></span> 0.83</td></tr><tr><td>沪科版 bx3</td><td>电阻定律</td><td><b style="color:#ff9db8">1</b></td><td>6</td><td>1</td><td><span class="bar"><i style="width:83%"></i></span> 0.83</td></tr><tr><td>沪科版 9b</td><td>三视图</td><td><b style="color:#ff9db8">1</b></td><td>7</td><td>1</td><td><span class="bar"><i style="width:85%"></i></span> 0.86</td></tr><tr><td>沪科版 9b</td><td>随机事件</td><td><b style="color:#ff9db8">1</b></td><td>7</td><td>1</td><td><span class="bar"><i style="width:85%"></i></span> 0.86</td></tr><tr><td>沪教版 9b</td><td>本章作业</td><td><b style="color:#ff9db8">1</b></td><td>7</td><td>1</td><td><span class="bar"><i style="width:85%"></i></span> 0.86</td></tr><tr><td>沪科版 bx3</td><td>电势能 电势</td><td><b style="color:#ff9db8">1</b></td><td>8</td><td>1</td><td><span class="bar"><i style="width:87%"></i></span> 0.88</td></tr><tr><td>沪科版 bx3</td><td>带电粒子在电场中的运动</td><td><b style="color:#ff9db8">1</b></td><td>8</td><td>1</td><td><span class="bar"><i style="width:87%"></i></span> 0.88</td></tr><tr><td>沪教版 9b</td><td>整理与归纳</td><td><b style="color:#ff9db8">2</b></td><td>17</td><td>1</td><td><span class="bar"><i style="width:94%"></i></span> 0.94</td></tr><tr><td>沪科版 xzxbx3</td><td>原子结构的量子力学模型</td><td><b style="color:#ff9db8">1</b></td><td>10</td><td>1</td><td><span class="bar"><i style="width:90%"></i></span> 0.90</td></tr><tr><td>沪科版 xzxbx3</td><td>探究·活动 1-6 虚拟仿真：发酵条件对微生物发</td><td><b style="color:#ff9db8">1</b></td><td>10</td><td>1</td><td><span class="bar"><i style="width:90%"></i></span> 0.90</td></tr></tbody></table>
+
+<h2>概念覆盖缺口：教材标了难点，图谱里一个概念都没有</h2>
+<p class="note">
+这是<b>另一回事</b>：不是「这个概念的前置没标」，是<b>图谱里根本没有这个概念</b> ——
+教材教了，数据里没有。往回看三行：先补概念，再谈前置。
+</p>
+<table class=""><thead><tr><th>册</th><th>节</th><th>教材标难点</th><th>认出概念</th></tr></thead><tbody><tr><td>沪科版 7b</td><td>因式分解</td><td><b style="color:#ff9db8">4</b></td><td>0</td></tr><tr><td>沪科版 2b</td><td>你观测过太阳和月亮吗</td><td><b style="color:#ff9db8">3</b></td><td>0</td></tr><tr><td>沪教版 8a</td><td>泌尿系统的结构</td><td><b style="color:#ff9db8">3</b></td><td>0</td></tr><tr><td>沪科版 1a</td><td>物体有哪些特征</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 1a</td><td>怎样比较长短和轻重</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 2a</td><td>制作纸桥并发现问题</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 2a</td><td>提高纸桥的承重本领</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 2a</td><td>衣服是怎样制成的</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 2b</td><td>人类生活与自然环境有怎样的关系</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 3a</td><td>测试、改进、展示风力起重机模型</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 3a</td><td>指南针为什么能指南北</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 4a</td><td>光是怎样传播的</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 4a</td><td>设计制作红绿灯模型</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 6a</td><td>生活中的电</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 7a</td><td>代数式</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 8</td><td>学习开展化学实验探究</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 8a</td><td>摩擦力</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 8b</td><td>探索宇宙</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪教版 9a</td><td>整理与归纳</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 bx1</td><td>探究·实验 3-1 观察叶绿体和细胞质流动</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪教版 bx4</td><td>包装彩带</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪教版 bx4</td><td>外卖与环保</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 xzxbx2</td><td>探究·活动 4-1 调查身边的环境问题</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪科版 xzxbx3</td><td>气体的等容变化和等压变化</td><td><b style="color:#ff9db8">2</b></td><td>0</td></tr><tr><td>沪教版 1a</td><td>10以内的数</td><td><b style="color:#ff9db8">1</b></td><td>0</td></tr><tr><td>沪科版 1a</td><td>感官怎样发挥作用</td><td><b style="color:#ff9db8">1</b></td><td>0</td></tr><tr><td>沪科版 1a</td><td>怎样给物体分类</td><td><b style="color:#ff9db8">1</b></td><td>0</td></tr><tr><td>沪科版 1a</td><td>你认识哪些动植物</td><td><b style="color:#ff9db8">1</b></td><td>0</td></tr><tr><td>沪科版 1a</td><td>天气现象有哪些</td><td><b style="color:#ff9db8">1</b></td><td>0</td></tr><tr><td>沪科版 1a</td><td>天气变化会带来哪些影响</td><td><b style="color:#ff9db8">1</b></td><td>0</td></tr></tbody></table>
+
+<h2>认出来特别少的书</h2>
+<p class="note">
+这些书在平台上，但**图谱里没有对应的概念**，所以认不出来。
+不是我们没做，是<b>上游的覆盖范围到不了那么细</b> ——
+比如小学科学的「水的三态」「植物的根」「磁铁」，K12-KGraph 里查不到。
+</p>
+<table class=""><thead><tr><th>书</th><th>版别</th><th>学科</th><th>认出概念</th><th>页数</th></tr></thead><tbody><tr><td>普通高中教科书·数学必修 第四册</td><td>沪教版</td><td>数学</td><td><b>1</b></td><td>56</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学一年级上册</td><td>沪科版</td><td>科学</td><td><b>1</b></td><td>94</td></tr><tr><td>普通高中教科书·数学选择性必修 第三册</td><td>沪教版</td><td>数学</td><td><b>3</b></td><td>50</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学二年级上册</td><td>沪科版</td><td>科学</td><td><b>3</b></td><td>86</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学二年级下册</td><td>沪科版</td><td>科学</td><td><b>3</b></td><td>86</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学一年级下册</td><td>沪科版</td><td>科学</td><td><b>4</b></td><td>94</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学五年级上册</td><td>沪科版</td><td>科学</td><td><b>5</b></td><td>102</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学六年级下册</td><td>沪科版</td><td>科学</td><td><b>6</b></td><td>94</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学四年级上册</td><td>沪科版</td><td>科学</td><td><b>8</b></td><td>90</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学二年级下册</td><td>沪教版</td><td>数学</td><td><b>9</b></td><td>99</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学一年级下册</td><td>沪教版</td><td>数学</td><td><b>10</b></td><td>94</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学三年级上册</td><td>沪科版</td><td>科学</td><td><b>10</b></td><td>102</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学二年级上册</td><td>沪教版</td><td>数学</td><td><b>11</b></td><td>104</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•科学六年级上册</td><td>沪科版</td><td>科学</td><td><b>15</b></td><td>102</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学四年级上册</td><td>沪教版</td><td>数学</td><td><b>16</b></td><td>126</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学一年级上册</td><td>沪教版</td><td>数学</td><td><b>17</b></td><td>91</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学三年级上册</td><td>沪教版</td><td>数学</td><td><b>17</b></td><td>124</td></tr><tr><td>（根据2022年版课程标准修订）义务教育教科书（五•四学制）•物理九年级下册</td><td>沪科版</td><td>物理</td><td><b>18</b></td><td>105</td></tr></tbody></table>
+
+<div class="foot">
+这一页的数字全部现算，脚本在 <code>src/build_shanghai_quality.py</code>；
+人读账本在 <code>docs/shanghai-difficulty.md</code>。<br>
+原始数据一个字节未改，问题逐条记在 <code>known-issues.md</code>。
+</div>
+</div></body></html>

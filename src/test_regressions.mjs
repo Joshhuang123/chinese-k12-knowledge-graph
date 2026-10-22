@@ -756,19 +756,67 @@ console.log('\n【18】点不可点的单元行不能报错');
 }
 
 
+console.log('\n【19】学习路径：把前置排成一条能走的路');
+{
+  // 「卡在哪」回答「缺什么」；学习路径回答「**先学哪个、再学哪个**」。
+  // 老师排课、学生补课要的是顺序，不是候选清单。
+  const { p, errs } = await fresh();
+
+  await p.click('#q'); await p.type('#q', '二次函数', { delay: 15 }); await sleep(350);
+  await p.keyboard.press('Enter'); await sleep(1600);
+  await p.click('#cPath'); await sleep(1200);
+
+  const r = await p.evaluate(() => {
+    const lis = [...document.querySelectorAll('#pathList li[data-id]')];
+    const depths = lis.map(li => {
+      const m = li.textContent.match(/离目标\s*(\d+)\s*层/);
+      return m ? +m[1] : -1;
+    });
+    return {
+      open: !document.getElementById('path').hidden,
+      n: lis.length,
+      depths,
+      // 每条都要有「为什么是它」——从它到目标的那条链
+      chains: lis.map(li => li.querySelector('.why')?.textContent.trim() || ''),
+      // 越靠前越基础：**离目标的层数应该不增**
+      nondecreasing: depths.every((d, i) => i === 0 || depths[i - 1] >= d),
+      first: lis[0]?.textContent.replace(/\s+/g, ' ').trim().slice(0, 90) || '',
+    };
+  });
+  ok(r.open, '学习路径面板打开了');
+  ok(r.n > 3, `排出了 ${r.n} 个前置`);
+  ok(r.nondecreasing, '顺序是从最基础开始（离目标的层数不增）');
+  ok(r.chains.every(c => c.includes('→')), '每条都写了「为什么是它」的链条');
+  ok(/离目标/.test(r.first), `第一条：${r.first}`);
+
+  // 点一条要真的跳过去
+  const before = await p.evaluate(() => window.__kg.cardId());
+  await p.evaluate(() => document.querySelector('#pathList li[data-id]')?.click());
+  await sleep(1200);
+  const after = await p.evaluate(() => ({
+    id: window.__kg.cardId(),
+    hidden: document.getElementById('path').hidden,
+  }));
+  ok(after.id !== before, `点一条跳到了另一个知识点（${before} → ${after.id}）`);
+  ok(after.hidden, '跳完之后面板收起来了');
+  ok(errs.length === 0, `运行期无报错（${JSON.stringify(errs.slice(0, 2))}）`);
+  await p.close();
+}
+
+
 // ── README 里的测试项数不能烂 ─────────────────────────────────
 // 手抄的数字会过期。2026-10-21 同步 README 时就发现「103 项」早就该是 75 项。
 // **这条断言只能放在这里**：只有跑完的人才知道真实通过数是多少，
 // 数源码里的 ok( 调用行数是不准的（这个文件就有跑不到的分支）。
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_regressions.mjs` | 78 |';
+  const want = '| `src/test_regressions.mjs` | 86 |';
   if (!rd.includes(want)) {
-    console.log(`  ✗ README 里的 回归 测试项数不是 78`);
+    console.log(`  ✗ README 里的 回归 测试项数不是 86`);
     console.log(`      README 里没找到「${want}」`);
     fail++;
   } else {
-    console.log(`  ✓ README 里的 回归 测试项数是 78（与本次实跑一致）`);
+    console.log(`  ✓ README 里的 回归 测试项数是 86（与本次实跑一致）`);
     pass++;
   }
 }

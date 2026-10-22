@@ -118,6 +118,9 @@ def main() -> int:
         print(f"没有 {CVIS}，先跑 src/vision_to_concepts_sh.py")
         return 1
     toc = json.load(open(TOC, encoding="utf-8"))["books"] if TOC.exists() else {}
+    # **上游图谱要先读** —— 节点要带上它的定义和人教版册次。
+    g = json.load(open(GRAPH, encoding="utf-8"))
+    info = {n["id"]: n for n in g["nodes"]}
     print(f"有目录的书 {len(toc)} 本")
 
     # ── 1. 每本书的「页 → 节」映射 ────────────────────────────
@@ -231,6 +234,12 @@ def main() -> int:
             "id": cid, "name": c["name"], "subject": c.get("subject") or "math",
             "bookSubject": book_subj(main_bid),
             "kind": "sh",
+            # **上游自己的定义**（数据集里的定义，不是教材原话）——
+            # 卡片上要有个「这概念是什么意思」的说明。
+            "def": (((info.get(cid) or {}).get("props") or {}).get("definition") or "")[:200],
+            # **人教版里的册次** —— 上海的孩子手上是沪教版，
+            # 但参考书、习题册常按人教版编，得告诉他对照位置。
+            "rjbBook": (info.get(cid) or {}).get("bookZh") or "",
             "grade": mb["grade"], "stage": mb["stage"],
             "mainBook": main_bid,
             "books": books,
@@ -243,8 +252,6 @@ def main() -> int:
     print(f"入图概念 {len(nodes)} 个")
 
     # ── 3. 先修边（人教版图谱 + 自建层，限制在子集内）─────────
-    g = json.load(open(GRAPH, encoding="utf-8"))
-    info = {n["id"]: n for n in g["nodes"]}
     # 来源码必须跟 build_viz.py 的 SRC 一致，页面上才能显示对徽标
     SRC = {"dataset": 0, "model": 1, "l0": 2, "derived": 3, "intro": 4,
            "fix": 5, "structmap": 6}
@@ -293,6 +300,8 @@ def main() -> int:
                 "id": cid, "name": n["name"],
                 "subject": n.get("subject") or "math",
                 "bookSubject": "", "kind": kind,
+                "def": (n.get("definition") or "")[:200],
+                "rjbBook": n.get("bookZh") or "",
                 "grade": 0, "stage": 0, "mainBook": "", "books": {},
                 "bookTitles": [], "editions": [],
                 "sections": [], "pages": [], "evidence": [],
@@ -319,6 +328,8 @@ def main() -> int:
             "sections": [], "pages": [], "evidence": [],
             "preNote": "人教版图谱里的对应概念（沪教版页面上没单独出现）",
             "volName": VOL_CN.get(vol, vol),
+            "def": ((n.get("props") or {}).get("definition") or "")[:200],
+            "rjbBook": n.get("bookZh") or "",
             "desc": (n.get("props") or {}).get("definition") or "",
         }
         added += 1
@@ -335,6 +346,18 @@ def main() -> int:
             edges.append([e["from"], e["to"], SRC.get(e.get("source"), 1)])
     edges.sort()
     print(f"子集内先修边 {len(edges)} 条")
+
+    # ── 上下位（is_a）─────────────────────────────────────────
+    # 图谱里有 1,895 对 is_a，其中 855 对落在上海节点集内。
+    # 不接的话，上海站卡片上「更一般的概念」那一栏**永远是空的**。
+    isa = []
+    for e in g["edges"]:
+        if e.get("type") != "is_a":
+            continue
+        if e["from"] in ids and e["to"] in ids:
+            isa.append([e["from"], e["to"]])
+    isa.sort()
+    print(f"子集内上下位 {len(isa)} 对")
 
     # ── 5. 单元（节）链 ────────────────────────────────────────
     # **必须按教学顺序排，不能按 bookId 字典序排** ——
@@ -395,7 +418,7 @@ def main() -> int:
                  "先修边继承自人教版图谱（教材不写「这个要先学那个」）",
         "_gradeRule": "学段按学制算：沪教版五四制小学1-5/初中6-9，沪科版六三制小学1-6/初中7-9",
         "nodes": [nodes[k] for k in sorted(nodes, key=lambda k: nodes[k]["name"])],
-        "units": units, "edges": edges,
+        "units": units, "edges": edges, "isa": isa,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
     n_sh = sum(1 for v in nodes.values() if v["kind"] == "sh")
     print(f"\n{n_sh} 沪教概念 + {len(nodes)-n_sh} 前置补充 = {len(nodes)} 节点 · "

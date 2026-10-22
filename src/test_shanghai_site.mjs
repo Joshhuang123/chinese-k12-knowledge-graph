@@ -217,11 +217,41 @@ ok(phys.open, '搜「浮力」卡片打开了');
 ok(/沪科版|沪教版/.test(phys.eyebrow), `「浮力」标的是上海教材（${phys.eyebrow}）`);
 ok(/教材位置|\d/.test(phys.desc), `「浮力」写得出教材位置（${phys.desc.slice(0, 40)}）`);
 
+// ── 学习路径 ────────────────────────────────────────────────
+console.log('\n[7] 学习路径：沪教版版的先修顺序');
+await page.evaluate(() => { document.getElementById('q').value = ''; });
+await page.click('#q');
+await page.type('#q', '浮力', { delay: 20 });
+await sleep(500);
+await page.keyboard.press('Enter');
+await sleep(1600);
+await page.click('#cPath');
+await sleep(1000);
+const path = await page.evaluate(() => {
+  const lis = [...document.querySelectorAll('#pathList li[data-id]')];
+  const depths = lis.map(li => {
+    const m = li.textContent.match(/离目标\s*(\d+)\s*层/);
+    return m ? +m[1] : -1;
+  });
+  return {
+    open: !document.getElementById('path').hidden,
+    n: lis.length,
+    nondecreasing: depths.every((d, i) => i === 0 || depths[i - 1] >= d),
+    hasPos: lis.filter(li => /沪教版|沪科版/.test(li.textContent)).length,
+    sample: lis[0]?.textContent.replace(/\s+/g, ' ').trim().slice(0, 100) || '',
+  };
+});
+ok(path.open, '学习路径面板打开了');
+ok(path.n > 2, `排出了 ${path.n} 个前置`);
+ok(path.nondecreasing, '顺序是从最基础开始');
+ok(path.hasPos > 0, `${path.hasPos} 个前置标出了上海教材的位置`);
+console.log(`      例：${path.sample}`);
+
 // ── README 里的测试项数不能烂 ────────────────────────────────
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_shanghai_site.mjs` | 38 |';
-  ok(rd.includes(want), `README 里的 上海版 测试项数是 38（${rd.includes(want) ? '一致' : '不一致'}）`);
+  const want = '| `src/test_shanghai_site.mjs` | 42 |';
+  ok(rd.includes(want), `README 里的 上海版 测试项数是 42（${rd.includes(want) ? '一致' : '不一致'}）`);
 }
 
 await page.screenshot({ path: resolve(BASE, 'data/pdf-cache/work/shanghai-site.png') });

@@ -76,6 +76,13 @@ SINGLE = {
     "varphi": "φ", "chi": "χ", "eta": "η", "nu": "ν", "mu2": "μ",
     "varPhi": "Φ", "varOmega": "Ω", "varSigma": "Σ", "varepsilon": "ε",
     "vartheta": "ϑ", "varsigma": "ς", "varpi": "ϖ", "digamma": "ϝ",
+    # ── 化学式与反应条件（沪教版化学的实测绘出来的）──
+    # 原来这些命令**原样漏到页面上**：`\mathrm{K}_2\mathrm{MnO}_4 + ... \uparrow`
+    # 扫全库 23,147 个公式，漏出 278 处，8 个命令。
+    "uparrow": "↑", "downarrow": "↓", "Uparrow": "⇑", "Downarrow": "⇓",
+    "xlongequal": "═", "xrightharpoonup": "⥈", "xrightharpoondown": "⥎",
+    "subsetneqq": "⊊", "supsetneqq": "⫋", "nsubseteqq": "⫋",
+    "rightarrowtail": "↣", "leftrightsquigarrow": "⇝",
     "textasciicircum": "^", "textquotesingle": "'", "textasciitilde": "~",
     "textbackslash": "\\", "textunderscore": "_", "textbar": "|",
     "because": "∵", "square": "□", "bullet": "•", "blacksquare": "■",
@@ -118,6 +125,7 @@ ACCENT = {
 
 # ── 丢弃表：纯排版命令，连内容一起丢 ─────────────────────────────────
 DROP_CMD = {"left", "right", "quad", "qquad", "hspace", "phantom",
+            "enspace", "thinspace", "medspace", "negthinspace", "space",
             "mathrel", "displaystyle", "limits", "!", ",", ";", ":", " ",
             "hline",           # hline 是表格横线，纯排版（实测 16 次）
             "smash", "mkern", "mspace", "nobreak", "allowbreak",
@@ -135,14 +143,26 @@ DROP_CMD = {"left", "right", "quad", "qquad", "hspace", "phantom",
 
 # ── 保留表：命令丢掉，组里的内容留着 ─────────────────────────────────
 # **分两种**：文字类原样留（转了没意义），数学类要递归转。
+# **数学字体命令：内容是数学，只是字体不同** ——
+# `\mathrm{H^+}` 是 H 带一个上标，不是「H^+ 五个字符」。
+# 原来它们跟 `\text{}` 一起当「原样留」，于是
+# `\mathrm{H^+}` → `H^+`、`\mathrm{CH_3OH}` → `CH_3OH`，
+# **上标下标原样漏到页面上**。这个坑化学式最明显。
+MATH_STYLE = {"mathrm", "mathbf", "mathit", "mathsf", "mathcal",
+              "boldsymbol", "bm", "pmb", "mathnormal", "mathscr", "mathtt",
+              # **\boxed 是给公式加框的，内容是数学** ——
+              # 放 RAW_CONTENT 里的话，框里的 `\phantom{00}` 会原样漏出来。
+              "boxed"}
+
 RAW_CONTENT = {"text", "mathrm", "mathbf", "mathit", "operatorname", "textbf",
-               "mathcal", "mathsf", "rm", "textnormal", "textit",
-               "boxed"}         # boxed 是给公式加框，内容要留（实测 12 次）
+               "mathcal", "mathsf", "rm", "textnormal", "textit"}
 CONVERT_CONTENT = {"overbrace", "underbrace", "overarc", "overparen",
                    # ── 沪教版实测补的排版类命令：丢掉命令，内容留下 ──
                    "boldsymbol", "mathnormal", "mathrel", "mathopen",
                    "mathclose", "mathpunct", "mathbin", "mathrm2"}
-KEEP_CONTENT = RAW_CONTENT | CONVERT_CONTENT
+# 数学字体命令走「递归转」，不进 RAW_CONTENT
+RAW_CONTENT = RAW_CONTENT - MATH_STYLE
+KEEP_CONTENT = RAW_CONTENT | CONVERT_CONTENT | MATH_STYLE
 
 # 环境名，成对丢弃
 ENV_CMD = {"begin", "end"}
@@ -287,6 +307,14 @@ def _convert(s: str, depth: int = 0) -> str:
                     if g is not None:
                         i = j2
                         continue
+                if name == "binom":
+                    # 组合数：\binom{n}{m} → C(n,m)
+                    g1, j2 = _read_group(s, j)
+                    g2, j3 = _read_group(s, j2 if g1 is not None else j)
+                    if g1 is not None and g2 is not None:
+                        out.append(f"C({_convert(g1, depth + 1)},{_convert(g2, depth + 1)})")
+                        i = j3
+                        continue
                 if name in SECOND_GROUP:
                     g1, j2 = _read_group(s, j)
                     g2, j3 = _read_group(s, j2 if g1 is not None else j)
@@ -298,7 +326,23 @@ def _convert(s: str, depth: int = 0) -> str:
                     # 文字：原样留。转了没意义，还可能把中文搞坏
                     g, j2 = _read_group(s, j)
                     if g is not None:
+                        # **但组里的排版命令要清掉** ——
+                        # `\text{（ \quad ）}` 原样留的话页面上就出现「\quad」。
+                        g = re.sub(r"\\(?:quad|qquad|enspace|thinspace)\s*", " ", g)
+                        g = re.sub(r"\\hspace\{[^}]*\}", " ", g)
+                        g = re.sub(r"\\[,;:!]", " ", g)
                         out.append(g)
+                        i = j2
+                        continue
+                    out.append(" ")
+                    i = j
+                    continue
+                if name in MATH_STYLE:
+                    # 数学字体：内容还是数学，**要转**。
+                    # `\mathrm{H^+}` 里的上标不转的话会原样漏成 `H^+`。
+                    g, j2 = _read_group(s, j)
+                    if g is not None:
+                        out.append(_convert(g, depth + 1))
                         i = j2
                         continue
                     out.append(" ")
@@ -316,6 +360,13 @@ def _convert(s: str, depth: int = 0) -> str:
                     i = j
                     continue
                 if name in DROP_CMD:
+                    # **\phantom 是占位符，整个组都不该出现** ——
+                    # 只丢命令名的话，组里的 `00` 会变成正文里的「00」。
+                    if name == "phantom":
+                        g, j2 = _read_group(s, j)
+                        if g is not None:
+                            i = j2
+                            continue
                     i = j
                     continue
                 if name in SINGLE:
@@ -436,6 +487,22 @@ CASES = [
     ("\\parallel", "∥"),
     # 裸 $ 是数学定界符，要丢掉
     ("横轴为时间 $t/时$，纵轴为气温 $T/°C$", "横轴为时间 t/时，纵轴为气温 T/°C"),
+    # ── 沪教化学实测：这些命令原来**原样漏到页面上** ──
+    # 扫全库 23,147 个公式，漏出 278 处 / 8 个命令。
+    # 漏出去的是 LaTeX 源码（「\\uparrow」「\\phantom」），学生看不懂。
+    ("[\\mathrm{H^+}] = [\\mathrm{OH^-}]", "[H⁺] = [OH⁻]"),
+    ("\\mathrm{CH_3OH + H_2O = CO_2 + 6H^+}", "CH₃OH + H₂O = CO₂ + 6H⁺"),
+    ("\\mathrm{MgCO_3 + 2H^+ = Mg^{2+} + CO_2\\uparrow + H_2O}",
+     "MgCO₃ + 2H⁺ = Mg²⁺ + CO₂↑ + H₂O"),
+    ("2\\mathrm{KMnO}_4 \\xlongequal{\\Delta} \\mathrm{K}_2\\mathrm{MnO}_4",
+     "2KMnO₄ ═Δ K₂MnO₄"),
+    ("\\text{CuSO}_4 + 2\\text{NaOH} = \\text{Cu(OH)}_2\\downarrow",
+     "CuSO₄ + 2NaOH = Cu(OH)₂↓"),
+    # \phantom 是占位符，整个组都不该出现
+    ("9327 = 9000 + 300 + \\boxed{\\phantom{00}}", "9327 = 9000 + 300 +"),
+    ("\\binom{n}{m}", "C(n,m)"),
+    # 文字组里的排版命令要清掉
+    ("\\square \\times \\square = \\square \\text{（ \\quad ）}", "□ × □ = □ （ ）"),
 ]
 
 

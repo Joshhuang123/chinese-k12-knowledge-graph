@@ -599,6 +599,29 @@ def main():
             if fs or gs:
                 vision[j] = [fs, gs, (cv.get("bookZh") or "")[:6]]
 
+    # ── 教材原话（OCR 原文层）──────────────────────────────────
+    # **教材自己写的定义句** —— 「在一定的空间范围内，生物与环境形成的
+    # 统一整体就是生态系统」。这是最硬的一手材料：不是我们转述的，
+    # 是教材印在书上的。卡片和学习路径面板都靠它。
+    text = {}
+    TXT = BASE / "data" / "concept-text.jsonl"
+    if TXT.exists():
+        for line in TXT.open(encoding="utf-8"):
+            if not line.strip():
+                continue
+            try:
+                cv = json.loads(line)
+            except Exception:
+                continue
+            j = idx.get(cv.get("id", ""))
+            if j is None:
+                continue
+            q = [q for q, k in zip(cv.get("quotes", []), cv.get("quoteKinds", []))
+                 if k in ("definition", "theorem")]
+            if q:
+                text[j] = [x[:180] for x in q[:2]]
+    print(f"  教材原话 {len(text)} 个概念")
+
     # ── 视觉层（上海教材：沪教版/沪科版）──────────────────────────
     # **跟人教版分开** —— 两套教材，混一起出处说不清。
     # 同一册里两个版本覆盖的概念都不一样（人教七上「第1章 有理数」起，
@@ -662,6 +685,7 @@ def main():
     payload = {"nodes": payload_nodes, "edges": payload_edges,
                "isa": isa_pairs, "chs": chs, "cns": cns,
                "altpos": alt_pos, "vision": vision, "visionAlt": vision_alt, "hard": hard_map,
+               "text": text,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                # 画布上画的点数（含自建），但首页写的「N 个知识点」
                # 必须只数上游那批 —— 把能力节点算进「知识点」是偷换概念。
@@ -692,9 +716,11 @@ def main():
     # 注意：__N_TOPIC__ 这类占位符必须最后再替换，
     # 因为下面几条文案本身含有占位符，先替换占位符就匹配不上了。
     # 模板原文是美英小学口径（4–15 岁 / 9–10 岁核心），直接用会跟国内数据对不上。
-    GRADE_MAP = ("const GRADE_ZH={1:'一年级',2:'二年级',3:'三年级',4:'四年级',"
+    GRADE_MAP = ("const GRADE_ZH={0:'基础',1:'一年级',2:'二年级',3:'三年级',4:'四年级',"
                  "5:'五年级',6:'六年级',7:'初一',8:'初二',9:'初三',"
-                 "10:'高一',11:'高二',12:'高三'};\n")
+                 "10:'高一',11:'高二',12:'高三'};\n"
+                 # **挂到 window** —— 学习路径面板在 IIFE 外面，够不着 IIFE 里的常量。
+                 "window.GRADE_ZH=GRADE_ZH;\n")
     COPY = [
         # 模板原文是美英小学口径（4–15 岁 / 9–10 岁核心），直接用会跟国内数据对不上。
         # 这一行不只是「哪套标准」，说的是**按哪套教材排的序** ——

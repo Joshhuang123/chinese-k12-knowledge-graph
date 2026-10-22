@@ -211,6 +211,14 @@ https://joshhuang123.github.io/chinese-k12-knowledge-graph/shanghai.html
 **五个学科都在**：数学 26 本 · 物理 14 本 · 化学 9 本 · 生物 9 本 · 小学科学 9 本，
 沪教版（上海教育出版社，五四学制）和沪科版（上海科学技术出版社，六三制）两套并行。
 
+卡片上现在有四样教材证据：**教材原话**（教材自己写的定义句，2,131 个概念里有 617 个有）·
+**教材位置**（哪本书哪一节第几页）· **教材原书上的公式**· **教材自己标的难点**。
+还有一个**「学习路径」**面板：把这个知识点之前要会的东西，按先修关系排成一条路，
+每一步标出它在教材里的位置 —— 补课、排课照着翻书就行。
+
+上海版的**数据质量页**在 <https://joshhuang123.github.io/chinese-k12-knowledge-graph/shanghai-quality.html>，
+里面有上海教材这一层的账和**内容缺口地图**（教材标了难点、而图谱前置薄的地方）。
+
 难的不是画图，是**认得出哪些概念是这本教材教的**：
 
 - **人教和沪教不能混在一个册次桶里。** 沪教版七上从「第 10 章 整式的加减」起，
@@ -426,6 +434,8 @@ OCR 只能救回汉字，**公式和图形会全丢**。视觉层换成让多模
 |---|---|---|
 | `data/shanghai-textbooks.json` | 上海教材清单（contentId / 页数 / 页图基址） | 67 本 |
 | `data/vision-pages-sh.jsonl` | 一页一条，带公式和图 | 9,009 页 |
+| `data/lessons-sh.jsonl` | 上海教材的**OCR 原文层**（页图的汉字正文） | 9,009 页 |
+| `data/concept-text-sh.jsonl` | 概念的**教材原话**（590 个概念有教材自己写的定义句） | 2,114 个概念 |
 | `data/concept-vision-sh.jsonl` | 沪教概念，**按书**分册，带公式/图/习题和**判据** | 2,373 个概念 / 3,355 个书-概念对 |
 | `data/shanghai-toc.json` | **教材自己的目录**（视觉模型读的，1,350 节） | 67 本 |
 | `data/shanghai-graph.json` | 上海版图谱：节点 / 单元链 / 先修边 | 3,393 节点 / 6,567 边 |
@@ -493,6 +503,9 @@ src/vision_images.py     对已下载页图跑视觉层（上海教材用）
 src/shanghai_toc_vision.py 上海教材目录（视觉模型读目录页，tesseract 读不动）
 src/shanghai_graph.py    上海版图谱：节点 / 单元链 / 先修边
 src/build_shanghai.py    上海版站点 → shanghai.html（复用同一个模板）
+src/ocr_sh.py          上海教材的 OCR 原文层（页图 → 汉字正文 → 定义句）
+src/fix_vision_subject.py  视觉层的学科字段归一（中文名 → 图谱口径的英文码）
+src/build_shanghai_quality.py 上海版质量页 + 内容缺口地图
 src/test_shanghai_site.mjs 上海版站点测试（15 项）
 src/build_quality.py    数据质量公开页 quality.html
 data/lessons.jsonl      教材正文（入库，12,939 页）
@@ -689,13 +702,13 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 
 ### 验证
 
-三份测试都用真 Chrome 开真页面做端到端断言，合计 **201 项**：
+三份测试都用真 Chrome 开真页面做端到端断言，合计 **213 项**：
 
 | 文件 | 项数 | 测什么 |
 |---|---|---|
 | `src/test_search_browser.mjs` | 93 | 搜索、移动端三尺寸、页面自洽 |
-| `src/test_regressions.mjs` | 78 | 真 bug 的回归，每条都有「修之前实测复现」 |
-| `src/test_shanghai_site.mjs` | 38 | 上海版页面起得来、搜得到、教材位置对、「卡在哪」排得出候选、零 JS 错误 |
+| `src/test_regressions.mjs` | 86 | 真 bug 的回归，每条都有「修之前实测复现」 |
+| `src/test_shanghai_site.mjs` | 42 | 上海版页面起得来、搜得到、教材位置对、「卡在哪」排得出候选、零 JS 错误 |
 
 项目本身零 npm 依赖，puppeteer-core 按需单装：
 

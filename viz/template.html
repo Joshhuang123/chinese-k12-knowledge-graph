@@ -257,6 +257,13 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   display:flex;flex-direction:column;z-index:41;padding:0;
 }
 #gap[hidden]{display:none}
+/* 学习路径面板：**跟「卡在哪」长得一样** ——
+   一个给候选和理由，一个给顺序。两块并排，样式共用一套。 */
+#path{
+  inset:0;background:rgba(9,10,13,.975);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;z-index:41;padding:0;
+}
+#path[hidden]{display:none}
 #mapBar{
   display:flex;align-items:center;justify-content:space-between;gap:16px;
   padding:14px 20px;border-bottom:1px solid var(--line);flex:none;
@@ -287,34 +294,38 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 }
 #map .btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e}
 /* 「卡在哪」面板 */
-#gapBody{flex:1;overflow:auto;padding:16px 22px 26px}
-#gapIntro{font-size:12.5px;color:var(--muted);line-height:1.75;margin-bottom:14px;
+#gapBody,#pathBody{flex:1;overflow:auto;padding:16px 22px 26px}
+#gapIntro,#pathIntro{font-size:12.5px;color:var(--muted);line-height:1.75;margin-bottom:14px;
   padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.02)}
-#gapIntro b{color:#e8ebf2}
-#gapList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
-#gapList li{
+#gapIntro b,#pathIntro b{color:#e8ebf2}
+#gapList,#pathList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+#gapList li,#pathList li{
   display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:start;
   padding:11px 14px;border:1px solid var(--line);border-radius:8px;
   background:rgba(255,255,255,.02);cursor:pointer;
 }
-#gapList li:hover{border-color:#3a4150;background:rgba(255,255,255,.05)}
-#gapList .rk{
+#gapList li:hover,#pathList li:hover{border-color:#3a4150;background:rgba(255,255,255,.05)}
+#gapList .rk,#pathList .rk{
   font:600 15px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;
   color:#ff3d7f;text-align:right;padding-top:1px;
 }
-#gapList .nm{font-size:14px;font-weight:600;color:#e8ebf2}
-#gapList .why{font-size:12px;color:var(--muted);line-height:1.6;margin-top:3px}
-#gapList .why em{color:#9fb0c8;font-style:normal}
-#gapList .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-#gapList .tag{
+#gapList .nm,#pathList .nm{font-size:14px;font-weight:600;color:#e8ebf2}
+#gapList .why,#pathList .why{font-size:12px;color:var(--muted);line-height:1.6;margin-top:3px}
+#gapList .why em,#pathList .why em{color:#9fb0c8;font-style:normal}
+#gapList .tags,#pathList .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+#gapList .tag,#pathList .tag{
   font-size:10.5px;padding:2px 7px;border-radius:20px;
   border:1px solid var(--line);color:#8b93a7;white-space:nowrap;
 }
-#gapList .tag.hot{border-color:#6b2b45;color:#ff8fb4;background:rgba(255,61,127,.08)}
-#gapList .tag.root{border-color:#3d4a2c;color:#b9d67f;background:rgba(185,214,127,.07)}
-#gapList .sc{font:600 12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;color:#6b7488;text-align:right}
+#gapList .tag.hot,#pathList .tag.hot{border-color:#6b2b45;color:#ff8fb4;background:rgba(255,61,127,.08)}
+#gapList .tag.root,#pathList .tag.root{border-color:#3d4a2c;color:#b9d67f;background:rgba(185,214,127,.07)}
+#gapList .sc,#pathList .sc{font:600 12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;color:#6b7488;text-align:right}
 /* 教材原书的公式和图（视觉层） */
-#gapList .vb{margin-top:7px;padding:7px 10px;border-left:2px solid #2c3646;
+/* 教材原话 —— 教材自己写的定义句 */
+#gapList .vt,#pathList .vt{margin-top:7px;padding:7px 10px;border-left:2px solid #3d4a2c;
+  background:rgba(185,214,127,.05);font-size:12px;color:#c8d6b8;line-height:1.65}
+#pathList .vt{border-left-color:#4a3d2c;background:rgba(255,209,102,.05);color:#e0d0a8}
+#gapList .vb,#pathList .vb{margin-top:7px;padding:7px 10px;border-left:2px solid #2c3646;
   background:rgba(120,160,255,.05);border-radius:0 6px 6px 0}
 #gapList .vb .vh{font-size:10.5px;color:#6b7488;margin-bottom:4px;letter-spacing:.02em}
 #gapList .vb .vf{font:12.5px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -548,6 +559,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   <div class="cardacts">
     <button class="btn" id="cMap">知识脉络</button>
     <button class="btn" id="cGap">卡在哪</button>
+    <button class="btn" id="cPath">学习路径</button>
     <span class="cardact-hint">展开它的先修链与后继链</span>
   </div>
   <!-- 前后依赖直接列出来并且可点。只给数量（「要先掌握 4 个」）等于
@@ -580,6 +592,26 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   <div id="mapBody"><svg id="mapSvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
   <div id="mapLegend"></div>
   <div id="mapTip">点任意节点 → 以它为中心重画 · Esc 关闭</div>
+</div>
+
+<!-- 学习路径：把「卡在哪」的候选排成一条**能走的路**。
+     「卡在哪」回答「缺什么」，学习路径回答「**先学哪个、再学哪个**」，
+     每一步标出它在教材里的位置（哪本书哪一节第几页）——
+     老师排课、学生补课要的就是这个顺序。 -->
+<div class="ui" id="path" hidden>
+  <div id="mapBar">
+    <div class="mtitle"><b id="pathName"></b><span id="pathSub"></span></div>
+    <div class="mtools">
+      <button class="btn" id="pathCopy">复制路径</button>
+      <button class="btn" id="pathClose">关闭</button>
+    </div>
+  </div>
+  <div id="pathBody">
+    <div id="pathIntro"></div>
+    <ol id="pathList"></ol>
+    <div id="pathFoot"></div>
+  </div>
+  <div id="pathTip">点任意一条 → 跳到那个知识点 · Esc 关闭</div>
 </div>
 
 <!-- 「卡在哪」：这是本项目真正要回答的那个问题 ——
@@ -1485,9 +1517,19 @@ addEventListener('keydown', e=>{
    二维脉络视图的代码要放在 IIFE 外面（它自己是一整块），
    就得从这里递东西出去。 */
 window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
+              // **showCard 也要挂出来** ——
+              // 「卡在哪」「学习路径」两个面板的代码在 IIFE 外面，
+              // 它们点条目要跳到别的知识点，showCard 在 IIFE 里面够不着。
+              // 实测：点「卡在哪」列表里的任何一条都不跳，而且抛
+              // `ReferenceError: showCard is not defined`。
+              showCard: (id) => showCard(id),
               // **视觉层**：概念在教材原书上的公式和图。
               // 「卡在哪」面板和选题卡都要用 —— 面板那段代码在 IIFE 外面。
               vision: D.vision || {},
+              // **教材原话**：教材自己写的定义句（人教版来自 OCR 原文层，
+              // 上海版来自页图 OCR）。没有这一层，卡片上就只有位置和公式，
+              // 少了「教材到底怎么说的」这一句。
+              text: D.text || {},
               // **上海教材（沪教版/沪科版）的公式和图** ——
               // 人教和沪教是两套教材，各看各的。
               visionAlt: D.visionAlt || {},
@@ -1950,6 +1992,18 @@ function kgVisionHTML(j){
   }
   return h;
 }
+/* 教材原话 —— 教材自己写的定义句。
+   **必须标出处**，因为「教材说的」和「我们说的」不是一回事。 */
+function kgTextHTML(j){
+  const t = (KG.text && KG.text[j]) || [];
+  if(!t.length) return '';
+  return '<div class="vt"><b>教材原话</b> · ' + kgEsc(t[0]) + '</div>';
+}
+function kgTextText(j){
+  const t = (KG.text && KG.text[j]) || [];
+  return t.length ? t[0] : '';
+}
+
 /* 教材自己标的难点（「思考」「探究」框）。
  *
  * 这是**教材编委会标的**，不是我们推断的 ——
@@ -2022,6 +2076,7 @@ function openGap(id){
       (r.dp === 0 ? '<span class="tag root">链的根</span>' : '') +
       '</div>' +
       kgHardHTML(r.nid) +
+      kgTextHTML(r.nid) +
       kgVisionHTML(r.nid) +
       '</div>' +
       '<div class="sc">' + r.score.toFixed(1) + '</div>' +
@@ -2033,6 +2088,149 @@ function openGap(id){
   document.getElementById('gap').hidden = false;
 }
 function closeGap(){ document.getElementById('gap').hidden = true; }
+
+/* ================= 学习路径 =================
+   「卡在哪」回答「缺什么」；**学习路径回答「先学哪个、再学哪个」**。
+   老师排课、学生补课要的是顺序，不是候选清单。
+
+   排序依据：**先修关系**（不是教材顺序）。
+   离目标越远的前置 = 越基础 = 越要先学。
+   教材顺序只用来回答「这一步在书里是哪一节」。
+
+   **教材顺序不等于先修** —— 教材把 A 排在 B 前面，
+   不等于学 B 必须先会 A（这个项目一直分得很清）。
+   所以路径按先修排，位置当注脚。 */
+const PATH_DEPTH = 4;
+function pathRows(id){
+  // BFS 往先修方向走，同时记下每个节点是从**谁**那儿发现的 ——
+  // 那就是「往目标走」的下一步，串起来就是这条路径。
+  const parent = new Map(), depth = new Map();
+  depth.set(id, 0);
+  const q = [id];
+  for(let qi = 0; qi < q.length; qi++){
+    const cur = q[qi];
+    if(depth.get(cur) >= PATH_DEPTH) continue;
+    for(const r of (KG.pre.get(cur) || [])){
+      const v = r[0];
+      if(depth.has(v)) continue;
+      depth.set(v, depth.get(cur) + 1);
+      parent.set(v, cur);
+      q.push(v);
+    }
+  }
+  const depths = computeDepths();
+  const rows = [];
+  for(const [nid, d] of depth){
+    if(nid === id) continue;
+    const n = KG.NODES[nid];
+    if(!n) continue;
+    // 链：从这个点**往目标走**的那几步（不含它自己 —— 名字上面已经写了）
+    const chain = [];
+    let cur = parent.get(nid), guard = 0;
+    while(cur !== undefined && guard++ < 24){
+      chain.push(KG.NODES[cur] ? KG.NODES[cur].zh : '?');
+      if(cur === id) break;
+      cur = parent.get(cur);
+    }
+    // 教材位置
+    const gi = n.oc;
+    // **CNS 在 IIFE 里面** —— 这段代码在外面，得从 D 里取。
+    const u = gi >= 0 ? ((KG.D.cns || [])[gi] || null) : null;
+    rows.push({
+      nid, name: n.zh, dz: n.dz, grade: n.a1, d, chain,
+      unit: u ? u[0] : '', book: u ? u[1] : '',
+      dp: depths.get(nid) || 0,
+      quote: kgTextText(nid),
+    });
+  }
+  // **越深越靠前**（那是更基础的）��同深度按年级排。
+  rows.sort((a,b) => (b.d - a.d) || (a.grade - b.grade) || a.name.localeCompare(b.name));
+  return rows;
+}
+
+function openPath(id){
+  const rows = pathRows(id);
+  const n = KG.NODES[id];
+  document.getElementById('pathName').textContent = n.zh;
+  const grades = [...new Set(rows.map(r => r.grade))].sort((a,b)=>a-b);
+  document.getElementById('pathSub').textContent =
+    '往回 ' + PATH_DEPTH + ' 层共 ' + rows.length + ' 个前置 · 从最早的开始学';
+  document.getElementById('pathIntro').innerHTML = rows.length
+    ? '<b>' + kgEsc(n.zh) + '</b> 之前要会的东西，按<b>先修关系</b>排成了一条路：' +
+      '越靠前越基础。' +
+      (grades.length ? '这些前置在教材里跨到 ' +
+        grades.map(g => (window.GRADE_ZH && window.GRADE_ZH[g]) || g).join(' → ') + '。' : '') +
+      ' **顺序按先修排，不按教材排** —— 教材把 A 排在 B 前面，' +
+      '不等于学 B 必须先会 A。'
+    : '<b>' + kgEsc(n.zh) + '</b> 在图谱里没有记录任何前置 —— ' +
+      '要么它真是链的起点，要么数据在这一片是空的。';
+
+  document.getElementById('pathList').innerHTML = rows.map((r, i) =>
+    '<li data-id="' + r.nid + '">' +
+      '<div class="rk">' + (i+1) + '</div>' +
+      '<div><div class="nm">' + kgEsc(r.name) + '</div>' +
+      '<div class="why"><em>→</em> ' + r.chain.map(kgEsc).join(' <em>→</em> ') + '</div>' +
+      '<div class="tags">' +
+      '<span class="tag">' + ((window.GRADE_ZH && window.GRADE_ZH[r.grade]) || r.grade) + '</span>' +
+      (r.unit
+        ? '<span class="tag">' + kgEsc(r.book) + ' ' + kgEsc(r.unit) + '</span>'
+        // **没有教材位置的**：能力底座（不是章节，是底层能力）、
+        // 人教版里的对应概念（沪教版没单列）。
+        : '<span class="tag">' + kgEsc(r.dz || '前置概念') + '</span>') +
+      '<span class="tag">离目标 ' + r.d + ' 层</span>' +
+      '</div>' +
+      (r.quote ? '<div class="vt"><b>教材原话</b> · ' + kgEsc(r.quote) + '</div>' : '') +
+      kgHardHTML(r.nid) +
+      '</div>' +
+      '<div class="sc">' + r.d + '</div>' +
+    '</li>').join('') ||
+    '<li style="grid-template-columns:1fr;color:#8b93a7">往回 ' + PATH_DEPTH +
+    ' 层没找到任何前置。</li>';
+  document.getElementById('pathFoot').textContent =
+    '每条都标了它在教材里的位置 —— 补课、排课照着翻书就行。';
+  document.getElementById('path').hidden = false;
+}
+function closePath(){ document.getElementById('path').hidden = true; }
+document.getElementById('cPath').addEventListener('click', ()=>{
+  const cid = KG.cardId();
+  if(cid >= 0) openPath(cid);
+});
+document.getElementById('pathClose').addEventListener('click', closePath);
+document.getElementById('pathList').addEventListener('click', e=>{
+  const li = e.target.closest('li[data-id]');
+  if(!li) return;
+  closePath();
+  KG.showCard(+li.dataset.id);
+});
+document.getElementById('pathCopy').addEventListener('click', async ()=>{
+  const cid = KG.cardId();
+  if(cid < 0) return;
+  const rows = pathRows(cid);
+  const L = ['# 学习路径：' + KG.NODES[cid].zh, ''];
+  rows.forEach((r, i) => {
+    L.push((i+1) + '. **' + r.name + '**' +
+      (r.unit ? '（' + r.book + ' ' + r.unit + '）' : '') +
+      ' — ' + r.chain.join(' → '));
+    if(r.quote) L.push('   > 教材原话：' + r.quote);
+  });
+  L.push('');
+  L.push('> 顺序按先修关系排，不按教材排。');
+  const txt = L.join('\n');
+  try{
+    await navigator.clipboard.writeText(txt);
+    say('学习路径已复制到剪贴板');
+  }catch(err){
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove();
+    say('学习路径已复制');
+  }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && !document.getElementById('path').hidden){
+    closePath(); e.stopPropagation();
+  }
+});
 document.getElementById('cGap').addEventListener('click', ()=>{
   const cid = KG.cardId();
   if(cid >= 0) openGap(cid);
@@ -2043,7 +2241,7 @@ document.getElementById('gapList').addEventListener('click', e=>{
   if(!li) return;
   const nid = +li.dataset.id;
   closeGap();
-  showCard(nid);
+  KG.showCard(nid);
 });
 document.getElementById('gapCopy').addEventListener('click', async ()=>{
   const cid = KG.cardId();
