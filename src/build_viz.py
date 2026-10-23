@@ -627,6 +627,62 @@ def main():
                 text[j] = [x[:180] for x in q[:2]]
     print(f"  教材原话 {len(text)} 个概念")
 
+    # ── 小学科学教材位置（人教版《小学科学》1上~6下）────────────
+    # **这一层补的是图谱最空的那一段。**
+    #
+    # 上游 K12-KGraph 的图谱里，**小学阶段只有数学**（1,182 个概念），
+    # 物理 / 化学 / 生物学在小学一个都没有 —— 上游 issue #10。
+    # 但小学科学教材是有的（人教版 12 本 / 1,036 页），
+    # 里面的「磁极」「热胀冷缩」「电磁铁」「光合作用」这些概念，
+    # **在上游图谱里都存在**，只是上游把它们标在初中/高中册次。
+    #
+    # 所以这里**不造节点**（图谱结构不变），只补一条教材位置：
+    # 「这个概念在小学科学三年级上册第 2 页『磁铁的磁极』」。
+    # 节点 id 是上游的，所以「卡在哪」面板里点得进去、链得上。
+    #
+    # 数据来自 data/concept-vision-kx.jsonl（src/vision_to_concepts_kx.py 产出）。
+    kx = {}
+    KX = BASE / "data" / "concept-vision-kx.jsonl"
+    if KX.exists():
+        for line in KX.open(encoding="utf-8"):
+            if not line.strip():
+                continue
+            try:
+                cv = json.loads(line)
+            except Exception:
+                continue
+            j = idx.get(cv.get("id", ""))
+            if j is None:
+                continue
+            # 只留**面板里可能出现的**（当过别人的前置的那些）——
+            # 其余带上页面白占体积，跟 vision 层一样的取舍。
+            if j not in as_pre:
+                continue
+            # 每本书取一条：册次 + 单元 + 节 + 节的起始页
+            # **单元和节由匹配层保证同源**（perBook 里的 unit/section
+            # 是同一个命中页推出来的），这里直接用，别再自己拼。
+            per = []
+            for bk, v in (cv.get("perBook") or {}).items():
+                unit = v.get("unit") or ""
+                sect = v.get("section") or ""
+                # **页码用「节起始页」**（匹配层算好放在 secStarts 里），
+                # 不是命中页的最小值 ——
+                # 「杠杆」在 5b 命中第 4 页（那是节的第一页），
+                # 但概念本身可能在第 45 页；标 4 会让人翻到 4 页找不到「杠杆」。
+                #
+                # **显示的是印刷页码**（书上印的那个），
+                # 不是扫描页序号 —— 前置页（封面/目录/版权）不算在书页码里。
+                sp = (v.get("secStarts") or {}).get(sect, 0)
+                if sp and v.get("offset"):
+                    sp -= v["offset"]
+                per.append([
+                    bk.replace("s6-", ""),          # 册次码 1a..6b
+                    unit, sect, sp,
+                ])
+            if per:
+                kx[j] = per[:4]
+    print(f"  小学科学教材位置 {len(kx)} 个概念")
+
     # ── 视觉层（上海教材：沪教版/沪科版）──────────────────────────
     # **跟人教版分开** —— 两套教材，混一起出处说不清。
     # 同一册里两个版本覆盖的概念都不一样（人教七上「第1章 有理数」起，
@@ -690,7 +746,7 @@ def main():
     payload = {"nodes": payload_nodes, "edges": payload_edges,
                "isa": isa_pairs, "chs": chs, "cns": cns,
                "altpos": alt_pos, "vision": vision, "visionAlt": vision_alt, "hard": hard_map,
-               "text": text,
+               "text": text, "kx": kx,
                "subjects": subjects, "core": sum(1 for n in nodes if n["stage"] == "初中"),
                # 画布上画的点数（含自建），但首页写的「N 个知识点」
                # 必须只数上游那批 —— 把能力节点算进「知识点」是偷换概念。

@@ -325,6 +325,11 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #gapList .vt,#pathList .vt{margin-top:7px;padding:7px 10px;border-left:2px solid #3d4a2c;
   background:rgba(185,214,127,.05);font-size:12px;color:#c8d6b8;line-height:1.65}
 #pathList .vt{border-left-color:#4a3d2c;background:rgba(255,209,102,.05);color:#e0d0a8}
+/* 小学科学教材位置 —— **另一套教材**（人教版《小学科学》，湖北教育出版社出版），
+   不是人教版初中物理那本。用青色边跟别的教材信息区分开，
+   免得读成「就是那本初中教材」。 */
+#gapList .vt.kx,#pathList .vt.kx{border-left-color:#2c5a52;background:rgba(67,217,192,.06);color:#a8d8ce}
+#gapList .vt.kx b,#pathList .vt.kx b{color:#5fd8bf;font-weight:700}
 #gapList .vb,#pathList .vb{margin-top:7px;padding:7px 10px;border-left:2px solid #2c3646;
   background:rgba(120,160,255,.05);border-radius:0 6px 6px 0}
 #gapList .vb .vh{font-size:10.5px;color:#6b7488;margin-bottom:4px;letter-spacing:.02em}
@@ -1536,6 +1541,10 @@ window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
               // **教材自己标的难点**（「思考」「探究」框）——
               // 面板里要显示「教材在这里标了 N 处思考/探究」。
               hard: D.hard || {},
+              // **小学科学教材位置**（人教版《小学科学》1上~6下）——
+              // 上游图谱小学段只有数学，物化生一个都没有（上游 issue #10）。
+              // 这一层补上「这个概念在小学科学哪本书哪一节哪一页」。
+              kx: D.kx || {},
               nodeColor, edgeColor, getPal: ()=>PAL, setPal: (k,v)=>{PAL[k]=v;},
               // **脉络视图那块代码在 IIFE 外面**，要自己取配色。
               // 只递 getPal() 不够 —— PAL 本身要递出去（它是同一个对象引用，
@@ -1938,6 +1947,16 @@ function gapCardText(id, rows){
       if(t) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t);
     });
   }
+  // 小学科学教材位置 —— 家长/老师最想要的一句：「小学在哪本书哪一页」
+  const withKx = rows.slice(0, 8).map(r => kgKxText(r.nid)).filter(Boolean);
+  if(withKx.length){
+    lines.push('');
+    lines.push('## 小学科学（人教版）里也在');
+    rows.slice(0, 8).forEach((r, i) => {
+      const t = kgKxText(r.nid);
+      if(t) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t);
+    });
+  }
   lines.push('');
   lines.push('> 排序信号：杠杆（被依赖数）× 早晚（链深）× 是不是链根 × 离症状距离 × 覆盖薄弱。');
   lines.push('> 数据来自中文 K12 知识图谱（人教版教材排序），每条边可查来源。');
@@ -2003,6 +2022,29 @@ function kgTextText(j){
   const t = (KG.text && KG.text[j]) || [];
   return t.length ? t[0] : '';
 }
+/* 小学科学教材位置（人教版《小学科学》1上~6下）。
+ *
+ * **这一层补的是图谱最空的那一段**：上游图谱小学阶段只有数学，
+ * 物理化学生物在小学一个都没有（上游 issue #10）。
+ * 但小学科学教材里有这些概念（磁极、热胀冷缩、电磁铁、光合作用…），
+ * **它们在上游图谱里都存在**，只是上游标在初中/高中册次。
+ *
+ * 显示成「小学科学 · 三上 · 有趣的磁铁 › 磁铁的磁极 · 第 2 页」，
+ * **标清是另一套教材**（人教版小学科学 = 湖北教育出版社出版，
+ * 跟人教版初中物理不是一本书），别让人以为这是初中那本。
+ */
+function kgKxHTML(j){
+  const k = (KG.kx && KG.kx[j]) || [];
+  if(!k.length) return '';
+  const VOL = {'1a':'一上','1b':'一下','2a':'二上','2b':'二下','3a':'三上','3b':'三下',
+               '4a':'四上','4b':'四下','5a':'五上','5b':'五下','6a':'六上','6b':'六下'};
+  const items = k.map(x => {
+    const vol = VOL[x[0]] || x[0];
+    const seg = [x[1], x[2]].filter(Boolean).join(' › ');
+    return '《科学》' + vol + (seg ? ' · ' + seg : '') + (x[3] ? ' · 第 ' + x[3] + ' 页' : '');
+  });
+  return '<div class="vt kx"><b>小学科学</b> · ' + kgEsc(items.join('；')) + '</div>';
+}
 
 /* 教材自己标的难点（「思考」「探究」框）。
  *
@@ -2031,6 +2073,21 @@ function kgHardText(j){
   return '教材在这里标了 **' + h[0] + ' 处思考/探究**'
        + (where ? '（' + where + '）' : '')
        + (h[1] ? '\n\n> ' + h[1] : '');
+}
+/* 小学科学教材位置（人教版《小学科学》1上~6下）。
+   选题卡要能直接用这一条 —— 「这个概念小学在哪本书哪一页」，
+   是家长/老师最想要的那句话。 */
+function kgKxText(j){
+  const k = (KG.kx && KG.kx[j]) || [];
+  if(!k.length) return '';
+  const VOL = {'1a':'一上','1b':'一下','2a':'二上','2b':'二下','3a':'三上','3b':'三下',
+               '4a':'四上','4b':'四下','5a':'五上','5b':'五下','6a':'六上','6b':'六下'};
+  const items = k.map(x => {
+    const vol = VOL[x[0]] || x[0];
+    const seg = [x[1], x[2]].filter(Boolean).join(' › ');
+    return '《科学》' + vol + (seg ? ' · ' + seg : '') + (x[3] ? ' · 第 ' + x[3] + ' 页' : '');
+  });
+  return '小学科学（人教版）里也在：' + items.join('；');
 }
 function kgVisionText(j){
   const v = kgVision(j);
@@ -2077,6 +2134,7 @@ function openGap(id){
       '</div>' +
       kgHardHTML(r.nid) +
       kgTextHTML(r.nid) +
+      kgKxHTML(r.nid) +
       kgVisionHTML(r.nid) +
       '</div>' +
       '<div class="sc">' + r.score.toFixed(1) + '</div>' +
@@ -2180,6 +2238,7 @@ function openPath(id){
       '<span class="tag">离目标 ' + r.d + ' 层</span>' +
       '</div>' +
       (r.quote ? '<div class="vt"><b>教材原话</b> · ' + kgEsc(r.quote) + '</div>' : '') +
+      kgKxHTML(r.nid) +
       kgHardHTML(r.nid) +
       '</div>' +
       '<div class="sc">' + r.d + '</div>' +

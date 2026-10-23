@@ -65,6 +65,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default="data/pdf-cache/hujiao")
     ap.add_argument("--out", default="data/vision-pages-sh.jsonl")
+    ap.add_argument("--manifest", default="data/shanghai-textbooks.json",
+                    help="教材清单（要含 books 数组），决定每本书的学科/册次/书号")
     ap.add_argument("--jobs", type=int, default=3)
     ap.add_argument("--batch", type=int, default=5)
     ap.add_argument("--subject", default="math",
@@ -119,16 +121,23 @@ def main() -> int:
         out_path.write_text("".join(keep), encoding="utf-8")
         print(f"清掉 {len(failed_keys)} 条失败记录，准备重跑")
 
-    # 册次 → 图谱册次码：书目录名里带册次，从 data/shanghai-textbooks.json 取
+    # 册次 → 图谱册次码：书目录名里带册次，从清单文件取
     # **bookId 直接用清单里的** —— 册次码在两套教材里会撞车
     # （沪科版数学八上 / 物理八上 / 五四学制物理八上，册次码都一样），
     # 清单里的 bookId 带版别+学科+学制，天然不撞。
+    #
+    # **清单路径可传**（--manifest）——
+    # 上海教材一套、人教版小学科学一套，目录名规则不同：
+    # 上海的 slug 是「标题+contentId 前 8 位」，小学科学的是「s6-1a」这种短名。
     meta = {}
-    stj = BASE / "data" / "shanghai-textbooks.json"
-    if stj.exists():
-        for b in json.load(open(stj, encoding="utf-8"))["books"]:
-            slug = re.sub(r"[^\w一-鿿]+", "_", b["title"])[:30] + "_" + b["contentId"][:8]
+    man_path = BASE / args.manifest
+    if man_path.exists():
+        for b in json.load(open(man_path, encoding="utf-8"))["books"]:
+            slug = b.get("slug") or (
+                re.sub(r"[^\w一-鿿]+", "_", b["title"])[:30] + "_" + b["contentId"][:8])
             meta[slug] = b
+            # 短名也登记一份：目录名可能就是短名
+            meta.setdefault(slug.split("_")[0] if "_" in slug else slug, b)
 
     # **学科和学段要逐本取** —— 清单里有 5 个学科，
     # 而且学段也不一样（小学科学 / 初中物理 / 高中生物）。
