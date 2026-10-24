@@ -179,6 +179,12 @@ body{
    跟第 5 档「教材引入路径」（正文回指句）分开：一个是教材画的网络，
    一个是教材正文里的话。 */
 #card .chain .dep .sg6{color:#5eead4;background:rgba(94,234,212,.11);border-color:rgba(94,234,212,.3)}
+/* 第 9 档：教材序 —— **教材编者排的教学先后，不是先修关系**。
+   小学科学站专用。用**虚线边框**跟其余七档区分：
+   实线 = 有据可查的先修关系，虚线 = 「教材先教了它」这个顺序事实。
+   颜色也不能跟「上游」撞 —— 上游是青蓝，教材序用紫灰。 */
+#card .chain .dep .sg8{color:#c9b8e8;background:rgba(180,160,220,.09);
+  border-color:rgba(180,160,220,.42);border-style:dashed}
 #card .chain .dep .sus1{color:#ff9d6b;background:rgba(255,157,107,.12);border-color:rgba(255,157,107,.32)}
 #card .chain .dep .sus2{color:#ff7a7a;background:rgba(255,122,122,.14);border-color:rgba(255,122,122,.38)}
 #card .chain .dep .t{flex:1;min-width:0}
@@ -516,7 +522,8 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
     K12-KGraph 本身是跨国的知识点集，这里按<b>人教版</b>教材排序 —— 两套是分开的，留着做对照。</span><br>
     <b>可视化与校验</b> 本项目自建 · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
     · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a>
-    · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a><br>
+    · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a>
+    · <a href="./kx.html" target="_blank" rel="noopener">小学科学版</a><br>
     <span class="attr2">数据质量页把倒挂、覆盖缺口、可疑边、裁决账本全摊开 —— 有问题的边不藏。</span>
   </div>
 </div>
@@ -842,11 +849,17 @@ function project(){
 function drawEdges(){
   const BUCKETS = 4;
   const paths = [[],[],[],[]];
+  /* **教材序边（来源码 8）单独一组，画成虚线** ——
+     教材序是「编者先教哪个后教哪个」，**不是先修关系**。
+     实线 = 有据可查的先修关系，虚线 = 顺序事实。
+     跟其余七档区分开是实线，颜色也不能跟「上游」撞。 */
+  const orderPaths = [];
   for(let e=0;e<D.edges.length;e++){
-    const [t,p] = D.edges[e];
+    const [t,p,src] = D.edges[e];
     if(projK[t] < -1e8 || projK[p] < -1e8) continue;
     const on = activeSet.size ? (activeSet.has(t) && activeSet.has(p)) : false;
     if(activeSet.size && !on) continue;
+    if(src === 8){ orderPaths.push(t, p); continue; }
     const kk = (projK[t] + projK[p]) / 2;
     let b = Math.floor((1.9 - kk) * 1.9);
     if(b<0) b=0; if(b>BUCKETS-1) b=BUCKETS-1;
@@ -866,6 +879,21 @@ function drawEdges(){
       : 'rgba(190,190,210,' + (0.055 * fade + 0.012).toFixed(3) + ')';
     ctx.lineWidth = activeSet.size ? 1.1 : 0.5 + fade*0.5;
     ctx.stroke();
+  }
+  /* 教材序：虚线 + 偏紫的灰，不跟「上游」的青蓝撞 */
+  if(orderPaths.length){
+    ctx.save();
+    ctx.beginPath();
+    for(let i=0;i<orderPaths.length;i+=2){
+      const t = orderPaths[i], p = orderPaths[i+1];
+      ctx.moveTo(projX[p], projY[p]);
+      ctx.lineTo(projX[t], projY[t]);
+    }
+    ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = activeSet.size ? 'rgba(201,184,232,.55)' : 'rgba(180,160,220,.16)';
+    ctx.lineWidth = activeSet.size ? 1.0 : 0.7;
+    ctx.stroke();
+    ctx.restore();
   }
 }
 

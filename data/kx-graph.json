@@ -1,0 +1,2340 @@
+{
+ "_source": {
+  "教材": "人教版《义务教育教科书·科学》1上~6下（2024年课标版）",
+  "publisher": "湖北教育出版社",
+  "edition": "人教版",
+  "pages": 1036,
+  "platform": "国家中小学智慧教育平台（教材页图）",
+  "todo": "教材目录 + 视觉模型读正文页判定（data/kx-sections.json）",
+  "srcNote": "教材序边是教材编排的教学顺序，**不是先修关系**"
+ },
+ "srczh": [
+  "上游",
+  "模型重建",
+  "能力底座",
+  "自建概念",
+  "教材引入路径",
+  "已修正",
+  "教材结构图",
+  "上海教材",
+  "教材序"
+ ],
+ "nodes": [
+  {
+   "id": "kx:s6-1a:我们怎样知道",
+   "name": "用感官观察",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1a",
+     "bookZh": "一上",
+     "unit": "我们的感觉器官",
+     "section": "我们怎样知道",
+     "page": 17,
+     "concept": "用感官观察"
+    }
+   ],
+   "kxPages": [
+    17
+   ],
+   "summary": "不打开袋子，用听、闻、摸等感官方法辨别袋子里的物体",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-1a:猫和兔",
+   "name": "动物的身体特征",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1a",
+     "bookZh": "一上",
+     "unit": "家养动物",
+     "section": "猫和兔",
+     "page": 39,
+     "concept": "动物的身体特征"
+    }
+   ],
+   "kxPages": [
+    39
+   ],
+   "summary": "通过观察、交流与模仿，比较猫和兔的特征。",
+   "alignReason": ""
+  },
+  {
+   "id": "up:biology_7a_rjb_cpt2",
+   "name": "生物的共同特征",
+   "subject": "biology",
+   "kind": "up",
+   "upId": "biology_7a_rjb_cpt2",
+   "upBook": "7a",
+   "upBookZh": "七上",
+   "stage": "初中",
+   "grade": 7,
+   "def": "用于区分生物与非生物的一组典型生命表现，包括：生活需要营养、能进行呼吸、能排出废物、能对外界刺激作出反应、能生长和繁殖、具有遗传和变异（以及除病毒外由细胞构成等）。",
+   "kxBooks": [
+    "s6-1a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1a",
+     "bookZh": "一上",
+     "unit": "家养动物",
+     "section": "更多的家养动物",
+     "page": 44,
+     "concept": "动物的共同特征"
+    }
+   ],
+   "kxPages": [
+    44
+   ],
+   "alignReason": "人工确认同一知识点"
+  },
+  {
+   "id": "kx:s6-1a:常见的工具",
+   "name": "工具的作用",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1a",
+     "bookZh": "一上",
+     "unit": "使用工具",
+     "section": "常见的工具",
+     "page": 51,
+     "concept": "工具的作用"
+    }
+   ],
+   "kxPages": [
+    51
+   ],
+   "summary": "认识生活中常见的工具，通过对比体验工具带来的便利与作用。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-1b:前后左右",
+   "name": "描述位置",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1b",
+     "bookZh": "一下",
+     "unit": "位置和方向",
+     "section": "前后左右",
+     "page": 2,
+     "concept": "描述位置"
+    }
+   ],
+   "kxPages": [
+    2
+   ],
+   "summary": "学习用前后、左右等词语描述物体或人所在的位置。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-1b:东南西北",
+   "name": "东南西北",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1b",
+     "bookZh": "一下",
+     "unit": "位置和方向",
+     "section": "东南西北",
+     "page": 5,
+     "concept": "东南西北"
+    }
+   ],
+   "kxPages": [
+    5
+   ],
+   "summary": "通过观察太阳在不同时间的位置来辨别东南西北方向。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-1b:各种各样的叶",
+   "name": "植物的叶",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1b",
+     "bookZh": "一下",
+     "unit": "校园里的植物",
+     "section": "各种各样的叶",
+     "page": 17,
+     "concept": "植物的叶"
+    }
+   ],
+   "kxPages": [
+    17
+   ],
+   "summary": "观察并比较不同植物叶的相同点与不同点。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-1b:多彩的花",
+   "name": "花的特征",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1b",
+     "bookZh": "一下",
+     "unit": "校园里的植物",
+     "section": "多彩的花",
+     "page": 21,
+     "concept": "花的特征"
+    }
+   ],
+   "kxPages": [
+    21
+   ],
+   "summary": "观察植物的花，了解花的颜色、花瓣等特点",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-1b:它们是用什么材料做的",
+   "name": "常见材料",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1b",
+     "bookZh": "一下",
+     "unit": "常见的材料",
+     "section": "它们是用什么材料做的",
+     "page": 35,
+     "concept": "常见材料"
+    }
+   ],
+   "kxPages": [
+    35
+   ],
+   "summary": "认识常见材料及由这些材料制成的物品。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-1b:纸制品",
+   "name": "纸",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 1,
+   "def": "",
+   "kxBooks": [
+    "s6-1b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-1b",
+     "bookZh": "一下",
+     "unit": "常见的材料",
+     "section": "纸制品",
+     "page": 45,
+     "concept": "纸"
+    }
+   ],
+   "kxPages": [
+    45
+   ],
+   "summary": "认识不同的纸，观察比较它们各自的特点与异同。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2a:谁的植物长得好",
+   "name": "植物生长需求",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2a",
+     "bookZh": "二上",
+     "unit": "植物的生长",
+     "section": "谁的植物长得好",
+     "page": 7,
+     "concept": "植物生长需求"
+    }
+   ],
+   "kxPages": [
+    7
+   ],
+   "summary": "通过植物养护记录探究植物生长需要什么条件",
+   "alignReason": ""
+  },
+  {
+   "id": "up:chemistry_9b_rjb_cpt241",
+   "name": "溶解",
+   "subject": "chemistry",
+   "kind": "up",
+   "upId": "chemistry_9b_rjb_cpt241",
+   "upBook": "9b",
+   "upBookZh": "九下",
+   "stage": "初中",
+   "grade": 9,
+   "def": "固体、液体或气体均匀分散到溶剂中形成溶液的过程，直至达到一定条件下的溶解度或饱和状态。",
+   "kxBooks": [
+    "s6-2a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2a",
+     "bookZh": "二上",
+     "unit": "水和空气",
+     "section": "把它们放入水中",
+     "page": 23,
+     "concept": "溶解"
+    }
+   ],
+   "kxPages": [
+    23
+   ],
+   "alignReason": "同名"
+  },
+  {
+   "id": "kx:s6-2a:推力和拉力",
+   "name": "推力和拉力",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2a",
+     "bookZh": "二上",
+     "unit": "常见的力",
+     "section": "推力和拉力",
+     "page": 33,
+     "concept": "推力和拉力"
+    }
+   ],
+   "kxPages": [
+    33
+   ],
+   "summary": "体验推力和拉力，探究推力使物体发生的变化",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2a:磁力",
+   "name": "磁力",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2a",
+     "bookZh": "二上",
+     "unit": "常见的力",
+     "section": "磁力",
+     "page": 38,
+     "concept": "磁力"
+    }
+   ],
+   "kxPages": [
+    38
+   ],
+   "summary": "通过观察不同形状的磁铁和探究其吸引的物体认识磁力。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2a:认识船",
+   "name": "船的结构",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2a",
+     "bookZh": "二上",
+     "unit": "制作小船",
+     "section": "认识船",
+     "page": 49,
+     "concept": "船的结构"
+    }
+   ],
+   "kxPages": [
+    49
+   ],
+   "summary": "观察常见的船并了解船的结构组成。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2b:各种各样的天气",
+   "name": "天气现象",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "了解天气",
+     "section": "各种各样的天气",
+     "page": 2,
+     "concept": "天气现象"
+    }
+   ],
+   "kxPages": [
+    2
+   ],
+   "summary": "认识并描述生活中的各种天气现象。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2b:天气与生活",
+   "name": "天气的影响",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "了解天气",
+     "section": "天气与生活",
+     "page": 6,
+     "concept": "天气的影响"
+    }
+   ],
+   "kxPages": [
+    6
+   ],
+   "summary": "探究并交流不同天气对人们生活造成的影响",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2b:太阳升起来了",
+   "name": "太阳位置的变化",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "太阳 月亮 四季",
+     "section": "太阳升起来了",
+     "page": 17,
+     "concept": "太阳位置的变化"
+    }
+   ],
+   "kxPages": [
+    17
+   ],
+   "summary": "观察并探究一天中太阳在天空中的位置变化",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2b:月亮",
+   "name": "月相",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2b",
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "太阳 月亮 四季",
+     "section": "月亮",
+     "page": 21,
+     "concept": "月相"
+    },
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "地球 太阳 月球",
+     "section": "月相的变化",
+     "page": 45,
+     "concept": "月相"
+    }
+   ],
+   "kxPages": [
+    21,
+    45
+   ],
+   "summary": "观察月亮的形状变化，知道地球上看到的月亮形状叫月相。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2b:春夏秋冬",
+   "name": "四季的变化",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "太阳 月亮 四季",
+     "section": "春夏秋冬",
+     "page": 24,
+     "concept": "四季的变化"
+    }
+   ],
+   "kxPages": [
+    24
+   ],
+   "summary": "观察和寻找春、夏、秋、冬不同季节的典型自然现象与变化。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2b:蚂蚁",
+   "name": "蚂蚁的身体特征",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "观察小动物",
+     "section": "蚂蚁",
+     "page": 33,
+     "concept": "蚂蚁的身体特征"
+    }
+   ],
+   "kxPages": [
+    33
+   ],
+   "summary": "观察蚂蚁，认识触角、眼、足等外形特征",
+   "alignReason": ""
+  },
+  {
+   "id": "up:biology_7b_rjb_cpt134",
+   "name": "感觉器官",
+   "subject": "biology",
+   "kind": "up",
+   "upId": "biology_7b_rjb_cpt134",
+   "upBook": "7b",
+   "upBookZh": "七下",
+   "stage": "初中",
+   "grade": 7,
+   "def": "带有附属结构的一类感受器，通常称为感觉器官，如眼和耳等。",
+   "kxBooks": [
+    "s6-2b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "观察小动物",
+     "section": "动物的感知本领",
+     "page": 46,
+     "concept": "动物的感觉器官"
+    }
+   ],
+   "kxPages": [
+    46
+   ],
+   "alignReason": "人工确认同一知识点"
+  },
+  {
+   "id": "kx:s6-2b:离不开的自然世界",
+   "name": "自然物",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "从自然世界到人工世界",
+     "section": "离不开的自然世界",
+     "page": 53,
+     "concept": "自然物"
+    }
+   ],
+   "kxPages": [
+    53
+   ],
+   "summary": "区分周围环境中的自然物和人造物。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-2b:不断发展的人工产品",
+   "name": "人工产品",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 2,
+   "def": "",
+   "kxBooks": [
+    "s6-2b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-2b",
+     "bookZh": "二下",
+     "unit": "从自然世界到人工世界",
+     "section": "不断发展的人工产品",
+     "page": 58,
+     "concept": "人工产品"
+    }
+   ],
+   "kxPages": [
+    58
+   ],
+   "summary": "认识人工产品在不断发展，体会其给人们生活带来的方便。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-3a:指南针",
+   "name": "指南针",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 3,
+   "def": "",
+   "kxBooks": [
+    "s6-3a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3a",
+     "bookZh": "三上",
+     "unit": "有趣的磁铁",
+     "section": "指南针",
+     "page": 10,
+     "concept": "指南针"
+    }
+   ],
+   "kxPages": [
+    10
+   ],
+   "summary": "认识指南针是利用磁性指示方向的工具及各种不同类型的指南针",
+   "alignReason": ""
+  },
+  {
+   "id": "up:chemistry_9a_rjb_cpt62",
+   "name": "空气",
+   "subject": "chemistry",
+   "kind": "up",
+   "upId": "chemistry_9a_rjb_cpt62",
+   "upBook": "9a",
+   "upBookZh": "九上",
+   "stage": "初中",
+   "grade": 9,
+   "def": "地球上生物赖以生存的气体混合物，按体积计算主要由氮气、氧气、稀有气体、二氧化碳以及其他气体和杂质组成，是一种宝贵的自然资源。",
+   "kxBooks": [
+    "s6-3a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3a",
+     "bookZh": "三上",
+     "unit": "气体 液体 固体",
+     "section": "无处不在的空气",
+     "page": 19,
+     "concept": "空气"
+    }
+   ],
+   "kxPages": [
+    19
+   ],
+   "alignReason": "同名"
+  },
+  {
+   "id": "kx:s6-3a:认识液体",
+   "name": "液体",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 3,
+   "def": "",
+   "kxBooks": [
+    "s6-3a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3a",
+     "bookZh": "三上",
+     "unit": "气体 液体 固体",
+     "section": "认识液体",
+     "page": 26,
+     "concept": "液体"
+    }
+   ],
+   "kxPages": [
+    26
+   ],
+   "summary": "观察生活中的液体，探究并认识液体的特征。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-3a:建筑中的结构",
+   "name": "结构的稳定性",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 3,
+   "def": "",
+   "kxBooks": [
+    "s6-3a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3a",
+     "bookZh": "三上",
+     "unit": "小小建筑师",
+     "section": "建筑中的结构",
+     "page": 87,
+     "concept": "结构的稳定性"
+    }
+   ],
+   "kxPages": [
+    87
+   ],
+   "summary": "探究不同形状框架的稳定性及建筑中的结构",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-3b:根和茎",
+   "name": "植物的根和茎",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 3,
+   "def": "",
+   "kxBooks": [
+    "s6-3b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3b",
+     "bookZh": "三下",
+     "unit": "从种子到种子",
+     "section": "根和茎",
+     "page": 20,
+     "concept": "植物的根和茎"
+    }
+   ],
+   "kxPages": [
+    20
+   ],
+   "summary": "认识植物根和茎的形态特征及其对植物生长的作用",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-3b:植物的一生",
+   "name": "植物的生命周期",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 3,
+   "def": "",
+   "kxBooks": [
+    "s6-3b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3b",
+     "bookZh": "三下",
+     "unit": "从种子到种子",
+     "section": "植物的一生",
+     "page": 30,
+     "concept": "植物的生命周期"
+    }
+   ],
+   "kxPages": [
+    30
+   ],
+   "summary": "认识植物的六大器官及其生命周期的生长阶段",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-3b:认识土壤",
+   "name": "土壤的成分",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 3,
+   "def": "",
+   "kxBooks": [
+    "s6-3b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3b",
+     "bookZh": "三下",
+     "unit": "土壤和矿产资源",
+     "section": "认识土壤",
+     "page": 38,
+     "concept": "土壤的成分"
+    }
+   ],
+   "kxPages": [
+    38
+   ],
+   "summary": "通过采集和观察土壤，探究土壤里有哪些成分满足植物生长。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-3b:土壤资源",
+   "name": "土壤资源",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 3,
+   "def": "",
+   "kxBooks": [
+    "s6-3b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3b",
+     "bookZh": "三下",
+     "unit": "土壤和矿产资源",
+     "section": "土壤资源",
+     "page": 48,
+     "concept": "土壤资源"
+    }
+   ],
+   "kxPages": [
+    48
+   ],
+   "summary": "认识土壤在各方面的作用以及怎样保护土壤资源。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-3b:矿产资源",
+   "name": "矿产资源",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 3,
+   "def": "",
+   "kxBooks": [
+    "s6-3b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3b",
+     "bookZh": "三下",
+     "unit": "土壤和矿产资源",
+     "section": "矿产资源",
+     "page": 52,
+     "concept": "矿产资源"
+    }
+   ],
+   "kxPages": [
+    52
+   ],
+   "summary": "认识矿产的概念及日常生活中各种材料的矿产来源。",
+   "alignReason": ""
+  },
+  {
+   "id": "up:physics_8a_rjb_cpt133",
+   "name": "热胀冷缩",
+   "subject": "physics",
+   "kind": "up",
+   "upId": "physics_8a_rjb_cpt133",
+   "upBook": "8a",
+   "upBookZh": "八上",
+   "stage": "初中",
+   "grade": 8,
+   "def": "物质受热体积增大、受冷体积缩小的现象。",
+   "kxBooks": [
+    "s6-3b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-3b",
+     "bookZh": "三下",
+     "unit": "加热与冷却",
+     "section": "空气的热胀冷缩",
+     "page": 69,
+     "concept": "空气的热胀冷缩"
+    }
+   ],
+   "kxPages": [
+    69
+   ],
+   "alignReason": "人工确认同一知识点"
+  },
+  {
+   "id": "kx:s6-4a:水的结冰",
+   "name": "水的结冰",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4a",
+     "bookZh": "四上",
+     "unit": "水的变化与分布",
+     "section": "水的结冰",
+     "page": 55,
+     "concept": "水的结冰"
+    }
+   ],
+   "kxPages": [
+    55
+   ],
+   "summary": "探究水结冰的条件及结冰过程中发生的现象",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-4a:认识乐器",
+   "name": "乐器发声",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4a",
+     "bookZh": "四上",
+     "unit": "制作简易乐器",
+     "section": "认识乐器",
+     "page": 89,
+     "concept": "乐器发声"
+    }
+   ],
+   "kxPages": [
+    89
+   ],
+   "summary": "认识不同乐器，观察并探究它们的发声部位与发声方式。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-4b:风向和风力",
+   "name": "风向和风力",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "天气与气候",
+     "section": "风向和风力",
+     "page": 6,
+     "concept": "风向和风力"
+    }
+   ],
+   "kxPages": [
+    6
+   ],
+   "summary": "学习观测风的方法，认识风向的概念及八个方位。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-4b:气候和气象灾害",
+   "name": "气候",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "天气与气候",
+     "section": "气候和气象灾害",
+     "page": 11,
+     "concept": "气候"
+    }
+   ],
+   "kxPages": [
+    11
+   ],
+   "summary": "了解四季的天气特点与规律，认识气候及气象灾害。",
+   "alignReason": ""
+  },
+  {
+   "id": "up:biology_7a_rjb_cpt13",
+   "name": "生物与非生物的区分",
+   "subject": "biology",
+   "kind": "up",
+   "upId": "biology_7a_rjb_cpt13",
+   "upBook": "7a",
+   "upBookZh": "七上",
+   "stage": "初中",
+   "grade": 7,
+   "def": "依据生物的共同特征判断一个物体是否具有生命，从而区分生物和非生物。",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "环境中的生物",
+     "section": "生物与非生物",
+     "page": 28,
+     "concept": "生物与非生物"
+    }
+   ],
+   "kxPages": [
+    28
+   ],
+   "alignReason": "人工确认同一知识点"
+  },
+  {
+   "id": "kx:s6-4b:不同环境中的植物",
+   "name": "植物适应环境",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "环境中的生物",
+     "section": "不同环境中的植物",
+     "page": 31,
+     "concept": "植物适应环境"
+    }
+   ],
+   "kxPages": [
+    31
+   ],
+   "summary": "探究植物的形态特点与它生活环境的关系。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-4b:不同环境中的动物",
+   "name": "动物适应环境",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "环境中的生物",
+     "section": "不同环境中的动物",
+     "page": 34,
+     "concept": "动物适应环境"
+    }
+   ],
+   "kxPages": [
+    34
+   ],
+   "summary": "了解不同环境中的动物及其适应环境的身体特征和习性。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-4b:认识地球的形状",
+   "name": "地球的形状",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "地球 太阳 月球",
+     "section": "认识地球的形状",
+     "page": 39,
+     "concept": "地球的形状"
+    }
+   ],
+   "kxPages": [
+    39
+   ],
+   "summary": "通过观察远方驶来的船等现象认识地球的形状",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-4b:太阳和月球",
+   "name": "太阳和月球",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "地球 太阳 月球",
+     "section": "太阳和月球",
+     "page": 42,
+     "concept": "太阳和月球"
+    }
+   ],
+   "kxPages": [
+    42
+   ],
+   "summary": "观察并认识太阳和月球的基本特征。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-4b:阳光下的影子",
+   "name": "日影变化",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "影子的变化",
+     "section": "阳光下的影子",
+     "page": 53,
+     "concept": "日影变化"
+    }
+   ],
+   "kxPages": [
+    53
+   ],
+   "summary": "观测并探究阳光下物体影子的长短与方向变化规律",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-4b:认识简易计时器",
+   "name": "简易计时器",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 4,
+   "def": "",
+   "kxBooks": [
+    "s6-4b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-4b",
+     "bookZh": "四下",
+     "unit": "简易计时器",
+     "section": "认识简易计时器",
+     "page": 57,
+     "concept": "简易计时器"
+    }
+   ],
+   "kxPages": [
+    57
+   ],
+   "summary": "认识水漏等古代简易计时器的结构及计时原理。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-5a:生锈与防锈",
+   "name": "生锈与防锈",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 5,
+   "def": "",
+   "kxBooks": [
+    "s6-5a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5a",
+     "bookZh": "五上",
+     "unit": "物质的变化",
+     "section": "生锈与防锈",
+     "page": 30,
+     "concept": "生锈与防锈"
+    }
+   ],
+   "kxPages": [
+    30
+   ],
+   "summary": "认识铁锈的特点，探究铁生锈的原因以及防止生锈的方法。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-5a:食物的变化",
+   "name": "食物的变化",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 5,
+   "def": "",
+   "kxBooks": [
+    "s6-5a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5a",
+     "bookZh": "五上",
+     "unit": "物质的变化",
+     "section": "食物的变化",
+     "page": 36,
+     "concept": "食物的变化"
+    }
+   ],
+   "kxPages": [
+    36
+   ],
+   "summary": "认识食物在加工和变质过程中发生的各种变化及预防变质的方法。",
+   "alignReason": ""
+  },
+  {
+   "id": "up:physics_8a_rjb_cpt89",
+   "name": "光的色散",
+   "subject": "physics",
+   "kind": "up",
+   "upId": "physics_8a_rjb_cpt89",
+   "upBook": "8a",
+   "upBookZh": "八上",
+   "stage": "初中",
+   "grade": 8,
+   "def": "白光通过三棱镜或其他装置可以分解为红、橙、黄、绿、蓝、靛、紫等色光的现象。",
+   "kxBooks": [
+    "s6-5a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5a",
+     "bookZh": "五上",
+     "unit": "光的现象",
+     "section": "太阳光",
+     "page": 80,
+     "concept": "光的色散"
+    }
+   ],
+   "kxPages": [
+    80
+   ],
+   "alignReason": "同名"
+  },
+  {
+   "id": "up:biology_7b_rjb_cpt135",
+   "name": "视觉的形成",
+   "subject": "biology",
+   "kind": "up",
+   "upId": "biology_7b_rjb_cpt135",
+   "upBook": "7b",
+   "upBookZh": "七下",
+   "stage": "初中",
+   "grade": 7,
+   "def": "光线进入眼内，经角膜、瞳孔、晶状体、玻璃体等折射在视网膜成像，视网膜感光细胞将信息经视觉神经传至大脑特定区域处理，从而产生视觉。",
+   "kxBooks": [
+    "s6-5a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5a",
+     "bookZh": "五上",
+     "unit": "光的现象",
+     "section": "眼睛怎样看到物体",
+     "page": 84,
+     "concept": "视觉的形成"
+    }
+   ],
+   "kxPages": [
+    84
+   ],
+   "alignReason": "同名"
+  },
+  {
+   "id": "kx:s6-5b:白天与黑夜",
+   "name": "昼夜交替",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 5,
+   "def": "",
+   "kxBooks": [
+    "s6-5b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5b",
+     "bookZh": "五下",
+     "unit": "昼夜与四季",
+     "section": "白天与黑夜",
+     "page": 3,
+     "concept": "昼夜交替"
+    }
+   ],
+   "kxPages": [
+    3
+   ],
+   "summary": "观察并探究昼夜交替过程中有规律的变化。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-5b:谁先看到日出",
+   "name": "地球自转方向",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 5,
+   "def": "",
+   "kxBooks": [
+    "s6-5b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5b",
+     "bookZh": "五下",
+     "unit": "昼夜与四季",
+     "section": "谁先看到日出",
+     "page": 5,
+     "concept": "地球自转方向"
+    }
+   ],
+   "kxPages": [
+    5
+   ],
+   "summary": "探究不同城市日出时间的早晚，认识地球自转的方向。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-5b:四季的形成",
+   "name": "四季的成因",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 5,
+   "def": "",
+   "kxBooks": [
+    "s6-5b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5b",
+     "bookZh": "五下",
+     "unit": "昼夜与四季",
+     "section": "四季的形成",
+     "page": 7,
+     "concept": "四季的成因"
+    }
+   ],
+   "kxPages": [
+    7
+   ],
+   "summary": "探究一年四季气温变化的规律及四季的形成原因。",
+   "alignReason": ""
+  },
+  {
+   "id": "up:physics_9_rjb_cpt145",
+   "name": "电动机",
+   "subject": "physics",
+   "kind": "up",
+   "upId": "physics_9_rjb_cpt145",
+   "upBook": "9",
+   "upBookZh": "九年级",
+   "stage": "初中",
+   "grade": 9,
+   "def": "利用通电线圈在磁场中受力而连续转动的装置，由转子和定子组成。",
+   "kxBooks": [
+    "s6-5b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5b",
+     "bookZh": "五下",
+     "unit": "能量的转化",
+     "section": "小电动机转起来",
+     "page": 20,
+     "concept": "电动机"
+    }
+   ],
+   "kxPages": [
+    20
+   ],
+   "alignReason": "同名"
+  },
+  {
+   "id": "kx:s6-5b:人的感知与反应",
+   "name": "刺激与反应",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 5,
+   "def": "",
+   "kxBooks": [
+    "s6-5b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-5b",
+     "bookZh": "五下",
+     "unit": "健康生活",
+     "section": "人的感知与反应",
+     "page": 30,
+     "concept": "刺激与反应"
+    }
+   ],
+   "kxPages": [
+    30
+   ],
+   "summary": "认识人体在不同环境刺激下会作出的各种反应及感知器官的作用。",
+   "alignReason": ""
+  },
+  {
+   "id": "up:physics_9_rjb_cpt26",
+   "name": "能量的转化",
+   "subject": "physics",
+   "kind": "up",
+   "upId": "physics_9_rjb_cpt26",
+   "upBook": "9",
+   "upBookZh": "九年级",
+   "stage": "初中",
+   "grade": 9,
+   "def": "能量在一定条件下可以从一种形式转化为另一种形式，例如机械能转化为内能、化学能转化为电能等。",
+   "kxBooks": [
+    "s6-6a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6a",
+     "bookZh": "六上",
+     "unit": "能的转化",
+     "section": "不同形式的能及其转化",
+     "page": 22,
+     "concept": "能的转化"
+    }
+   ],
+   "kxPages": [
+    22
+   ],
+   "alignReason": "人工确认同一知识点"
+  },
+  {
+   "id": "kx:s6-6a:雾和云",
+   "name": "雾和云",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6a",
+     "bookZh": "六上",
+     "unit": "水和天气",
+     "section": "雾和云",
+     "page": 42,
+     "concept": "雾和云"
+    }
+   ],
+   "kxPages": [
+    42
+   ],
+   "summary": "探究雾和云的本质及其是怎样形成的",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6a:雨和雪",
+   "name": "雨和雪的形成",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6a",
+     "bookZh": "六上",
+     "unit": "水和天气",
+     "section": "雨和雪",
+     "page": 46,
+     "concept": "雨和雪的形成"
+    }
+   ],
+   "kxPages": [
+    46
+   ],
+   "summary": "探究生活中常见的雨和雪是怎样形成的。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6a:露和霜",
+   "name": "露和霜",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6a",
+     "bookZh": "六上",
+     "unit": "水和天气",
+     "section": "露和霜",
+     "page": 50,
+     "concept": "露和霜"
+    }
+   ],
+   "kxPages": [
+    50
+   ],
+   "summary": "探究露和霜出现的条件及其形成原因。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6a:流水对地表形态的影响",
+   "name": "流水的作用",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6a",
+     "bookZh": "六上",
+     "unit": "水和天气",
+     "section": "流水对地表形态的影响",
+     "page": 54,
+     "concept": "流水的作用"
+    }
+   ],
+   "kxPages": [
+    54
+   ],
+   "summary": "探究流水对地表形态的影响及其作用机制",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6a:资源的循环利用",
+   "name": "资源循环利用",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6a"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6a",
+     "bookZh": "六上",
+     "unit": "自然资源",
+     "section": "资源的循环利用",
+     "page": 75,
+     "concept": "资源循环利用"
+    }
+   ],
+   "kxPages": [
+    75
+   ],
+   "summary": "认识循环利用是节约资源的有效途径及纸的回收利用",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6b:生物的栖息地",
+   "name": "栖息地",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6b",
+     "bookZh": "六下",
+     "unit": "生物与环境",
+     "section": "生物的栖息地",
+     "page": 3,
+     "concept": "栖息地"
+    }
+   ],
+   "kxPages": [
+    3
+   ],
+   "summary": "认识生物的栖息地及栖息地为生物提供的生存条件",
+   "alignReason": ""
+  },
+  {
+   "id": "up:biology_xzxbx2_rjb_cpt63",
+   "name": "生物对环境的适应",
+   "subject": "biology",
+   "kind": "up",
+   "upId": "biology_xzxbx2_rjb_cpt63",
+   "upBook": "xzxbx2",
+   "upBookZh": "选必二",
+   "stage": "高中",
+   "grade": 12,
+   "def": "生物在形态、生理与行为等方面形成特征，以适应所处环境条件（如水分、光照、温度等）。不同群落中的生物具有与环境相适应的共同特征。",
+   "kxBooks": [
+    "s6-6b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6b",
+     "bookZh": "六下",
+     "unit": "生物与环境",
+     "section": "动物对环境的适应",
+     "page": 6,
+     "concept": "动物对环境的适应"
+    }
+   ],
+   "kxPages": [
+    6
+   ],
+   "alignReason": "人工确认同一知识点"
+  },
+  {
+   "id": "kx:s6-6b:地表流水的力量",
+   "name": "流水侵蚀",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6b",
+     "bookZh": "六下",
+     "unit": "地表形态的变化",
+     "section": "地表流水的力量",
+     "page": 15,
+     "concept": "流水侵蚀"
+    }
+   ],
+   "kxPages": [
+    15
+   ],
+   "summary": "探究不同坡度下流水对地表形态的侵蚀作用",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6b:地球的内部结构",
+   "name": "地球内部结构",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6b",
+     "bookZh": "六下",
+     "unit": "地表形态的变化",
+     "section": "地球的内部结构",
+     "page": 18,
+     "concept": "地球内部结构"
+    }
+   ],
+   "kxPages": [
+    18
+   ],
+   "summary": "探究了解地球内部状态的线索和地球的内部结构",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6b:地震",
+   "name": "地震",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6b",
+     "bookZh": "六下",
+     "unit": "地表形态的变化",
+     "section": "地震",
+     "page": 22,
+     "concept": "地震"
+    }
+   ],
+   "kxPages": [
+    22
+   ],
+   "summary": "认识地震现象、发生原因及其对地表和人类的影响",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6b:太阳、地球和月球",
+   "name": "日地月系统",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6b",
+     "bookZh": "六下",
+     "unit": "探索宇宙",
+     "section": "太阳、地球和月球",
+     "page": 32,
+     "concept": "日地月系统"
+    }
+   ],
+   "kxPages": [
+    32
+   ],
+   "summary": "认识太阳、地球和月球的相对大小及相互运动关系。",
+   "alignReason": ""
+  },
+  {
+   "id": "kx:s6-6b:认识星空",
+   "name": "星座",
+   "subject": "science",
+   "kind": "kx",
+   "upId": "",
+   "upBook": "",
+   "upBookZh": "",
+   "stage": "小学",
+   "grade": 6,
+   "def": "",
+   "kxBooks": [
+    "s6-6b"
+   ],
+   "kxSections": [
+    {
+     "book": "s6-6b",
+     "bookZh": "六下",
+     "unit": "探索宇宙",
+     "section": "认识星空",
+     "page": 40,
+     "concept": "星座"
+    }
+   ],
+   "kxPages": [
+    40
+   ],
+   "summary": "观察星空，利用活动星盘认识主要星座与北极星",
+   "alignReason": ""
+  }
+ ],
+ "edges": [
+  {
+   "from": "kx:s6-1b:前后左右",
+   "to": "kx:s6-1b:东南西北",
+   "src": 8,
+   "why": "教材顺序：位置和方向 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-1b:各种各样的叶",
+   "to": "kx:s6-1b:多彩的花",
+   "src": 8,
+   "why": "教材顺序：校园里的植物 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-1b:它们是用什么材料做的",
+   "to": "kx:s6-1b:纸制品",
+   "src": 8,
+   "why": "教材顺序：常见的材料 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-2a:推力和拉力",
+   "to": "kx:s6-2a:磁力",
+   "src": 8,
+   "why": "教材顺序：常见的力 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-2b:各种各样的天气",
+   "to": "kx:s6-2b:天气与生活",
+   "src": 8,
+   "why": "教材顺序：了解天气 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-2b:太阳升起来了",
+   "to": "kx:s6-2b:月亮",
+   "src": 8,
+   "why": "教材顺序：太阳 月亮 四季 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-2b:月亮",
+   "to": "kx:s6-2b:春夏秋冬",
+   "src": 8,
+   "why": "教材顺序：太阳 月亮 四季 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-4b:认识地球的形状",
+   "to": "kx:s6-4b:太阳和月球",
+   "src": 8,
+   "why": "教材顺序：地球 太阳 月球 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-4b:太阳和月球",
+   "to": "kx:s6-2b:月亮",
+   "src": 8,
+   "why": "教材顺序：地球 太阳 月球 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-2b:离不开的自然世界",
+   "to": "kx:s6-2b:不断发展的人工产品",
+   "src": 8,
+   "why": "教材顺序：从自然世界到人工世界 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-3b:根和茎",
+   "to": "kx:s6-3b:植物的一生",
+   "src": 8,
+   "why": "教材顺序：从种子到种子 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-3b:认识土壤",
+   "to": "kx:s6-3b:土壤资源",
+   "src": 8,
+   "why": "教材顺序：土壤和矿产资源 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-3b:土壤资源",
+   "to": "kx:s6-3b:矿产资源",
+   "src": 8,
+   "why": "教材顺序：土壤和矿产资源 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-4b:风向和风力",
+   "to": "kx:s6-4b:气候和气象灾害",
+   "src": 8,
+   "why": "教材顺序：天气与气候 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-4b:不同环境中的植物",
+   "to": "kx:s6-4b:不同环境中的动物",
+   "src": 8,
+   "why": "教材顺序：环境中的生物 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-5a:生锈与防锈",
+   "to": "kx:s6-5a:食物的变化",
+   "src": 8,
+   "why": "教材顺序：物质的变化 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-5b:白天与黑夜",
+   "to": "kx:s6-5b:谁先看到日出",
+   "src": 8,
+   "why": "教材顺序：昼夜与四季 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-5b:谁先看到日出",
+   "to": "kx:s6-5b:四季的形成",
+   "src": 8,
+   "why": "教材顺序：昼夜与四季 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-6a:雾和云",
+   "to": "kx:s6-6a:雨和雪",
+   "src": 8,
+   "why": "教材顺序：水和天气 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-6a:雨和雪",
+   "to": "kx:s6-6a:露和霜",
+   "src": 8,
+   "why": "教材顺序：水和天气 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-6a:露和霜",
+   "to": "kx:s6-6a:流水对地表形态的影响",
+   "src": 8,
+   "why": "教材顺序：水和天气 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-6b:地表流水的力量",
+   "to": "kx:s6-6b:地球的内部结构",
+   "src": 8,
+   "why": "教材顺序：地表形态的变化 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-6b:地球的内部结构",
+   "to": "kx:s6-6b:地震",
+   "src": 8,
+   "why": "教材顺序：地表形态的变化 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "kx:s6-6b:太阳、地球和月球",
+   "to": "kx:s6-6b:认识星空",
+   "src": 8,
+   "why": "教材顺序：探索宇宙 单元内（编者排的教学先后，不是先修关系）"
+  },
+  {
+   "from": "up:biology_7a_rjb_cpt2",
+   "to": "up:biology_7a_rjb_cpt13",
+   "src": 0,
+   "why": "上游图谱的先修关系（硬数据）"
+  }
+ ],
+ "books": [
+  {
+   "id": "s6-1a",
+   "book": "1a",
+   "bookZh": "一上",
+   "pages": 16,
+   "units": [
+    "走近科学",
+    "我们的感觉器官",
+    "家养动物",
+    "使用工具"
+   ]
+  },
+  {
+   "id": "s6-1b",
+   "book": "1b",
+   "bookZh": "一下",
+   "pages": 16,
+   "units": [
+    "位置和方向",
+    "校园里的植物",
+    "常见的材料",
+    "制作收纳用具"
+   ]
+  },
+  {
+   "id": "s6-2a",
+   "book": "2a",
+   "bookZh": "二上",
+   "pages": 16,
+   "units": [
+    "植物的生长",
+    "水和空气",
+    "常见的力",
+    "制作小船"
+   ]
+  },
+  {
+   "id": "s6-2b",
+   "book": "2b",
+   "bookZh": "二下",
+   "pages": 16,
+   "units": [
+    "了解天气",
+    "太阳 月亮 四季",
+    "观察小动物",
+    "从自然世界到人工世界"
+   ]
+  },
+  {
+   "id": "s6-3a",
+   "book": "3a",
+   "bookZh": "三上",
+   "pages": 24,
+   "units": [
+    "有趣的磁铁",
+    "气体 液体 固体",
+    "家庭用电",
+    "消化与呼吸",
+    "小小建筑师"
+   ]
+  },
+  {
+   "id": "s6-3b",
+   "book": "3b",
+   "bookZh": "三下",
+   "pages": 25,
+   "units": [
+    "溶解与分离",
+    "从种子到种子",
+    "土壤和矿产资源",
+    "加热与冷却",
+    "运动和能量",
+    "动力小车"
+   ]
+  },
+  {
+   "id": "s6-4a",
+   "book": "4a",
+   "bookZh": "四上",
+   "pages": 24,
+   "units": [
+    "动植物的繁殖",
+    "多样的动物",
+    "水的变化与分布",
+    "声音",
+    "制作简易乐器"
+   ]
+  },
+  {
+   "id": "s6-4b",
+   "book": "4b",
+   "bookZh": "四下",
+   "pages": 18,
+   "units": [
+    "天气与气候",
+    "养蚕",
+    "环境中的生物",
+    "地球 太阳 月球",
+    "影子的变化",
+    "简易计时器"
+   ]
+  },
+  {
+   "id": "s6-5a",
+   "book": "5a",
+   "bookZh": "五上",
+   "pages": 24,
+   "units": [
+    "显微镜下的生物世界",
+    "物质的变化",
+    "烧水中的热传递",
+    "光的现象",
+    "太阳能热水器"
+   ]
+  },
+  {
+   "id": "s6-5b",
+   "book": "5b",
+   "bookZh": "五下",
+   "pages": 16,
+   "units": [
+    "昼夜与四季",
+    "能量的转化",
+    "健康生活",
+    "简单机械",
+    "制作省力装置"
+   ]
+  },
+  {
+   "id": "s6-6a",
+   "book": "6a",
+   "bookZh": "六上",
+   "pages": 24,
+   "units": [
+    "相互依存的生命世界",
+    "能的转化",
+    "水和天气",
+    "自然资源",
+    "建造“植物工厂”"
+   ]
+  },
+  {
+   "id": "s6-6b",
+   "book": "6b",
+   "bookZh": "六下",
+   "pages": 14,
+   "units": [
+    "生物与环境",
+    "地表形态的变化",
+    "探索宇宙",
+    "“飞向”太空"
+   ]
+  }
+ ]
+}

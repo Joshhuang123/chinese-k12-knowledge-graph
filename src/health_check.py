@@ -585,6 +585,37 @@ def layer2(g, sb, payload, html):
     else:
         warn("quality.html 不存在 —— 数据质量页还没生成")
 
+    # 小学科学站（人教版《小学科学》12 本）
+    # **第三站**：主站（人教版初中高中）+ 上海站（沪教沪科）+ 小学科学站。
+    # 它有自己的一套数据（data/kx-graph.json），体检走 src/check_kx.py。
+    KX = BASE / "kx.html"
+    if KX.exists():
+        kh = KX.read_text(encoding="utf-8")
+        ext = re.findall(r'<script[^>]+src="(https?://[^"]+)"', kh) + \
+              re.findall(r'<link[^>]+href="(https?://[^"]+)"', kh) + \
+              re.findall(r'<img[^>]+src="(https?://[^"]+)"', kh)
+        ok(not ext, f"小学科学站没有加载任何外部资源（{len(ext)} 个）",
+           str(ext[:3]))
+        links = re.findall(r'<a[^>]+href="(https?://[^"]+)"', kh)
+        ok(all("github.com" in u for u in links),
+           f"小学科学站里的站外超链接只指向源码仓库（{len(links)} 个）", str(links[:3]))
+        # **教材序 ≠ 先修关系** —— 这一站最需要说清的一件事。
+        ok("不是先修关系" in kh,
+           "小学科学站明说「教材序不是先修关系」")
+        ok(".sg8" in kh,
+           "来源码 8（教材序）有专门的样式，跟上游先修区分开")
+        # 跑它自己的体检
+        import subprocess
+        r = subprocess.run([sys.executable, str(BASE / "src" / "check_kx.py")],
+                           capture_output=True, text=True, cwd=str(BASE))
+        kx_ok = r.stdout.count("  ✓ ")
+        kx_bad = r.stdout.count("  ✗ ")
+        ok(kx_bad == 0, f"小学科学站数据体检 {kx_ok} 项全过"
+           + (f"（{kx_bad} 项失败）" if kx_bad else ""),
+           r.stdout[-300:] if kx_bad else "")
+    else:
+        warn("kx.html 不存在 —— 小学科学站还没构建")
+
     # COPY 列表：**旧文案一条都不许残留在成品里**
     bv = (SRC / "build_viz.py").read_text(encoding="utf-8")
     m2 = re.search(r"COPY\s*=\s*\[(.*?)\n    \]", bv, re.S)

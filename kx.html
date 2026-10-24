@@ -1,0 +1,2362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>【小学科学】小学孩子在学什么 · 67 个知识点的前置关系图</title>
+<!-- 内联 favicon：页面是单文件自包含的，不引外部文件就不会 404。
+     图形照页面自己的视觉语言来：底部蓝、中部橙、顶部粉的三层锥。 -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e0e11'/%3E%3Ccircle cx='16' cy='25' r='3.2' fill='%234d8dff'/%3E%3Ccircle cx='16' cy='17.5' r='2.6' fill='%23ffb347'/%3E%3Ccircle cx='16' cy='10.5' r='2.2' fill='%23ff7ab6'/%3E%3C/svg%3E">
+<!-- 不引 Google Fonts。
+     理由不是「不依赖外部」这种洁癖：fonts.googleapis.com 在中国大陆是被墙的，
+     而这是一页给中国学生看的中文页面——真要引字体，那才是给主要用户埋雷。
+     而且 DM Serif Display / Outfit / JetBrains Mono 都没有中文字形，
+     本页正文全是中文，实际渲染早就落到 PingFang 了。去掉几乎不损失视觉。 -->
+<style>
+:root{
+  --bg:#0e0e11; --panel:rgba(22,22,27,.86); --line:rgba(255,255,255,.10);
+  --ink:#f2f2f4; --ink2:#a8a8b3; --muted:#8b8b98; --acc:#ff3d7f;
+  /* --muted 原来 #6e6e7a 在 #0e0e11 上只有 3.83:1，AA 要求小字 4.5:1，
+     而它用在 10.5-12px 的正文上（署名、卡片英文名、轴标签…）。调到 4.9:1。 */
+  /* 系统字体栈：先 macOS/iOS，再 Windows，再 Linux/Android，最后兜底 */
+  --sans:-apple-system,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',
+         'Noto Sans CJK SC','Source Han Sans SC','WenQuanYi Micro Hei',sans-serif;
+  --serif:'Songti SC','Source Han Serif SC','Noto Serif CJK SC','SimSun',serif;
+  --mono:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);overflow:hidden;
+  font-family:var(--sans);
+  font-size:14px;line-height:1.55;letter-spacing:.005em;
+}
+.mono{font-family:var(--mono)}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab}
+#c.drag{cursor:grabbing}
+#c.point{cursor:pointer}
+
+/* vignette so the cloud sits in space */
+#vig{position:fixed;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 62% 58% at 50% 46%,transparent 40%,rgba(0,0,0,.72) 100%)}
+
+.ui{position:fixed;z-index:10}
+
+/* ---- masthead ---- */
+#head{top:34px;left:38px;max-width:400px;pointer-events:none}
+#head .attr2{color:var(--muted);font-size:10px;line-height:1.55}
+#head .attr2 b{color:var(--ink2);font-weight:600}
+#head .eyebrow{
+  font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:9px;margin-bottom:18px;
+}
+#head .eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--acc)}
+#head h1{
+  /* 必须是显式的无衬线。原来写的是 'DM Serif Display', Georgia, serif——
+     DM Serif Display 早就没有中文字形，中文其实一直在往 generic serif 回落，
+     页面一离线或字体被墙，标题就悄悄变成宋体。字形指纹实测：
+     sans-serif 与 Songti SC 渲染结果完全不同，所以这不是「差一点」，是换了个字。 */
+  font-family:var(--sans);font-weight:600;
+  font-size:clamp(34px,5.4vw,60px);line-height:1.06;letter-spacing:-.015em;margin:0 0 16px;
+}
+#head h1 em{font-style:normal;color:var(--acc)}
+#head p{color:var(--ink2);font-size:13.5px;margin:0 0 6px;max-width:34ch}
+#head .count{color:var(--muted);font-size:12px;margin-top:14px}
+#head .count b{color:var(--ink);font-weight:500}
+
+/* ---- legend ---- */
+#legend{bottom:34px;left:38px;pointer-events:auto}
+#legend .t{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:11px}
+#legend .row{
+  display:flex;align-items:center;gap:9px;padding:3.5px 0;cursor:pointer;
+  font-size:13px;color:var(--ink2);transition:color .15s;user-select:none;
+}
+#legend .row:hover{color:var(--ink)}
+#legend .row.off{opacity:.32}
+#legend .row .sw{width:8px;height:8px;border-radius:50%;flex:none;transition:box-shadow .15s}
+#legend .row.on .sw{box-shadow:0 0 0 3px rgba(255,255,255,.10)}
+#legend .row .n{margin-left:auto;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ---- toolbar ---- */
+#tools{top:34px;right:38px;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;max-width:300px;
+  /* **工具栏必须在详情卡片之上。**
+     卡片是 top:50% + translateY(-50%) 垂直居中的，内容越长顶得越高。
+     全量数据后卡片内容从「前置 4 条」变成「前置 5 条 + 后继 6 条」，
+     卡片顶部伸到 y=49，正好压住 y=34-65 的工具栏 ——
+     elementsFromPoint 的命中栈实测是
+        eyebrow(卡片里的) → card → tReset → tools
+     真机上「复位」「自动旋转」就点不到了。 */
+  z-index:20}
+.btn{
+  font-family:inherit;font-size:12.5px;padding:6px 12px;border-radius:8px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);color:var(--ink2);
+  backdrop-filter:blur(8px);transition:all .16s;white-space:nowrap;
+}
+.btn:hover{border-color:rgba(255,255,255,.28);color:var(--ink)}
+.btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e;font-weight:500}
+
+/* ---- info card ---- */
+#card{
+  top:50%;right:38px;transform:translateY(-50%);width:296px;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:17px 18px;backdrop-filter:blur(14px);opacity:0;pointer-events:none;
+  transition:opacity .2s;box-shadow:0 12px 40px rgba(0,0,0,.5);
+  /* 依赖从 2 栏加到 6 栏（先修/后继/教材顺序前后章/上下位），
+     内容最长的知识点卡片会高过视口。不给上界就顶出屏幕顶部。 */
+  /* 上界收 100px，给右上角工具栏留出位置（工具栏 z-index 更高，但
+     卡片不该视觉上压上去）。 */
+  max-height:calc(100vh - 140px);overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+#card.on{opacity:1;pointer-events:auto}
+.cardacts{display:flex;align-items:center;gap:9px;margin:10px 0 4px}
+.cardact-hint{font-size:10.5px;color:var(--muted);line-height:1.4}
+#card .eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;
+  display:flex;align-items:center;gap:7px}
+#card .eyebrow .sw{width:7px;height:7px;border-radius:50%;flex:none}
+#card h2{font-size:18px;font-weight:600;margin:0 0 3px;line-height:1.3;letter-spacing:-.01em}
+#card .en{font-size:11.5px;color:var(--muted);margin:0 0 11px;line-height:1.4}
+#card .desc{font-size:12.5px;color:var(--ink2);line-height:1.55;margin:0 0 12px}
+#card .meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+#card .meta span{
+  font-size:10.5px;padding:2.5px 8px;border-radius:5px;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--ink2);
+}
+#card .meta span.hi{background:rgba(255,61,127,.14);border-color:rgba(255,61,127,.34);color:#ff8ab5}
+#card .chain{font-size:11.5px;color:var(--muted);line-height:1.5;border-top:1px solid var(--line);padding-top:11px;margin-top:2px}
+/* 其他版本教材里的位置 */
+#card .altpos{
+  font-size:11px;color:var(--muted);line-height:1.6;
+  border-top:1px solid var(--line);padding-top:9px;margin-top:9px;
+}
+#card .altpos .at{color:#7c8496;font-size:10.5px;margin-bottom:4px}
+#card .altpos .arow{display:flex;gap:7px;align-items:baseline;padding:1.5px 0}
+#card .altpos .aed{color:#9fb0c8;flex:none;min-width:74px}
+#card .altpos .aw{flex:1;color:var(--ink2)}
+#card .altpos[hidden]{display:none}
+#card .chain b{color:var(--acc);font-weight:500}
+#card .chain .ct{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  margin:11px 0 5px;display:flex;align-items:center;gap:7px;
+}
+#card .chain .ct:first-child{margin-top:0}
+#card .chain .ct .ln{flex:1;height:1px;background:var(--line)}
+#card .chain .ct .n{color:var(--ink2);font-variant-numeric:tabular-nums;letter-spacing:0}
+/* 依赖项用真 button：键盘可达 + 读屏知道这是个可点的跳转 */
+#card .chain .dep{
+  display:flex;align-items:flex-start;gap:6px;width:100%;text-align:left;
+  appearance:none;-webkit-appearance:none;background:none;border:0;padding:3px 5px;
+  border-radius:5px;cursor:pointer;font:inherit;font-size:11.5px;color:var(--ink2);
+  line-height:1.4;transition:background .13s,color .13s;
+}
+#card .chain .dep:hover{background:rgba(255,255,255,.07);color:var(--ink)}
+/* 章：不可点，所以不给 hover 也不给按钮语义 */
+#card .chain .dep.flat{color:var(--ink2)}
+#card .chain .dep.flat .ar{color:var(--muted)}
+/* 一次说清哪些能点。6 栏里 4 栏能跳、2 栏不能，不写出来用户只能靠试。 */
+#card .chain .chint{font-size:10.5px;color:var(--muted);margin:0 0 9px;line-height:1.5}
+/* 教材顺序那一栏：两个按钮并排（上一单元 / 下一单元），
+   章序是连续的两步，竖着排会让人以为是两串不同的信息 */
+#card .chain .ord2{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 5px}
+#card .chain .dep:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+#card .chain .dep .ar{color:var(--acc);flex:none;font-size:10px;line-height:1.55}
+/* 来源徽标。上游 / 模型重建 / 能力底座 / 自建概念。
+   不标出来的话，页面上「数据集说的」和「我们猜的」长得一模一样。 */
+#card .chain .dep .sg{flex:none;font-size:9px;line-height:1;padding:3px 5px;border-radius:4px;
+  letter-spacing:.02em;white-space:nowrap;border:1px solid transparent}
+#card .chain .dep .sg1{color:#7fd3ff;background:rgba(127,211,255,.11);border-color:rgba(127,211,255,.3)}
+#card .chain .dep .sg2{color:#ffc477;background:rgba(255,196,119,.11);border-color:rgba(255,196,119,.32)}
+#card .chain .dep .sg3{color:#c6a7ff;background:rgba(198,167,255,.11);border-color:rgba(198,167,255,.3)}
+/* 第 5 档：教材引入路径 —— 教材原文自己说的前置（人教九上 22.1.2
+   「在八年级下册，我们学习了一次函数的概念…像研究一次函数一样，
+   现在我们来研究二次函数的图象和性质」）。绿到发青，跟前三档都不同色。 */
+#card .chain .dep .sg4{color:#6ee7b7;background:rgba(110,231,183,.11);border-color:rgba(110,231,183,.3)}
+/* 可疑边：橙红，跟「上游」徽标区分开 —— 上游是来源，可疑是可信度 */
+/* 第 6 档：已修正。上游那条边被逐条裁决确认是错的，这里显示的是
+   修正后的方向（来源标 fix）。跟「可疑」区分：可疑是「值得看一眼」，
+   已修正是「判过了，方向已经改对」。 */
+#card .chain .dep .sg5{color:#ffd166;background:rgba(255,209,102,.12);border-color:rgba(255,209,102,.32)}
+/* 第 7 档：教材结构图 —— 来自每章小结第一项那张「本章知识结构图」。
+   跟第 5 档「教材引入路径」（正文回指句）分开：一个是教材画的网络，
+   一个是教材正文里的话。 */
+#card .chain .dep .sg6{color:#5eead4;background:rgba(94,234,212,.11);border-color:rgba(94,234,212,.3)}
+/* 第 9 档：教材序 —— **教材编者排的教学先后，不是先修关系**。
+   小学科学站专用。用**虚线边框**跟其余七档区分：
+   实线 = 有据可查的先修关系，虚线 = 「教材先教了它」这个顺序事实。
+   颜色也不能跟「上游」撞 —— 上游是青蓝，教材序用紫灰。 */
+#card .chain .dep .sg8{color:#c9b8e8;background:rgba(180,160,220,.09);
+  border-color:rgba(180,160,220,.42);border-style:dashed}
+#card .chain .dep .sus1{color:#ff9d6b;background:rgba(255,157,107,.12);border-color:rgba(255,157,107,.32)}
+#card .chain .dep .sus2{color:#ff7a7a;background:rgba(255,122,122,.14);border-color:rgba(255,122,122,.38)}
+#card .chain .dep .t{flex:1;min-width:0}
+/* 最长的知识点名字有 39 个字，必须允许折行而不是溢出或截断 */
+#card .chain .dep .t{overflow-wrap:anywhere}
+#card .chain .dep .bk{color:var(--muted);font-size:10px;flex:none;font-variant-numeric:tabular-nums}
+#card .chain .none2{font-size:11.5px;color:var(--muted);padding:2px 5px}
+
+/* ---- hint ---- */
+#hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7;
+  transition:opacity .2s}
+/* 卡片一打开就把操作提示收走。依赖从 2 栏加到 6 栏之后，卡片最高能到视口的九成，
+   而提示条固定在右下角 —— 实测「惯性参考系」那张卡（教材前置 15 章）
+   底边正好压住提示条，两行字叠在一起谁也看不清。
+   :has() 在 Chrome 105 / Safari 15.4 / Firefox 121 之后都有；
+   万一不支持，退化成「提示条一直在」，也就是今天的样子，不会更糟。 */
+body:has(#card.on) #hint{opacity:0;pointer-events:none}
+
+/* 只给读屏用：视觉上藏起来，但仍留在无障碍树里。
+   不能用 display:none / visibility:hidden —— 那会把内容从无障碍树里摘掉，
+   正好和「让读屏读到」的目标相反。 */
+.sr{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);
+  white-space:nowrap;border:0;
+}
+/* 图例从 div 改成 button 之后要抹掉浏览器默认样式。
+   这不只是为了好看：button 默认 focus ring 在暗背景上几乎看不见，
+   而键盘用户能不能看见自己在哪，是无障碍的底线而不是美观问题。 */
+/* **图例行数多的时候分两列** ——
+   #attr（署名）是 fixed 在 bottom:192px 的，图例是 fixed 在 bottom:34px。
+   6 行以内图例不到 158px 高，够不着署名；
+   9 行（上海版五个学科 × 两套版别）就长到 190px，正好压到署名上。
+   两列一排，高度减半，谁也不碰谁。 */
+#legendRows.two-col{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+#legendRows.two-col .row{min-width:0;padding:1.5px 0}
+#legendRows.two-col .row span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+#legend button.row{
+  appearance:none;-webkit-appearance:none;background:none;border:0;
+  font:inherit;color:inherit;text-align:left;width:100%;
+}
+#legend button.row:focus-visible,
+#find input:focus-visible,
+#tools .btn:focus-visible{
+  outline:2px solid var(--acc);outline-offset:3px;border-radius:6px;
+}
+
+/* ================= 配色面板 ================= */
+#pal{
+  top:70px;right:38px;width:236px;padding:12px 13px;
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  backdrop-filter:blur(8px);box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:30;
+}
+#pal[hidden]{display:none}
+.palrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.palrow:last-of-type{margin-bottom:4px}
+.plab{font-size:10.5px;color:var(--muted);width:44px;flex:none}
+#pal .row{
+  display:inline-flex;align-items:center;gap:0;
+  font-size:11px;padding:4px 8px;border-radius:6px;cursor:pointer;
+  background:transparent;border:1px solid var(--line);color:var(--ink2);
+}
+#pal .row[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e;font-weight:500}
+.paltip{font-size:10px;color:var(--muted);line-height:1.5}
+
+/* ================= 二维知识脉络 ================= */
+#map{
+  inset:0;background:rgba(9,10,13,.975);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;z-index:40;padding:0;
+}
+#map[hidden]{display:none}
+/* 「卡在哪」面板跟脉络视图一样的整屏覆盖 */
+#gap{
+  inset:0;background:rgba(9,10,13,.975);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;z-index:41;padding:0;
+}
+#gap[hidden]{display:none}
+/* 学习路径面板：**跟「卡在哪」长得一样** ——
+   一个给候选和理由，一个给顺序。两块并排，样式共用一套。 */
+#path{
+  inset:0;background:rgba(9,10,13,.975);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;z-index:41;padding:0;
+}
+#path[hidden]{display:none}
+#mapBar{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px 20px;border-bottom:1px solid var(--line);flex:none;
+}
+.mtitle{display:flex;align-items:baseline;gap:12px;min-width:0}
+.mtitle b{font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mtitle span{font-size:12px;color:var(--muted);white-space:nowrap}
+.mtools{display:flex;align-items:center;gap:6px;flex:none}
+.mlab{font-size:11px;color:var(--muted);margin-right:2px}
+#mapBody{flex:1;overflow:auto;padding:10px 16px 24px;display:flex;align-items:center;justify-content:center}
+#mapSvg{display:block;min-width:100%;max-height:100%}
+/* 脉络视图里**线的来源色图例**。
+   配色面板写着「线：来源」，但图例只画点的颜色 ——
+   屏幕上七种颜色的线各代表什么，看的人无从知道。 */
+#mapLegend{
+  position:absolute;right:20px;top:64px;z-index:5;
+  display:none;flex-direction:column;gap:5px;
+  padding:9px 12px;border:1px solid var(--line);border-radius:8px;
+  background:rgba(12,14,20,.86);font-size:11px;color:var(--muted);
+}
+#mapLegend.on{display:flex}
+#mapLegend .lt{font-size:10px;color:#7c8496;margin-bottom:1px}
+#mapLegend .lr{display:flex;align-items:center;gap:7px;white-space:nowrap}
+#mapLegend .sw{width:16px;height:2.5px;border-radius:2px;flex:none}
+#mapTip{
+  position:absolute;left:20px;bottom:14px;font-size:11px;color:var(--muted);
+  pointer-events:none;
+}
+#map .btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e}
+/* 「卡在哪」面板 */
+#gapBody,#pathBody{flex:1;overflow:auto;padding:16px 22px 26px}
+#gapIntro,#pathIntro{font-size:12.5px;color:var(--muted);line-height:1.75;margin-bottom:14px;
+  padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.02)}
+#gapIntro b,#pathIntro b{color:#e8ebf2}
+#gapList,#pathList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+#gapList li,#pathList li{
+  display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:start;
+  padding:11px 14px;border:1px solid var(--line);border-radius:8px;
+  background:rgba(255,255,255,.02);cursor:pointer;
+}
+#gapList li:hover,#pathList li:hover{border-color:#3a4150;background:rgba(255,255,255,.05)}
+#gapList .rk,#pathList .rk{
+  font:600 15px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:#ff3d7f;text-align:right;padding-top:1px;
+}
+#gapList .nm,#pathList .nm{font-size:14px;font-weight:600;color:#e8ebf2}
+#gapList .why,#pathList .why{font-size:12px;color:var(--muted);line-height:1.6;margin-top:3px}
+#gapList .why em,#pathList .why em{color:#9fb0c8;font-style:normal}
+#gapList .tags,#pathList .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+#gapList .tag,#pathList .tag{
+  font-size:10.5px;padding:2px 7px;border-radius:20px;
+  border:1px solid var(--line);color:#8b93a7;white-space:nowrap;
+}
+#gapList .tag.hot,#pathList .tag.hot{border-color:#6b2b45;color:#ff8fb4;background:rgba(255,61,127,.08)}
+#gapList .tag.root,#pathList .tag.root{border-color:#3d4a2c;color:#b9d67f;background:rgba(185,214,127,.07)}
+#gapList .sc,#pathList .sc{font:600 12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;color:#6b7488;text-align:right}
+/* 教材原书的公式和图（视觉层） */
+/* 教材原话 —— 教材自己写的定义句 */
+#gapList .vt,#pathList .vt{margin-top:7px;padding:7px 10px;border-left:2px solid #3d4a2c;
+  background:rgba(185,214,127,.05);font-size:12px;color:#c8d6b8;line-height:1.65}
+#pathList .vt{border-left-color:#4a3d2c;background:rgba(255,209,102,.05);color:#e0d0a8}
+/* 小学科学教材位置 —— **另一套教材**（人教版《小学科学》，湖北教育出版社出版），
+   不是人教版初中物理那本。用青色边跟别的教材信息区分开，
+   免得读成「就是那本初中教材」。 */
+#gapList .vt.kx,#pathList .vt.kx{border-left-color:#2c5a52;background:rgba(67,217,192,.06);color:#a8d8ce}
+#gapList .vt.kx b,#pathList .vt.kx b{color:#5fd8bf;font-weight:700}
+#gapList .vb,#pathList .vb{margin-top:7px;padding:7px 10px;border-left:2px solid #2c3646;
+  background:rgba(120,160,255,.05);border-radius:0 6px 6px 0}
+#gapList .vb .vh{font-size:10.5px;color:#6b7488;margin-bottom:4px;letter-spacing:.02em}
+#gapList .vb .vf{font:12.5px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:#c9d4e6;word-break:break-word}
+#gapList .vb .vf span{display:inline-block;margin-right:12px}
+#gapList .vb .vg{font-size:11.5px;line-height:1.65;color:#8b93a7;margin-top:4px}
+#gapList .vb .vg b{color:#9fb0c8;font-weight:500}
+#gapList .vb .vsrc{font-size:10.5px;color:#5b6478;margin-top:4px}
+/* 沪教版那�� —— 换个颜色，跟人教版版区分开 */
+#gapList .vb.alt{border-left-color:#3d4a2c;background:rgba(185,214,127,.05)}
+#gapList .vb.alt .vh{color:#b9d67f}
+/* 教材自己标的难点（「思考」「探究」框）*/
+#gapList .vh2{
+  font-size:11.5px;line-height:1.6;color:#b9d67f;margin-top:8px;
+  padding:5px 9px;border-left:2px solid #3d4a2c;border-radius:0 6px 6px 0;
+  background:rgba(185,214,127,.05);
+}
+#gapList .vh2 b{color:#d4ec9f;font-weight:600}
+#gapList .vh2 .hq{color:#8b93a7;margin-top:3px;display:block}
+#gapFoot{margin-top:16px;font-size:11.5px;color:#6b7488;line-height:1.7}
+#gapTip{
+  /* **不做绝对定位。** #gap 是 flex 列容器，让它当最后一个 flex item
+     排在滚动区下面 —— 绝对定位会浮在内容上，条目一变高
+     （加了教材公式和图）就压住最后一条。 */
+  flex:0 0 auto;
+  font-size:11px;color:var(--muted);
+  padding:8px 22px 12px;
+  border-top:1px solid var(--line);
+  background:rgba(9,10,13,.92);
+}
+/* 脉络里的节点 */
+.mnode{cursor:pointer}
+
+.mnode circle{stroke:#0b0c10;stroke-width:1.5}
+.mnode text{font-size:11px;fill:var(--ink2);paint-order:stroke;stroke:#0b0c10;
+  stroke-width:3px;stroke-linejoin:round}
+.mnode:hover text{fill:var(--ink)}
+.mnode.center circle{stroke:#fff;stroke-width:2.5}
+.mnode.center text{fill:#fff;font-size:13px;font-weight:600}
+.medge{fill:none;stroke-width:1.4;opacity:.75}
+.medge.sus{stroke-dasharray:4 3;opacity:.95}
+.mtag{font-size:9px;fill:var(--muted)}
+.mcol{font-size:10px;fill:var(--muted);letter-spacing:.1em}
+
+/* ---- search ---- */
+/* 7,938 个点，靠鼠标点是找不到的。搜索是唯一入口。
+   放在标题区下方：标题 → 简介 → 数字 → 搜框，读下来就是一条线。 */
+#find{margin-top:20px;max-width:310px;pointer-events:auto;position:relative}
+#find input{
+  width:100%;font-family:inherit;font-size:13px;padding:8px 12px;border-radius:8px;
+  background:var(--panel);border:1px solid var(--line);color:var(--ink);backdrop-filter:blur(8px);
+}
+#find input:focus{outline:none;border-color:var(--ink2)}
+#find input::placeholder{color:var(--muted)}
+#res{margin-top:6px;display:none;list-style:none;margin-bottom:0;padding:0}
+#res.on{display:block}
+#res .r{
+  display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:7px;cursor:pointer;
+  font-size:12.5px;color:var(--ink2);
+}
+#res .r .sw{width:7px;height:7px;border-radius:50%;flex:none}
+#res .r .bk{margin-left:auto;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+#res .r.sel,#res .r:hover{background:var(--panel);color:var(--ink)}
+#res .none{font-size:12px;color:var(--muted);padding:7px 10px}
+/* 吸在结果框底部。手机上 8 条结果 × 45.7px 已经接近 46vh 的上限，
+   脚注是最后一个子元素，会被裁在半句话上（实测「…前置关系，选」就断了）。
+   吸底之后不管滚到哪都看得见 —— 而这行恰恰是最不能看不见的一句。 */
+#res .more{font-size:10.5px;color:var(--muted);padding:7px 10px 5px;border-top:1px solid var(--line);
+  position:sticky;bottom:0;background:var(--panel);margin-top:4px}
+
+/* 署名：原始数据是 CC BY-NC-SA 4.0，署名是硬性要求。
+   烧进页面里，才能保证这份 HTML 被转发、被下载、被存盘之后，
+   署名跟着数据一起走 —— 而不是只留在仓库的 README 上。 */
+#attr{position:static;margin-top:14px;left:38px;pointer-events:auto;font-size:10.5px;color:var(--muted);line-height:1.9;max-width:300px}
+#attr b{color:var(--ink2);font-weight:600}
+#attr a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
+#attr a:hover{color:var(--ink);border-bottom-color:var(--ink2)}
+#hint kbd{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:1px 5px;border-radius:4px;
+  background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink2);
+}
+
+/* ---- tooltip ---- */
+#tip{
+  position:fixed;z-index:20;pointer-events:none;opacity:0;transition:opacity .12s;
+  background:rgba(14,14,17,.95);border:1px solid var(--line);border-radius:8px;
+  padding:7px 10px;font-size:12px;white-space:nowrap;backdrop-filter:blur(8px);
+  box-shadow:0 6px 22px rgba(0,0,0,.55);
+}
+#tip.on{opacity:1}
+#tip .t-zh{font-weight:500}
+#tip .t-en{font-size:10.5px;color:var(--muted);margin-top:1px}
+
+@media(max-width:900px){
+  /* 窄屏下卡片底部是抽屉，顶到哪算哪。
+     「知识脉络」那一行按钮 + 提示文字让卡片高了一截，
+     抽屉就往上顶，**压住了标题区下方的署名**（窄屏断言实测 263~373 被 321~844 盖住）。
+     手机屏幕窄，提示文字本来也没地方放 —— 藏掉它，只留按钮。 */
+  .cardact-hint{display:none}
+  .cardacts{margin:7px 0 2px}
+  /* 页脚那段「两套数据分开」的补充说明有 3 行，
+     把署名往下撑，窄屏下**署名会被底部抽屉盖住**（263~373 被 321~844 压住）。
+     手机上这几行本来也读不清，窄屏直接收起来。 */
+  .attr2{display:none}
+  /* 抽屉再收一点。62vh 时抽屉顶到 321，署名底 342，还压着 21px。
+     56vh → 顶到 371，署名就露出来了。卡片本来就在滚，矮一点只是多滚两下。
+     （要写在下面那行 max-height:62vh 之后才生效。） */
+  /* 窄屏的判断标准是「能不能找到知识点」，不是「标题区挤不挤」。
+     标题区在手机上只占 242×149，下面空着 450px——空间从来不是问题。
+     原来把搜索框整个隐藏了，理由写的是「触屏没键盘」，那句话是错的：
+     点输入框会拉起软键盘，触屏反而更需要它。
+     7,938 个点，窄屏用户除了搜索没有任何办法找到任何一个知识点。 */
+  #head{
+    top:14px;left:12px;right:12px;max-width:none;
+    /* 标题原来直接压在数据点上。加一层不透明度渐变，文字才读得出来。
+       刻意不用 backdrop-filter —— 满屏 7,938 个点的 canvas 已经很吃，
+       再叠一层实时模糊在手机上会明显掉帧。 */
+    background:linear-gradient(180deg,rgba(14,14,17,.90) 0%,rgba(14,14,17,.72) 62%,rgba(14,14,17,0) 100%);
+    padding:12px 14px 20px;border-radius:14px;
+  }
+  #head h1{font-size:30px;margin-bottom:10px}
+  #head p{display:none}
+  #head .count{margin-bottom:2px}
+  #find{display:block;margin-top:14px;max-width:none}
+  #find input{font-size:16px;padding:10px 12px}   /* 16px 以下 iOS 会自动放大页面 */
+  #res{max-height:46vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  #res .r{padding:12px 10px;font-size:14px}       /* 14×1.55 行高 + 24 = 45.7px，过 Apple HIG 的 44pt 触控下限 */
+  #tools{top:auto;bottom:20px;right:20px;max-width:180px}
+  #legend{bottom:20px;left:20px}
+  #legend .row{font-size:11.5px;padding:2px 0}
+  #attr{
+    position:static;margin-top:14px;font-size:9.5px;line-height:1.65;max-width:none;
+  }
+  #hint{display:none}
+  /* 手机底部挤着三层：署名、学科图例、工具栏。详情卡原来是浮在上面的，
+     实测底边 766 会压住工具栏顶边 755 —— 正好盖住「复位」按钮。
+     改成贴底抽屉：盖住下面那些是预期行为，也是手机上的通行做法。
+     必须给不透明背景 + max-height + 纵向滚动，否则内容一长就顶出屏幕。 */
+  #card{
+    left:0;right:0;bottom:0;top:auto;width:auto;transform:none;
+    border-radius:16px 16px 0 0;border-bottom:none;
+    max-height:56vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding-bottom:26px;   /* 留出 iPhone 底部安全区，避免贴着 home 条 */
+  }
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<div id="vig"></div>
+
+<div class="ui" id="head">
+  <div class="eyebrow"><span class="dot"></span>按人教版小学科学排序 · 67 个知识点 · 25 条连线（24 条教材序 + 1 条真正的先修关系）</div>
+  <h1>小学的孩子<br>在<em>学什么</em>。</h1>
+  <p>每一个点是一个可以单独教的最小概念。颜色是学科，高度是年级，<b>一根根连线就是一个知识点必须先掌握什么</b>。</p>
+  <p>下面这根锥形从小学一年级长到六年级——越往上，概念越大越抽象。</p>
+  <div class="count">人教版《小学科学》里出现的 <b>67</b> 个知识点，其中 <b>56</b> 个是小学特有、上游图谱里没有的<br><b>虚线是「教材序」，不是先修关系</b> —— 编者先教哪个后教哪个</div>
+  <div id="find">
+    <!-- combobox 按 ARIA 1.2 的写法：焦点始终留在输入框里，
+         用 aria-activedescendant 指向当前选中项 —— 正好就是现有的
+         ↑↓ + Enter 逻辑，所以 JS 几乎不用改，只是补标记。 -->
+    <label class="sr" for="q">搜知识点：按名字或册次，输入后用上下方向键选择，回车跳转</label>
+    <input id="q" role="combobox" aria-expanded="false" aria-controls="res"
+           aria-autocomplete="list" aria-activedescendant=""
+           placeholder="搜知识点：输入名字或册次，如「小数」「五上」"
+           autocomplete="off" spellcheck="false">
+    <ul id="res" role="listbox" aria-label="搜索结果"></ul>
+  </div>
+  <!-- 常驻的播报区。live region 必须在内容变化「之前」就存在于 DOM 里，
+       而且不能藏在 display:none 的容器里（#res 收起时就是 none），
+       所以单独放一个永远在的。 -->
+  <div class="sr" id="say" role="status" aria-live="polite" aria-atomic="true"></div>
+  <!-- 署名放进 #head：窄屏时详情卡是贴底抽屉，会盖住原先浮在
+       bottom:162px 的署名（实测叠在卡片标题上）。跟着标题走就永远不冲突。
+       #head 是 pointer-events:none，而 pointer-events 会继承，
+       所以这里必须显式打开，否则「源码」链接点不动。 -->
+  <div id="attr">
+    <b>知识点数据</b> K12-KGraph · 北京大学 PKU-DCAI<br>
+    arXiv:2605.09635 · CC BY-NC-SA 4.0<br>
+    <b>本项目补的</b> 能力底座 · 自建概念 · 教材引入路径 · 模型重建的先修边<br>
+    <span class="attr2">虚线的连线是<b>教材序</b>：编者先教哪个后教哪个，<b>不是先修关系</b>（教材大量回顾旧例，那是衔接不是前置）。实线才是真正的先修关系。<br>边上的徽标分得出哪条来自数据集、哪条是我们补的。<br>
+    这一站<b>不依赖</b> K12-KGraph 的小学数据 —— 上游小学段只有数学，物化生一个都没有。节点全部来自人教版《小学科学》教材的目录与正文。</span><br>
+    <b>可视化与校验</b> 本项目自建 · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
+    · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a>
+    · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a>
+    · <a href="./kx.html" target="_blank" rel="noopener">小学科学版</a><br>
+    <span class="attr2">数据质量页把倒挂、覆盖缺口、可疑边、裁决账本全摊开 —— 有问题的边不藏。</span>
+  </div>
+</div>
+
+<div class="ui" id="tools">
+  <button class="btn" id="tCore" aria-pressed="false">只看小学特有</button>
+  <button class="btn" id="tEdges" aria-pressed="true">显示连线</button>
+  <button class="btn" id="tSpin" aria-pressed="true">自动旋转</button>
+  <button class="btn" id="tPal" aria-expanded="false" aria-controls="pal">配色</button>
+  <button class="btn" id="tReset">复位</button>
+</div>
+
+<!-- 配色面板：点的颜色和线的颜色各选一种维度。
+     点的颜色：按学科 / 按学段 / 按重要度 / 单色。
+     线的颜色：按来源 / 按方向（先修→后继）/ 单色。 -->
+<div class="ui" id="pal" hidden>
+  <div class="palrow"><span class="plab">点的颜色</span>
+    <button type="button" class="row" data-pc="subject">学科</button>
+    <button type="button" class="row" data-pc="stage">学段</button>
+    <button type="button" class="row" data-pc="imp">重要度</button>
+    <button type="button" class="row" data-pc="mono">单色</button>
+  </div>
+  <div class="palrow"><span class="plab">线的颜色</span>
+    <button type="button" class="row" data-lc="source">来源</button>
+    <button type="button" class="row" data-lc="dir">方向</button>
+    <button type="button" class="row" data-lc="mono">单色</button>
+  </div>
+  <div class="paltip" id="palTip"></div>
+</div>
+
+<div class="ui" id="legend">
+  <div class="t">学科 · 点击开关</div>
+  <div id="legendRows"></div>
+</div>
+
+<div class="ui" id="card">
+  <div class="eyebrow"><span class="sw"></span><span id="cEyebrow"></span></div>
+  <h2 id="cZh"></h2>
+  <p class="en mono" id="cEn"></p>
+  <p class="desc" id="cDesc"></p>
+  <div class="meta" id="cMeta"></div>
+  <!-- 知识脉络入口：卡片是「列表」，这是「脉络」。
+       放在 meta 下面、依赖列表上面 —— 依赖行可能很长（后继最多 14 条），
+       按钮夹在中间会找不到。 -->
+  <div class="cardacts">
+    <button class="btn" id="cMap">知识脉络</button>
+    <button class="btn" id="cGap">卡在哪</button>
+    <button class="btn" id="cPath">学习路径</button>
+    <span class="cardact-hint">展开它的先修链与后继链</span>
+  </div>
+  <!-- 前后依赖直接列出来并且可点。只给数量（「要先掌握 4 个」）等于
+       还得回去猜是哪 4 个 —— 查完了还是不知道。点一下就跳过去，
+       于是这一页从「查一个点」变成「顺着链条走」。
+       7,938 个节点里直接前置/后继最多各 7 个，所以能全列出来，
+       不需要「显示前 N 条」那种截断。 -->
+  <!-- 其他出版社教材里的位置。图谱按人教版排，但上海用沪教版、湖南用湘教版 ——
+       「九上 22.2」对用别的教材的学生没有意义，得告诉他「你那本里是第几节」。
+       放在依赖列表**前面**：卡片可能有十几条后继（要滚很久才到底），
+       而这一栏回答的是「我该翻哪本书的哪一页」，更该先看到。 -->
+  <div class="altpos" id="cAlt" hidden></div>
+  <div class="chain" id="cChain"></div>
+</div>
+
+<!-- 二维知识脉络：点开一个知识点后展开它的先修链与后继链。
+     跟右边那张卡片是同一份数据的两种看法：卡片是「列表」，
+     这里是「脉络」—— 先修在左一路铺过来，后继在右铺出去。
+     数据全在 payload 里（D.edges），前端现算，不用改后端。 --><div class="ui" id="map" hidden>
+  <div id="mapBar">
+    <div class="mtitle"><b id="mapName"></b><span id="mapSub"></span></div>
+    <div class="mtools">
+      <span class="mlab">展开</span>
+      <button class="btn" id="mD1" data-d="1">1 层</button>
+      <button class="btn" id="mD2" data-d="2">2 层</button>
+      <button class="btn" id="mD3" data-d="3">3 层</button>
+      <button class="btn" id="mClose">关闭</button>
+    </div>
+  </div>
+  <div id="mapBody"><svg id="mapSvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <div id="mapLegend"></div>
+  <div id="mapTip">点任意节点 → 以它为中心重画 · Esc 关闭</div>
+</div>
+
+<!-- 学习路径：把「卡在哪」的候选排成一条**能走的路**。
+     「卡在哪」回答「缺什么」，学习路径回答「**先学哪个、再学哪个**」，
+     每一步标出它在教材里的位置（哪本书哪一节第几页）——
+     老师排课、学生补课要的就是这个顺序。 -->
+<div class="ui" id="path" hidden>
+  <div id="mapBar">
+    <div class="mtitle"><b id="pathName"></b><span id="pathSub"></span></div>
+    <div class="mtools">
+      <button class="btn" id="pathCopy">复制路径</button>
+      <button class="btn" id="pathClose">关闭</button>
+    </div>
+  </div>
+  <div id="pathBody">
+    <div id="pathIntro"></div>
+    <ol id="pathList"></ol>
+    <div id="pathFoot"></div>
+  </div>
+  <div id="pathTip">点任意一条 → 跳到那个知识点 · Esc 关闭</div>
+</div>
+
+<!-- 「卡在哪」：这是本项目真正要回答的那个问题 ——
+     「朋友最近在二次函数上卡住，是因为什么前置的缺失」。
+     脉络视图说的是「有哪些前置」，这个面板说的是「**先补哪一块**」：
+     把先修闭包里的候选按「杠杆（多少人依赖它）× 早晚（多早学）×
+     是不是真的没前置 × 离症状多近」排个序，每条给出人话理由。
+     一键复制成选题卡（Markdown），直接进内容生产。 -->
+<div class="ui" id="gap" hidden>
+  <div id="mapBar">
+    <div class="mtitle"><b id="gapName"></b><span id="gapSub"></span></div>
+    <div class="mtools">
+      <button class="btn" id="gapCopy">复制选题卡</button>
+      <button class="btn" id="gapClose">关闭</button>
+    </div>
+  </div>
+  <div id="gapBody">
+    <div id="gapIntro"></div>
+    <ol id="gapList"></ol>
+    <div id="gapFoot"></div>
+  </div>
+  <div id="gapTip">点任意一条 → 跳到那个知识点 · Esc 关闭</div>
+</div>
+
+<div class="ui" id="hint">
+  拖拽旋转 · 滚轮缩放 · 悬停高亮<br>
+  <kbd>/</kbd> 搜知识点 · <kbd>↑↓</kbd> 选择 · <kbd>Esc</kbd> 取消
+</div>
+
+<div id="tip"><div class="t-zh"></div><div class="t-en mono"></div></div>
+
+<script id="data" type="application/json">{"nodes": [[0, "用感官观察", "", 0, "一上·我们的感觉器官 › 我们怎样知道", "kx:s6-1a:我们怎样知道", 1, 1, 0.0, 1, "不打开袋子，用听、闻、摸等感官方法辨别袋子里的物体", "—", [], [], -1, 0], [1, "动物的身体特征", "", 0, "一上·家养动物 › 猫和兔", "kx:s6-1a:猫和兔", 1, 1, 0.0, 1, "通过观察、交流与模仿，比较猫和兔的特征。", "—", [], [], -1, 0], [2, "生物的共同特征", "", 0, "一上·家养动物 › 更多的家养动物（上游：七上）", "up:biology_7a_rjb_cpt2", 7, 7, 0.0, 0, "", "—", [], [], -1, 0], [3, "工具的作用", "", 0, "一上·使用工具 › 常见的工具", "kx:s6-1a:常见的工具", 1, 1, 0.0, 1, "认识生活中常见的工具，通过对比体验工具带来的便利与作用。", "—", [], [], -1, 0], [4, "描述位置", "", 0, "一下·位置和方向 › 前后左右", "kx:s6-1b:前后左右", 1, 1, 0.0, 1, "学习用前后、左右等词语描述物体或人所在的位置。", "—", [], [], -1, 0], [5, "东南西北", "", 0, "一下·位置和方向 › 东南西北", "kx:s6-1b:东南西北", 1, 1, 0.5, 1, "通过观察太阳在不同时间的位置来辨别东南西北方向。", "—", [], [], -1, 0], [6, "植物的叶", "", 0, "一下·校园里的植物 › 各种各样的叶", "kx:s6-1b:各种各样的叶", 1, 1, 0.0, 1, "观察并比较不同植物叶的相同点与不同点。", "—", [], [], -1, 0], [7, "花的特征", "", 0, "一下·校园里的植物 › 多彩的花", "kx:s6-1b:多彩的花", 1, 1, 0.5, 1, "观察植物的花，了解花的颜色、花瓣等特点", "—", [], [], -1, 0], [8, "常见材料", "", 0, "一下·常见的材料 › 它们是用什么材料做的", "kx:s6-1b:它们是用什么材料做的", 1, 1, 0.0, 1, "认识常见材料及由这些材料制成的物品。", "—", [], [], -1, 0], [9, "纸", "", 0, "一下·常见的材料 › 纸制品", "kx:s6-1b:纸制品", 1, 1, 0.5, 1, "认识不同的纸，观察比较它们各自的特点与异同。", "—", [], [], -1, 0], [10, "植物生长需求", "", 0, "二上·植物的生长 › 谁的植物长得好", "kx:s6-2a:谁的植物长得好", 2, 2, 0.0, 1, "通过植物养护记录探究植物生长需要什么条件", "—", [], [], -1, 0], [11, "溶解", "", 0, "二上·水和空气 › 把它们放入水中（上游：九下）", "up:chemistry_9b_rjb_cpt241", 9, 9, 0.0, 0, "", "—", [], [], -1, 0], [12, "推力和拉力", "", 0, "二上·常见的力 › 推力和拉力", "kx:s6-2a:推力和拉力", 2, 2, 0.0, 1, "体验推力和拉力，探究推力使物体发生的变化", "—", [], [], -1, 0], [13, "磁力", "", 0, "二上·常见的力 › 磁力", "kx:s6-2a:磁力", 2, 2, 0.5, 1, "通过观察不同形状的磁铁和探究其吸引的物体认识磁力。", "—", [], [], -1, 0], [14, "船的结构", "", 0, "二上·制作小船 › 认识船", "kx:s6-2a:认识船", 2, 2, 0.0, 1, "观察常见的船并了解船的结构组成。", "—", [], [], -1, 0], [15, "天气现象", "", 0, "二下·了解天气 › 各种各样的天气", "kx:s6-2b:各种各样的天气", 2, 2, 0.0, 1, "认识并描述生活中的各种天气现象。", "—", [], [], -1, 0], [16, "天气的影响", "", 0, "二下·了解天气 › 天气与生活", "kx:s6-2b:天气与生活", 2, 2, 0.5, 1, "探究并交流不同天气对人们生活造成的影响", "—", [], [], -1, 0], [17, "太阳位置的变化", "", 0, "二下·太阳 月亮 四季 › 太阳升起来了", "kx:s6-2b:太阳升起来了", 2, 2, 0.0, 1, "观察并探究一天中太阳在天空中的位置变化", "—", [], [], -1, 0], [18, "月相", "", 0, "二下·太阳 月亮 四季 › 月亮", "kx:s6-2b:月亮", 2, 2, 1.0, 1, "观察月亮的形状变化，知道地球上看到的月亮形状叫月相。", "—", [], [], -1, 0], [19, "四季的变化", "", 0, "二下·太阳 月亮 四季 › 春夏秋冬", "kx:s6-2b:春夏秋冬", 2, 2, 0.5, 1, "观察和寻找春、夏、秋、冬不同季节的典型自然现象与变化。", "—", [], [], -1, 0], [20, "蚂蚁的身体特征", "", 0, "二下·观察小动物 › 蚂蚁", "kx:s6-2b:蚂蚁", 2, 2, 0.0, 1, "观察蚂蚁，认识触角、眼、足等外形特征", "—", [], [], -1, 0], [21, "感觉器官", "", 0, "二下·观察小动物 › 动物的感知本领（上游：七下）", "up:biology_7b_rjb_cpt134", 7, 7, 0.0, 0, "", "—", [], [], -1, 0], [22, "自然物", "", 0, "二下·从自然世界到人工世界 › 离不开的自然世界", "kx:s6-2b:离不开的自然世界", 2, 2, 0.0, 1, "区分周围环境中的自然物和人造物。", "—", [], [], -1, 0], [23, "人工产品", "", 0, "二下·从自然世界到人工世界 › 不断发展的人工产品", "kx:s6-2b:不断发展的人工产品", 2, 2, 0.5, 1, "认识人工产品在不断发展，体会其给人们生活带来的方便。", "—", [], [], -1, 0], [24, "指南针", "", 0, "三上·有趣的磁铁 › 指南针", "kx:s6-3a:指南针", 3, 3, 0.0, 1, "认识指南针是利用磁性指示方向的工具及各种不同类型的指南针", "—", [], [], -1, 0], [25, "空气", "", 0, "三上·气体 液体 固体 › 无处不在的空气（上游：九上）", "up:chemistry_9a_rjb_cpt62", 9, 9, 0.0, 0, "", "—", [], [], -1, 0], [26, "液体", "", 0, "三上·气体 液体 固体 › 认识液体", "kx:s6-3a:认识液体", 3, 3, 0.0, 1, "观察生活中的液体，探究并认识液体的特征。", "—", [], [], -1, 0], [27, "结构的稳定性", "", 0, "三上·小小建筑师 › 建筑中的结构", "kx:s6-3a:建筑中的结构", 3, 3, 0.0, 1, "探究不同形状框架的稳定性及建筑中的结构", "—", [], [], -1, 0], [28, "植物的根和茎", "", 0, "三下·从种子到种子 › 根和茎", "kx:s6-3b:根和茎", 3, 3, 0.0, 1, "认识植物根和茎的形态特征及其对植物生长的作用", "—", [], [], -1, 0], [29, "植物的生命周期", "", 0, "三下·从种子到种子 › 植物的一生", "kx:s6-3b:植物的一生", 3, 3, 0.5, 1, "认识植物的六大器官及其生命周期的生长阶段", "—", [], [], -1, 0], [30, "土壤的成分", "", 0, "三下·土壤和矿产资源 › 认识土壤", "kx:s6-3b:认识土壤", 3, 3, 0.0, 1, "通过采集和观察土壤，探究土壤里有哪些成分满足植物生长。", "—", [], [], -1, 0], [31, "土壤资源", "", 0, "三下·土壤和矿产资源 › 土壤资源", "kx:s6-3b:土壤资源", 3, 3, 0.5, 1, "认识土壤在各方面的作用以及怎样保护土壤资源。", "—", [], [], -1, 0], [32, "矿产资源", "", 0, "三下·土壤和矿产资源 › 矿产资源", "kx:s6-3b:矿产资源", 3, 3, 0.5, 1, "认识矿产的概念及日常生活中各种材料的矿产来源。", "—", [], [], -1, 0], [33, "热胀冷缩", "", 0, "三下·加热与冷却 › 空气的热胀冷缩（上游：八上）", "up:physics_8a_rjb_cpt133", 8, 8, 0.0, 0, "", "—", [], [], -1, 0], [34, "水的结冰", "", 0, "四上·水的变化与分布 › 水的结冰", "kx:s6-4a:水的结冰", 4, 4, 0.0, 1, "探究水结冰的条件及结冰过程中发生的现象", "—", [], [], -1, 0], [35, "乐器发声", "", 0, "四上·制作简易乐器 › 认识乐器", "kx:s6-4a:认识乐器", 4, 4, 0.0, 1, "认识不同乐器，观察并探究它们的发声部位与发声方式。", "—", [], [], -1, 0], [36, "风向和风力", "", 0, "四下·天气与气候 › 风向和风力", "kx:s6-4b:风向和风力", 4, 4, 0.0, 1, "学习观测风的方法，认识风向的概念及八个方位。", "—", [], [], -1, 0], [37, "气候", "", 0, "四下·天气与气候 › 气候和气象灾害", "kx:s6-4b:气候和气象灾害", 4, 4, 0.5, 1, "了解四季的天气特点与规律，认识气候及气象灾害。", "—", [], [], -1, 0], [38, "生物与非生物的区分", "", 0, "四下·环境中的生物 › 生物与非生物（上游：七上）", "up:biology_7a_rjb_cpt13", 7, 7, 0.5, 0, "", "—", [], [], -1, 0], [39, "植物适应环境", "", 0, "四下·环境中的生物 › 不同环境中的植物", "kx:s6-4b:不同环境中的植物", 4, 4, 0.0, 1, "探究植物的形态特点与它生活环境的关系。", "—", [], [], -1, 0], [40, "动物适应环境", "", 0, "四下·环境中的生物 › 不同环境中的动物", "kx:s6-4b:不同环境中的动物", 4, 4, 0.5, 1, "了解不同环境中的动物及其适应环境的身体特征和习性。", "—", [], [], -1, 0], [41, "地球的形状", "", 0, "四下·地球 太阳 月球 › 认识地球的形状", "kx:s6-4b:认识地球的形状", 4, 4, 0.0, 1, "通过观察远方驶来的船等现象认识地球的形状", "—", [], [], -1, 0], [42, "太阳和月球", "", 0, "四下·地球 太阳 月球 › 太阳和月球", "kx:s6-4b:太阳和月球", 4, 4, 0.5, 1, "观察并认识太阳和月球的基本特征。", "—", [], [], -1, 0], [43, "日影变化", "", 0, "四下·影子的变化 › 阳光下的影子", "kx:s6-4b:阳光下的影子", 4, 4, 0.0, 1, "观测并探究阳光下物体影子的长短与方向变化规律", "—", [], [], -1, 0], [44, "简易计时器", "", 0, "四下·简易计时器 › 认识简易计时器", "kx:s6-4b:认识简易计时器", 4, 4, 0.0, 1, "认识水漏等古代简易计时器的结构及计时原理。", "—", [], [], -1, 0], [45, "生锈与防锈", "", 0, "五上·物质的变化 › 生锈与防锈", "kx:s6-5a:生锈与防锈", 5, 5, 0.0, 1, "认识铁锈的特点，探究铁生锈的原因以及防止生锈的方法。", "—", [], [], -1, 0], [46, "食物的变化", "", 0, "五上·物质的变化 › 食物的变化", "kx:s6-5a:食物的变化", 5, 5, 0.5, 1, "认识食物在加工和变质过程中发生的各种变化及预防变质的方法。", "—", [], [], -1, 0], [47, "光的色散", "", 0, "五上·光的现象 › 太阳光（上游：八上）", "up:physics_8a_rjb_cpt89", 8, 8, 0.0, 0, "", "—", [], [], -1, 0], [48, "视觉的形成", "", 0, "五上·光的现象 › 眼睛怎样看到物体（上游：七下）", "up:biology_7b_rjb_cpt135", 7, 7, 0.0, 0, "", "—", [], [], -1, 0], [49, "昼夜交替", "", 0, "五下·昼夜与四季 › 白天与黑夜", "kx:s6-5b:白天与黑夜", 5, 5, 0.0, 1, "观察并探究昼夜交替过程中有规律的变化。", "—", [], [], -1, 0], [50, "地球自转方向", "", 0, "五下·昼夜与四季 › 谁先看到日出", "kx:s6-5b:谁先看到日出", 5, 5, 0.5, 1, "探究不同城市日出时间的早晚，认识地球自转的方向。", "—", [], [], -1, 0], [51, "四季的成因", "", 0, "五下·昼夜与四季 › 四季的形成", "kx:s6-5b:四季的形成", 5, 5, 0.5, 1, "探究一年四季气温变化的规律及四季的形成原因。", "—", [], [], -1, 0], [52, "电动机", "", 0, "五下·能量的转化 › 小电动机转起来（上游：九年级）", "up:physics_9_rjb_cpt145", 9, 9, 0.0, 0, "", "—", [], [], -1, 0], [53, "刺激与反应", "", 0, "五下·健康生活 › 人的感知与反应", "kx:s6-5b:人的感知与反应", 5, 5, 0.0, 1, "认识人体在不同环境刺激下会作出的各种反应及感知器官的作用。", "—", [], [], -1, 0], [54, "能量的转化", "", 0, "六上·能的转化 › 不同形式的能及其转化（上游：九年级）", "up:physics_9_rjb_cpt26", 9, 9, 0.0, 0, "", "—", [], [], -1, 0], [55, "雾和云", "", 0, "六上·水和天气 › 雾和云", "kx:s6-6a:雾和云", 6, 6, 0.0, 1, "探究雾和云的本质及其是怎样形成的", "—", [], [], -1, 0], [56, "雨和雪的形成", "", 0, "六上·水和天气 › 雨和雪", "kx:s6-6a:雨和雪", 6, 6, 0.5, 1, "探究生活中常见的雨和雪是怎样形成的。", "—", [], [], -1, 0], [57, "露和霜", "", 0, "六上·水和天气 › 露和霜", "kx:s6-6a:露和霜", 6, 6, 0.5, 1, "探究露和霜出现的条件及其形成原因。", "—", [], [], -1, 0], [58, "流水的作用", "", 0, "六上·水和天气 › 流水对地表形态的影响", "kx:s6-6a:流水对地表形态的影响", 6, 6, 0.5, 1, "探究流水对地表形态的影响及其作用机制", "—", [], [], -1, 0], [59, "资源循环利用", "", 0, "六上·自然资源 › 资源的循环利用", "kx:s6-6a:资源的循环利用", 6, 6, 0.0, 1, "认识循环利用是节约资源的有效途径及纸的回收利用", "—", [], [], -1, 0], [60, "栖息地", "", 0, "六下·生物与环境 › 生物的栖息地", "kx:s6-6b:生物的栖息地", 6, 6, 0.0, 1, "认识生物的栖息地及栖息地为生物提供的生存条件", "—", [], [], -1, 0], [61, "生物对环境的适应", "", 0, "六下·生物与环境 › 动物对环境的适应（上游：选必二）", "up:biology_xzxbx2_rjb_cpt63", 12, 12, 0.0, 0, "", "—", [], [], -1, 0], [62, "流水侵蚀", "", 0, "六下·地表形态的变化 › 地表流水的力量", "kx:s6-6b:地表流水的力量", 6, 6, 0.0, 1, "探究不同坡度下流水对地表形态的侵蚀作用", "—", [], [], -1, 0], [63, "地球内部结构", "", 0, "六下·地表形态的变化 › 地球的内部结构", "kx:s6-6b:地球的内部结构", 6, 6, 0.5, 1, "探究了解地球内部状态的线索和地球的内部结构", "—", [], [], -1, 0], [64, "地震", "", 0, "六下·地表形态的变化 › 地震", "kx:s6-6b:地震", 6, 6, 0.5, 1, "认识地震现象、发生原因及其对地表和人类的影响", "—", [], [], -1, 0], [65, "日地月系统", "", 0, "六下·探索宇宙 › 太阳、地球和月球", "kx:s6-6b:太阳、地球和月球", 6, 6, 0.0, 1, "认识太阳、地球和月球的相对大小及相互运动关系。", "—", [], [], -1, 0], [66, "星座", "", 0, "六下·探索宇宙 › 认识星空", "kx:s6-6b:认识星空", 6, 6, 0.5, 1, "观察星空，利用活动星盘认识主要星座与北极星", "—", [], [], -1, 0]], "edges": [[5, 4, 8, 0], [7, 6, 8, 0], [9, 8, 8, 0], [13, 12, 8, 0], [16, 15, 8, 0], [18, 17, 8, 0], [19, 18, 8, 0], [42, 41, 8, 0], [18, 42, 8, 0], [23, 22, 8, 0], [29, 28, 8, 0], [31, 30, 8, 0], [32, 31, 8, 0], [37, 36, 8, 0], [40, 39, 8, 0], [46, 45, 8, 0], [50, 49, 8, 0], [51, 50, 8, 0], [56, 55, 8, 0], [57, 56, 8, 0], [58, 57, 8, 0], [63, 62, 8, 0], [64, 63, 8, 0], [66, 65, 8, 0], [38, 2, 0, 0]], "isa": [], "chs": [["“钓鱼”游戏", "1a·走近科学"], ["不倒翁", "1a·走近科学"], ["怎样学科学", "1a·走近科学"], ["单元回顾", "1a·走近科学"], ["我们怎样知道", "1a·我们的感觉器官"], ["观察水果", "1a·我们的感觉器官"], ["保护感觉器官", "1a·我们的感觉器官"], ["单元回顾", "1a·我们的感觉器官"], ["金鱼", "1a·家养动物"], ["猫和兔", "1a·家养动物"], ["更多的家养动物", "1a·家养动物"], ["单元回顾", "1a·家养动物"], ["常见的工具", "1a·使用工具"], ["拆装玩具", "1a·使用工具"], ["制作杯垫", "1a·使用工具"], ["单元回顾", "1a·使用工具"], ["前后左右", "1b·位置和方向"], ["东南西北", "1b·位置和方向"], ["校园“寻宝”", "1b·位置和方向"], ["单元回顾", "1b·位置和方向"], ["各种各样的叶", "1b·校园里的植物"], ["多彩的花", "1b·校园里的植物"], ["观察校园里的植物", "1b·校园里的植物"], ["单元回顾", "1b·校园里的植物"], ["它们是用什么材料做的", "1b·常见的材料"], ["金属", "1b·常见的材料"], ["纸制品", "1b·常见的材料"], ["单元回顾", "1b·常见的材料"], ["收纳物品", "1b·制作收纳用具"], ["设计制作笔筒", "1b·制作收纳用具"], ["展示与改进", "1b·制作收纳用具"], ["单元回顾", "1b·制作收纳用具"], ["养植物", "2a·植物的生长"], ["谁的植物长得好", "2a·植物的生长"], ["土壤中的动植物", "2a·植物的生长"], ["单元回顾", "2a·植物的生长"], ["水", "2a·水和空气"], ["把它们放入水中", "2a·水和空气"], ["空气", "2a·水和空气"], ["单元回顾", "2a·水和空气"], ["推力和拉力", "2a·常见的力"], ["磁力", "2a·常见的力"], ["巧用力", "2a·常见的力"], ["单元回顾", "2a·常见的力"], ["认识船", "2a·制作小船"], ["设计和制作小船", "2a·制作小船"], ["改进小船", "2a·制作小船"], ["单元回顾", "2a·制作小船"], ["各种各样的天气", "2b·了解天气"], ["天气与生活", "2b·了解天气"], ["自然日记", "2b·了解天气"], ["单元回顾", "2b·了解天气"], ["太阳升起来了", "2b·太阳 月亮 四季"], ["月亮", "2b·太阳 月亮 四季"], ["春夏秋冬", "2b·太阳 月亮 四季"], ["单元回顾", "2b·太阳 月亮 四季"], ["蚂蚁", "2b·观察小动物"], ["蜗牛", "2b·观察小动物"], ["动物的感知本领", "2b·观察小动物"], ["单元回顾", "2b·观察小动物"], ["离不开的自然世界", "2b·从自然世界到人工世界"], ["不断发展的人工产品", "2b·从自然世界到人工世界"], ["我们的创意", "2b·从自然世界到人工世界"], ["单元回顾", "2b·从自然世界到人工世界"], ["磁铁的磁极", "3a·有趣的磁铁"], ["磁极间的作用", "3a·有趣的磁铁"], ["指南针", "3a·有趣的磁铁"], ["单元回顾", "3a·有趣的磁铁"], ["无处不在的空气", "3a·气体 液体 固体"], ["空气有质量吗", "3a·气体 液体 固体"], ["认识液体", "3a·气体 液体 固体"], ["比较气体、液体和固体", "3a·气体 液体 固体"], ["单元回顾", "3a·气体 液体 固体"], ["手电筒的秘密", "3a·家庭用电"], ["开关", "3a·家庭用电"], ["检测电路", "3a·家庭用电"], ["电与我们", "3a·家庭用电"], ["单元回顾", "3a·家庭用电"], ["食物的营养", "3a·消化与呼吸"], ["消化器官", "3a·消化与呼吸"], ["呼吸器官", "3a·消化与呼吸"], ["我们的呼吸", "3a·消化与呼吸"], ["保护消化和呼吸器官", "3a·消化与呼吸"], ["单元回顾", "3a·消化与呼吸"], ["建筑中的材料", "3a·小小建筑师"], ["建筑中的结构", "3a·小小建筑师"], ["设计制作建筑模型", "3a·小小建筑师"], ["单元回顾", "3a·小小建筑师"], ["盐和糖的溶解", "3b·溶解与分离"], ["把盐析出来", "3b·溶解与分离"], ["将不同的物质分离", "3b·溶解与分离"], ["单元回顾", "3b·溶解与分离"], ["播种发芽", "3b·从种子到种子"], ["根和茎", "3b·从种子到种子"], ["开花结果", "3b·从种子到种子"], ["植物的一生", "3b·从种子到种子"], ["单元回顾", "3b·从种子到种子"], ["认识土壤", "3b·土壤和矿产资源"], ["不同质地的土壤", "3b·土壤和矿产资源"], ["土壤资源", "3b·土壤和矿产资源"], ["矿产资源", "3b·土壤和矿产资源"], ["单元回顾", "3b·土壤和矿产资源"], ["液体受热遇冷会怎样", "3b·加热与冷却"], ["固体也会热胀冷缩吗", "3b·加热与冷却"], ["空气的热胀冷缩", "3b·加热与冷却"], ["单元回顾", "3b·加热与冷却"], ["球的运动", "3b·运动和能量"], ["运动中的能量", "3b·运动和能量"], ["单元回顾", "3b·运动和能量"], ["设计制作动力小车", "3b·动力小车"], ["测试改进动力小车", "3b·动力小车"], ["赛小车", "3b·动力小车"], ["单元回顾", "3b·动力小车"], ["植物的种子", "4a·动植物的繁殖"], ["种子的传播", "4a·动植物的繁殖"], ["植物的繁殖", "4a·动植物的繁殖"], ["动物的繁殖", "4a·动植物的繁殖"], ["单元回顾", "4a·动植物的繁殖"], ["昆虫", "4a·多样的动物"], ["鸟和哺乳动物", "4a·多样的动物"], ["动物的分类", "4a·多样的动物"], ["我国的珍稀动物", "4a·多样的动物"], ["单元回顾", "4a·多样的动物"], ["蒸发与凝结", "4a·水的变化与分布"], ["水的沸腾", "4a·水的变化与分布"], ["水的结冰", "4a·水的变化与分布"], ["地球上的水资源", "4a·水的变化与分布"], ["单元回顾", "4a·水的变化与分布"], ["声音的产生", "4a·声音"], ["声音的传播", "4a·声音"], ["声音的变化", "4a·声音"], ["噪声与保护听力", "4a·声音"], ["单元回顾", "4a·声音"], ["认识乐器", "4a·制作简易乐器"], ["设计简易乐器", "4a·制作简易乐器"], ["制作与展示", "4a·制作简易乐器"], ["单元回顾", "4a·制作简易乐器"], ["一天的气温", "4b·天气与气候"], ["风向和风力", "4b·天气与气候"], ["观测云和雨", "4b·天气与气候"], ["气候和气象灾害", "4b·天气与气候"], ["蚕出生了", "4b·养蚕"], ["怎样养蚕", "4b·养蚕"], ["蚕的生长变化", "4b·养蚕"], ["蚕的一生", "4b·养蚕"], ["生物与非生物", "4b·环境中的生物"], ["不同环境中的植物", "4b·环境中的生物"], ["不同环境中的动物", "4b·环境中的生物"], ["认识地球的形状", "4b·地球 太阳 月球"], ["太阳和月球", "4b·地球 太阳 月球"], ["月相的变化", "4b·地球 太阳 月球"], ["会变的影子", "4b·影子的变化"], ["阳光下的影子", "4b·影子的变化"], ["认识简易计时器", "4b·简易计时器"], ["制作日晷", "4b·简易计时器"], ["水中的微小生物", "5a·显微镜下的生物世界"], ["观察细胞", "5a·显微镜下的生物世界"], ["食品加工中的微生物", "5a·显微镜下的生物世界"], ["致病的微生物", "5a·显微镜下的生物世界"], ["单元回顾", "5a·显微镜下的生物世界"], ["蜡烛的燃烧", "5a·物质的变化"], ["生锈与防锈", "5a·物质的变化"], ["食物的变化", "5a·物质的变化"], ["有趣的变化现象", "5a·物质的变化"], ["单元回顾", "5a·物质的变化"], ["壶是怎样传热的", "5a·烧水中的热传递"], ["水是怎样热起来的", "5a·烧水中的热传递"], ["炉火周围的热现象", "5a·烧水中的热传递"], ["保温与散热", "5a·烧水中的热传递"], ["单元回顾", "5a·烧水中的热传递"], ["光的传播", "5a·光的现象"], ["光的反射", "5a·光的现象"], ["太阳光", "5a·光的现象"], ["眼睛怎样看到物体", "5a·光的现象"], ["单元回顾", "5a·光的现象"], ["认识太阳能热水器", "5a·太阳能热水器"], ["制作简易太阳能热水器", "5a·太阳能热水器"], ["改进与交流", "5a·太阳能热水器"], ["单元回顾", "5a·太阳能热水器"], ["白天与黑夜", "5b·昼夜与四季"], ["谁先看到日出", "5b·昼夜与四季"], ["四季的形成", "5b·昼夜与四季"], ["电灯的能量转化", "5b·能量的转化"], ["电磁铁的能量转化", "5b·能量的转化"], ["小电动机转起来", "5b·能量的转化"], ["能量转化和能量传递", "5b·能量的转化"], ["人的感知与反应", "5b·健康生活"], ["脑的功能", "5b·健康生活"], ["保护我们的身体", "5b·健康生活"], ["杠杆", "5b·简单机械"], ["滑轮", "5b·简单机械"], ["轮轴", "5b·简单机械"], ["斜面", "5b·简单机械"], ["设计与制作", "5b·制作省力装置"], ["测试与改进", "5b·制作省力装置"], ["多种多样的生物", "6a·相互依存的生命世界"], ["植物的光合作用", "6a·相互依存的生命世界"], ["有趣的食物联系", "6a·相互依存的生命世界"], ["危险的“来客”", "6a·相互依存的生命世界"], ["单元回顾", "6a·相互依存的生命世界"], ["不同形式的能及其转化", "6a·能的转化"], ["电磁铁", "6a·能的转化"], ["电动机", "6a·能的转化"], ["水力发电", "6a·能的转化"], ["单元回顾", "6a·能的转化"], ["雾和云", "6a·水和天气"], ["雨和雪", "6a·水和天气"], ["露和霜", "6a·水和天气"], ["流水对地表形态的影响", "6a·水和天气"], ["单元回顾", "6a·水和天气"], ["各种各样的自然资源", "6a·自然资源"], ["丰富的海洋资源", "6a·自然资源"], ["自然资源的开发与利用", "6a·自然资源"], ["资源的循环利用", "6a·自然资源"], ["单元回顾", "6a·自然资源"], ["走进植物工厂", "6a·建造“植物工厂”"], ["设计微型“植物工厂”", "6a·建造“植物工厂”"], ["建造微型“植物工厂”", "6a·建造“植物工厂”"], ["单元回顾", "6a·建造“植物工厂”"], ["生物的栖息地", "6b·生物与环境"], ["动物对环境的适应", "6b·生物与环境"], ["保护生物与环境", "6b·生物与环境"], ["地表流水的力量", "6b·地表形态的变化"], ["地球的内部结构", "6b·地表形态的变化"], ["地震", "6b·地表形态的变化"], ["火山喷发", "6b·地表形态的变化"], ["太阳、地球和月球", "6b·探索宇宙"], ["太阳系", "6b·探索宇宙"], ["认识星空", "6b·探索宇宙"], ["人类探索宇宙的历程", "6b·探索宇宙"], ["认识飞行器", "6b·“飞向”太空"], ["制作“火箭”", "6b·“飞向”太空"], ["模拟探索：到火星上去", "6b·“飞向”太空"]], "cns": [["走近科学", "1a", 0, -1], ["走近科学", "1a", 0, -1], ["走近科学", "1a", 0, -1], ["走近科学", "1a", 0, -1], ["我们的感觉器官", "1a", 0, 0], ["我们的感觉器官", "1a", 0, -1], ["我们的感觉器官", "1a", 0, -1], ["我们的感觉器官", "1a", 0, -1], ["家养动物", "1a", 0, -1], ["家养动物", "1a", 0, 1], ["家养动物", "1a", 0, 2], ["家养动物", "1a", 0, -1], ["使用工具", "1a", 0, 3], ["使用工具", "1a", 0, -1], ["使用工具", "1a", 0, -1], ["使用工具", "1a", 0, -1], ["位置和方向", "1b", 0, 4], ["位置和方向", "1b", 0, 5], ["位置和方向", "1b", 0, -1], ["位置和方向", "1b", 0, -1], ["校园里的植物", "1b", 0, 6], ["校园里的植物", "1b", 0, 7], ["校园里的植物", "1b", 0, -1], ["校园里的植物", "1b", 0, -1], ["常见的材料", "1b", 0, 8], ["常见的材料", "1b", 0, -1], ["常见的材料", "1b", 0, 9], ["常见的材料", "1b", 0, -1], ["制作收纳用具", "1b", 0, -1], ["制作收纳用具", "1b", 0, -1], ["制作收纳用具", "1b", 0, -1], ["制作收纳用具", "1b", 0, -1], ["植物的生长", "2a", 0, -1], ["植物的生长", "2a", 0, 10], ["植物的生长", "2a", 0, -1], ["植物的生长", "2a", 0, -1], ["水和空气", "2a", 0, -1], ["水和空气", "2a", 0, 11], ["水和空气", "2a", 0, -1], ["水和空气", "2a", 0, -1], ["常见的力", "2a", 0, 12], ["常见的力", "2a", 0, 13], ["常见的力", "2a", 0, -1], ["常见的力", "2a", 0, -1], ["制作小船", "2a", 0, 14], ["制作小船", "2a", 0, -1], ["制作小船", "2a", 0, -1], ["制作小船", "2a", 0, -1], ["了解天气", "2b", 0, 15], ["了解天气", "2b", 0, 16], ["了解天气", "2b", 0, -1], ["了解天气", "2b", 0, -1], ["太阳 月亮 四季", "2b", 0, 17], ["太阳 月亮 四季", "2b", 0, 18], ["太阳 月亮 四季", "2b", 0, 19], ["太阳 月亮 四季", "2b", 0, -1], ["观察小动物", "2b", 0, 20], ["观察小动物", "2b", 0, -1], ["观察小动物", "2b", 0, 21], ["观察小动物", "2b", 0, -1], ["从自然世界到人工世界", "2b", 0, 22], ["从自然世界到人工世界", "2b", 0, 23], ["从自然世界到人工世界", "2b", 0, -1], ["从自然世界到人工世界", "2b", 0, -1], ["有趣的磁铁", "3a", 0, -1], ["有趣的磁铁", "3a", 0, -1], ["有趣的磁铁", "3a", 0, 24], ["有趣的磁铁", "3a", 0, -1], ["气体 液体 固体", "3a", 0, 25], ["气体 液体 固体", "3a", 0, -1], ["气体 液体 固体", "3a", 0, 26], ["气体 液体 固体", "3a", 0, -1], ["气体 液体 固体", "3a", 0, -1], ["家庭用电", "3a", 0, -1], ["家庭用电", "3a", 0, -1], ["家庭用电", "3a", 0, -1], ["家庭用电", "3a", 0, -1], ["家庭用电", "3a", 0, -1], ["消化与呼吸", "3a", 0, -1], ["消化与呼吸", "3a", 0, -1], ["消化与呼吸", "3a", 0, -1], ["消化与呼吸", "3a", 0, -1], ["消化与呼吸", "3a", 0, -1], ["消化与呼吸", "3a", 0, -1], ["小小建筑师", "3a", 0, -1], ["小小建筑师", "3a", 0, 27], ["小小建筑师", "3a", 0, -1], ["小小建筑师", "3a", 0, -1], ["溶解与分离", "3b", 0, -1], ["溶解与分离", "3b", 0, -1], ["溶解与分离", "3b", 0, -1], ["溶解与分离", "3b", 0, -1], ["从种子到种子", "3b", 0, -1], ["从种子到种子", "3b", 0, 28], ["从种子到种子", "3b", 0, -1], ["从种子到种子", "3b", 0, 29], ["从种子到种子", "3b", 0, -1], ["土壤和矿产资源", "3b", 0, 30], ["土壤和矿产资源", "3b", 0, -1], ["土壤和矿产资源", "3b", 0, 31], ["土壤和矿产资源", "3b", 0, 32], ["土壤和矿产资源", "3b", 0, -1], ["加热与冷却", "3b", 0, -1], ["加热与冷却", "3b", 0, -1], ["加热与冷却", "3b", 0, 33], ["加热与冷却", "3b", 0, -1], ["运动和能量", "3b", 0, -1], ["运动和能量", "3b", 0, -1], ["运动和能量", "3b", 0, -1], ["动力小车", "3b", 0, -1], ["动力小车", "3b", 0, -1], ["动力小车", "3b", 0, -1], ["动力小车", "3b", 0, -1], ["动植物的繁殖", "4a", 0, -1], ["动植物的繁殖", "4a", 0, -1], ["动植物的繁殖", "4a", 0, -1], ["动植物的繁殖", "4a", 0, -1], ["动植物的繁殖", "4a", 0, -1], ["多样的动物", "4a", 0, -1], ["多样的动物", "4a", 0, -1], ["多样的动物", "4a", 0, -1], ["多样的动物", "4a", 0, -1], ["多样的动物", "4a", 0, -1], ["水的变化与分布", "4a", 0, -1], ["水的变化与分布", "4a", 0, -1], ["水的变化与分布", "4a", 0, 34], ["水的变化与分布", "4a", 0, -1], ["水的变化与分布", "4a", 0, -1], ["声音", "4a", 0, -1], ["声音", "4a", 0, -1], ["声音", "4a", 0, -1], ["声音", "4a", 0, -1], ["声音", "4a", 0, -1], ["制作简易乐器", "4a", 0, 35], ["制作简易乐器", "4a", 0, -1], ["制作简易乐器", "4a", 0, -1], ["制作简易乐器", "4a", 0, -1], ["天气与气候", "4b", 0, -1], ["天气与气候", "4b", 0, 36], ["天气与气候", "4b", 0, -1], ["天气与气候", "4b", 0, 37], ["养蚕", "4b", 0, -1], ["养蚕", "4b", 0, -1], ["养蚕", "4b", 0, -1], ["养蚕", "4b", 0, -1], ["环境中的生物", "4b", 0, 38], ["环境中的生物", "4b", 0, 39], ["环境中的生物", "4b", 0, 40], ["地球 太阳 月球", "4b", 0, 41], ["地球 太阳 月球", "4b", 0, 42], ["地球 太阳 月球", "4b", 0, 18], ["影子的变化", "4b", 0, -1], ["影子的变化", "4b", 0, 43], ["简易计时器", "4b", 0, 44], ["简易计时器", "4b", 0, -1], ["显微镜下的生物世界", "5a", 0, -1], ["显微镜下的生物世界", "5a", 0, -1], ["显微镜下的生物世界", "5a", 0, -1], ["显微镜下的生物世界", "5a", 0, -1], ["显微镜下的生物世界", "5a", 0, -1], ["物质的变化", "5a", 0, -1], ["物质的变化", "5a", 0, 45], ["物质的变化", "5a", 0, 46], ["物质的变化", "5a", 0, -1], ["物质的变化", "5a", 0, -1], ["烧水中的热传递", "5a", 0, -1], ["烧水中的热传递", "5a", 0, -1], ["烧水中的热传递", "5a", 0, -1], ["烧水中的热传递", "5a", 0, -1], ["烧水中的热传递", "5a", 0, -1], ["光的现象", "5a", 0, -1], ["光的现象", "5a", 0, -1], ["光的现象", "5a", 0, 47], ["光的现象", "5a", 0, 48], ["光的现象", "5a", 0, -1], ["太阳能热水器", "5a", 0, -1], ["太阳能热水器", "5a", 0, -1], ["太阳能热水器", "5a", 0, -1], ["太阳能热水器", "5a", 0, -1], ["昼夜与四季", "5b", 0, 49], ["昼夜与四季", "5b", 0, 50], ["昼夜与四季", "5b", 0, 51], ["能量的转化", "5b", 0, -1], ["能量的转化", "5b", 0, -1], ["能量的转化", "5b", 0, 52], ["能量的转化", "5b", 0, -1], ["健康生活", "5b", 0, 53], ["健康生活", "5b", 0, -1], ["健康生活", "5b", 0, -1], ["简单机械", "5b", 0, -1], ["简单机械", "5b", 0, -1], ["简单机械", "5b", 0, -1], ["简单机械", "5b", 0, -1], ["制作省力装置", "5b", 0, -1], ["制作省力装置", "5b", 0, -1], ["相互依存的生命世界", "6a", 0, -1], ["相互依存的生命世界", "6a", 0, -1], ["相互依存的生命世界", "6a", 0, -1], ["相互依存的生命世界", "6a", 0, -1], ["相互依存的生命世界", "6a", 0, -1], ["能的转化", "6a", 0, 54], ["能的转化", "6a", 0, -1], ["能的转化", "6a", 0, -1], ["能的转化", "6a", 0, -1], ["能的转化", "6a", 0, -1], ["水和天气", "6a", 0, 55], ["水和天气", "6a", 0, 56], ["水和天气", "6a", 0, 57], ["水和天气", "6a", 0, 58], ["水和天气", "6a", 0, -1], ["自然资源", "6a", 0, -1], ["自然资源", "6a", 0, -1], ["自然资源", "6a", 0, -1], ["自然资源", "6a", 0, 59], ["自然资源", "6a", 0, -1], ["建造“植物工厂”", "6a", 0, -1], ["建造“植物工厂”", "6a", 0, -1], ["建造“植物工厂”", "6a", 0, -1], ["建造“植物工厂”", "6a", 0, -1], ["生物与环境", "6b", 0, 60], ["生物与环境", "6b", 0, 61], ["生物与环境", "6b", 0, -1], ["地表形态的变化", "6b", 0, 62], ["地表形态的变化", "6b", 0, 63], ["地表形态的变化", "6b", 0, 64], ["地表形态的变化", "6b", 0, -1], ["探索宇宙", "6b", 0, 65], ["探索宇宙", "6b", 0, -1], ["探索宇宙", "6b", 0, 66], ["探索宇宙", "6b", 0, -1], ["“飞向”太空", "6b", 0, -1], ["“飞向”太空", "6b", 0, -1], ["“飞向”太空", "6b", 0, -1]], "altpos": {}, "vision": {"0": [[], [["", "桌面上放置着一个系紧口、鼓鼓的绿色抽绳布袋。"]], "（根据202"], "1": [[], [["猫和兔", "页面顶部展示了一张真实照片，画面中间是一只橙白相间的小猫，两边各依偎着一只兔子（左边是一只灰褐色的兔子，右边是一只浅黄褐色的兔子）。"]], "（根据202"], "2": [[], [["页面上半部分插图", "草地上有一只展翅的白色家鹅和几只小鸭子在行走。"]], "（根据202"], "3": [[], [["顶部常见工具图", "展示了多种日常生活与学习中常见的工具，包括订书机、剪刀、橡皮筋、卷尺、直尺、多功能绘图模板尺、钢丝钳（老虎钳）以及两把不同规格的螺丝刀。"]], "（根据202"], "4": [[], [["", "页面上半部分的教室实景照片，室内整齐排列着黄色多边形组合课桌与座椅，前方设有黑板、国旗和讲台区域，墙侧有图书角与学生作品展示栏。"]], "（根据202"], "5": [[], [["页面上半部分插图", "早晨的“XX小学”校园，包括校门、教学楼、操场跑道和升起的红旗，右上角天空中有初升的太阳。"]], "（根据202"], "7": [[], [["顶部主题图", "展示了许多盛开的各色花朵，包括红色的海棠花、黄色的花朵、粉红色的花朵以及绿叶，展现花卉的多姿多彩。"]], "（根据202"], "6": [[], [["各种各样的叶（顶部植物图）", "展示了不同形态的植物叶片：背景为密布针状叶和球果的针叶树枝条，右上角贴有一枝卵形革质的阔叶枝条，右侧圆形插框内是一片扇形的银杏叶。"]], "（根据202"], "8": [[], [["页面上方物品插图", "桌面上摆放着各种物品：一个绿色塑料花盆里的绿色盆栽、两个玻璃烧瓶（其中一个小瓶带有软木塞）、一把放大镜、一个装有铅笔、直尺和圆规等文具的金属网状笔筒、一叠叠放的书本以及一个绿色的计算器。"]], "（根据202"], "9": [[], [["右上角插图", "展示了一叠整齐摆放的白色打印纸，右上角被掀起一角。"]], "（根据202"], "10": [[], [["无", "桌面上摆放着多盆学生日常养护的盆栽植物，盆中插有养护标签，包含绿植、红掌、吊兰等。"]], "（根据202"], "11": [[], [["顶部情境图", "展示了一碗盛有绿叶蔬菜的清汤，上方有一把不锈钢勺子，勺内盛着白色的食盐，正准备倒入汤中。"]], "（根据202"], "12": [[], [["无", "位于页面上半部分，展示了一位母亲在户外微笑着推荡秋千上的小男孩，秋千向前荡起。"]], "（根据202"], "14": [[], [["页面上半部分插图", "展示了一艘在水面上航行的龙舟仿古画舫游船，船头为金黄色的龙头造型，船身为中式重檐殿宇结构，船内坐有游客，背景为湖畔绿树与石拱桥（颐和园十七孔桥风格）。"]], "（根据202"], "16": [[], [["无", "俯视雨天撑着五颜六色雨伞（蓝、紫、粉、红等）在雨中行走的人群。"]], "（根据202"], "15": [[], [["无图号", "页面上半部分的自然风景摄影图，展示了蓝天白云、阳光明媚下的公园绿色草坪与树木，体现晴朗温暖的天气环境。"]], "（根据202"], "17": [[], [["顶部日出背景图", "展示了红霞满天的日出自然风光，太阳从连绵起伏的山峦间升起，晨光洒在层层梯田和大地上。"]], "（根据202"], "18": [[], [["页面上方插图", "夜景摄影图，展示了夜幕下的北京故宫角楼，天空中高悬着一轮明月，护城河水面倒映着角楼和夜空景致。"], ["顶部题图", "晚霞映照下的雪山山峰和树林剪影，右上方天空中挂着一轮红粉色的满月。"]], "义务教育教科"], "19": [[], [["春季湖景", "页面顶部的大幅照片，展现了春天湖畔的景象：近景是盛开的粉白花树，中景是宽阔的湖面，对岸有泛绿的树林和漫步的游人，远景是晴朗的天空。"]], "（根据202"], "20": [[], [["无", "页面上半部分展示两名小学生在树下草地上观察蚂蚁的场景，一名小女孩手持放大镜蹲在地上观察，一名小男孩手拿笔和记录单在树旁记录。"]], "（根据202"], "22": [[], [["无", "位于页面上方的大幅自然全景照片，画面包含郁郁葱葱的山脉、森林、远处的原野、桥梁与村落房屋。"]], "（根据202"], "21": [[], [["翠鸟捕鱼", "展示了一只翠鸟展翅掠过水面捕食的场景，翠鸟嘴里叼着刚捕到的一条小鱼，下方水面上有层层波纹以及翠鸟清晰的倒影。"]], "（根据202"], "23": [[], [["无", "一列正在高架铁路轨道上飞驰的“复兴号”高速动车组列车，背景为绿树环绕的乡村建筑与山峦。"]], "（根据202"], "24": [[], [["顶部情境图", "户外树林背景下，一名小男孩手持望远镜眺望，一名小女孩身穿粉色衣服背着背包指着前方。"]], "（根据202"], "25": [[], [["无", "顶部背景图中展示了蓝天白云下彩色的风车以及飘浮的透明肥皂泡泡。"]], "（根据202"], "26": [[], [["无", "顶部大图展示了从玻璃容器中向玻璃碗里倾倒金黄色食用油的场景。"]], "（根据202"], "27": [[], [["框架结构实物图", "由塑料管或小棒连接制作的三种形状框架：红绿蓝三色拼成的三角形框架、红绿两色拼成的正方形（四边形）框架、红绿蓝拼成的五边形框架，右上角圆形放大部分展示了管子拐角接头的连接细节。"]], "（根据202"], "28": [[], [["无图号（顶部情境图）", "三名少先队员在桌前观察盆栽植物幼苗及带根的植物，桌上放有小铲子和水盆。"]], "（根据202"], "29": [[], [["页面顶部照片", "茂密生长的开花凤仙花植物丛照片。"]], "（根据202"], "30": [[], [["顶部背景插图", "一株从深色土壤中破土而出的绿色幼苗，背景为虚化的自然光影。"]], "（根据202"], "32": [[], [["无图号", "背景为露天矿山开采场景，前景展示了多种常见生活物品：放大镜、工字钉、U盘、小猪储蓄罐、带钥匙的锁、闹钟、塑料水桶、LED灯泡，展示金属、玻璃、陶瓷、塑料等不同材料制成的物品。"]], "（根据202"], "31": [[], [["页眉背景图", "展示了群山环抱中的梯田、蜿蜒流淌的小河以及茂密的树林与田野风貌的自然生态景观照片。"]], "（根据202"], "33": [[], [["引入情境图", "桌面上放着一杯热水、一副乒乓球拍和一个凹瘪的橙色乒乓球。"]], "（根据202"], "34": [[], [["页面上方背景图", "展示了冬季池塘中水面结冰、水草冻结在冰层中的自然景象。"]], "（根据202"], "35": [[], [["音乐教室里的乐器", "展示了音乐教室的场景，一张长桌上放有小号、军鼓、铃鼓、木琴、阮等，桌子旁立着一把木吉他，后方靠墙处有一架黑色立式钢琴和琴凳。"]], "（根据202"], "36": [[], [["风筝", "位于页面顶部的背景插图，展示蓝天白云下一只彩色的三角形风筝在空中迎风飞舞。"]], "义务教育教科"], "37": [[], [["无", "顶部图片展示了晴朗蔚蓝的天空、飞翔的鸟群以及盛开白色花朵的树木，呈现春季的自然景象。"]], "义务教育教科"], "38": [[], [["无", "顶部横幅大图，展示了湖边栖息和飞翔的鸟群（鹳类等水鸟），背景为湖泊和远处的山峦。"]], "义务教育教科"], "39": [[], [["芭蕉", "位于页面上方，展示了叶片宽大茂盛的芭蕉植物及其结出的果实。"]], "义务教育教科"], "40": [[], [["企鹅", "冰天雪地的南极环境中，有多只企鹅在雪地上，其中两只卧在雪面上，三只站立。"]], "义务教育教科"], "41": [[], [["认识地球的形状（章节主图）", "从太空视角俯瞰地球曲面、地表地貌、水域与大气层的景观图。"]], "义务教育教科"], "42": [[], [["顶部风景图", "展示了日出或日落时分的太阳、天空中的云彩，以及水面上的太阳倒影和周围的热带植物剪影。"]], "义务教育教科"], "43": [[], [["无图号（页面顶部大图）", "草地上投射出的旗杆和旗帜的长长影子。"]], "义务教育教科"], "44": [[], [["无图号（顶部背景图）", "展示了古建筑背景下的日晷实物及其石制底座。"]], "义务教育教科"], "46": [[], [["无", "左侧为一个新鲜且剥开外皮的橙子/橘子，露出果肉；右侧为一个表面长出青霉变质的橘子。"]], "（根据202"], "45": [[], [["顶部情境图", "展示了铺在地面上的严重生锈且破损的铁桶，以及左侧一枚带有螺母的生锈螺栓。"]], "（根据202"], "48": [[], [["页面顶部插图", "一名儿童的面部特写，重点展现眼睛部位及侧脸。"]], "（根据202"], "47": [[], [["页面顶部图", "城市建筑群、桥梁及河流上空出现的彩虹（双彩虹）景象。"]], "（根据202"], "49": [[], [["顶部大图 1", "同一古建筑（景山万春亭）在昼夜不同时段的对比图：左半侧为白天阳光下的楼阁与绿树，右半侧为夜晚夜幕笼罩下灯火通明的楼阁。左上角带有大字标号“1”。"]], "义务教育教科"], "50": [[], [["无图号（打电话情景图）", "左侧一个小男孩正在打电话，气泡对话框内容为“我在北京！这里已经出太阳了！”；右侧一个小男孩也在打电话，气泡对话框内容为“真的？乌鲁木齐天还没亮呢！”。"]], "义务教育教科"], "51": [[], [["自然景观四季对比图", "包含两幅景物对比照片：左侧展示夏季枝繁叶茂的绿树与草地；右侧展示冬季大雪覆盖下的同类树木与雪地景象。"]], "义务教育教科"], "52": [[], [["", "左侧为一个小电动机的完整外观实物照片；右侧黄色圆圈背景内为该电动机拆解后的主要部件照片，包含转子（铁芯及线圈）、带有磁铁的外壳、带有电刷的后盖部件。上方配有蓝色思考气泡框‘线圈和磁铁各有什么作用？’，并附带指向转子线圈和外壳内部磁铁的指示线。"]], "义务教育教科"], "53": [[], [["无", "顶部主题插图，左侧为雷雨天夜空中密布的闪电，右侧为一个身穿白T恤的小男孩紧闭双眼、张嘴大叫并用双手紧紧捂住双耳。"]], "义务教育教科"], "54": [[], [["页首情境图", "夜晚城市道路上的汽车行驶与路灯照明，展现动能与光能等能量的应用场景。"]], "（根据202"], "55": [[], [["湖光山色与云雾", "页面上方展示了湖畔山峦间云雾缭绕的自然景观，湖面倒映着山色与树木。"]], "（根据202"], "56": [[], [["无", "顶部图片展示了两个小女孩共撑一把黄色雨伞在雨中开心地伸出手感受雨滴的情景。"]], "（根据202"], "57": [[], [["本课情境图", "页面顶部展示了清晨草地挂满晶莹露珠的摄影特写，背景伴有初升的太阳与柔和的光晕。"]], "（根据202"], "58": [[], [["页面上半部分插图", "展示了水流湍急的河流与瀑布（类似黄河壶口瀑布）冲刷岩石河道和两岸的自然景观照片，水流浑浊翻滚，河床呈层状基岩结构。"]], "（根据202"], "59": [[], [["无题（顶部大图）", "展示了现代化工厂厂房及其冒烟的烟囱，前景堆放着大量砍伐整齐的圆木木材堆。"]], "（根据202"], "60": [[], [["顶部插图", "展示了生活在寒冷南极地区的企鹅群，背景为冰雪和海洋。"]], "义务教育教科"], "61": [[], [["无图号（顶部插图）", "展示了一条蚯蚓在湿润松散的泥土表面爬行。"]], "义务教育教科"], "62": [[], [["", "展示了在地面堆起的小土堆表面受水流冲刷的实验效果照片，泥土堆两侧有水流冲刷出的浅沟与泥沙痕迹。"]], "义务教育教科"], "63": [[], [["顶部主图", "展示了巨大地下溶洞或天坑内部的地质景观，阳光从顶部的洞口如光束般倾泻而下，照射在层叠的岩壁和洞底水汽上。"]], "义务教育教科"], "64": [[], [["无", "三个呈品字形排列重叠的圆形照片，展示地震造成的破坏现象：左侧圆形照片展示地面巨大的裂缝（地表破裂与错动）；右侧圆形照片展示严重弯曲变形的铁轨以及倾斜受损的铁路电线设施；下方中央圆形照片展示地震中倒塌成废墟的建筑物残骸及受损严重的楼房。"]], "义务教育教科"], "65": [[], [["无", "画面下方展示了两个小学生（左侧为穿浅蓝色短袖衬衫系红领巾的男生，右侧为穿粉红色衣服系红领巾的女生）坐在书桌前，桌上放置有圆形纸片、橡皮及文具本等学具。两人头部上方各有一个粉红色的空白思考气泡。画面中部左侧带有一个小人头像图标。"]], "义务教育教科"], "66": [[], [["顶部插图", "展示了夜空中璀璨的银河与繁星，画面下方为地平线处的树木与山丘暗色剪影。"]], "义务教育教科"], "13": [[], [["无（顶部情境图）", "展示了公共场所出入口悬挂的透明塑料门帘实景，右上方带有放大圆形气泡，清晰特写出两个门帘边缘带有磁条并相互吸合的细节。"]], "（根据202"]}, "visionAlt": {}, "hard": {}, "text": {"5": ["用东南西北描述位置与用前后左"], "9": ["这些纸有哪些相同点与不同点"], "11": ["在不能继续溶解的盐水里放入棉线"], "12": ["推力和拉力是生活中"], "14": ["在自己所画的船上标出船的结构"], "18": ["地球上看到的月球被太阳照亮的样子叫作月相"], "21": ["把动物的典型感知本领和对应的感觉器官记"], "24": ["用自制的指南针测方向时发现了什么问题"], "25": ["在我们的家里有哪些物品用到了空气占据空间的"], "26": ["用量简测一测每个瓶中装有多少液体"], "31": ["人类的哪些行为会破坏土壤资源"], "32": ["禁止任何组织或者个人用任何手段侵占或者破坏矿产资源"], "35": ["不同类型乐器发声的原理"], "37": ["气候是指经过多年观察得到的一定地区内的平均气象情"], "52": ["分析电动机工作时的能量转化情况"], "58": ["流水作用形成的地貌景观还有哪些"], "60": ["说一说栖息地能为生物的生活提供哪些基本条件"], "63": ["地质学家是怎样寻找证据认识地球内部结构的"], "64": ["发现地震时悬挂的物体总会出现摇晃"]}, "kx": {}, "subjects": [{"en": "science", "zh": "小学科学", "c": "#ffd166", "n": 67}], "core": 0, "total": 67, "drawn": 67, "acc": 0.6, "abi": [], "srczh": ["上游", "模型重建", "能力底座", "自建概念", "教材引入路径", "已修正", "教材结构图", "上海教材", "教材序"], "selfbuilt": {"nodes": 0, "edges": 0}, "aliases": {}}</script>
+<script>
+(function(){
+const D = JSON.parse(document.getElementById('data').textContent);
+const SUBJ = D.subjects, ACC = D.acc;
+const GRADE_ZH={"1": "一年级", "2": "二年级", "3": "三年级", "4": "四年级", "5": "五年级", "6": "六年级"};
+window.GRADE_ZH=GRADE_ZH;
+
+const N = D.nodes.length;
+
+// ---- expand compact arrays into objects ----
+const NODES = D.nodes.map(a => ({
+  i:a[0], zh:a[1], en:a[2], s:a[3], dz:a[4], de:a[5],
+  a1:a[6], a2:a[7], cen:a[8], core:a[9], desc:a[10], evn:a[11],
+  chp:a[12]||[], chn:a[13]||[],               // leads_to 标为前置/后继的章
+  oc: a[14] === undefined ? -1 : a[14],        // 它所属的单元在 CNS 里的下标
+  /* 学段：0 小学 1 初中 2 高中。**-1 = 没给，按年级号推**（人教版口径）。
+     上海版必须逐节点给 —— 沪教版五四制六年级已经是初中，
+     沪科版六三制六年级还是小学，同一个年级号学段不一样。 */
+  stg: a[15] === undefined ? -1 : a[15]
+}));
+const CHS = D.chs || [];
+/* 教材顺序单元表：[名字, 册次, 学科下标, 里面第一个可点的概念下标]。
+   873 个单元，按学科分组、组内按 (册序, ch, s) 排好 —— 这个顺序是
+   从节点 id 里的 _chNN_sMM 加 books.py 的册序直接推出来的，不是猜的。 */
+const CNS = D.cns || [];
+// 学科 → 该学科的单元下标升序列表，用来定位「上一单元 / 下一单元」
+const UNITS = (()=>{ const m=new Map();
+  for(let i=0;i<CNS.length;i++){ const si=CNS[i][2];
+    if(!m.has(si)) m.set(si,[]); m.get(si).push(i); }
+  return m; })();
+// 每个单元在本学科里的序号（1 起）+ 该学科总共几个单元
+const UPOS = new Map(), UTOT = new Map();
+for(const [si, list] of UNITS){ UTOT.set(si, list.length);
+  list.forEach((gi, k)=>UPOS.set(gi, k+1)); }
+// 某单元在同学科里的上一个 / 下一个；跨册、跨学科都只在本学科内找
+function neighbourUnit(gi, delta){
+  if(gi < 0 || gi >= CNS.length) return -1;
+  const list = UNITS.get(CNS[gi][2]); if(!list) return -1;
+  const k = list.indexOf(gi) + delta;
+  return (k >= 0 && k < list.length) ? list[k] : -1;
+}
+const label = n => n.zh || n.en;
+
+/* ================= layout: cone, height = age ================= */
+const byAge = new Map();
+for(const n of NODES){ if(!byAge.has(n.a1)) byAge.set(n.a1, []); byAge.get(n.a1).push(n); }
+const AGES = [...byAge.keys()].sort((x,y)=>x-y);
+const A0 = AGES[0], A1 = AGES[AGES.length-1];
+const GOLDEN = Math.PI * (3 - Math.sqrt(5));
+const LAYER_GAP = 58;
+
+AGES.forEach((age, li) => {
+  const list = byAge.get(age);
+  const t = (age - A0) / (A1 - A0);           // 0 bottom -> 1 top
+  const layerR = 52 + t * 250;                // cone flares with age
+  list.forEach((n, i) => {
+    const r = layerR * Math.sqrt((i + 0.5) / list.length);
+    const th = i * GOLDEN + n.s * 0.62;
+    n.x = Math.cos(th) * r;
+    n.z = Math.sin(th) * r;
+    n.y = (li - (AGES.length-1)/2) * LAYER_GAP;
+  });
+});
+
+/* ================= adjacency ================= */
+const pre = new Map(), unlocks = new Map();
+/* **挂到 window 上。** const/let 声明在全局**词法**环境里，
+   自动化脚本（puppeteer evaluate）注入的代码拿不到它们 ——
+   实测 evaluate 里 `typeof pre` / `typeof D` 全是 not defined，
+   而 function 声明的 openMap 却能调到。
+   二维脉络视图要读这些结构，挂一份到 window 才够得着。 */
+window.__kg = {D, NODES, SUBJ, pre, unlocks};
+for(const e of D.edges){
+  const t = e[0], p = e[1], src = e[2] || 0, sus = e[3] || 0;
+  if(!pre.has(t)) pre.set(t, []); pre.get(t).push([p, src, sus]);
+  if(!unlocks.has(p)) unlocks.set(p, []); unlocks.get(p).push([t, src, sus]);
+}
+/* is_a 的方向是「具体 → 一般」：「二次函数 y=a(x-h)²+k」is_a「二次函数」。
+   原先页面只画 prerequisites_for，is_a 那 1,895 条边整条被丢在门外，
+   于是「二次函数」只显示成一个孤零零的起点，看不出它下面挂着一堆具体表述。 */
+const isaUp = new Map(), isaDown = new Map();
+for(const [spec, gen] of (D.isa || [])){
+  if(!isaUp.has(spec)) isaUp.set(spec, []);   isaUp.get(spec).push(gen);
+  if(!isaDown.has(gen)) isaDown.set(gen, []); isaDown.get(gen).push(spec);
+}
+function traceBack(root, cap){
+  const seen = new Set([root]); const out = []; let q = [root];
+  while(q.length && out.length < cap){
+    const nx = [];
+    for(const id of q){
+      // pre 里存的是 [下标, 来源]，traceBack 只关心下标。
+      for(const x of (pre.get(id) || [])){
+        const p = Array.isArray(x) ? x[0] : x;
+        if(seen.has(p)) continue;
+        seen.add(p); out.push(p); nx.push(p);
+        if(out.length >= cap) break;
+      }
+      if(out.length >= cap) break;
+    }
+    q = nx;
+  }
+  return out;
+}
+
+/* ================= canvas ================= */
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+let W=0, H=0, DPR=1;
+function resize(){
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W*DPR; cv.height = H*DPR;
+  cv.style.width = W+'px'; cv.style.height = H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+addEventListener('resize', ()=>{ resize(); markDirty(); }); resize();
+
+const cam = { th: -0.62, ph: 0.30, d: 1500 };
+const TARGET = { th: -0.62, ph: 0.30, d: 1500 };
+// 前庭敏感用户唯一能规避自动旋转的方式，是自己找到那个按钮 ——
+// 而那个按钮的状态曾经还是错的（见 setSpin）。能系统级尊重就别让用户自己扛。
+let spin = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+let showEdges = true, coreOnly = false;
+const hidden = new Set();
+
+let hover = -1, pinned = -1;
+let focus = -1;
+const activeSet = new Set();
+let projX = new Float32Array(N), projY = new Float32Array(N), projK = new Float32Array(N);
+let order = new Int32Array(N);
+const orderArr = [];      // 复用：见 project() 末尾的说明
+
+/* 静止时整帧跳过。
+   原来不管画面动不动，每帧都重算 7,938 个点的透视投影并重新排序 ——
+   实测自转关掉、相机停稳之后，主线程仍占 31.8%。对一个「放在那里看」
+   的页面来说，那是一直在烧电。 */
+let dirty = true;
+const markDirty = ()=>{ dirty = true; };
+// 相机已经收敛到目标的程度：再画下去和上一帧一模一样
+const CAM_EPS = 1e-4;
+
+function passes(n){
+  if(coreOnly && !n.core) return false;
+  if(hidden.has(n.s)) return false;
+  return true;
+}
+function setFocus(id){
+  markDirty();
+  // 焦点节点如果被当前筛选挡掉了（比如选中的��小学知识点，然后打开「只看初中」），
+  // 就不能把它塞进 activeSet —— 它画不出来，却会让其余所有点被压到 9% 透明度，
+  // 结果是整张图黑掉、一个高亮都没有（实测亮点像素 700 → 2）。
+  if(id >= 0 && !passes(NODES[id])) id = -1;
+  focus = id;
+  activeSet.clear();
+  if(id < 0) return;
+  activeSet.add(id);
+  for(const p of traceBack(id, 70)) if(passes(NODES[p])) activeSet.add(p);
+  for(const x of (unlocks.get(id) || [])){
+    const u = Array.isArray(x) ? x[0] : x;
+    if(NODES[u] && passes(NODES[u])) activeSet.add(u);
+  }
+}
+
+const CX = () => W * 0.5, CY = () => H * 0.5;
+
+function project(){
+  const cosT = Math.cos(cam.th), sinT = Math.sin(cam.th);
+  const cosP = Math.cos(cam.ph), sinP = Math.sin(cam.ph);
+  const cx = CX(), cy = CY(), d = cam.d;
+  let m = 0;
+  for(let i=0;i<N;i++){
+    const n = NODES[i];
+    if(!passes(n)){ projK[i] = -1e9; order[m++] = i; continue; }
+    const x1 = n.x*cosT - n.z*sinT;
+    const z1 = n.x*sinT + n.z*cosT;
+    const y1 = n.y*cosP - z1*sinP;
+    const z2 = n.y*sinP + z1*cosP;
+    const k  = d / (d - z2);
+    projX[i] = cx + x1*k;
+    projY[i] = cy - y1*k;
+    projK[i] = k;
+    order[m++] = i;
+  }
+  // far first (larger k = farther)
+  // 原来每帧 Array.prototype.slice.call() 把 7,938 个 int 装箱成一个新数组：
+  // 一次约 63 KB，60fps 下每秒 3.8 MB 垃圾，手机上会持续触发 GC。
+  // 复用同一个数组，长度按可见点数截断即可。
+  orderArr.length = m;
+  for(let i=0;i<m;i++) orderArr[i] = order[i];
+  orderArr.sort((a,b)=>projK[b]-projK[a]);
+  for(let i=0;i<m;i++) order[i] = orderArr[i];
+  return m;
+}
+
+function drawEdges(){
+  const BUCKETS = 4;
+  const paths = [[],[],[],[]];
+  /* **教材序边（来源码 8）单独一组，画成虚线** ——
+     教材序是「编者先教哪个后教哪个」，**不是先修关系**。
+     实线 = 有据可查的先修关系，虚线 = 顺序事实。
+     跟其余七档区分开是实线，颜色也不能跟「上游」撞。 */
+  const orderPaths = [];
+  for(let e=0;e<D.edges.length;e++){
+    const [t,p,src] = D.edges[e];
+    if(projK[t] < -1e8 || projK[p] < -1e8) continue;
+    const on = activeSet.size ? (activeSet.has(t) && activeSet.has(p)) : false;
+    if(activeSet.size && !on) continue;
+    if(src === 8){ orderPaths.push(t, p); continue; }
+    const kk = (projK[t] + projK[p]) / 2;
+    let b = Math.floor((1.9 - kk) * 1.9);
+    if(b<0) b=0; if(b>BUCKETS-1) b=BUCKETS-1;
+    paths[b].push(t, p);
+  }
+  for(let b=0;b<BUCKETS;b++){
+    const arr = paths[b]; if(!arr.length) continue;
+    const fade = (b+1)/(BUCKETS+1);   // bucket 0 = nearest = strongest
+    ctx.beginPath();
+    for(let i=0;i<arr.length;i+=2){
+      const t = arr[i], p = arr[i+1];
+      ctx.moveTo(projX[p], projY[p]);
+      ctx.lineTo(projX[t], projY[t]);
+    }
+    ctx.strokeStyle = activeSet.size
+      ? 'rgba(255,61,127,.55)'
+      : 'rgba(190,190,210,' + (0.055 * fade + 0.012).toFixed(3) + ')';
+    ctx.lineWidth = activeSet.size ? 1.1 : 0.5 + fade*0.5;
+    ctx.stroke();
+  }
+  /* 教材序：虚线 + 偏紫的灰，不跟「上游」的青蓝撞 */
+  if(orderPaths.length){
+    ctx.save();
+    ctx.beginPath();
+    for(let i=0;i<orderPaths.length;i+=2){
+      const t = orderPaths[i], p = orderPaths[i+1];
+      ctx.moveTo(projX[p], projY[p]);
+      ctx.lineTo(projX[t], projY[t]);
+    }
+    ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = activeSet.size ? 'rgba(201,184,232,.55)' : 'rgba(180,160,220,.16)';
+    ctx.lineWidth = activeSet.size ? 1.0 : 0.7;
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
+function drawNodes(m){
+  for(let i=0;i<m;i++){
+    const idx = order[i];
+    const n = NODES[idx];
+    if(projK[idx] < -1e8) continue;
+    const k = projK[idx];
+    const on = activeSet.size ? activeSet.has(idx) : false;
+
+    // perspective: near nodes bigger and brighter, far ones smaller and faded
+    let r = (1.5 + n.cen*7.5) / k * 0.52;
+    // 焦点节点永远不能被尺寸剔除挡掉。原来剔除跑在焦点修正之前，
+    // 于是被选中的节点一旦投影半径不到半像素就整个不画；而 activeSet
+    // 非空会把其余 7,938 个点全压到 9% —— 结果是「点了依赖，整屏变黑」。
+    // 实测：r=0.4118 < 0.45，焦点被 continue 掉。
+    const isFocus = idx === focus;
+    if(!isFocus && r < 0.45) continue;
+
+    let fill, alpha;
+    if(activeSet.size && !on){
+      // keep the rest of the cloud as a faint backdrop instead of hiding it
+      ctx.globalAlpha = 0.09;
+      ctx.fillStyle = nodeColor(n);
+      ctx.beginPath(); ctx.arc(projX[idx], projY[idx], r, 0, 6.2832); ctx.fill();
+      continue;
+    }
+    if(activeSet.size){
+      if(isFocus){ fill = '#ffffff'; alpha = 1; r = Math.max(r, 3.4); }
+      else { fill = ACC; alpha = Math.min(1, 0.55 + (1.9 - k) * 0.26); }
+    }else{
+      fill = nodeColor(n);
+      alpha = Math.max(0.10, Math.min(0.80, 0.52 - (k - 1) * 0.30));
+    }
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = fill;
+    ctx.beginPath();
+    ctx.arc(projX[idx], projY[idx], r, 0, 6.2832);
+    ctx.fill();
+
+    if(isFocus){
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = ACC; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(projX[idx], projY[idx], r+5, 0, 6.2832); ctx.stroke();
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawAgeAxis(){
+  ctx.save();
+  ctx.font = '500 9.5px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const cosT = Math.cos(cam.th), sinT = Math.sin(cam.th);
+  const cosP = Math.cos(cam.ph), sinP = Math.sin(cam.ph);
+  const d = cam.d, cx = CX(), cy = CY();
+  const R = 318;
+  AGES.forEach((age, li) => {
+    const y = (li - (AGES.length-1)/2) * LAYER_GAP;
+    // park each label on the ellipse edge nearest the viewer
+    const bx = -R*cosT, bz = -R*sinT;
+    const z1 = bx*sinT + bz*cosT;
+    const y1 = y*cosP - z1*sinP;
+    const z2 = y*sinP + z1*cosP;
+    const k = d/(d-z2);
+    const sx = cx + bx*k, sy = cy - y1*k;
+    // skip labels that would land outside the viewport
+    if(sx > 70 && sx < W-70 && sy > 24 && sy < H-24){
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = 'rgba(255,255,255,.13)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.arc(cx, sy, R*k, 0, 6.2832); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,.34)';
+      ctx.fillText(GRADE_ZH[age] || age, sx, sy);
+    }
+  });
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+/* 角度差必须取最短弧。TARGET.th 来自 atan2，恒在 (-π, π]，
+   而 cam.th 从不归一化、只随自转累加（7.6°/秒）。裸差值 lerp 的后果：
+   页面开着越久，搜索时相机要转的圈数越多 ——
+   30 秒后平均多绕 101°，120 秒后平均多绕 1383°（约 3.8 圈）。
+   用户感受是「搜一下，镜头自己转三四圈才停住」。 */
+const wrapPi = a => Math.atan2(Math.sin(a), Math.cos(a));
+
+function loop(){
+  if(spin && !dragging) TARGET.th += 0.0022;
+  cam.th += wrapPi(TARGET.th - cam.th)*0.09;
+  cam.ph += wrapPi(TARGET.ph - cam.ph)*0.09;
+  cam.d  += (TARGET.d  - cam.d )*0.09;
+
+  // 相机还在动就得画；完全不动且没有待处理的变更就整帧跳过。
+  const moving = Math.abs(wrapPi(TARGET.th - cam.th)) > CAM_EPS
+              || Math.abs(wrapPi(TARGET.ph - cam.ph)) > CAM_EPS
+              || Math.abs(TARGET.d  - cam.d ) > CAM_EPS * 100;
+  if(moving) dirty = true;
+
+  if(dirty){
+    dirty = false;
+    ctx.clearRect(0,0,W,H);
+    const m = project();
+    drawAgeAxis();
+    if(showEdges) drawEdges();
+    drawNodes(m);
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ================= 配色 ================= */
+/* 点的颜色有四种维度可选，线的颜色有三种。
+   存 localStorage —— 配色是个人偏好，刷新不该丢。 */
+const PAL = {
+  pc: localStorage.getItem('kg.pc') || 'subject',
+  lc: localStorage.getItem('kg.lc') || 'source',
+};
+const STAGE_C = { pri: '#4ade80', mid: '#60a5fa', high: '#f472b6' };
+/* **7 档来源，一个都不能少。** 原来这里只有 6 个颜色，
+   tier6「教材结构图」取到 undefined → `|| MAP_SRC_COLOR[0]` 回退成
+   tier0「上游」的灰 —— 恰恰是最该跟别的档区分的那一档，
+   在脉络视图里跟上游的边长得一模一样。
+   顺序必须跟 build_viz.py 的 SRC_ZH 完全一致。 */
+const TIER_ZH = ['上游','模型重建','能力底座','自建概念',
+                 '教材引入路径','已修正','教材结构图'];
+const MAP_SRC_COLOR = ['#5b6472', '#7fd3ff', '#ffc477', '#c6a7ff',
+                       '#6ee7b7', '#ffd166', '#ff8fab'];
+const IMP_C = ['#2f3646', '#4b5b73', '#7f8fa6', '#c9a227', '#ffd166'];
+
+function stageOf(n){
+  // **学段优先用节点自带的 a[15]** —— 上海两套学制并存，
+  // 同一个年级号在沪教版（五四制）和沪科版（六三制）里学段不同，
+  // 拿年级号比大小一定有一边是错的。没带这个字段的（人教版口径）才回退。
+  if(n.stg >= 0) return ['pri','mid','high'][n.stg];
+  if(n.a1 <= 6) return 'pri';      // 小学（含预备课）
+  if(n.a1 <= 9) return 'mid';      // 初中
+  return 'high';                   // 高中
+}
+function nodeColor(n){
+  if(PAL.pc === 'stage') return STAGE_C[stageOf(n)];
+  if(PAL.pc === 'imp'){
+    const c = Math.max(0, Math.min(0.9999, n.cen));
+    return IMP_C[Math.floor(c * IMP_C.length)];
+  }
+  if(PAL.pc === 'mono') return '#8b93a7';
+  return SUBJ[n.s].c;              // 学科（默认）
+}
+const PAL_NAME = { subject:'学科', stage:'学段', imp:'重要度', mono:'单色' };
+const PAL_LNAME = { source:'来源', dir:'方向', mono:'单色' };
+
+/* 边的颜色。2D 脉络用；3D 画布的连线一直是统一的淡灰 + 高亮粉，不分来源。 */
+function edgeColor(src, isAnc){
+  if(PAL.lc === 'dir') return isAnc ? '#7fd3ff' : '#ff9d6b';
+  if(PAL.lc === 'mono') return '#6b7488';
+  // **越界不许回退到 tier0 的颜色** —— 那样新加的档位会跟「上游」撞色，
+  // 看的人分不出来。越界就给一个显眼的洋红，一眼知道「这里出错了」。
+  const c = MAP_SRC_COLOR[src];
+  return c || '#ff2d6f';
+}
+
+/* 配色面板的交互 */
+const palEl = document.getElementById('pal');
+const palBtn = document.getElementById('tPal');
+function palSync(){
+  for(const b of palEl.querySelectorAll('[data-pc]'))
+    b.setAttribute('aria-pressed', String(b.dataset.pc === PAL.pc));
+  for(const b of palEl.querySelectorAll('[data-lc]'))
+    b.setAttribute('aria-pressed', String(b.dataset.lc === PAL.lc));
+  document.getElementById('palTip').textContent =
+    '点：' + PAL_NAME[PAL.pc] + ' · 线：' + PAL_LNAME[PAL.lc] + '（脉络视图）';
+}
+palBtn.addEventListener('click', e=>{
+  e.stopPropagation();
+  const open = palEl.hidden;
+  palEl.hidden = !open;
+  palBtn.setAttribute('aria-expanded', String(open));
+  if(open) palSync();
+});
+palEl.addEventListener('click', e=>{
+  const b = e.target.closest('[data-pc],[data-lc]');
+  if(!b) return;
+  if(b.dataset.pc){ PAL.pc = b.dataset.pc; localStorage.setItem('kg.pc', PAL.pc); }
+  if(b.dataset.lc){ PAL.lc = b.dataset.lc; localStorage.setItem('kg.lc', PAL.lc); }
+  palSync(); renderLegend(); markDirty();
+  if(mapRoot >= 0) mapRender();       // 脉络视图的线色跟着变
+  say('配色已改为 点:' + PAL_NAME[PAL.pc] + ' 线:' + PAL_LNAME[PAL.lc]);
+});
+document.addEventListener('pointerdown', e=>{
+  if(palEl.hidden) return;
+  if(palEl.contains(e.target) || palBtn.contains(e.target)) return;
+  palEl.hidden = true; palBtn.setAttribute('aria-expanded','false');
+});
+palSync();
+
+/* ================= legend ================= */
+const legendRows = document.getElementById('legendRows');
+/* 学科筛选原来是 <div> + click：键盘和读屏完全够不着，
+   实测无障碍树里 Tab 能到的只有 4 个工具栏按钮、搜索框和源码链接。
+   换成 <button> 之后，键盘可达和「已开/已关」的播报一次拿到两个 ——
+   这不是只对读屏用户有意义，纯键盘用户也受益。 */
+function renderLegend(){
+  // 点的配色换了维度，图例就得跟着换 —— 图例是「现在屏幕上是什么颜色」的说明，
+  // 不是固定的一组学科色。
+  // **行数多就分两列**（见 CSS 里的说明）。
+  legendRows.classList.toggle('two-col', PAL.pc === 'subject' && SUBJ.length > 6);
+  if(PAL.pc === 'subject'){
+    legendRows.innerHTML = SUBJ.map((s,i)=>
+      `<button type="button" class="row on" data-s="${i}" aria-pressed="true">` +
+      `<span class="sw" style="background:${s.c}"></span>` +
+      `<span>${s.zh}</span><span class="n">${s.n}</span></button>`
+    ).join('');
+  }else{
+    const items = PAL.pc === 'stage'
+      ? [['小学','#4ade80'],['初中','#60a5fa'],['高中','#f472b6']]
+      : PAL.pc === 'imp'
+      ? [['不重要','#2f3646'],['较重要','#7f8fa6'],['最吃紧','#ffd166']]
+      : [['全部','#8b93a7']];
+    legendRows.innerHTML = items.map(([nm,c])=>
+      `<span class="row"><span class="sw" style="background:${c}"></span>` +
+      `<span>${nm}</span></span>`
+    ).join('');
+  }
+}
+renderLegend();
+legendRows.addEventListener('click', e=>{
+  const r = e.target.closest('.row'); if(!r) return;
+  const s = +r.dataset.s;
+  // 先记住「点之前是不是隐藏着」，再决定往哪边翻。
+  // 我第一版写成 `const on = hidden.has(s); if(!on){ hidden.delete(s) }`——
+  // 那是「没隐藏就从 hidden 里删」，空操作，点一下什么都不会发生。
+  // 回归测试第 10 项抓到后才改对。
+  const wasHidden = hidden.has(s);
+  if(wasHidden){ hidden.delete(s); r.classList.add('on'); r.classList.remove('off'); }
+  else { hidden.add(s); r.classList.remove('on'); r.classList.add('off'); }
+  r.setAttribute('aria-pressed', String(wasHidden));   // wasHidden=真 → 现在是显示出来的
+  setFocus(pinned >= 0 ? pinned : hover);   // 图例开关必须重算焦点，否则高亮会停在被藏起来的那一类上
+  markDirty();
+  say(`${SUBJ[s].zh}${wasHidden ? '已显示' : '已隐藏'}`);
+});
+
+/* ================= toolbar ================= */
+const btn = (id, fn) => document.getElementById(id).addEventListener('click', fn);
+btn('tCore', e=>{ coreOnly = !coreOnly; e.target.setAttribute('aria-pressed', coreOnly); if(focus>=0) setFocus(focus); markDirty(); });
+btn('tEdges', e=>{ showEdges = !showEdges; e.target.setAttribute('aria-pressed', showEdges); markDirty(); });
+/* 自转状态只有一个入口。原来 flyTo 直接改 spin 而不碰按钮，
+   于是按钮显示「开」实际已停 —— 用户点它是想关掉，实际是打开。复位也一样，
+   相机回位了但自转没恢复、按钮还亮着。 */
+const setSpin = v=>{
+  spin = v;
+  if(v) markDirty();
+  document.getElementById('tSpin').setAttribute('aria-pressed', String(v));
+};
+document.getElementById('tSpin').setAttribute('aria-pressed', String(spin));
+btn('tSpin', ()=>setSpin(!spin));
+/* ================= search =================
+   7,938 个点靠鼠标点是找不到的 —— 搜索是唯一入口。
+   用户的实际用法是「我知道这个知识点不会」→ 搜出来 → 看它依赖什么，
+   所以点结果不只是选中：还要把相机飞到那个点，否则选中了也看不见在哪。 */
+const qEl = document.getElementById('q'), resEl = document.getElementById('res');
+const sayEl = document.getElementById('say');
+let hits = [], selI = 0, total = 0;
+// 往 live region 写播报文案。内容不变时不重写 ——
+// 重复写同样的字符串，部分读屏会当成新消息再念一遍。
+let lastSaid = '';
+const say = msg=>{
+  if(!msg || msg === lastSaid) return;
+  lastSaid = msg;
+  sayEl.textContent = msg;
+};
+
+// 相机是绕中心点的轨道相机（th/ph/d），所以「飞到某个点」可以精确解出来：
+// 要让该点的投影落在画面正中，需要 th 让水平分量为 0、ph 让垂直分量为 0。
+function flyTo(id){
+  const n = NODES[id];
+  setSpin(false);
+  const th = Math.atan2(n.x, n.z);
+  const z1 = n.x*Math.sin(th) + n.z*Math.cos(th);
+  const ph = Math.atan2(n.y, z1 || 1e-3);
+  // 距离不能钉死 520。透视 k = d/(d - z2)，z2 越大节点越贴镜头、k 越大、
+  // 投影半径越小。原来 d=520 时实测 k 能冲到 2.95，半径只剩 0.41px。
+  // 反解成 k≈1.5 需要 d = 3·z2，这里按需放大并夹在滚轮缩放的区间内。
+  const z2 = n.y*Math.sin(ph) + z1*Math.cos(ph);
+  TARGET.th = th;
+  TARGET.ph = ph;
+  TARGET.d  = Math.max(520, Math.min(3400, 3*z2));
+}
+
+function go(i){
+  if(i < 0 || i >= hits.length) return;
+  const id = hits[i].i;
+  pinned = id;
+  flyTo(id);
+  setFocus(id);
+  showCard(id);
+  resEl.classList.remove('on');
+  qEl.setAttribute('aria-expanded', 'false');
+  qEl.removeAttribute('aria-activedescendant');
+  qEl.blur();
+  // 键盘用户按下回车之后焦点被移走了，不播报就等于「什么都没发生」
+  const n = NODES[id];
+  say(`已选中 ${n.zh}，${SUBJ[n.s].zh} ${n.dz}`);
+}
+
+function render(){
+  const kw = qEl.value.trim();
+  if(!hits.length){
+    resEl.innerHTML = kw ? '<li class="none" role="presentation">没有匹配的知识点</li>' : '';
+    resEl.classList.toggle('on', !!kw);
+    qEl.setAttribute('aria-expanded', String(!!kw));
+    qEl.removeAttribute('aria-activedescendant');
+    if(kw) say(`没有匹配「${kw}」的知识点`);
+    return;
+  }
+  resEl.innerHTML = hits.map((h,i)=>{
+    const n = NODES[h.i];
+    // role=option + aria-selected，配上输入框上的 aria-activedescendant，
+    // 焦点不用离开输入框，读屏也能知道「现在选中的是第几条」
+    return `<li class="r${i===selI?' sel':''}" role="option" id="r-${i}" ` +
+      `aria-selected="${i===selI}" data-i="${i}">` +
+      `<span class="sw" style="background:${nodeColor(n)}"></span>` +
+      `<span>${n.zh}</span><span class="bk">${n.dz}</span></li>`;
+  }).join('') +
+  // 视觉上的计数。对读屏是冗余的（下面 say() 会单独播），
+  // 所以标 aria-hidden 避免同一件事念两遍。
+  /* 「共 19 条」这句话本身就会误导人：搜「二次函数」得到 19 条，
+     第一版就写成「共 19 条匹配」——于是读起来像「二次函数有 19 个前置」。
+     实际这 19 条是名字含「二次函数」的条目横跨九上/必修一/选必一，
+     是同一主题在不同册次的不同表述，不是依赖。
+     措辞直接对着这个误读写，并且要短 —— 手机上这行只有 46vh 里的两行，
+     写长了会被裁在半句话上。 */
+  (total > 8 ? `<li class="more" aria-hidden="true" role="presentation">共 ${total.toLocaleString('en-US')} 条名字匹配，不是 ${total} 个前置 · 显示前 8 条</li>` : '');
+  resEl.classList.add('on');
+  qEl.setAttribute('aria-expanded', 'true');
+  qEl.setAttribute('aria-activedescendant', 'r-' + selI);
+  say(total > 8
+    ? `按名字匹配到 ${total.toLocaleString('en-US')} 个知识点（不是前置关系），当前第 ${selI+1} 个：${NODES[hits[selI].i].zh}`
+    : `找到 ${total} 个知识点：${NODES[hits[selI].i].zh}`);
+}
+
+function search(){
+  const kw = qEl.value.trim();
+  selI = 0; hits = [];
+  if(!kw){ resEl.innerHTML=''; resEl.classList.remove('on'); return; }
+  for(let i=0;i<N;i++){
+    const n = NODES[i];
+    const at = n.zh.indexOf(kw);
+    if(at >= 0){
+      // 最高档是「名字完全等于关键词」。原来没有这一档，于是搜「小数」
+      // 看到的前 8 条全是「小数加法」「小数的比较大小」……，
+      // 那个叫「小数」的知识点本身反而进不了前 8。
+      // 用户输入一个概念的全名，最想看的就是它自己。
+      hits.push({i, k: n.zh === kw ? -1 : (at === 0 ? 0 : 1), len: n.zh.length, dep: n.cen});
+    }else if(n.dz.indexOf(kw) >= 0){
+      hits.push({i, k: 2, len: 99, dep: n.cen});
+    }else{
+      // **别名也要能搜到。** L0 能力的别名（「观察力」「生活经验」
+      // 「规范操作」「对比分析」…）是模型在盲测里实际说的词，
+      // 全量跑完 1,700+ 次；主名却是「观察与发现规律」。
+      // 用户搜「观察力」搜不到「观察与发现规律」——
+      // **最常被提到的名字反而搜不着**，这是最扎眼的一类问题。
+      const al = (D.aliases && D.aliases[i]) || [];
+      for(const a of al){
+        if(a === kw){ hits.push({i, k: -1, len: 99, dep: n.cen, via:a}); break; }
+        if(a.indexOf(kw) >= 0){ hits.push({i, k: 1, len: 99, dep: n.cen, via:a}); break; }
+      }
+    }
+  }
+  // 档位 → 名字短的优先（更可能是那个概念本身）
+  // → **教材里更早的优先**（a1 是年级层）
+  // → 被依赖度高的优先（更吃紧）
+  //
+  // 「被依赖度」这一档原来是最后的排它序，结果搜「光合作用」第一个出来的是
+  // **高中化学必修二**那个（被依赖度 0.214），而学生要的是**初中生物七上**那个。
+  // 被依赖度反映的是「图谱里多少条边指向它」，不是教学上的早晚。
+  hits.sort((a,b)=> a.k - b.k || a.len - b.len
+                  || (NODES[a.i].a1 - NODES[b.i].a1) || b.dep - a.dep);
+  total = hits.length;
+  hits = hits.slice(0, 8);
+  render();
+  // **搜不到就把卡片收起来。** 原来搜「观察力」（搜不到）之后，
+  // 卡片还停在上一个节点的内容上 —— 看着像「搜到了这个」，
+  // 实际展示的是上一条。用户会以为页面卡了。
+  if(!hits.length){
+    // 用 getElementById 而不是 card 常量 —— card 声明在文件后面（#card
+    // 的 DOM 初始化那段），这里直接取 DOM 免得踩 TDZ。
+    document.getElementById('card').classList.remove('on');
+    setFocus(-1);
+    pinned = -1;
+  }
+}
+
+qEl.addEventListener('input', search);
+qEl.addEventListener('focus', ()=>{ if(hits.length) resEl.classList.add('on'); });
+resEl.addEventListener('pointerdown', e=>{
+  const r = e.target.closest('.r'); if(!r) return;
+  e.preventDefault();            // 别让 input 先失焦把结果框收掉
+  go(+r.dataset.i);
+});
+qEl.addEventListener('keydown', e=>{
+  // 中文输入法选词就是按回车。没有这道守卫的话，按回车会同时干两件事：
+  // 候选词上不上去（preventDefault），相机还飞到半截拼音算出来的结果上。
+  // 这是一页给中国学生看的中文页面的主输入框，这件事必须挡住。
+  if(e.isComposing || e.keyCode === 229) return;
+  if(e.key === 'ArrowDown'){ e.preventDefault(); selI = Math.min(selI+1, hits.length-1); render(); }
+  else if(e.key === 'ArrowUp'){ e.preventDefault(); selI = Math.max(selI-1, 0); render(); }
+  else if(e.key === 'Enter'){ e.preventDefault(); go(selI); }
+  else if(e.key === 'Escape'){ resEl.classList.remove('on'); qEl.blur(); }
+});
+// 点画布空白处关掉结果，但别抢了输入框里正在打的字
+document.addEventListener('pointerdown', e=>{
+  if(!qEl.contains(e.target) && !resEl.contains(e.target)) resEl.classList.remove('on');
+});
+// 按 / 快速聚焦搜索框 —— 找东西是这一页的主要用途，不该藏在鼠标路径上
+addEventListener('keydown', e=>{
+  if(e.key === '/' && document.activeElement !== qEl){
+    e.preventDefault(); qEl.focus(); qEl.select();
+  }
+});
+
+// 卡片里的依赖项：点一下就跳到那个知识点，顺着链条往下走
+document.getElementById('card').addEventListener('click', e=>{
+  /* **只认 button**。不可点的单元行渲染成 `<div class="dep flat">`，
+     它没有 data-jump —— `+b.dataset.jump` 就是 NaN，
+     `jump(NaN)` 的两道闸（NaN<0 / NaN>=N）都拦不住，
+     于是 `NODES[NaN]` 是 undefined，`n.x` 直接抛 TypeError。
+     （上海版第一次点「上一单元」就撞上了：那个单元里没有可点的概念。） */
+  const b = e.target.closest('button.dep'); if(!b) return;
+  jump(+b.dataset.jump);
+});
+
+/* 复用 flyTo + setFocus + showCard，但不像搜索那样收起结果框、也不清空输入框 ——
+   走链条和搜索是两回事，别互相破坏对方的状态。 */
+function jump(id){
+  if(id < 0 || id >= N) return;
+  pinned = id; hover = -1;
+  flyTo(id); setFocus(id); showCard(id);
+}
+
+btn('tReset', ()=>{
+  TARGET.th = -0.62; TARGET.ph = 0.30; TARGET.d = 1500;
+  pinned = -1; setFocus(-1); card.classList.remove('on');
+  // 复位也要把自转状态摆正，否则按钮亮着而画面是静止的
+  setSpin(!matchMedia('(prefers-reduced-motion: reduce)').matches);
+});
+
+/* ================= info card ================= */
+const card = document.getElementById('card');
+let cardId = -1;                 // 卡片当前显示的是哪个节点
+function showCard(id){
+  cardId = id;
+  const n = NODES[id], s = SUBJ[n.s];
+  card.querySelector('.sw').style.background = s.c;
+  document.getElementById('cEyebrow').textContent = s.zh + ' · ' + n.dz + ' · ' + GRADE_ZH[n.a1];
+  document.getElementById('cZh').textContent = label(n);
+  // 人教版教材没有英文名，7,938 个节点的 en 全是空的。
+  // 原来无条件渲染，于是每张卡片都印一行「(无英文名)」——纯噪音。
+  const enEl = document.getElementById('cEn');
+  enEl.textContent = n.en || '';
+  enEl.style.display = n.en ? '' : 'none';
+  document.getElementById('cDesc').textContent = n.desc || '（该条目没有描述文本）';
+  document.getElementById('cMeta').innerHTML =
+    (n.core ? '<span class="hi">小学特有</span>' : '<span>对齐上游</span>') +
+    '<span>课程要求：' + n.evn + '</span><span>被依赖度 ' + n.cen.toFixed(3) + '</span>';
+
+  // 前后依赖：直接列出名字，并且每一项都能点进去。
+  // 名字里有尖括号的（数据里确实有「反比例函数的性质（k<0）」这类），
+  // 拼 HTML 前先转义，别让它被解析成标签。
+  const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  /* 来源徽标。上游数据集标的和我们用模型重建的，可信度完全不一样，
+     不标出来就等于让推测冒充数据。五档：0 上游 / 1 模型重建 /
+     2 能力底座 / 3 自建概念 / 4 教材引入路径 / 5 已修正 / 6 教材结构图。 */
+  const srcTag = src => src ? '<span class="sg sg' + src + '">' +
+      esc((D.srczh && D.srczh[src]) || '') + '</span>' : '';
+  /* 可疑边徽标。上游 3703 条先修边里有 267 条（7.2%）跟教材顺序倒挂，
+     或者把「三角形的高」这种下位概念当成了「三角形」的前置。
+     这些边**不删**（上游数据只读），但得标出来 ——
+     否则用户拿一条可能反了的边去推「我卡在哪」，结论就建在沙上。 */
+  const susTag = sus => sus ? '<span class="sg sus' + sus + '" title="' +
+      (sus >= 2 ? '这条前置边有多处可疑：跟教材顺序矛盾，或把下位概念当前置'
+                 : '这条前置边跟教材顺序矛盾') + '">可疑</span>' : '';
+  const depRow = (x, arrow) => {
+    const jid = Array.isArray(x) ? x[0] : x, src = Array.isArray(x) ? x[1] : 0,
+          sus = Array.isArray(x) ? (x[2] || 0) : 0;
+    return '<button type="button" class="dep" data-jump="' + jid + '">' +
+      '<span class="ar">' + arrow + '</span>' +
+      '<span class="t">' + esc(label(NODES[jid])) + '</span>' +
+      srcTag(src) + susTag(sus) +
+      '<span class="bk">' + esc(NODES[jid].dz) + '</span>' +
+    '</button>';
+  };
+  // 章不是画出来的点，没有下标也跳不过去，用 div 并且不给 hover 反馈——
+  // 长得像能点而点了没反应，比明摆着不可点更烦。
+  const chRow = (c, arrow) =>
+    '<div class="dep flat"><span class="ar">' + arrow + '</span>' +
+      '<span class="t">' + esc(c[0]) + '</span>' +
+      '<span class="bk">' + esc(c[1]) + '</span></div>';
+  // 单元行指向的是「那个单元里第一个概念」，所以能点。空单元（里没有
+  // 可点的概念）就退回不可点的 div。
+  const unitRow = (gi, arrow) => {
+    if(gi < 0 || gi >= CNS.length) return '';
+    const c = CNS[gi];
+    const name = esc(c[0]) + '<span class="bk"> ' + esc(c[1]) + '</span>';
+    return c[3] >= 0
+      ? '<button type="button" class="dep" data-jump="' + c[3] + '">' +
+          '<span class="ar">' + arrow + '</span><span class="t">' + name + '</span></button>'
+      : '<div class="dep flat"><span class="ar">' + arrow + '</span>' +
+          '<span class="t">' + name + '</span></div>';
+  };
+
+  const ps = pre.get(id) || [], us = unlocks.get(id) || [];
+  const chp = (n.chp||[]).map(k => CHS[k]).filter(c => c && c[0]);
+  const chn = (n.chn||[]).map(k => CHS[k]).filter(c => c && c[0]);
+  const iu = isaUp.get(id) || [], idn = isaDown.get(id) || [];
+  const gi = n.oc, pu = neighbourUnit(gi, -1), nu = neighbourUnit(gi, 1);
+
+  // data-b 是给测试用的稳定锚点。块数从 2 涨到 6 之后，
+  // 按「.ct 的第几个」定位的测试会随排列顺序一起漂。
+  const block = (key, title, arr, row, arrow, empty) =>
+    '<div class="ct" data-b="' + key + '"><span>' + title + '</span><span class="n">' + arr.length + '</span><span class="ln"></span></div>' +
+    // 必须包一层箭头：arr.map(row) 会把下标当成第二个参数传进去，
+    // 于是箭头全被渲染成 0/1/2/3（第一版就踩了这个，肉眼看截图才发现）。
+    (arr.length ? arr.map(x => row(x, arrow)).join('') : '<div class="none2">' + empty + '</div>');
+
+  /* 无前置时不能说「它是这一串的起点」——那是拿数据缺口冒充知识点属性。
+     九上册的二次函数在常识上不可能是起点，它只是这一层没标。
+     原话就是「没有直接前置 —— 它是这一串的起点」，第一版自己写的。 */
+  const pos = gi >= 0 ? UPOS.get(gi) : 0, tot = gi >= 0 ? (UTOT.get(CNS[gi][2]) || 0) : 0;
+  document.getElementById('cChain').innerHTML =
+    '<div class="chint">点名字跳过去 · 「上一/下一单元」是教材排列顺序，不是先修</div>' +
+    block('pre', '要先会', ps, depRow, '◀', '数据里没记前置 —— 不等于它没有前置') +
+    block('post', '学会后能学', us, depRow, '▶', '数据里没记谁要先会它') +
+    (gi >= 0
+      ? '<div class="ct" data-b="ord"><span>教材顺序 · ' + SUBJ[n.s].zh +
+        '</span><span class="n">' + pos + '/' + tot + '</span><span class="ln"></span></div>' +
+        '<div class="ord2">' + [unitRow(pu, '◀'), unitRow(nu, '▶')].join('') + '</div>'
+      : '') +
+    block('chp', '教材标为前置的章', chp, chRow, '◀', '这一章前面教材没标别的章') +
+    block('sup', '更一般的概念', iu, depRow, '◀', '数据里没有更一般的上位概念') +
+    block('sub', '它的具体表述', idn, depRow, '▶', '数据里没有更具体的表述');
+  /* 其他出版社教材里的位置。
+     图谱按人教版排，但上海用沪教版、湖南用湘教版、江苏用苏科版……
+     「九上 22.2 二次函数」这个说法对用别的教材的学生**没有意义**，
+     得告诉他「你那本里是第几节」。 */
+  const altEl = document.getElementById('cAlt');
+  const alts = (D.altpos && D.altpos[id]) || [];
+  if(alts.length){
+    altEl.hidden = false;
+    altEl.innerHTML = '<div class="at">其他版本教材里的位置</div>' +
+      alts.map(a => '<div class="arow"><span class="aed">' + esc(a[0]) +
+        '</span><span class="aw">' + esc(a[1]) + '</span></div>').join('');
+  } else {
+    altEl.hidden = true;
+    altEl.innerHTML = '';
+  }
+  card.classList.add('on');
+}
+
+/* ================= tooltip ================= */
+const tip = document.getElementById('tip');
+function showTip(id, mx, my){
+  const n = NODES[id];
+  tip.querySelector('.t-zh').textContent = label(n);
+  tip.querySelector('.t-en').textContent = n.zh ? n.en : '';
+  tip.classList.add('on');
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.min(mx + 16, innerWidth - w - 10) + 'px';
+  tip.style.top  = Math.max(10, my - h - 12) + 'px';
+}
+
+/* ================= interaction ================= */
+let dragging = false, lastX = 0, lastY = 0, moved = 0;
+
+cv.addEventListener('pointerdown', e=>{
+  dragging = true; moved = 0;
+  lastX = e.clientX; lastY = e.clientY;
+  cv.classList.add('drag');
+  cv.setPointerCapture(e.pointerId);
+});
+// 命中测试抽成独立函数。原来它只写在 pointermove 里，
+// 而触屏在 pointerdown 之前根本不会产生 pointermove —— hover 恒为 -1，
+// 于是 pointerup 执行 pinned = -1，**手机上永远选不中任何一个点**，
+// 轻点画面正中那个高亮的点反而会把卡片关掉（实测复现）。
+function pick(cx, cy){
+  let best = -1, bestD = 16*16;
+  for(let i=0;i<N;i++){
+    if(projK[i] < -1e8) continue;
+    const dx = projX[i] - cx, dy = projY[i] - cy;
+    const dd = dx*dx + dy*dy;
+    // projK 越小越靠前（画在最上层）。同���只比二维距离的话，
+    // 会选中「离指针更近但在后面被挡住」的那个点 —— 7,938 个点挤在屏幕上，
+    // 这种重叠极多，实测 1,020 个重叠位置里 96% 选错。
+    if(dd < bestD && (best < 0 || projK[i] < projK[best])){ bestD = dd; best = i; }
+  }
+  return best;
+}
+cv.addEventListener('pointermove', e=>{
+  if(dragging){
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    moved += Math.abs(dx) + Math.abs(dy);
+    TARGET.th += dx * 0.005;
+    TARGET.ph = Math.max(-1.35, Math.min(1.35, TARGET.ph + dy * 0.005));
+    lastX = e.clientX; lastY = e.clientY;
+    tip.classList.remove('on');
+    return;
+  }
+  const best = pick(e.clientX, e.clientY);
+  cv.classList.toggle('point', best >= 0);
+  if(best !== hover){
+    hover = best;
+    const f = pinned >= 0 ? pinned : hover;
+    setFocus(f);
+    // 卡片跟着同一个 f 走。原来 tooltip 用 hover、卡片用 pinned，
+    // 两者同时在说两个不同的知识点。
+    if(f >= 0) showCard(f); else card.classList.remove('on');
+  }
+  if(hover >= 0) showTip(hover, e.clientX, e.clientY); else tip.classList.remove('on');
+});
+const endDrag = ()=>{ dragging = false; cv.classList.remove('drag'); };
+cv.addEventListener('pointerup', e=>{
+  endDrag();
+  if(moved < 5){
+    // a click, not a drag. 触屏自己算一次命中，别指望 hover
+    if(e.pointerType !== 'mouse') hover = pick(e.clientX, e.clientY);
+    pinned = (hover >= 0 && hover === pinned) ? -1 : hover;
+    const f = pinned >= 0 ? pinned : hover;
+    setFocus(f);
+    if(f >= 0) showCard(f); else card.classList.remove('on');
+  }
+});
+// 手势被系统打断（通知横幅、来电、浏览器接管滚动）时必须收尾，
+// 否则 dragging 永远为真：光标卡在抓取态，自动旋转也永久停住。
+cv.addEventListener('pointercancel', endDrag);
+cv.addEventListener('lostpointercapture', endDrag);
+cv.addEventListener('pointerleave', ()=>{ tip.classList.remove('on'); });
+cv.addEventListener('wheel', e=>{
+  e.preventDefault();
+  TARGET.d = Math.max(520, Math.min(3400, TARGET.d + e.deltaY * 1.6));
+}, {passive:false});
+
+addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){
+    pinned = -1;
+    // setFocus(hover) 换了高亮，showCard 也必须跟着换，
+    // 否则画面高亮的是鼠标下那个点、卡片还写着上一个点，两个都在说不同的知识点。
+    setFocus(hover);
+    if(hover >= 0) showCard(hover); else card.classList.remove('on');
+  }
+});
+
+/* **给 IIFE 外面留一个出口。**
+   整个主脚本是一个 IIFE —— `const pre` / `const NODES` / `let cardId`
+   全在它内部，外面（以及 puppeteer 的 evaluate）都够不着。
+   二维脉络视图的代码要放在 IIFE 外面（它自己是一整块），
+   就得从这里递东西出去。 */
+window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
+              // **showCard 也要挂出来** ——
+              // 「卡在哪」「学习路径」两个面板的代码在 IIFE 外面，
+              // 它们点条目要跳到别的知识点，showCard 在 IIFE 里面够不着。
+              // 实测：点「卡在哪」列表里的任何一条都不跳，而且抛
+              // `ReferenceError: showCard is not defined`。
+              showCard: (id) => showCard(id),
+              // **视觉层**：概念在教材原书上的公式和图。
+              // 「卡在哪」面板和选题卡都要用 —— 面板那段代码在 IIFE 外面。
+              vision: D.vision || {},
+              // **教材原话**：教材自己写的定义句（人教版来自 OCR 原文层，
+              // 上海版来自页图 OCR）。没有这一层，卡片上就只有位置和公式，
+              // 少了「教材到底怎么说的」这一句。
+              text: D.text || {},
+              // **上海教材（沪教版/沪科版）的公式和图** ——
+              // 人教和沪教是两套教材，各看各的。
+              visionAlt: D.visionAlt || {},
+              // **教材自己标的难点**（「思考」「探究」框）——
+              // 面板里要显示「教材在这里标了 N 处思考/探究」。
+              hard: D.hard || {},
+              // **小学科学教材位置**（人教版《小学科学》1上~6下）——
+              // 上游图谱小学段只有数学，物化生一个都没有（上游 issue #10）。
+              // 这一层补上「这个概念在小学科学哪本书哪一节哪一页」。
+              kx: D.kx || {},
+              nodeColor, edgeColor, getPal: ()=>PAL, setPal: (k,v)=>{PAL[k]=v;},
+              // **脉络视图那块代码在 IIFE 外面**，要自己取配色。
+              // 只递 getPal() 不够 —— PAL 本身要递出去（它是同一个对象引用，
+              // setPal 改的就是它），颜色表和档位名也要。
+              // 少了这些，脉络视图里 `PAL.lc` 直接 ReferenceError，
+              // 线的来源图例永远不显示，控制台一片红。
+              PAL, MAP_SRC_COLOR, TIER_ZH,
+              // 「卡在哪」面板在 IIFE 外面，要跳回某个知识点 / 弹提示
+              showCard, say};
+
+loop();
+})();
+/* ================= 二维知识脉络 ================= */
+/* 点开一个知识点后，展开它的先修链（往左）和后继链（往右）。
+   跟右边那张卡片是同一份数据的两种看法：卡片是「列表」，
+   这里是「脉络」—— 看得见一条链是怎么一层层铺到当前的。
+
+   为什么分层而不是力导向：先修关系有天然的层次（更远的先修在更左），
+   力导向会把一条 8 层的链揉成一团球，而「脉络」要的就是层次感。
+   层内按教材顺序排，所以同一层里上下也读得出教学先后。 */
+
+const KG = window.__kg;
+/* 配色从主 IIFE 里取。**这里是引用不是拷贝** ——
+   配色面板改的是同一个 PAL 对象，所以这里拿到的永远是最新值。 */
+const PAL = KG.PAL;
+const MAP_SRC_COLOR = KG.MAP_SRC_COLOR;
+const TIER_ZH = KG.TIER_ZH;
+const kgEsc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const MAP_COL_W = 250, MAP_ROW_H = 40;
+let mapRoot = -1, mapDepth = 2;
+
+function mapGather(root, dir, maxd){
+  // dir=-1 往先修方向（逆向走 pre），+1 往后继方向（走 unlocks）。
+  //
+  // 每个节点记两件事：**到 root 的距离 d**，和**是从哪个节点走过来的 parent**。
+  //
+  // ── 原来这两样都错了 ─────────────────────────────────────
+  // ① 只记 d，且取**最长**（`d > prev.d` 就改）：
+  //    一个既远又近的节点被推到更远的列 —— 二次函数的**直接前置**
+  //    「函数」被标成「先修 2 层」，因为它同时能经「一次函数」两步到达。
+  //    层数标签在说谎。
+  // ② 渲染时所有节点都直接连到 root（`edges.push([nid, root, ...])`）：
+  //    真实关系是「正比例函数 → 函数 → 二次函数」，图上画成
+  //    「正比例函数 ──→ 二次函数」。**线是断言，不是画法偏好** ——
+  //    随机 300 个知识点、2 层视图，2253 条线里 1281 条（56.9%）
+  //    在图谱里根本不存在。
+  //
+  // ── 现在 ────────────────────────────────────────────────
+  // BFS **首次发现即最短距离**（这是 BFS 的性质），并记下 parent。
+  // 边画成 parent → child，于是**每一条线都是图谱里真实存在的边**。
+  const out = new Map();
+  let frontier = [root];
+  for(let d=1; d<=maxd; d++){
+    const nx = [];
+    for(const cur of frontier){
+      const rows = dir < 0 ? (KG.pre.get(cur)||[]) : (KG.unlocks.get(cur)||[]);
+      for(const r of rows){
+        const nid = r[0];
+        if(nid === root) continue;
+        if(out.has(nid)) continue;   // 已见过：首次发现就是最短距离
+        out.set(nid, {d, parent: cur, src:r[1], sus:r[2]});
+        nx.push(nid);
+      }
+    }
+    frontier = nx;
+    if(!frontier.length) break;
+  }
+  return out;
+}
+
+function mapLayout(root){
+  const anc = mapGather(root, -1, mapDepth);
+  // 后继侧跟先修侧**同样深**。原来写死 min(mapDepth, 2)：
+  // 点「3 层」按钮，先修给 3 层、后继只给 2 层 —— 按钮在说谎。
+  const des = mapGather(root, +1, mapDepth);
+  // 按层分列。左侧先修（越远越靠左），右侧后继。
+  const cols = new Map();          // 列号 → [节点]
+  const put = (col, item) => {
+    if(!cols.has(col)) cols.set(col, []);
+    cols.get(col).push(item);
+  };
+  put(0, {id:root, d:0, src:0, sus:0, center:true});
+  for(const [nid, v] of anc) put(-v.d, {id:nid, ...v});
+  for(const [nid, v] of des) put(v.d, {id:nid, ...v});
+  // 层内按教材顺序排（oc = 所属单元在 CNS 里的下标），读得出教学先后
+  for(const arr of cols.values())
+    arr.sort((a,b)=> (KG.NODES[a.id].oc - KG.NODES[b.id].oc) || (a.id - b.id));
+  // y 坐标：**所有列共享同一个 y 范围**，各自在其中均匀铺满。
+  // 原来每列各自居中，节点多的列把画布撑高，节点少的列就在中间一小段 ——
+  // 于是整张图上半部分空着，下半部分挤成一团。
+  const pos = new Map();
+  let maxRows = 0;
+  for(const arr of cols.values()) maxRows = Math.max(maxRows, arr.length);
+  const span = (maxRows - 1) * MAP_ROW_H;
+  for(const [col, arr] of cols){
+    // 本列节点少时，按比例压缩间距，铺满同一段高度
+    const step = arr.length > 1 ? span / (arr.length - 1) : 0;
+    arr.forEach((it, i) => pos.set(it.id, {x: col * MAP_COL_W, y: span/2 - i * step, it}));
+  }
+  return {cols, pos, anc, des, maxRows};
+}
+
+function mapRender(){
+  const svg = document.getElementById('mapSvg');
+  const root = mapRoot, L = mapLayout(root);
+  const {cols, pos} = L;
+  const nRoot = KG.NODES[root];
+
+  // 视图范围
+  let minX=0, maxX=0, minY=0, maxY=0;
+  for(const {x,y} of pos.values()){
+    minX=Math.min(minX,x); maxX=Math.max(maxX,x);
+    minY=Math.min(minY,y); maxY=Math.max(maxY,y);
+  }
+  const PAD=70, W=maxX-minX+PAD*2, H=maxY-minY+PAD*2;
+  const tx = v => v - minX + PAD;
+  // **y 必须用自己的平移函数。** 原来 y 也用 tx()，
+  // 而 tx 是按 minX（水平的最小值，通常是负的）平移的 ——
+  // 一整套节点被推到画布下面去，只剩底部一条。
+  const ty = v => v - minY + PAD;
+
+  // 边：先画，避免盖住节点
+  //
+  // **边画成 parent → child，不是「所有节点直连 root」。**
+  // 直连根会把「正比例函数 → 函数 → 二次函数」画成
+  // 「正比例函数 ──→ 二次函数」—— 一条图谱里根本不存在的边。
+  // 现在每条线都是遍历时走过的那条真实边，箭头方向：
+  //   先修侧：外层(先修) → 内层(离目标更近的一步)，指回目标
+  //   后继侧：内层 → 外层(后继)，指向前进的方向
+  const edges = [];
+  for(const [nid, v] of L.anc) edges.push([nid, v.parent, v.src, v.sus, true]);
+  for(const [nid, v] of L.des) edges.push([v.parent, nid, v.src, v.sus, false]);
+  /* 边的两个端点都缩到圆的边缘：
+     起点从 A 圆外侧 1px 出发（不然线从圆心冒出来，被圆盖住一截，看着像没接上），
+     终点停在 B 圆外侧 —— 箭头 marker 画在路径末端，
+     终点压在圆心上就会被圆盖住，箭头就看不见了。 */
+  const edgeSvg = edges.map(([a,b,src,sus,isAnc])=>{
+    const A=pos.get(a), B=pos.get(b);
+    if(!A || !B) return '';
+    const ax=tx(A.x), ay=ty(A.y), bx=tx(B.x), by=ty(B.y);
+    const dx=bx-ax, dy=by-ay, len=Math.hypot(dx,dy)||1;
+    const ra = A.it.center ? 9 : 6.5, rb = B.it.center ? 9 : 6.5;
+    const sx = ax + dx/len*ra, sy = ay + dy/len*ra;
+    const ex = bx - dx/len*rb, ey = by - dy/len*rb;
+    const mx=(sx+ex)/2;
+    const cls='medge'+(sus?' sus':'');
+    const col=KG.edgeColor(src, isAnc);
+    // 箭头**直接画三角**，不用 marker。
+    // marker 里的 fill="context-stroke" 在 Chrome 上不生效 ——
+    // 箭头渲染成黑色，混在深色背景里根本看不见。
+    const ang = Math.atan2(dy,dx), L1 = 10, L2 = 4.6;
+    const tipx = ex + Math.cos(ang)*L1, tipy = ey + Math.sin(ang)*L1;
+    const b1x = ex + Math.cos(ang+2.6)*L2, b1y = ey + Math.sin(ang+2.6)*L2;
+    const b2x = ex + Math.cos(ang-2.6)*L2, b2y = ey + Math.sin(ang-2.6)*L2;
+    return '<path class="'+cls+'" stroke="'+col+'"'+
+           ' data-a="'+a+'" data-b="'+b+'" data-src="'+src+'"'+
+           ' d="M '+sx+' '+sy+
+           ' C '+mx+' '+sy+' '+mx+' '+ey+' '+ex+' '+ey+'"/>'+
+           '<path d="M '+tipx+' '+tipy+' L '+b1x+' '+b1y+' L '+b2x+' '+b2y+' Z" '+
+           'fill="'+col+'" stroke="#0b0c10" stroke-width="0.7"/>';
+  }).join('');
+
+  // 先修区 / 后继区的分界：**在当前节点两侧画一条竖虚线**，
+  // 线上标「◀ 要先会」和「学会后能学 ▶」。
+  // 光靠左右位置还不够 —— 「哪些是前面的、哪些是后面的」要一眼分得清。
+  const divX = tx(0);
+  const divSvg = '<line x1="'+divX+'" y1="'+ty(minY)+'" x2="'+divX+'" y2="'+ty(maxY)+'" '+
+    'stroke="#3a4150" stroke-width="1" stroke-dasharray="2 6"/>'+
+    '<text class="mcol" x="'+(divX-10)+'" y="'+(ty(minY)-18)+'" text-anchor="end">◀ 要先会</text>'+
+    '<text class="mcol" x="'+(divX+10)+'" y="'+(ty(minY)-4)+'" text-anchor="start">学会后能学 ▶</text>';
+
+  // 列标题
+  const colSvg = [...cols.entries()].map(([col,arr])=>{
+    const x = tx(col*MAP_COL_W);
+    const t = col===0 ? '当 前' : (col<0 ? '◀ 先修 '+(-col)+' 层' : '后继 '+col+' 层 ▶');
+    return '<text class="mcol" x="'+x+'" y="'+(ty(minY)-26)+'" text-anchor="middle">'+t+'</text>';
+  }).join('');
+
+  // 节点
+  const nodeSvg = [...pos.entries()].map(([nid,p])=>{
+    const n=KG.NODES[nid], c=KG.nodeColor(n);
+    const r = p.it.center ? 8 : 5.5;
+    const dy = p.it.center ? -16 : -11;
+    const tag = '<text class="mtag" x="'+tx(p.x)+'" y="'+(ty(p.y)+14)+'" text-anchor="middle">'+kgEsc(n.dz)+'</text>';
+    return '<g class="mnode'+(p.it.center?' center':'')+'" data-id="'+nid+'" tabindex="0">'+
+      '<circle cx="'+tx(p.x)+'" cy="'+ty(p.y)+'" r="'+r+'" fill="'+c+'"/>'+
+      '<text x="'+tx(p.x)+'" y="'+(ty(p.y)+dy)+'" text-anchor="middle">'+kgEsc(KG.label(n))+'</text>'+
+      tag+'</g>';
+  }).join('');
+
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  // 等比缩放并居中 —— 顶部对齐的话，整张图会浮在容器上沿，下面空一大块。
+  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  // 箭头：从先修指向后继，方向一眼可辨。
+  // `context-stroke` 让箭头跟着边的颜色走（上游灰 / 模型蓝 / 引入路径绿…）。
+  const defs = '<defs><marker id="mArrow" viewBox="0 0 10 10" refX="8.5" refY="5" '+
+    'markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">'+
+    '<path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>';
+  svg.innerHTML = defs + divSvg + edgeSvg + colSvg + nodeSvg;
+
+  document.getElementById('mapName').textContent = KG.label(nRoot);
+  const aCount = L.anc.size, dCount = L.des.size;
+  document.getElementById('mapSub').textContent =
+    '先修 '+aCount+' 个 · 后继 '+dCount+' 个 · 展开 '+mapDepth+' 层';
+
+  // 线的来源色图例 —— 只在「按来源着色」时出现。
+  // **7 档一个不落**，包括最容易漏的「教材结构图」。
+  const lg = document.getElementById('mapLegend');
+  if(PAL.lc === 'source'){
+    const seen = new Set();
+    for(const [,v] of L.anc) seen.add(v.src);
+    for(const [,v] of L.des) seen.add(v.src);
+    const rows = TIER_ZH.map((nm,i)=>({nm, i}))
+      .filter(o=>seen.has(o.i))
+      .map(o=>'<div class="lr"><span class="sw" style="background:'
+               + MAP_SRC_COLOR[o.i] + '"></span><span>' + o.nm + '</span></div>')
+      .join('');
+    lg.innerHTML = '<div class="lt">线的来源</div>' + rows;
+    lg.classList.add('on');
+  } else {
+    lg.classList.remove('on');
+    lg.innerHTML = '';
+  }
+}
+
+function openMap(id){
+  mapRoot = id;
+  document.getElementById('map').hidden = false;
+  mapRender();
+}
+function closeMap(){ document.getElementById('map').hidden = true; mapRoot = -1; }
+
+document.getElementById('mClose').addEventListener('click', closeMap);
+/* 卡片上的「知识脉络」：用委托绑定，避免每次 showCard 都挂一个新 listener。 */
+document.getElementById('cMap').addEventListener('click', ()=>{
+  // 用 cardId 不用 focus —— focus 是 let 声明（全局词法环境），
+  // 而且「卡片正在显示哪个节点」本来就是这里要的语义。
+  const cid = KG.cardId();
+  if(cid >= 0) openMap(cid);
+});
+document.getElementById('mapBody').addEventListener('click', e=>{
+  const g = e.target.closest('.mnode');
+  if(!g) return;
+  const nid = +g.dataset.id;
+  if(nid === mapRoot) return;
+  mapRoot = nid; mapRender();
+});
+document.getElementById('mapBody').addEventListener('keydown', e=>{
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  const g = e.target.closest && e.target.closest('.mnode');
+  if(!g) return;
+  e.preventDefault();
+  const nid = +g.dataset.id;
+  if(nid !== mapRoot){ mapRoot = nid; mapRender(); }
+});
+for(const b of document.querySelectorAll('#map .mtools .btn[data-d]')){
+  b.addEventListener('click', ()=>{
+    mapDepth = +b.dataset.d;
+    for(const o of document.querySelectorAll('#map .mtools .btn[data-d]'))
+      o.setAttribute('aria-pressed', String(+o.dataset.d === mapDepth));
+    if(mapRoot >= 0) mapRender();
+  });
+}
+document.getElementById('mD2').setAttribute('aria-pressed','true');
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && mapRoot >= 0){ closeMap(); e.stopPropagation(); }
+});
+
+/* ================= 「卡在哪」================= */
+/* 这个项目要回答的就是一句话：
+     「朋友最近在二次函数上卡住，是因为什么前置的缺失」
+
+   脉络视图说的是「有哪些前置」—— 那是**事实**。
+   这个面板说的是「**先补哪一块**」—— 那是**判断**。
+   事实图谱不会给判断，判断得自己排。
+
+   排序用四个信号，都从 payload 现算，不另存一份数据：
+     ① 杠杆 fanout —— 有多少个概念依赖它。被 300 个人依赖的
+        基础概念，讲透一个能带出一串；被 1 个人依赖的，带不动。
+     ② 早晚 depth —— 它自己链深多少。链深 0 = 它没有前置，
+        是整条链的根；越早学的东西越该先补。
+     ③ 距离 dist —— 离症状几层。直接前置比隔三层的更可能是卡点。
+     ④ 覆盖 ann —— 它自己的前置在图谱里标了几条。
+        标得少 = 这一块我们也不清楚，正是内容可以补的地方。
+
+   每条都给出**人话理由**，不只给分数 ——
+   「被 339 个概念依赖」比「8.7 分」有用得多。 */
+let _depthCache = null;
+function computeDepths(){
+  if(_depthCache) return _depthCache;
+  const d = new Map(), color = new Map();
+  for(const n of KG.NODES){
+    if(d.has(n.id)) continue;
+    color.set(n.id, 1);
+    const st = [[n.id, 0]];
+    while(st.length){
+      const top = st[st.length-1];
+      const ps = KG.pre.get(top[0]) || [];
+      if(top[1] < ps.length){
+        const v = ps[top[1]][0];
+        top[1]++;
+        if(color.get(v) === 1) continue;   // 成品图无环，防御
+        if(color.get(v) === 2) continue;
+        color.set(v, 1); st.push([v, 0]);
+      } else {
+        let mx = 0;
+        for(const r of ps) mx = Math.max(mx, (d.get(r[0]) || 0) + 1);
+        d.set(top[0], mx); color.set(top[0], 2); st.pop();
+      }
+    }
+  }
+  _depthCache = d;
+  return d;
+}
+
+const GAP_DEPTH = 3;     // 往先修方向看几层
+function gapRank(id){
+  const depths = computeDepths();
+  const fanout = new Map();
+  for(const [u, rows] of KG.unlocks) fanout.set(u, rows.length);
+  // 先修闭包（带上距离）
+  const anc = new Map();
+  let frontier = [id];
+  for(let d=1; d<=GAP_DEPTH; d++){
+    const nx = [];
+    for(const cur of frontier){
+      for(const r of (KG.pre.get(cur) || [])){
+        const nid = r[0];
+        if(nid === id) continue;
+        if(!anc.has(nid)){ anc.set(nid, d); nx.push(nid); }
+      }
+    }
+    frontier = nx;
+    if(!frontier.length) break;
+  }
+  const out = [];
+  for(const [nid, dist] of anc){
+    const n = KG.NODES[nid];
+    const fo = fanout.get(nid) || 0;
+    const dp = depths.get(nid) || 0;
+    const ann = (KG.pre.get(nid) || []).length;
+    // 分数：杠杆 + 早晚 + 是不是根 + 近 + 覆盖薄弱
+    const score = 2.0 * Math.log1p(fo)
+                + 1.6 * (1 - Math.min(dp, 6) / 6)
+                + (dp === 0 ? 2.2 : 0)
+                + 1.2 * (1 - (dist - 1) / GAP_DEPTH)
+                + 0.9 * (1 - Math.min(ann, 4) / 4);
+    const why = [];
+    if(fo >= 20) why.push(`被 <em>${fo}</em> 个概念依赖`);
+    else if(fo >= 3) why.push(`被 ${fo} 个概念依赖`);
+    if(dp === 0) why.push('它自己没有前置 —— 是整条链的<b>根</b>');
+    else if(dp <= 2) why.push('很早就学（链深 ' + dp + '）');
+    if(dist === 1) why.push('就是直接前置');
+    else why.push('隔 ' + (dist-1) + ' 层');
+    if(ann === 0) why.push('图谱里也没标它的前置 —— <b>这块正是空白</b>');
+    else if(ann <= 2) why.push('只标了 ' + ann + ' 条前置');
+    out.push({ nid, name: n.zh, dz: n.dz, fo, dp, ann, dist, score,
+               why: why.join(' · ') });
+  }
+  out.sort((a,b) => b.score - a.score || b.fo - a.fo);
+  return out;
+}
+
+function gapCardText(id, rows){
+  const n = KG.NODES[id];
+  const lines = [];
+  lines.push('## 选题卡：' + n.zh);
+  lines.push('');
+  lines.push('- **症状**：`' + n.zh + '`（' + n.dz + '）');
+  const direct = (KG.pre.get(id) || []).map(r => KG.NODES[r[0]].zh);
+  lines.push('- **图谱记录的直接前置**：' + (direct.length ? direct.join('、') : '（无）'));
+  lines.push('- **先修闭包**（往回 ' + GAP_DEPTH + ' 层共 ' + rows.length + ' 个）：');
+  lines.push('');
+  lines.push('| # | 前置 | 杠杆 | 链深 | 离症状 | 理由 |');
+  lines.push('|---|---|---|---|---|---|');
+  rows.slice(0, 8).forEach((r, i) => {
+    lines.push('| ' + (i+1) + ' | ' + r.name + ' | ' + r.fo + ' | ' + r.dp +
+               ' | ' + r.dist + ' | ' + r.why.replace(/<[^>]+>/g,'') + ' |');
+  });
+  // 教材自己标的难点 —— 这是硬证据，要写进选题卡
+  const withHard = rows.slice(0, 8).map(r => kgHardText(r.nid)).filter(Boolean);
+  if (withHard.length) {
+    lines.push('');
+    lines.push('## 教材自己标的难点');
+    rows.slice(0, 8).forEach((r, i) => {
+      const t2 = kgHardText(r.nid);
+      if (t2) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t2);
+    });
+  }
+  // 教材原书上的公式和图 —— 选题卡要能直接进内容生产
+  const withVis = rows.slice(0, 8).map(r => kgVisionText(r.nid)).filter(Boolean);
+  // 上海教材的写法也带上（沪教版/沪科版跟人教版是两套教材）
+  if(withVis.length){
+    lines.push('');
+    lines.push('## 教材原书（人教版）');
+    rows.slice(0, 8).forEach((r, i) => {
+      const t = kgVisionText(r.nid);
+      if(t) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t);
+    });
+  }
+  // 小学科学教材位置 —— 家长/老师最想要的一句：「小学在哪本书哪一页」
+  const withKx = rows.slice(0, 8).map(r => kgKxText(r.nid)).filter(Boolean);
+  if(withKx.length){
+    lines.push('');
+    lines.push('## 小学科学（人教版）里也在');
+    rows.slice(0, 8).forEach((r, i) => {
+      const t = kgKxText(r.nid);
+      if(t) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t);
+    });
+  }
+  lines.push('');
+  lines.push('> 排序信号：杠杆（被依赖数）× 早晚（链深）× 是不是链根 × 离症状距离 × 覆盖薄弱。');
+  lines.push('> 数据来自人教版《小学科学》教材本身（12 本 / 1,036 页），每条边可查来源。');
+  return lines.join('\n');
+}
+
+/* 视觉层：概念在教材原书上的公式和图。
+ *
+ * **来源分两类，页面上也必须分开标**：
+ *   公式 → 教材页面上的原文，可以直接引用
+ *   图描述 → 模型对图的转述（教材只印了图，压根没有这段文字）→ 标「据图」
+ * 混在一起，下游就会拿转述当原话引用。
+ *
+ * payload 里存的公式已经是**构建期转成的人能读的纯文本**
+ * （½(x-6)²+3，不是 \frac{1}{2}(x-6)^2+3）——
+ * 页面不许加载外部资源，Katex 装不下也不该引。 */
+function kgVision(j){
+  const v = KG.vision && KG.vision[j];
+  return v || null;
+}
+function kgVisionHTML(j){
+  const v = kgVision(j);
+  const va = KG.visionAlt && KG.visionAlt[j];
+  let h = '';
+  if(v){
+    const fs = v[0] || [], gs = v[1] || [], bz = v[2] || '';
+    if(fs.length){
+      h += '<div class="vb"><div class="vh">教材原书上的公式</div><div class="vf">' +
+           fs.map(f => '<span>' + kgEsc(f) + '</span>').join('') + '</div></div>';
+    }
+    for(const g of gs){
+      const cap = g[0] ? g[0] + ' ' : '';
+      h += '<div class="vb"><div class="vh">教材原书上的图</div><div class="vg"><b>据图</b> · ' +
+           kgEsc(cap + g[1]) + '</div>' +
+           (bz ? '<div class="vsrc">' + kgEsc(bz) + '</div>' : '') + '</div>';
+    }
+  }
+  // **上海教材单独一块** —— 沪教版和沪科版跟人教版是两套教材，
+  // 上海的孩子看人教版的公式没用，反过来也一样。
+  if(va){
+    const af = va[0] || [], ag = va[1] || [], bz = va[2] || '';
+    if(af.length){
+      h += '<div class="vb alt"><div class="vh">沪教版怎么写</div><div class="vf">' +
+           af.map(f => '<span>' + kgEsc(f) + '</span>').join('') + '</div></div>';
+    }
+    for(const g of ag){
+      const cap = g[0] ? g[0] + ' ' : '';
+      h += '<div class="vb alt"><div class="vh">沪教版的图</div><div class="vg"><b>据图</b> · ' +
+           kgEsc(cap + g[1]) + '</div>' +
+           (bz ? '<div class="vsrc">' + kgEsc(bz) + '</div>' : '') + '</div>';
+    }
+  }
+  return h;
+}
+/* 教材原话 —— 教材自己写的定义句。
+   **必须标出处**，因为「教材说的」和「我们说的」不是一回事。 */
+function kgTextHTML(j){
+  const t = (KG.text && KG.text[j]) || [];
+  if(!t.length) return '';
+  return '<div class="vt"><b>教材原话</b> · ' + kgEsc(t[0]) + '</div>';
+}
+function kgTextText(j){
+  const t = (KG.text && KG.text[j]) || [];
+  return t.length ? t[0] : '';
+}
+/* 小学科学教材位置（人教版《小学科学》1上~6下）。
+ *
+ * **这一层补的是图谱最空的那一段**：上游图谱小学阶段只有数学，
+ * 物理化学生物在小学一个都没有（上游 issue #10）。
+ * 但小学科学教材里有这些概念（磁极、热胀冷缩、电磁铁、光合作用…），
+ * **它们在上游图谱里都存在**，只是上游标在初中/高中册次。
+ *
+ * 显示成「小学科学 · 三上 · 有趣的磁铁 › 磁铁的磁极 · 第 2 页」，
+ * **标清是另一套教材**（人教版小学科学 = 湖北教育出版社出版，
+ * 跟人教版初中物理不是一本书），别让人以为这是初中那本。
+ */
+function kgKxHTML(j){
+  const k = (KG.kx && KG.kx[j]) || [];
+  if(!k.length) return '';
+  const VOL = {'1a':'一上','1b':'一下','2a':'二上','2b':'二下','3a':'三上','3b':'三下',
+               '4a':'四上','4b':'四下','5a':'五上','5b':'五下','6a':'六上','6b':'六下'};
+  const items = k.map(x => {
+    const vol = VOL[x[0]] || x[0];
+    const seg = [x[1], x[2]].filter(Boolean).join(' › ');
+    return '《科学》' + vol + (seg ? ' · ' + seg : '') + (x[3] ? ' · 第 ' + x[3] + ' 页' : '');
+  });
+  return '<div class="vt kx"><b>小学科学</b> · ' + kgEsc(items.join('；')) + '</div>';
+}
+
+/* 教材自己标的难点（「思考」「探究」框）。
+ *
+ * 这是**教材编委会标的**，不是我们推断的 ——
+ * 面板原来的排序信号全是推断出来的（杠杆、早晚、覆盖薄弱），
+ * 这一条是硬证据：「教材在这里自己标了 N 次难」。
+ */
+function kgHard(j){
+  const h = KG.hard && KG.hard[j];
+  return h || null;
+}
+function kgHardHTML(j){
+  const h = kgHard(j);
+  if(!h || !h[0]) return '';
+  const where = (h[2] ? h[2] : '') + (h[3] ? ' ' + h[3] : '');
+  return '<div class="vh2"><b>教材在这里标了 ' + h[0] + ' 处思考/探究</b>'
+       + (where ? ' · ' + kgEsc(where) : '')
+       + (h[1] ? '<span class="hq">例：' + kgEsc(h[1]) + '</span>' : '')
+       + '</div>';
+}
+/* 复制出去的选题卡用的纯文本版本 */
+function kgHardText(j){
+  const h = kgHard(j);
+  if(!h || !h[0]) return '';
+  const where = (h[2] ? h[2] : '') + (h[3] ? ' ' + h[3] : '');
+  return '教材在这里标了 **' + h[0] + ' 处思考/探究**'
+       + (where ? '（' + where + '）' : '')
+       + (h[1] ? '\n\n> ' + h[1] : '');
+}
+/* 小学科学教材位置（人教版《小学科学》1上~6下）。
+   选题卡要能直接用这一条 —— 「这个概念小学在哪本书哪一页」，
+   是家长/老师最想要的那句话。 */
+function kgKxText(j){
+  const k = (KG.kx && KG.kx[j]) || [];
+  if(!k.length) return '';
+  const VOL = {'1a':'一上','1b':'一下','2a':'二上','2b':'二下','3a':'三上','3b':'三下',
+               '4a':'四上','4b':'四下','5a':'五上','5b':'五下','6a':'六上','6b':'六下'};
+  const items = k.map(x => {
+    const vol = VOL[x[0]] || x[0];
+    const seg = [x[1], x[2]].filter(Boolean).join(' › ');
+    return '《科学》' + vol + (seg ? ' · ' + seg : '') + (x[3] ? ' · 第 ' + x[3] + ' 页' : '');
+  });
+  return '小学科学（人教版）里也在：' + items.join('；');
+}
+function kgVisionText(j){
+  const v = kgVision(j);
+  const va = KG.visionAlt && KG.visionAlt[j];
+  const L = [];
+  if(v){
+    const fs = v[0] || [], gs = v[1] || [];
+    if(fs.length) L.push('教材原书上的公式：' + fs.join('　'));
+    for(const g of gs) L.push('教材原书上的图（据图，模型转述）：' + (g[0] ? g[0] + ' ' : '') + g[1]);
+  }
+  if(va){
+    const af = va[0] || [], ag = va[1] || [];
+    if(af.length) L.push('沪教版怎么写：' + af.join('　'));
+    for(const g of ag) L.push('沪教版的图（据图，模型转述）：' + (g[0] ? g[0] + ' ' : '') + g[1]);
+  }
+  return L.join('\n');
+}
+
+let gapRows = [];
+function openGap(id){
+  gapRows = gapRank(id);
+  const n = KG.NODES[id];
+  document.getElementById('gapName').textContent = n.zh;
+  const direct = (KG.pre.get(id) || []).length;
+  document.getElementById('gapSub').textContent =
+    '直接前置 ' + direct + ' 条 · 往回 ' + GAP_DEPTH + ' 层共 ' + gapRows.length + ' 个候选';
+  document.getElementById('gapIntro').innerHTML = direct === 0
+    ? '<b>' + kgEsc(n.zh) + '</b> 在图谱里<b>没有记录任何直接前置</b> —— ' +
+      '这本身就是诊断结论。下面是它往回 ' + GAP_DEPTH + ' 层能找到的、' +
+      '以及它下游依赖它最多的那些。'
+    : '<b>' + kgEsc(n.zh) + '</b> 的直接前置有 <b>' + direct + '</b> 条。' +
+      '下面按「<b>先补哪一块</b>」排了序 —— 杠杆大、又早学、' +
+      '离症状近的排在前面。';
+  document.getElementById('gapList').innerHTML = gapRows.slice(0, 12).map((r, i) =>
+    '<li data-id="' + r.nid + '">' +
+      '<div class="rk">' + (i+1) + '</div>' +
+      '<div><div class="nm">' + kgEsc(r.name) + '</div>' +
+      '<div class="why">' + r.why + '</div>' +
+      '<div class="tags"><span class="tag">链深 ' + r.dp + '</span>' +
+      '<span class="tag">离症状 ' + r.dist + ' 层</span>' +
+      '<span class="tag">前置标注 ' + r.ann + ' 条</span>' +
+      (r.fo >= 20 ? '<span class="tag hot">被 ' + r.fo + ' 个依赖</span>' : '') +
+      (r.dp === 0 ? '<span class="tag root">链的根</span>' : '') +
+      '</div>' +
+      kgHardHTML(r.nid) +
+      kgTextHTML(r.nid) +
+      kgKxHTML(r.nid) +
+      kgVisionHTML(r.nid) +
+      '</div>' +
+      '<div class="sc">' + r.score.toFixed(1) + '</div>' +
+    '</li>').join('') ||
+    '<li style="grid-template-columns:1fr;color:#8b93a7">往回 ' + GAP_DEPTH +
+    ' 层没找到任何前置 —— 图谱在这一片是空的。</li>';
+  document.getElementById('gapFoot').textContent =
+    '分数只用来排序，真正有用的是每条的理由。点任意一条跳到那个知识点。';
+  document.getElementById('gap').hidden = false;
+}
+function closeGap(){ document.getElementById('gap').hidden = true; }
+
+/* ================= 学习路径 =================
+   「卡在哪」回答「缺什么」；**学习路径回答「先学哪个、再学哪个」**。
+   老师排课、学生补课要的是顺序，不是候选清单。
+
+   排序依据：**先修关系**（不是教材顺序）。
+   离目标越远的前置 = 越基础 = 越要先学。
+   教材顺序只用来回答「这一步在书里是哪一节」。
+
+   **教材顺序不等于先修** —— 教材把 A 排在 B 前面，
+   不等于学 B 必须先会 A（这个项目一直分得很清）。
+   所以路径按先修排，位置当注脚。 */
+const PATH_DEPTH = 4;
+function pathRows(id){
+  // BFS 往先修方向走，同时记下每个节点是从**谁**那儿发现的 ——
+  // 那就是「往目标走」的下一步，串起来就是这条路径。
+  const parent = new Map(), depth = new Map();
+  depth.set(id, 0);
+  const q = [id];
+  for(let qi = 0; qi < q.length; qi++){
+    const cur = q[qi];
+    if(depth.get(cur) >= PATH_DEPTH) continue;
+    for(const r of (KG.pre.get(cur) || [])){
+      const v = r[0];
+      if(depth.has(v)) continue;
+      depth.set(v, depth.get(cur) + 1);
+      parent.set(v, cur);
+      q.push(v);
+    }
+  }
+  const depths = computeDepths();
+  const rows = [];
+  for(const [nid, d] of depth){
+    if(nid === id) continue;
+    const n = KG.NODES[nid];
+    if(!n) continue;
+    // 链：从这个点**往目标走**的那几步（不含它自己 —— 名字上面已经写了）
+    const chain = [];
+    let cur = parent.get(nid), guard = 0;
+    while(cur !== undefined && guard++ < 24){
+      chain.push(KG.NODES[cur] ? KG.NODES[cur].zh : '?');
+      if(cur === id) break;
+      cur = parent.get(cur);
+    }
+    // 教材位置
+    const gi = n.oc;
+    // **CNS 在 IIFE 里面** —— 这段代码在外面，得从 D 里取。
+    const u = gi >= 0 ? ((KG.D.cns || [])[gi] || null) : null;
+    rows.push({
+      nid, name: n.zh, dz: n.dz, grade: n.a1, d, chain,
+      unit: u ? u[0] : '', book: u ? u[1] : '',
+      dp: depths.get(nid) || 0,
+      quote: kgTextText(nid),
+    });
+  }
+  // **越深越靠前**（那是更基础的）��同深度按年级排。
+  rows.sort((a,b) => (b.d - a.d) || (a.grade - b.grade) || a.name.localeCompare(b.name));
+  return rows;
+}
+
+function openPath(id){
+  const rows = pathRows(id);
+  const n = KG.NODES[id];
+  document.getElementById('pathName').textContent = n.zh;
+  const grades = [...new Set(rows.map(r => r.grade))].sort((a,b)=>a-b);
+  document.getElementById('pathSub').textContent =
+    '往回 ' + PATH_DEPTH + ' 层共 ' + rows.length + ' 个前置 · 从最早的开始学';
+  document.getElementById('pathIntro').innerHTML = rows.length
+    ? '<b>' + kgEsc(n.zh) + '</b> 之前要会的东西，按<b>先修关系</b>排成了一条路：' +
+      '越靠前越基础。' +
+      (grades.length ? '这些前置在教材里跨到 ' +
+        grades.map(g => (window.GRADE_ZH && window.GRADE_ZH[g]) || g).join(' → ') + '。' : '') +
+      ' **顺序按先修排，不按教材排** —— 教材把 A 排在 B 前面，' +
+      '不等于学 B 必须先会 A。'
+    : '<b>' + kgEsc(n.zh) + '</b> 在图谱里没有记录任何前置 —— ' +
+      '要么它真是链的起点，要么数据在这一片是空的。';
+
+  document.getElementById('pathList').innerHTML = rows.map((r, i) =>
+    '<li data-id="' + r.nid + '">' +
+      '<div class="rk">' + (i+1) + '</div>' +
+      '<div><div class="nm">' + kgEsc(r.name) + '</div>' +
+      '<div class="why"><em>→</em> ' + r.chain.map(kgEsc).join(' <em>→</em> ') + '</div>' +
+      '<div class="tags">' +
+      '<span class="tag">' + ((window.GRADE_ZH && window.GRADE_ZH[r.grade]) || r.grade) + '</span>' +
+      (r.unit
+        ? '<span class="tag">' + kgEsc(r.book) + ' ' + kgEsc(r.unit) + '</span>'
+        // **没有教材位置的**：能力底座（不是章节，是底层能力）、
+        // 人教版里的对应概念（沪教版没单列）。
+        : '<span class="tag">' + kgEsc(r.dz || '前置概念') + '</span>') +
+      '<span class="tag">离目标 ' + r.d + ' 层</span>' +
+      '</div>' +
+      (r.quote ? '<div class="vt"><b>教材原话</b> · ' + kgEsc(r.quote) + '</div>' : '') +
+      kgKxHTML(r.nid) +
+      kgHardHTML(r.nid) +
+      '</div>' +
+      '<div class="sc">' + r.d + '</div>' +
+    '</li>').join('') ||
+    '<li style="grid-template-columns:1fr;color:#8b93a7">往回 ' + PATH_DEPTH +
+    ' 层没找到任何前置。</li>';
+  document.getElementById('pathFoot').textContent =
+    '每条都标了它在教材里的位置 —— 补课、排课照着翻书就行。';
+  document.getElementById('path').hidden = false;
+}
+function closePath(){ document.getElementById('path').hidden = true; }
+document.getElementById('cPath').addEventListener('click', ()=>{
+  const cid = KG.cardId();
+  if(cid >= 0) openPath(cid);
+});
+document.getElementById('pathClose').addEventListener('click', closePath);
+document.getElementById('pathList').addEventListener('click', e=>{
+  const li = e.target.closest('li[data-id]');
+  if(!li) return;
+  closePath();
+  KG.showCard(+li.dataset.id);
+});
+document.getElementById('pathCopy').addEventListener('click', async ()=>{
+  const cid = KG.cardId();
+  if(cid < 0) return;
+  const rows = pathRows(cid);
+  const L = ['# 学习路径：' + KG.NODES[cid].zh, ''];
+  rows.forEach((r, i) => {
+    L.push((i+1) + '. **' + r.name + '**' +
+      (r.unit ? '（' + r.book + ' ' + r.unit + '）' : '') +
+      ' — ' + r.chain.join(' → '));
+    if(r.quote) L.push('   > 教材原话：' + r.quote);
+  });
+  L.push('');
+  L.push('> 顺序按先修关系排，不按教材排。');
+  const txt = L.join('\n');
+  try{
+    await navigator.clipboard.writeText(txt);
+    say('学习路径已复制到剪贴板');
+  }catch(err){
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove();
+    say('学习路径已复制');
+  }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && !document.getElementById('path').hidden){
+    closePath(); e.stopPropagation();
+  }
+});
+document.getElementById('cGap').addEventListener('click', ()=>{
+  const cid = KG.cardId();
+  if(cid >= 0) openGap(cid);
+});
+document.getElementById('gapClose').addEventListener('click', closeGap);
+document.getElementById('gapList').addEventListener('click', e=>{
+  const li = e.target.closest('li[data-id]');
+  if(!li) return;
+  const nid = +li.dataset.id;
+  closeGap();
+  KG.showCard(nid);
+});
+document.getElementById('gapCopy').addEventListener('click', async ()=>{
+  const cid = KG.cardId();
+  if(cid < 0) return;
+  const txt = gapCardText(cid, gapRows);
+  try{
+    await navigator.clipboard.writeText(txt);
+    say('选题卡已复制到剪贴板');
+  }catch(err){
+    // 剪贴板 API 在非 https / 无权限时会拒绝，给个能手动拿走的兜底
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove();
+    say('选题卡已复制');
+  }
+});
+document.addEventListener('keydown', e=>{
+  // **面板开着时按 Escape，只关面板，别把底下的卡片也关了。**
+  // 主 IIFE 的全局 Escape 处理器在 window 上（冒泡的最后一步），
+  // 它会 `card.classList.remove('on')` —— 卡片一点，卡片就没了。
+  // document 的处理器比 window 先跑，在这里 stopPropagation 就能挡住。
+  if(e.key === 'Escape' && !document.getElementById('gap').hidden){
+    closeGap(); e.stopPropagation();
+  }
+});
+</script>
+</body>
+</html>

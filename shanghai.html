@@ -179,6 +179,12 @@ body{
    跟第 5 档「教材引入路径」（正文回指句）分开：一个是教材画的网络，
    一个是教材正文里的话。 */
 #card .chain .dep .sg6{color:#5eead4;background:rgba(94,234,212,.11);border-color:rgba(94,234,212,.3)}
+/* 第 9 档：教材序 —— **教材编者排的教学先后，不是先修关系**。
+   小学科学站专用。用**虚线边框**跟其余七档区分：
+   实线 = 有据可查的先修关系，虚线 = 「教材先教了它」这个顺序事实。
+   颜色也不能跟「上游」撞 —— 上游是青蓝，教材序用紫灰。 */
+#card .chain .dep .sg8{color:#c9b8e8;background:rgba(180,160,220,.09);
+  border-color:rgba(180,160,220,.42);border-style:dashed}
 #card .chain .dep .sus1{color:#ff9d6b;background:rgba(255,157,107,.12);border-color:rgba(255,157,107,.32)}
 #card .chain .dep .sus2{color:#ff7a7a;background:rgba(255,122,122,.14);border-color:rgba(255,122,122,.38)}
 #card .chain .dep .t{flex:1;min-width:0}
@@ -325,6 +331,11 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #gapList .vt,#pathList .vt{margin-top:7px;padding:7px 10px;border-left:2px solid #3d4a2c;
   background:rgba(185,214,127,.05);font-size:12px;color:#c8d6b8;line-height:1.65}
 #pathList .vt{border-left-color:#4a3d2c;background:rgba(255,209,102,.05);color:#e0d0a8}
+/* 小学科学教材位置 —— **另一套教材**（人教版《小学科学》，湖北教育出版社出版），
+   不是人教版初中物理那本。用青色边跟别的教材信息区分开，
+   免得读成「就是那本初中教材」。 */
+#gapList .vt.kx,#pathList .vt.kx{border-left-color:#2c5a52;background:rgba(67,217,192,.06);color:#a8d8ce}
+#gapList .vt.kx b,#pathList .vt.kx b{color:#5fd8bf;font-weight:700}
 #gapList .vb,#pathList .vb{margin-top:7px;padding:7px 10px;border-left:2px solid #2c3646;
   background:rgba(120,160,255,.05);border-radius:0 6px 6px 0}
 #gapList .vb .vh{font-size:10.5px;color:#6b7488;margin-bottom:4px;letter-spacing:.02em}
@@ -511,7 +522,8 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
     K12-KGraph 本身是跨国的知识点集，这里按<b>沪教版/沪科版</b>教材排序 —— 节点、页码、公式全部来自上海教材本身。</span><br>
     <b>可视化与校验</b> 本项目自建 · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
     · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a>
-    · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a><br>
+    · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a>
+    · <a href="./kx.html" target="_blank" rel="noopener">小学科学版</a><br>
     <span class="attr2">数据质量页把倒挂、覆盖缺口、可疑边、裁决账本全摊开 —— 有问题的边不藏。</span>
   </div>
 </div>
@@ -840,11 +852,17 @@ function project(){
 function drawEdges(){
   const BUCKETS = 4;
   const paths = [[],[],[],[]];
+  /* **教材序边（来源码 8）单独一组，画成虚线** ——
+     教材序是「编者先教哪个后教哪个」，**不是先修关系**。
+     实线 = 有据可查的先修关系，虚线 = 顺序事实。
+     跟其余七档区分开是实线，颜色也不能跟「上游」撞。 */
+  const orderPaths = [];
   for(let e=0;e<D.edges.length;e++){
-    const [t,p] = D.edges[e];
+    const [t,p,src] = D.edges[e];
     if(projK[t] < -1e8 || projK[p] < -1e8) continue;
     const on = activeSet.size ? (activeSet.has(t) && activeSet.has(p)) : false;
     if(activeSet.size && !on) continue;
+    if(src === 8){ orderPaths.push(t, p); continue; }
     const kk = (projK[t] + projK[p]) / 2;
     let b = Math.floor((1.9 - kk) * 1.9);
     if(b<0) b=0; if(b>BUCKETS-1) b=BUCKETS-1;
@@ -864,6 +882,21 @@ function drawEdges(){
       : 'rgba(190,190,210,' + (0.055 * fade + 0.012).toFixed(3) + ')';
     ctx.lineWidth = activeSet.size ? 1.1 : 0.5 + fade*0.5;
     ctx.stroke();
+  }
+  /* 教材序：虚线 + 偏紫的灰，不跟「上游」的青蓝撞 */
+  if(orderPaths.length){
+    ctx.save();
+    ctx.beginPath();
+    for(let i=0;i<orderPaths.length;i+=2){
+      const t = orderPaths[i], p = orderPaths[i+1];
+      ctx.moveTo(projX[p], projY[p]);
+      ctx.lineTo(projX[t], projY[t]);
+    }
+    ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = activeSet.size ? 'rgba(201,184,232,.55)' : 'rgba(180,160,220,.16)';
+    ctx.lineWidth = activeSet.size ? 1.0 : 0.7;
+    ctx.stroke();
+    ctx.restore();
   }
 }
 
@@ -1539,6 +1572,10 @@ window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
               // **教材自己标的难点**（「思考」「探究」框）——
               // 面板里要显示「教材在这里标了 N 处思考/探究」。
               hard: D.hard || {},
+              // **小学科学教材位置**（人教版《小学科学》1上~6下）——
+              // 上游图谱小学段只有数学，物化生一个都没有（上游 issue #10）。
+              // 这一层补上「这个概念在小学科学哪本书哪一节哪一页」。
+              kx: D.kx || {},
               nodeColor, edgeColor, getPal: ()=>PAL, setPal: (k,v)=>{PAL[k]=v;},
               // **脉络视图那块代码在 IIFE 外面**，要自己取配色。
               // 只递 getPal() 不够 —— PAL 本身要递出去（它是同一个对象引用，
@@ -1941,6 +1978,16 @@ function gapCardText(id, rows){
       if(t) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t);
     });
   }
+  // 小学科学教材位置 —— 家长/老师最想要的一句：「小学在哪本书哪一页」
+  const withKx = rows.slice(0, 8).map(r => kgKxText(r.nid)).filter(Boolean);
+  if(withKx.length){
+    lines.push('');
+    lines.push('## 小学科学（人教版）里也在');
+    rows.slice(0, 8).forEach((r, i) => {
+      const t = kgKxText(r.nid);
+      if(t) lines.push('### ' + (i+1) + '. ' + r.name + '\n\n' + t);
+    });
+  }
   lines.push('');
   lines.push('> 排序信号：杠杆（被依赖数）× 早晚（链深）× 是不是链根 × 离症状距离 × 覆盖薄弱。');
   lines.push('> 数据来自中文 K12 知识图谱（沪教版教材排序），每条边可查来源。');
@@ -2006,6 +2053,29 @@ function kgTextText(j){
   const t = (KG.text && KG.text[j]) || [];
   return t.length ? t[0] : '';
 }
+/* 小学科学教材位置（人教版《小学科学》1上~6下）。
+ *
+ * **这一层补的是图谱最空的那一段**：上游图谱小学阶段只有数学，
+ * 物理化学生物在小学一个都没有（上游 issue #10）。
+ * 但小学科学教材里有这些概念（磁极、热胀冷缩、电磁铁、光合作用…），
+ * **它们在上游图谱里都存在**，只是上游标在初中/高中册次。
+ *
+ * 显示成「小学科学 · 三上 · 有趣的磁铁 › 磁铁的磁极 · 第 2 页」，
+ * **标清是另一套教材**（人教版小学科学 = 湖北教育出版社出版，
+ * 跟人教版初中物理不是一本书），别让人以为这是初中那本。
+ */
+function kgKxHTML(j){
+  const k = (KG.kx && KG.kx[j]) || [];
+  if(!k.length) return '';
+  const VOL = {'1a':'一上','1b':'一下','2a':'二上','2b':'二下','3a':'三上','3b':'三下',
+               '4a':'四上','4b':'四下','5a':'五上','5b':'五下','6a':'六上','6b':'六下'};
+  const items = k.map(x => {
+    const vol = VOL[x[0]] || x[0];
+    const seg = [x[1], x[2]].filter(Boolean).join(' › ');
+    return '《科学》' + vol + (seg ? ' · ' + seg : '') + (x[3] ? ' · 第 ' + x[3] + ' 页' : '');
+  });
+  return '<div class="vt kx"><b>小学科学</b> · ' + kgEsc(items.join('；')) + '</div>';
+}
 
 /* 教材自己标的难点（「思考」「探究」框）。
  *
@@ -2034,6 +2104,21 @@ function kgHardText(j){
   return '教材在这里标了 **' + h[0] + ' 处思考/探究**'
        + (where ? '（' + where + '）' : '')
        + (h[1] ? '\n\n> ' + h[1] : '');
+}
+/* 小学科学教材位置（人教版《小学科学》1上~6下）。
+   选题卡要能直接用这一条 —— 「这个概念小学在哪本书哪一页」，
+   是家长/老师最想要的那句话。 */
+function kgKxText(j){
+  const k = (KG.kx && KG.kx[j]) || [];
+  if(!k.length) return '';
+  const VOL = {'1a':'一上','1b':'一下','2a':'二上','2b':'二下','3a':'三上','3b':'三下',
+               '4a':'四上','4b':'四下','5a':'五上','5b':'五下','6a':'六上','6b':'六下'};
+  const items = k.map(x => {
+    const vol = VOL[x[0]] || x[0];
+    const seg = [x[1], x[2]].filter(Boolean).join(' › ');
+    return '《科学》' + vol + (seg ? ' · ' + seg : '') + (x[3] ? ' · 第 ' + x[3] + ' 页' : '');
+  });
+  return '小学科学（人教版）里也在：' + items.join('；');
 }
 function kgVisionText(j){
   const v = kgVision(j);
@@ -2080,6 +2165,7 @@ function openGap(id){
       '</div>' +
       kgHardHTML(r.nid) +
       kgTextHTML(r.nid) +
+      kgKxHTML(r.nid) +
       kgVisionHTML(r.nid) +
       '</div>' +
       '<div class="sc">' + r.score.toFixed(1) + '</div>' +
@@ -2183,6 +2269,7 @@ function openPath(id){
       '<span class="tag">离目标 ' + r.d + ' 层</span>' +
       '</div>' +
       (r.quote ? '<div class="vt"><b>教材原话</b> · ' + kgEsc(r.quote) + '</div>' : '') +
+      kgKxHTML(r.nid) +
       kgHardHTML(r.nid) +
       '</div>' +
       '<div class="sc">' + r.d + '</div>' +
