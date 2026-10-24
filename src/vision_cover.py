@@ -6,7 +6,7 @@ import collections
 import json
 import pathlib
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 PAIRS = [
     ("data/vision-pages.jsonl", "data/vision-cover.json"),
     ("data/vision-pages-alt.jsonl", "data/vision-cover-alt.json"),

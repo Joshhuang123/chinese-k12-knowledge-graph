@@ -36,7 +36,7 @@ import pathlib
 import re
 import sys
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 TPL = BASE / "viz" / "template.html"
 KG = BASE / "data" / "kx-graph.json"
 SECTIONS = BASE / "data" / "kx-sections.json"

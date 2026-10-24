@@ -47,7 +47,7 @@ import re
 import sys
 import unicodedata
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 TOC = BASE / "data" / "kx-toc.json"
 SECTIONS = BASE / "data" / "kx-sections.json"
 KXV = BASE / "data" / "concept-vision-kx.jsonl"

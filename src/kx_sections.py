@@ -28,7 +28,7 @@ import subprocess
 import sys
 import time
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 TOC = BASE / "data" / "kx-toc.json"
 GRAPH = BASE / "data" / "normalized" / "graph.json"
 IMG = BASE / "data" / "pdf-cache" / "kx"

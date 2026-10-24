@@ -38,7 +38,7 @@ import re
 import sys
 import time
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE / "src"))
 import vision_pages as V          # noqa: E402
 

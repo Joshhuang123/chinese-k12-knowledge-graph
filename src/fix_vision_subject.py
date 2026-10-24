@@ -27,7 +27,7 @@ import json
 import pathlib
 import sys
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 VFILE = BASE / "data" / "vision-pages-sh.jsonl"
 STJ = BASE / "data" / "shanghai-textbooks.json"
 

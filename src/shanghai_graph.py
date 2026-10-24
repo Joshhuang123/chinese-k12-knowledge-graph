@@ -54,7 +54,7 @@ import pathlib
 import re
 import sys
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 TOC = BASE / "data" / "shanghai-toc.json"
 CVIS = BASE / "data" / "concept-vision-sh.jsonl"
 GRAPH = BASE / "data" / "normalized" / "graph.json"

@@ -24,7 +24,7 @@ import pathlib
 import re
 import sys
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 KG = BASE / "data" / "kx-graph.json"
 TOC = BASE / "data" / "kx-toc.json"
 SEC = BASE / "data" / "kx-sections.json"

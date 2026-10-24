@@ -38,7 +38,7 @@ import re
 import subprocess
 import sys
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 IMG = BASE / "data" / "pdf-cache" / "hujiao"
 OUT = BASE / "data" / "shanghai-toc.json"
 TESSERACT = "/opt/homebrew/bin/tesseract"
