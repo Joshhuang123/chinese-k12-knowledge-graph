@@ -6,8 +6,15 @@
 data/raw/
 
 # ── 归一化结果不入库 ──
-# 构建产物，由原件 + 脚本可完全复现。
-data/normalized/
+# 构建产物，由原件 + 脚本可复现 —— **除了下面两个白名单**：
+# selfbuilt-edges.json 的输入 data/lmm-out/ 是一次性模型产出（不再生），
+# confirmed-wrong.json 是逐条人工裁决的账本；丢了它们构建就永久降级
+# （build_viz 现在会警告，ISSUE-45）。
+# 注意目录必须用 /* 写法白名单才生效：整目录忽略（dir/）时 git 根本
+# 不进去，! 规则永远轮不到。
+data/normalized/*
+!data/normalized/selfbuilt-edges.json
+!data/normalized/confirmed-wrong.json
 
 # ── 政府公开文件缓存不入库 ──
 # 上海市教委《教学用书目录》原件。**公开文件也不转手** ——
@@ -46,3 +53,4 @@ __pycache__/
 # ── 盲测模型产出（派生产物）──
 # docs/lmm-protocol.md 里说的模型输出片。跑法见 src/make_batches.py
 data/lmm-out/
+node_modules

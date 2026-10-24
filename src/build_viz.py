@@ -115,6 +115,15 @@ def main():
             n.setdefault("grade", 0)
             nodes.append(n)
             idx[n["id"]] = len(nodes) - 1
+    else:
+        # 这里曾经是静默降级：缺文件就当没有自建层，构建照常出页面，
+        # 少一万多条边而不报任何错（只能靠 health_check 的 README 数字
+        # 对账间接变红）。ISSUE-45。
+        print("⚠️  缺 data/normalized/selfbuilt-edges.json —— 构建降级为「仅上游边」，\n"
+              "    页面会缺 模型重建 / 能力底座 / 自建概念 三个来源档，README 对账也会红。\n"
+              "    它由 build_layers.py 合成，输入 data/lmm-out/ 是一次性模型产出、不入库；\n"
+              "    手上有备份就放到 data/normalized/ 并 git add（.gitignore 已开白名单）。",
+              file=sys.stderr)
 
     # 依赖关系（DAG 校验发现的环在这里被截断，避免渲染时死循环）
     prereq = defaultdict(set)
@@ -439,6 +448,12 @@ def main():
     if FIX.exists():
         for v in json.loads(FIX.read_text(encoding="utf-8"))["verdicts"]:
             fixes.append(v)
+    else:
+        # 与 SELF 同病：缺了就少一批 A 档双证据修正边，也是静默的。ISSUE-45。
+        print("⚠️  缺 data/normalized/confirmed-wrong.json —— 已裁决的 A 档双证据修正边"
+              "不会应用。\n"
+              "    备份放回 data/normalized/ 并 git add（.gitignore 已开白名单）。",
+              file=sys.stderr)
     fixed_del, fixed_rev = set(), []
     for v in fixes:
         if v["action"] == "删除":
