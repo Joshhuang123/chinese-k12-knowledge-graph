@@ -161,6 +161,9 @@ def main():
            "info": [{"code": c, "detail": d} for c, d in info],
            "passed": len(errors) == 0}
 
+    # --json 也落盘：CI / 脚本消费 JSON 的同时，报告文件不能缺
+    # （原来这个分支只打印不写文件，REPORT 变量白算了）。
+    REPORT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     if "--json" in sys.argv:
         print(json.dumps(out, ensure_ascii=False, indent=2))
         return 0 if out["passed"] else 1

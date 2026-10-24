@@ -43,11 +43,11 @@ SUBJ_ZH = {"math": "数学", "physics": "物理", "chemistry": "化学",
 
 
 def main():
-    g = json.loads(GRAPH.read_text())
+    g = json.loads(GRAPH.read_text(encoding="utf-8"))
     nodes = {n["id"]: n for n in g["nodes"]}
-    tax = json.loads(L0_FILE.read_text())
-    merged = json.loads(MERGED.read_text())
-    l1 = json.loads(L1_FILE.read_text())
+    tax = json.loads(L0_FILE.read_text(encoding="utf-8"))
+    merged = json.loads(MERGED.read_text(encoding="utf-8"))
+    l1 = json.loads(L1_FILE.read_text(encoding="utf-8"))
     merged["_upstream"] = [e for e in g["edges"] if e["type"] == "prerequisites_for"]
 
     l0 = {a["id"]: a for a in tax["abilities"]}
@@ -160,7 +160,7 @@ def main():
     # 否则非数学的能力边一条都建不出来（数学 415 条，非数学 419 条，
     # 占了四成）。
     for f in sorted((BASE / "data" / "lmm-out").glob("*.json")):
-        for row in json.loads(f.read_text()):
+        for row in json.loads(f.read_text(encoding="utf-8")):
             tgt = row.get("id")
             if tgt not in nodes:
                 continue
@@ -268,7 +268,7 @@ def main():
     OUT.write_text(json.dumps({
         "nodes": out_nodes, "edges": uniq, "stats": dict(stat),
         "conflicts": conflicts,
-    }, ensure_ascii=False, indent=1))
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
 
     print("═══ 自建层 ═══")
     print(f"  L0 能力节点   {stat['l0_nodes']:>4} 个（手工定，不落册）")

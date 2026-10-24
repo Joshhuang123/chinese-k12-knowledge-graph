@@ -20,6 +20,7 @@ import argparse
 import json
 import pathlib
 import shutil
+import os
 import subprocess
 import sys
 import time
@@ -32,7 +33,8 @@ SHOTS = REC / "frames"
 REC_HTML = REC / "_rec.html"
 OUT = VIZ / "录屏.mp4"
 
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+# 与 test_*.mjs 同一个约定：CHROME 环境变量可覆盖（Linux/自定义路径）
+CHROME = os.environ.get("CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 W, H = 1600, 1000
 FPS = 24
 
