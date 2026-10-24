@@ -1215,7 +1215,7 @@ function render(){
     return `<li class="r${i===selI?' sel':''}" role="option" id="r-${i}" ` +
       `aria-selected="${i===selI}" data-i="${i}">` +
       `<span class="sw" style="background:${nodeColor(n)}"></span>` +
-      `<span>${n.zh}</span><span class="bk">${n.dz}</span></li>`;
+      `<span>${kgEsc(n.zh)}</span><span class="bk">${kgEsc(n.dz)}</span></li>`;
   }).join('') +
   // 视觉上的计数。对读屏是冗余的（下面 say() 会单独播），
   // 所以标 aria-hidden 避免同一件事念两遍。
@@ -1357,7 +1357,7 @@ function showCard(id){
   document.getElementById('cDesc').textContent = n.desc || '（该条目没有描述文本）';
   document.getElementById('cMeta').innerHTML =
     (n.core ? '<span class="hi">9–10 岁核心</span>' : '<span>低年级基础</span>') +
-    '<span>' + n.evn + ' 条掌握证据</span><span>重要度 ' + n.cen.toFixed(3) + '</span>';
+    '<span>' + kgEsc(n.evn) + ' 条掌握证据</span><span>重要度 ' + n.cen.toFixed(3) + '</span>';
 
   // 前后依赖：直接列出名字，并且每一项都能点进去。
   // 名字里有尖括号的（数据里确实有「反比例函数的性质（k<0）」这类），
@@ -2153,7 +2153,7 @@ function openGap(id){
     '<li data-id="' + r.nid + '">' +
       '<div class="rk">' + (i+1) + '</div>' +
       '<div><div class="nm">' + kgEsc(r.name) + '</div>' +
-      '<div class="why">' + r.why + '</div>' +
+      '<div class="why">' + kgEsc(r.why) + '</div>' +
       '<div class="tags"><span class="tag">链深 ' + r.dp + '</span>' +
       '<span class="tag">离症状 ' + r.dist + ' 层</span>' +
       '<span class="tag">前置标注 ' + r.ann + ' 条</span>' +
