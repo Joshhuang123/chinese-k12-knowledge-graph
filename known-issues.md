@@ -67,6 +67,7 @@
 | ISSUE-27 | 代码库巡检的六条发现 | `python3 src/audit_findings.py` |
 | ISSUE-28 | 优化方向 | —— （不是 bug，是判断） |
 | ISSUE-29 | 修 ISSUE-27 的结果 | `python3 src/health_check.py` |
+| ISSUE-45 | 构建可复现性断裂（硬编码路径 + 静默降级） | `git clone 后 python3 src/build_viz.py` → 看 stderr |
 
 **跑浏览器测试**要 `puppeteer-core`：
 
@@ -4169,3 +4170,74 @@ ISSUE-43 补的是**教材位置**（上游已有的概念，补上「它在小�
 - **67 个节点里，一二年级只有 4 个** —— 小学一二年级的教材内容是
   「走近科学 / 感觉器官 / 家养动物 / 使用工具 / 位置和方向」这类，
   确实没有多少「概念」，这是教材的性质，不是抽取的失败。
+
+---
+
+## ISSUE-45　构建可复现性断裂：14 处硬编码路径 + 自建层素材静默降级
+
+**发现方式**：换机器后在新克隆上跑构建，发现两站脚本全部路径错误、主站构建悄悄缺层。
+
+### 事实一：14 个脚本硬编码了开发机的绝对路径
+
+`BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")`
+出现在上海站/小学科学站的全部构建、抓取、校验脚本里（build_shanghai.py、
+build_kx.py、check_kx.py、ocr_sh.py、shanghai_graph.py、kx_graph.py、
+shanghai_toc.py、shanghai_toc_vision.py、kx_toc_vision.py、kx_sections.py、
+hujiao_fetch.py、build_shanghai_quality.py、fix_vision_subject.py、vision_cover.py）。
+
+换任何一台机器（或换用户名），这 14 个脚本全部 FileNotFoundError。
+主站脚本用的 `Path(__file__).resolve().parent.parent` 是对的 —— 两套写法混用，
+写对的那套没被复制过去。
+
+**修法**：14 处统一改为 `pathlib.Path(__file__).resolve().parent.parent`。
+
+### 事实二：selfbuilt-edges.json / confirmed-wrong.json 缺失时静默降级
+
+`build_viz.py` 对这两个文件是 `if exists():` 没有 else：
+
+- 缺 selfbuilt-edges.json → 页面少 模型重建 11,826 + 能力底座 1,460 + 自建 等档位的边，
+  **不打印任何警告**，构建照常成功
+- 缺 confirmed-wrong.json → A 档双证据修正边不应用，同样静默
+
+而这两个文件的输入 `data/lmm-out/`（一次性盲测模型产出）和裁决过程
+**不入库、不可再生** —— `.gitignore` 原注释「构建产物，由原件 + 脚本可完全复现」
+对这两个文件不成立。新克隆上主线构建必然降级，唯一的发现渠道是
+health_check 的 README 数字对账间接变红。
+
+为什么不做「从成品 HTML 反解素材」：成品边集经过环截断、双向对裁决、
+fixes 改写，反解出来的不是原始素材；而且 health_check 的账本完整性不变式
+（素材每条边要么在成品要么在账本）会退化成同义反复，检查失去意义。
+
+**修法**：
+
+1. build_viz.py 两个缺文件分支补 stderr 警告（降级可以，静默不行）
+2. .gitignore 为这两个文件开白名单（`data/normalized/*` + `!` 两条），
+   手上有备份即可 `git add` 入库，管线恢复可复现
+3. 本条记账
+
+### 复现
+
+```bash
+# 事实一（修复前）：任何一个上海站脚本
+python3 src/build_shanghai.py   # → FileNotFoundError: /Users/huangjunhai/...
+# 事实二：删掉素材后构建，观察没有警告
+mv data/normalized/selfbuilt-edges.json /tmp/ && python3 src/build_viz.py
+# 修复后同样操作 → stderr 出现「⚠️ 缺 data/normalized/selfbuilt-edges.json」
+```
+
+### 同批修掉的小项
+
+- 搜索下拉未转义：`template.html` 的 `${n.zh}`/`${n.dz}` 进 innerHTML 前没转义
+  （数据里确有「反比例函数的性质（k<0）」这类名字；卡片侧早已转义，下拉漏了）。
+  `n.evn`、`r.why` 同批补上。四个已构建 HTML（index / viz/知识图谱3D /
+  shanghai / kx）同步打补丁。
+  **修这个时踩的坑（差点引入新 bug）**：模板里现成的 `esc()` 是 `showCard()`
+  内部的局部函数 —— 在 `render()`（搜索下拉）里引用它 = ReferenceError，
+  在 `showCard()` 里 `esc` 定义行**之前**引用它 = TDZ 错误。第一版补丁
+  就这么写错了，靠 headless Chrome 真页面注入自测抓出来
+  （`Uncaught ReferenceError: esc is not defined`）。正确写法是用 IIFE
+  顶层的 `kgEsc()`。教训进账本：**手补 3.7MB 单文件产物必须真浏览器验证，
+  `node --check` 只能查语法查不了作用域**。
+- `build_layers.py` 模块级 IO 六处没带 `encoding="utf-8"`（全仓 200+ 处都带了）。
+- `record.py` Chrome 路径硬编码 → 支持 `CHROME` 环境变量（与 test_*.mjs 同款约定）。
+- `validate.py --json` 不落盘报告 → 现在写 `data/normalized/validation.json`。
