@@ -4,7 +4,34 @@
 > 转成结构化数据。**10,045 页 · 1,347 个概念拿到教材原话 · 291 个概念拿到教材的定义句。**
 > 另有**视觉层**：让多模态模型直接读扫描页，把 OCR 丢掉的**公式和图形**捞回来。
 
-## 为什么不是「把 PDF 抽成文本」
+## 先看这个：`data/DATASETS.json`
+
+**这个仓库有 35 个数据集、142 MB，字段结构有 7 种以上。**
+不知道该用哪个的话，**读这一个文件就够** —— 它列了每个数据集：
+
+- 是什么（`what`）、能回答什么问题（`use_for`）、怎么取（`how_to_use`）
+- 多少条、什么字段、一条样本长什么样
+- 顶层还有 `how_to_pick`：**按你的需求直接查表**
+
+```python
+import json
+cat = json.load(open("data/DATASETS.json", encoding="utf-8"))
+for d in cat["datasets"]:
+    if "公式" in d["what"]:
+        print(d["file"], d["records"], d["fields"])
+```
+
+它是**现算**的（`src/build_datasets_catalog.py` 从真实文件读条数/字段/样本），
+所以不会跟实际数据漂移。
+
+## 下面按层讲
+
+OCR 层两个（`lessons.jsonl` + `concept-text.jsonl`），
+视觉层两个（`vision-pages.jsonl` + `concept-vision.jsonl`）。
+后面还有学习卡（⑥）、页索引、Milvus 层（可选）——
+**完整清单看上面的 `data/DATASETS.json`。**
+
+### 为什么不是「把 PDF 抽成文本」
 
 抽文本对人眼够用、对 agent 不够。实测人教七下的 OCR：
 
@@ -17,11 +44,6 @@
 拿这些名字当锚点，就能回答「教材在这个概念周围到底说了什么」。
 
 公式丢了不要紧。视频稿要的是**「教材的原话 + 第几页 + 第几节」**，那部分是可以拿回来的。
-
-## 四个产物
-
-OCR 层两个（`lessons.jsonl` + `concept-text.jsonl`），
-视觉层两个（`vision-pages.jsonl` + `concept-vision.jsonl`）。下面分开讲。
 
 ### ① `data/lessons.jsonl` —— 一页一条（教材的「课」）
 

@@ -36,6 +36,34 @@
 
 **校验本身也需要被校验** —— 这是这个项目真正的立足点。详见 [`known-issues.md`](known-issues.md)，包括我们自己的校验层出过的 bug。
 
+---
+
+## 这个项目有什么数据
+
+**35 个数据集，142 MB，7 种以上字段结构。**
+不知道用哪个的话，读一个文件就够：
+
+```bash
+cat data/DATASETS.json      # 机器可读（含每个数据集的字段表和样本行）
+```
+
+或者看人读的：[`docs/data-catalog.md`](docs/data-catalog.md)（自动生成的，跟数据同步）。
+
+按需求查：
+
+| 你想干什么 | 用哪个 |
+|---|---|
+| 「某节课讲了什么」 | `data/lessons.jsonl`（人教）/ `lessons-sh.jsonl`（沪教） |
+| 「这个概念的教材原话」 | `data/concept-text.jsonl`（人教）/ `concept-text-sh.jsonl`（沪教） |
+| 「公式和图形」 | `data/concept-vision*.jsonl` |
+| **「我要自学这个概念」** | **`data/learn-cards.jsonl`** —— 六个面一次给全，每段带来源标记 |
+| 「这个概念在教材哪几页」 | `data/page-index.json` |
+| 「这个概念前面该学什么」 | `learn-cards.jsonl` 的 `prereq` 面（跟站点「学习路径」面板同源） |
+| 「用自己的话问教材」 | Milvus 层（**可选**，见九之四） |
+
+字段说明和取用示例在 [`docs/agent-data.md`](docs/agent-data.md)。
+
+---
 
 ## 进展
 
@@ -656,6 +684,7 @@ src/fix_vision_subject.py  视觉层的学科字段归一（中文名 → 图谱
 src/build_shanghai_quality.py 上海版质量页 + 内容缺口地图
 src/test_shanghai_site.mjs 上海版站点测试（15 项）
 src/build_quality.py    数据质量公开页 quality.html
+src/build_datasets_catalog.py 数据清单（**现算**：条数/字段/样本，防漂移）
 src/build_learn_cards.py 知识点「学习卡」（R-1：让人能自学）
 src/build_page_index.py 教材原页段落索引（引文反查定位）
 src/quote_repair.py    教材原话回原文补全（PDF 硬换行切断了词）
@@ -666,6 +695,7 @@ src/query_milvus.py    查 Milvus（**可选**：语义检索 / 按名查 / 查�
 src/check_milvus.py    Milvus 层校验（**可选**：8 组判据，含正负例 golden set）
 src/check_milvus_judgement.py Milvus 检查的判别力自检（**可选**：注入脏数据 → 必须报红）
 requirements-milvus.txt Milvus 层的依赖（**可选装**，主项目不需要）
+data/DATASETS.json     **数据清单**（入库，35 个数据集：是什么/怎么取/字段/样本）
 data/learn-cards.jsonl  知识点自学卡（入库，8,590 张 / 六面 / 17 MB）
 data/page-index.json    教材原页段落索引（入库，2,825 概念 / 6,414 段）
 data/quote-repairs.json 引文判定缓存（入库，15,282 条 / 1.2 MB）

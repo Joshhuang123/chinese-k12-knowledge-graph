@@ -343,6 +343,41 @@ def layer1(g, sb, payload):
     else:
         warn("data/learn-cards.jsonl 不存在 —— 跳过学习卡核查")
 
+    # 1g. 数据清单（防漂移）
+    #
+    # 清单是**现算**的 —— 条数/字段/样本都从真实文件读出来。
+    # 所以它一旦跟数据对不上，就是**没重跑生成脚本**，
+    # 这时清单会骗人（说 8,590 条，实际 8,591 条）。
+    CATALOG = BASE / "data" / "DATASETS.json"
+    if CATALOG.exists():
+        cat = json.load(open(CATALOG, encoding="utf-8"))
+        ds = cat.get("datasets") or []
+        ok(len(ds) >= 30, f"数据清单覆盖 ≥30 个数据集（实测 {len(ds)}）")
+        # 每个入库的数据集都应该在清单里
+        listed = {d["file"] for d in ds}
+        missing = []
+        for f in sorted((BASE / "data").glob("*.jsonl")):
+            rel = f"data/{f.name}"
+            if rel not in listed and f.name != "DATASETS.json":
+                missing.append(rel)
+        ok(not missing, "data/ 下每个数据集都在清单里", f"漏了：{missing[:3]}")
+        # 清单里的条数必须跟真实文件一致
+        stale = []
+        for d in ds:
+            p = BASE / d["file"]
+            if not p.exists():
+                continue
+            if p.suffix == ".jsonl":
+                n = sum(1 for line in p.open(encoding="utf-8") if line.strip())
+                if isinstance(d["records"], int) and n != d["records"]:
+                    stale.append((d["file"], d["records"], n))
+        ok(not stale, "清单里的条数跟真实文件一致（没漂移）", f"{stale[:3]}")
+        # 每个数据集都要有人话说明
+        nodesc = [d["file"] for d in ds if not d.get("what")]
+        ok(not nodesc, "每个数据集都写了「是什么」", f"{nodesc[:3]}")
+    else:
+        warn("data/DATASETS.json 不存在 —— 跳过数据清单核查")
+
     return payload
 
 
