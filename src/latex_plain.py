@@ -403,7 +403,7 @@ def _convert(s: str, depth: int = 0) -> str:
                 # **组里的内容要先递归转一遍**。
                 # `a^{n\text{个}}` 这种形状，组里混着命令；
                 # 不转的话 `\text` 的 t/e/x/t 会被当成上标字符，
-                # 页面���就漏出 `\teˣt个` 这种东西。
+                # 页面一多就漏出 `\teˣt个` 这种东西。
                 out.append(_sup_sub(_convert(arg, depth + 1), SUP if ch == "^" else SUB))
                 i = j2
                 continue

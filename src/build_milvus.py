@@ -123,7 +123,7 @@ RE_LATIN_JUNK = re.compile(r"(?<![A-Za-z])[A-Za-z]([A-Za-z])\1{7,}(?![A-Za-z])")
 
 
 def is_ocr_junk(text: str) -> bool:
-    """这一段是不是**OCR 残骸**（教材扫描页被读崩的那���）。
+    """这一段是不是**OCR 残骸**（教材扫描页被读崩的那种）。
 
     ## 这里踩过的三次坑（都是量出来的）
 
@@ -617,7 +617,7 @@ def main() -> int:
         # ⚠️ 自建层的边多一个来源码（model / derived / intro…）——
         #    schema 里没声明就会报 "Attempt to insert an unexpected field `src`"；
         #    声明了但没给值会报 "Insert missed an field `src`" ——
-        #    **两���都要管**：声明 + default_value
+        #    **两边都要管**：声明 + default_value
         FieldSchema(name="src", dtype=DataType.VARCHAR, max_length=32),
     ]
     ensure_collection(client, "kg_prereq", fields3,

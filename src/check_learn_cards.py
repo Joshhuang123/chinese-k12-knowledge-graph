@@ -114,7 +114,7 @@ def main() -> int:
     print("\n3. 定义句准确")
     # ⚠️ **判据必须是独立实现** ——
     # 直接调 build_learn_cards.defines_this 是「自己验自己」：
-    # 那个函数放宽了，这��检查照样绿（实测破坏过一版，验出来）。
+    # 那个函数放宽了，这条检查照样绿（实测破坏过一版，验出来）。
     # 这里重新实现一遍判据（口径相同但代码独立），
     # 破坏生成器里的判据时这条会红。
     def def_target(q: str) -> str:
@@ -161,7 +161,7 @@ def main() -> int:
             if not check_defines(w["text"], core):
                 bad_def.append((c["name"], w["text"][:50]))
     ok(not bad_def,
-       f"教材定义句的定义对象都��概念本身（{n_def} 条全查）",
+       f"教材定义句的定义对象都是概念本身（{n_def} 条全查）",
        f"{len(bad_def)} 条不符：{bad_def[:3]}")
     # 定义句不能是题干
     Q_CUE = re.compile(r"(说一说|想一想|算一算|连一连|填一填|画一画|看一看|试一试|找一找"

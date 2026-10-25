@@ -106,7 +106,7 @@ def page_text(doc, i, dpi=200, psm="4"):
     """先试文本层，没有再 OCR。
 
     **一半以上的版本有文本层** —— 青岛版 6/6、北京版 3/6、苏科版七上
-    直接就能读出来又快又准；只有真正���扫描件才需要 OCR。
+    直接就能读出来又快又准；只有真正的扫描件才需要 OCR。
     之前一律走 OCR，把好材料也做坏了 —— 湘教那本扫描质量差，
     OCR 出来的目录全是乱码（章名读成「个单位」「(2) y=xr」）。
     """
@@ -378,7 +378,7 @@ def process(pdf, toc_scan=16):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--only")
-    ap.add_argument("--skip", help="跳过某个版本（人教用图谱里的现成结构，不��� OCR）")
+    ap.add_argument("--skip", help="跳过某个版本（人教用图谱里的现成结构，不用 OCR）")
     ap.add_argument("--out")
     args = ap.parse_args()
     if not MANIFEST.exists():

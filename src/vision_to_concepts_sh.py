@@ -176,7 +176,7 @@ def main() -> int:
     n_pages = sum(len(v) for v in by_book.values())
     print(f"上海教材页 {n_pages} 页 · {len(by_book)} 本")
 
-    # ── 2. 概念索引（��学科）────────────────────────────────────
+    # ── 2. 概念索引（按学科）────────────────────────────────────
     g = json.load(open(GRAPH, encoding="utf-8"))
     concepts = []
     for n in g["nodes"]:

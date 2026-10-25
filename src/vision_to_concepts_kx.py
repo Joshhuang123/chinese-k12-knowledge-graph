@@ -476,7 +476,7 @@ def main() -> int:
                 # 词还会零星出现（营养那页提到「蛋白质」「导体」做类比）。
                 def score(s2):
                     n = sec_hits[s2]
-                    # 该节所有命中页里，「相对节首的偏移」最小的那���
+                    # 该节所有命中页里，「相对节首的偏移」最小的那条
                     best_rel = min((pg - sec_starts.get(s2, pg)
                                     for pg in it["pgs"]
                                     if _sec_of(pg) == s2), default=10 ** 6)

@@ -172,7 +172,7 @@ def main() -> int:
     if args.dry_run:
         return 0
     if not todo:
-        print("没���要跑的")
+        print("没有要跑的")
         return 0
 
     t0 = time.time()
