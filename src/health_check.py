@@ -34,7 +34,7 @@ import pathlib
 import re
 import subprocess
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
 SRC = BASE / "src"
@@ -239,6 +239,90 @@ def layer1(g, sb, payload):
            f"= 成品图（{len(pname)}）")
     else:
         warn("full-stats.json 不存在，跳过口径复算")
+
+    # 1f. 学习卡（R-1 知识点内容召回）
+    # 这一层跟站点 payload **同源**（前置链直接读 payload 的边表），
+    # 所以这里重点查两件事：
+    #   ① 学习卡的前置链跟 payload 对得上（不是"大概一致"）
+    #   ② 每张卡的来源标记都在（一段没出处的文字比没有更糟）
+    CARDS = BASE / "data" / "learn-cards.jsonl"
+    if CARDS.exists():
+        cards = [json.loads(l) for l in CARDS.open(encoding="utf-8") if l.strip()]
+        ok(len(cards) == len(up_ids),
+           f"学习卡条数（{len(cards):,}）= 上游知识点数（{len(up_ids):,}）")
+
+        # 前置链跟 payload 的边表逐条比
+        pidx = {n[5]: n[0] for n in payload["nodes"]}
+        edge_pre = defaultdict(list)
+        for to, fr, _src, _sus in payload["edges"]:
+            edge_pre[to].append(fr)
+        bad_pre = []
+        for c in cards:
+            i = pidx.get(c["id"])
+            if i is None:
+                continue
+            site_ids = {payload["nodes"][fr][5] for fr in edge_pre.get(i, [])}
+            card_ids = {p["id"] for p in c.get("prereq", [])}
+            if site_ids != card_ids:
+                bad_pre.append(c["id"])
+        ok(not bad_pre,
+           f"学习卡的前置链跟 payload 边表**逐条一致**（{len(cards):,} 张全查）",
+           f"{len(bad_pre)} 张对不上：{bad_pre[:3]}")
+
+        # 来源标记
+        naked = sum(1 for c in cards
+                    for w in c.get("what", []) if not w.get("source"))
+        naked += sum(1 for c in cards
+                     for f in c.get("how", {}).get("formulas", []) if not f.get("source"))
+        naked += sum(1 for c in cards
+                     for g in c.get("how", {}).get("figures", []) if not g.get("source"))
+        naked += sum(1 for c in cards
+                     for p in c.get("practice", []) if not p.get("source"))
+        ok(naked == 0, "学习卡每一段都带来源标记，没有裸文本", f"{naked} 段缺")
+
+        # 空卡要明说
+        empty = [c for c in cards if not c.get("layers")]
+        no_note = [c for c in empty if not c.get("emptyNote")]
+        ok(not no_note,
+           f"空卡都写了 emptyNote（明确说「这一版没有内容」）",
+           f"{len(no_note)} 个没写")
+
+        # 限量
+        ok(all(len(c["how"]["formulas"]) <= 6 for c in cards),
+           "公式 ≤ 6 条")
+        ok(all(len(c["how"]["figures"]) <= 2 for c in cards),
+           "图描述 ≤ 2 条")
+        ok(all(len(c["practice"]) <= 5 for c in cards),
+           "例题 ≤ 5 条")
+
+        # 教材原文段落：出处必须真实，且不能是 OCR 残骸
+        reads = [c for c in cards if c.get("read")]
+        PIDX = BASE / "data" / "page-index.json"
+        if PIDX.exists():
+            pj = json.load(open(PIDX, encoding="utf-8"))
+            byc = pj.get("_byConcept") or {}
+            bad_src = [c["id"] for c in reads
+                       for r in c["read"]
+                       if r.get("pageId") not in
+                       {x.get("pageId") for x in (byc.get(c["id"]) or [])}]
+            ok(not bad_src,
+               f"教材原文段落的出处都能在页索引里找到（{len(reads):,} 张卡）",
+               f"{len(bad_src)} 张对不上")
+            junk = []
+            for c in reads:
+                for r in c["read"]:
+                    t = r.get("text") or ""
+                    hn = sum(1 for ch in t if "一" <= ch <= "鿿")
+                    if not t or hn / len(t) < 0.35:
+                        junk.append(c["id"])
+                        break
+            ok(not junk, "教材原文段落没有 OCR 残骸（汉字密度 ≥35%）",
+               f"{len(junk)} 张不合格")
+        else:
+            warn("data/page-index.json 不存在 —— 跳过教材原文段落核查")
+    else:
+        warn("data/learn-cards.jsonl 不存在 —— 跳过学习卡核查")
+
     return payload
 
 
