@@ -551,11 +551,11 @@ agent 直接下 repo 就能用。
 ```bash
 # 方式 A：milvus-lite（单文件，不需要 Docker —— 推荐先用这个）
 python3 -m pip install milvus-lite "pymilvus==2.5.1"
-python3 src/build_milvus.py
+python3 optional/milvus/build_milvus.py
 
 # 方式 B：Milvus Standalone（Docker，多用户时用这个）
 cd data/milvus && docker compose -f milvus-standalone.yaml up -d
-MILVUS_BACKEND=server python3 src/build_milvus.py
+MILVUS_BACKEND=server python3 optional/milvus/build_milvus.py
 ```
 
 ⚠️ **`milvus-lite` 的版本必须配 `pymilvus==2.5.1`** ——
@@ -564,10 +564,10 @@ MILVUS_BACKEND=server python3 src/build_milvus.py
 ### 查询
 
 ```bash
-python3 src/query_milvus.py "浮力"                       # 语义检索教材原文
-python3 src/query_milvus.py "浮力" --edition 人教版 --book 8b   # 加过滤
-python3 src/query_milvus.py --name 浮力                    # 按概念名精确查
-python3 src/query_milvus.py --prereq 浮力                  # 查前置关系
+python3 optional/milvus/query_milvus.py "浮力"                       # 语义检索教材原文
+python3 optional/milvus/query_milvus.py "浮力" --edition 人教版 --book 8b   # 加过滤
+python3 optional/milvus/query_milvus.py --name 浮力                    # 按概念名精确查
+python3 optional/milvus/query_milvus.py --prereq 浮力                  # 查前置关系
 ```
 
 ### 为什么是「混合检索」而不是纯向量
@@ -622,7 +622,7 @@ ollama pull bge-m3        # 1.2 GB
 3. **来源标记必须进表。** `edition` / `book` / `subject` / `page` / `chapter`
    都要有 —— 不然查到一段话也不知道出自哪本书。
 
-### milvus-lite 踩过的坑（都在 `src/build_milvus.py` 的注释里）
+### milvus-lite 踩过的坑（都在 `optional/milvus/build_milvus.py` 的注释里）
 
 | 现象 | 原因 | 怎么办 |
 |---|---|---|

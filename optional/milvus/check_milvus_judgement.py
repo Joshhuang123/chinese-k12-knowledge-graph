@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Milvus 校验器的判别力自检 —— `src/check_milvus_judgement.py`
+Milvus 校验器的判别力自检 —— `optional/milvus/check_milvus_judgement.py`
 
 项目铁律：**判别力为零的断言，等于没写。**
 
@@ -18,7 +18,7 @@ Milvus 校验器的判别力自检 —— `src/check_milvus_judgement.py`
 父进程一个连接都不能留。
 
 跑法：
-    python3 src/check_milvus_judgement.py
+    python3 optional/milvus/check_milvus_judgement.py
 """
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ import subprocess
 import sys
 import tempfile
 
-BASE = pathlib.Path(__file__).resolve().parent.parent
+BASE = pathlib.Path(__file__).resolve().parent.parent.parent
 SRC_DB = BASE / "data" / "milvus" / "kg_lite.db"
 
 PASS, FAIL = [], []
@@ -50,7 +50,7 @@ def run_check(db_path: str) -> tuple[int, str]:
     env = dict(os.environ)
     env["MILVUS_LITE_PATH"] = db_path
     env["MILVUS_BACKEND"] = "lite"
-    r = subprocess.run([sys.executable, str(BASE / "src" / "check_milvus.py")],
+    r = subprocess.run([sys.executable, str(BASE / "optional" / "milvus" / "check_milvus.py")],
                        capture_output=True, text=True, env=env, timeout=900)
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
@@ -92,7 +92,7 @@ def inject(db: str, mode: str) -> None:
 
 def main() -> int:
     if not SRC_DB.exists():
-        print(f"✗ 缺 {SRC_DB} —— 先跑 python3 src/build_milvus.py")
+        print(f"✗ 缺 {SRC_DB} —— 先跑 python3 optional/milvus/build_milvus.py")
         return 1
 
     # ⚠️ **必须在库静止的时候跑** ——

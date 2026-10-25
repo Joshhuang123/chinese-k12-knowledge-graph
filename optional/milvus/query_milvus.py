@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-查 Milvus —— `src/query_milvus.py`
+查 Milvus —— `optional/milvus/query_milvus.py`
 
 朋友（Milvus 生态负责人）用这个项目来自学时，主要问三类问题：
 
     # 1. 「浮力」在教材里怎么讲的？        → 语义检索教材原文段落
-    python3 src/query_milvus.py "浮力"
+    python3 optional/milvus/query_milvus.py "浮力"
 
     # 2. 只看人教版物理八下的             → 加过滤
-    python3 src/query_milvus.py "浮力" --edition 人教版 --book 8b
+    python3 optional/milvus/query_milvus.py "浮力" --edition 人教版 --book 8b
 
     # 3. 这个概念的前置是什么？           → 查先修关系
-    python3 src/query_milvus.py --prereq 浮力
+    python3 optional/milvus/query_milvus.py --prereq 浮力
 
     # 4. 精确查一个概念                   → 按名字过滤
-    python3 src/query_milvus.py --name 浮力
+    python3 optional/milvus/query_milvus.py --name 浮力
 
 **为什么不能只有精确匹配**：
 上游概念名大量是改写过的（「ATP（能量储存形式）」「DNA（遗传信息载体）」），
@@ -32,7 +32,7 @@ import re
 import sys
 import urllib.request
 
-BASE = __import__("pathlib").Path(__file__).resolve().parent.parent
+BASE = __import__("pathlib").Path(__file__).resolve().parent.parent.parent
 MILVUS_HOST = os.environ.get("MILVUS_HOST", "localhost")
 MILVUS_PORT = os.environ.get("MILVUS_PORT", "19530")
 # 两种后端：lite（本地单文件，不需要 Docker）/ server（Standalone）
@@ -49,7 +49,7 @@ def connect():
     from pymilvus import MilvusClient
     if MILVUS_BACKEND == "lite":
         if not pathlib.Path(MILVUS_LITE_PATH).exists():
-            print(f"缺 {MILVUS_LITE_PATH} —— 先跑 python3 src/build_milvus.py")
+            print(f"缺 {MILVUS_LITE_PATH} —— 先跑 python3 optional/milvus/build_milvus.py")
             sys.exit(1)
         return MilvusClient(uri=MILVUS_LITE_PATH)
     return MilvusClient(uri=f"http://{MILVUS_HOST}:{MILVUS_PORT}")

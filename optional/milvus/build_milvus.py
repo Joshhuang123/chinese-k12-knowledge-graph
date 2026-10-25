@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-把中文知识图谱灌进 Milvus —— `src/build_milvus.py`
+把中文知识图谱灌进 Milvus —— `optional/milvus/build_milvus.py`
 
 ## 为什么建这一层（2026-10-25）
 
@@ -42,10 +42,10 @@ Milvus 的 chunk 规范（`agent/specs/11-ingestion.md`）也是这个意思。
     cd data/milvus && docker compose -f milvus-standalone.yaml up -d
 
     # 2. 灌数据
-    python3 src/build_milvus.py
+    python3 optional/milvus/build_milvus.py
 
     # 3. 查
-    python3 src/query_milvus.py "浮力"
+    python3 optional/milvus/query_milvus.py "浮力"
 """
 from __future__ import annotations
 
@@ -59,7 +59,7 @@ import sys
 import time
 import urllib.request
 
-BASE = pathlib.Path(__file__).resolve().parent.parent
+BASE = pathlib.Path(__file__).resolve().parent.parent.parent
 DATA = BASE / "data"
 MILVUS_HOST = os.environ.get("MILVUS_HOST", "localhost")
 MILVUS_PORT = os.environ.get("MILVUS_PORT", "19530")
@@ -651,7 +651,7 @@ def main() -> int:
             print(f"  {name}: {st.get('row_count', 0):,} 条")
         except Exception as e:
             print(f"  ! {name} 统计失败: {e}")
-    print("\n✓ 完成。查询示例：python3 src/query_milvus.py \"浮力\"")
+    print("\n✓ 完成。查询示例：python3 optional/milvus/query_milvus.py \"浮力\"")
     return 0
 
 

@@ -693,11 +693,12 @@ src/build_page_index.py 教材原页段落索引（引文反查定位）
 src/quote_repair.py    教材原话回原文补全（PDF 硬换行切断了词）
 src/check_learn_cards.py 学习卡体检（8 组判据）
 src/check_learn_cards.mjs 学习卡 × 站点「学习路径」交叉验证（浏览器端）
-src/build_milvus.py    灌 Milvus 数据库（**可选**：R-3 三张表，教材段落 / 概念 / 先修边）
-src/query_milvus.py    查 Milvus（**可选**：语义检索 / 按名查 / 查前置）
-src/check_milvus.py    Milvus 层校验（**可选**：8 组判据，含正负例 golden set）
-src/check_milvus_judgement.py Milvus 检查的判别力自检（**可选**：注入脏数据 → 必须报红）
-requirements-milvus.txt Milvus 层的依赖（**可选装**，主项目不需要）
+optional/milvus/       **可选组件**：向量检索层（Milvus）—— 见它的 README
+  ├─ build_milvus.py       灌 Milvus（三张表：教材段落 / 概念 / 先修边）
+  ├─ query_milvus.py       查 Milvus（语义检索 / 按名查 / 查前置）
+  ├─ check_milvus.py       校验（8 组判据，含正负例 golden set）
+  ├─ check_milvus_judgement.py 判别力自检（注入脏数据 → 必须报红）
+  └─ requirements.txt      依赖（**可选装**，主项目不需要）
 data.html              **数据一览页**（入库，77 KB 静态单文件，全部数据集可搜）
 data/DATASETS.json     **数据清单**（入库，35 个数据集：是什么/怎么取/字段/样本）
 data/learn-cards.jsonl  知识点自学卡（入库，8,590 张 / 六面 / 17 MB）
@@ -969,7 +970,7 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 
 | | |
 |---|---|
-| 装依赖 | `pip install -r requirements-milvus.txt`（**需要 Python ≥ 3.10**） |
+| 装依赖 | `pip install -r optional/milvus/requirements.txt`（**需要 Python ≥ 3.10**） |
 | 下模型 | `ollama pull bge-m3`（1.2 GB，**教材不出境**） |
 | 灌库 | **45 分钟**（5.5 万段教材） |
 | 库大小 | 375 MB（**不入库**，是派生产物） |
@@ -989,14 +990,15 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 
 ```bash
 # 起库
-python3 -m pip install -r requirements-milvus.txt
+cd optional/milvus
+python3 -m pip install -r requirements.txt
 ollama pull bge-m3
-python3 src/build_milvus.py
+python3 build_milvus.py
 
 # 查
-python3 src/query_milvus.py "浮力"                      # 语义检索教材原文
-python3 src/query_milvus.py "浮力" --edition 人教版 --book 8b
-python3 src/query_milvus.py --prereq 浮力                # 查前置关系
+python3 query_milvus.py "浮力"                          # 语义检索教材原文
+python3 query_milvus.py "浮力" --edition 人教版 --book 8b
+python3 query_milvus.py --prereq 浮力                    # 查前置关系
 ```
 
 **没有直接上 Milvus，先按它自己的方法论评估**：
@@ -1046,8 +1048,8 @@ Milvus 官方 workshop 那份 `15-retrieval-tier-selection.md` 自己写着
 | `src/health_check.py` | 上线体检 98 项：数据层 / 构建层 / 判别力自检 |
 | `src/check_learn_cards.py` | 学习卡 8 组判据（覆盖率 / 来源分层 / 定义句准确 / 噪声控制 / 前置链一致 / 冷启动 / 原文段落 / 可复现性） |
 | `src/check_kx.py` | 小学站 13 项 |
-| `src/check_milvus.py` | Milvus 层 8 组（表 / 条数 / 正例召回 / **负例不误召回** / 过滤 / 版权不外泄 / 与学习卡不打架 / 先修边两端真实） |
-| `src/check_milvus_judgement.py` | Milvus 检查的**判别力自检**（注入脏数据 → 检查必须报红） |
+| `optional/milvus/check_milvus.py` | Milvus 层 8 组（表 / 条数 / 正例召回 / **负例不误召回** / 过滤 / 版权不外泄 / 与学习卡不打架 / 先修边两端真实） |
+| `optional/milvus/check_milvus_judgement.py` | Milvus 检查的**判别力自检**（注入脏数据 → 检查必须报红） |
 | `src/test_data_browser.mjs` | 数据一览页 10 项（真 Chrome：搜索过滤、样本展开、导航齐全） |
 
 `check_learn_cards.py` 里的**前置链那条**是在真浏览器里跑的 ——

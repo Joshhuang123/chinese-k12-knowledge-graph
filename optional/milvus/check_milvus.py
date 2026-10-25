@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Milvus 层校验 —— `src/check_milvus.py`
+Milvus 层校验 —— `optional/milvus/check_milvus.py`
 
 把 `docs/需求清单.md` R-3 的「怎么验算做对了」那张表变成可跑的检查。
 
@@ -20,7 +20,7 @@ Milvus 层校验 —— `src/check_milvus.py`
 查「连通器」不该召回浮力那一段。
 
 跑法：
-    python3 src/check_milvus.py
+    python3 optional/milvus/check_milvus.py
 """
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ import pathlib
 import re
 import sys
 
-BASE = pathlib.Path(__file__).resolve().parent.parent
+BASE = pathlib.Path(__file__).resolve().parent.parent.parent
 DATA = BASE / "data"
 MILVUS_HOST = os.environ.get("MILVUS_HOST", "localhost")
 MILVUS_PORT = os.environ.get("MILVUS_PORT", "19530")
@@ -68,7 +68,7 @@ def connect():
     from pymilvus import MilvusClient
     if MILVUS_BACKEND == "lite":
         if not pathlib.Path(MILVUS_LITE_PATH).exists():
-            raise SystemExit(f"缺 {MILVUS_LITE_PATH} —— 先跑 python3 src/build_milvus.py")
+            raise SystemExit(f"缺 {MILVUS_LITE_PATH} —— 先跑 python3 optional/milvus/build_milvus.py")
         return MilvusClient(uri=MILVUS_LITE_PATH)
     return MilvusClient(uri=f"http://{MILVUS_HOST}:{MILVUS_PORT}")
 

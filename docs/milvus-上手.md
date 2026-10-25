@@ -43,7 +43,7 @@ WHERE vector MATCH '[...]' LIMIT 5;
 或者更简单：
 
 ```bash
-python3 src/query_milvus.py "浮力"
+python3 optional/milvus/query_milvus.py "浮力"
 ```
 
 ---
@@ -68,7 +68,7 @@ pip install "milvus-lite>=3.2" "pymilvus>=3.0"
 ollama pull bge-m3
 
 # 3. 灌数据（约 45 分钟，5.5 万段教材 + 8,590 概念 + 1.7 万条先修边）
-python3 src/build_milvus.py
+python3 optional/milvus/build_milvus.py
 ```
 
 灌完会有 `data/milvus/kg_lite.db`。
@@ -89,7 +89,7 @@ python3 src/build_milvus.py
 cd data/milvus
 docker compose -f milvus-standalone.yaml up -d
 cd ../..
-MILVUS_BACKEND=server python3 src/build_milvus.py
+MILVUS_BACKEND=server python3 optional/milvus/build_milvus.py
 ```
 
 ⚠️ 镜像从 Docker Hub 拉，**国内网络可能要很久**（实测拉了 50 分钟没到）。
@@ -103,7 +103,7 @@ MILVUS_BACKEND=server python3 src/build_milvus.py
 ### 语义检索教材原文
 
 ```bash
-python3 src/query_milvus.py "浮力"
+python3 optional/milvus/query_milvus.py "浮力"
 ```
 
 输出按相关度排，每条给**出处**（哪本书哪一页）：
@@ -119,20 +119,20 @@ python3 src/query_milvus.py "浮力"
 ### 按教材筛着查
 
 ```bash
-python3 src/query_milvus.py "浮力" --edition 人教版 --book 8b
-python3 src/query_milvus.py "密度" --subject physics
+python3 optional/milvus/query_milvus.py "浮力" --edition 人教版 --book 8b
+python3 optional/milvus/query_milvus.py "密度" --subject physics
 ```
 
 ### 查一个概念本身
 
 ```bash
-python3 src/query_milvus.py --name 浮力
+python3 optional/milvus/query_milvus.py --name 浮力
 ```
 
 ### 查前置关系
 
 ```bash
-python3 src/query_milvus.py --prereq 浮力
+python3 optional/milvus/query_milvus.py --prereq 浮力
 ```
 
 ```
@@ -236,7 +236,7 @@ ollama list        # 看本机有哪些
 ## 校验
 
 ```bash
-python3 src/check_milvus.py
+python3 optional/milvus/check_milvus.py
 ```
 
 8 组判据：表在不在、条数对不对、**正例召回**、**负例不误召回**、
