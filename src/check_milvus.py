@@ -206,7 +206,9 @@ def main() -> int:
                        output_fields=["id"], limit=9000)
     ok(len(res) >= 6000, f"有定义的概念 ≥ 6,000（实测 {len(res):,}）")
     # 先修边两端都要真实存在
-    res = client.query("kg_prereq", output_fields=["from_id", "to_id"], limit=20000)
+    # ⚠️ milvus-lite 的 query limit 上限是 16384（实测会报
+    #    "limit should be in range [1, 16384]"）
+    res = client.query("kg_prereq", output_fields=["from_id", "to_id"], limit=16384)
     con_ids = {r["id"] for r in client.query(
         "kg_concept", output_fields=["id"], limit=9000)}
     ghost = [r for r in res
