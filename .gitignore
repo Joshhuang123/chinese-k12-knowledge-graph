@@ -50,6 +50,16 @@ __pycache__/
 *.pyc
 .venv/
 
+# ── Milvus 数据库（派生产物）──
+# data/milvus/kg_lite.db 是 milvus-lite 的库文件（二进制，几十 MB）。
+# **不入库** —— 跑 python3 src/build_milvus.py 就能重建。
+# ⚠️ 里面是**从教材里抽出来的段落**，不是教材原件 ——
+#    但库文件会随数据版本不断变大，版本管理交给数据源那一层更合适。
+data/milvus/*.db
+data/milvus/*.db-*
+data/milvus/*.lock
+data/milvus/.kg_lite.db.lock
+
 # ── 盲测模型产出（派生产物）──
 # docs/lmm-protocol.md 里说的模型输出片。跑法见 src/make_batches.py
 data/lmm-out/

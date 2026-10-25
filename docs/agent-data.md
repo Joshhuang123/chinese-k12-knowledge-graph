@@ -506,7 +506,113 @@ python3 src/vision_to_concepts.py        # 把页面数据挂到概念上
 `data/vision-pages.jsonl`、`data/concept-vision.jsonl`）**入库**，
 agent 直接下 repo 就能用。
 
-## 数据来源与许可
+---
+
+## ⑥ Milvus 数据库层 —— 想「查」而不只是「读文件」
+
+> 前五层都是**文件**：agent 读 jsonl，人得自己写脚本过滤。
+> 这一层是**数据库**：能用 SQL 查、能向量检索、能按字段筛。
+>
+> 起因：朋友是 **Milvus 生态负责人**，要拿这个项目来自学术理化。
+> 需求清单见 `docs/需求清单.md` 的 R-3。
+
+### 三张表
+
+| 表 | 是什么 | 粒度 | 条数 |
+|---|---|---|---|
+| `kg_textbook` | 教材原文**段落** | 一段 | 57,904 |
+| `kg_concept` | 知识点 | 一个概念 | 8,590 |
+| `kg_prereq` | 先修边 | 一条边 | 17,164 |
+
+### 起库
+
+```bash
+# 方式 A：milvus-lite（单文件，不需要 Docker —— 推荐先用这个）
+python3 -m pip install milvus-lite "pymilvus==2.5.1"
+python3 src/build_milvus.py
+
+# 方式 B：Milvus Standalone（Docker，多用户时用这个）
+cd data/milvus && docker compose -f milvus-standalone.yaml up -d
+MILVUS_BACKEND=server python3 src/build_milvus.py
+```
+
+⚠️ **`milvus-lite` 的版本必须配 `pymilvus==2.5.1`** ——
+配 3.0.2 会起不来（socket 连不上）。
+
+### 查询
+
+```bash
+python3 src/query_milvus.py "浮力"                       # 语义检索教材原文
+python3 src/query_milvus.py "浮力" --edition 人教版 --book 8b   # 加过滤
+python3 src/query_milvus.py --name 浮力                    # 按概念名精确查
+python3 src/query_milvus.py --prereq 浮力                  # 查前置关系
+```
+
+### 为什么是「混合检索」而不是纯向量
+
+按 `milvus-workshop/agent/specs/15-retrieval-tier-selection.md` 的
+检索复杂度阶梯（那份 spec 自己说：从阶梯顶端起步是**教学选择，不是工程默认**），
+我们自己的实测：
+
+| 方案 | 「BM25 找不到定义句」那批概念的召回 |
+|---|---|
+| 纯 BM25 | 5/5 命中（top-10 里有该概念自己的引文） |
+| 纯语义（`nomic-embed-text`） | **0/15** —— 英文模型，「邻补角」召回「近似数」 |
+| 纯语义（`qwen3-embedding:8b`） | 4/4 正确项排第一，但 10 秒/条 |
+| 纯语义（`bge-m3`） | 5/5 正确项在 top-2，**0.05 秒/条** |
+
+**BM25 和向量各管一段**：
+BM25 抓字面重合（快、免费），
+向量抓「换了说法」（慢、要嵌入）。
+Milvus 的混合检索就是把这两条路并起来。
+
+### 嵌入模型：本机 `bge-m3`，教材不出境
+
+```bash
+ollama pull bge-m3        # 1.2 GB
+```
+
+**教材有版权，不出境** —— 嵌入全在本机 Ollama 算完，只把向量存本地。
+
+对比另两个本机模型：
+
+| 模型 | 中文效果 | 速度 | 结论 |
+|---|---|---|---|
+| `nomic-embed-text`（274 MB） | **不行**，「邻补角」召回「近似数」 | 0.1 秒/条 | 英文模型，别用 |
+| `qwen3-embedding:8b`（4.7 GB） | 好，4/4 | 10 秒/条 | 全量要 37 小时 |
+| **`bge-m3`（1.2 GB）** | **好，5/5** | **0.05 秒/条** | **选它** |
+
+`qwen3-embedding` 还有个 **MRL 特性**（能截到 512/256 维，质量不掉），
+但 8B 模型再快也不如 1.2 GB 的 bge-m3。
+
+### 三条硬边界
+
+1. **版权页不能进库。** 教材前十几页是版权页 / 编者信息
+   （「版权所有…未经许可不得另做他用」「美术编辑：…」）。
+   这些页进向量库 = 检索时召回版权声明，
+   而且**把教材版权信息复制进了数据库** ——
+   项目一直守着「教材 PDF 不入库、只存抽出来的结构化事实」这条线，不能在这儿破。
+   所以入库前按关键词 + 汉字密度筛掉（实测 21,948 页 → 57,904 段，版权页 0 条）。
+
+2. **段落边界不能切在词中间。** 按**句末标点**切，
+   切在词中间会产生假召回（"…叫做浮" 跟 "…叫做浮力" 会被判成同一段）。
+
+3. **来源标记必须进表。** `edition` / `book` / `subject` / `page` / `chapter`
+   都要有 —— 不然查到一段话也不知道出自哪本书。
+
+### milvus-lite 踩过的坑（都在 `src/build_milvus.py` 的注释里）
+
+| 现象 | 原因 | 怎么办 |
+|---|---|---|
+| `No index found in field [vector]` | 建集合时没带 `index_params` | 建集合时就把索引一起建 |
+| `cannot create index on non-existed field: vector` | schema 里漏了 `vector` 字段 | 检查字段列表 |
+| `Failed to parse schema info` / `internal error` | **milvus-lite 不支持 `default_value`** | 缺值在数据层补（`_fill_missing`） |
+| `Insert missed an field 'x'` | 记录缺字段 | 数据层补齐 |
+| `Attempt to insert an unexpected field 'x'` | 记录多字段 | 同上 |
+| `should create connection first` | 用了老的 `Collection()` ORM | 只用 `MilvusClient` |
+| `Post "http://127.0.0.1:xxxx/tokenize": EOF` | Ollama 在切模型 / 负载高 | 嵌入加重试 + 拆批重试 |
+
+### 数据来源与许可
 
 教材 PDF 来自 [ChinaTextbook](https://github.com/TapXWorld/ChinaTextbook)（开源镜像），
 **不随本仓库分发**。知识点数据来自
