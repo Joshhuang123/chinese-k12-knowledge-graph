@@ -47,7 +47,8 @@
 cat data/DATASETS.json      # 机器可读（含每个数据集的字段表和样本行）
 ```
 
-或者看人读的：[`docs/data-catalog.md`](docs/data-catalog.md)（自动生成的，跟数据同步）。
+或者**直接在浏览器里看**：**[`data.html`](data.html)**（静态单文件，能搜），
+或者看人读的表格：[`docs/data-catalog.md`](docs/data-catalog.md)（自动生成，跟数据同步）。
 
 按需求查：
 
@@ -685,6 +686,8 @@ src/build_shanghai_quality.py 上海版质量页 + 内容缺口地图
 src/test_shanghai_site.mjs 上海版站点测试（15 项）
 src/build_quality.py    数据质量公开页 quality.html
 src/build_datasets_catalog.py 数据清单（**现算**：条数/字段/样本，防漂移）
+src/build_data_browser.py 数据一览页（清单的人读投影，静态单文件）
+src/test_data_browser.mjs 数据一览页的端到端测试（10 项）
 src/build_learn_cards.py 知识点「学习卡」（R-1：让人能自学）
 src/build_page_index.py 教材原页段落索引（引文反查定位）
 src/quote_repair.py    教材原话回原文补全（PDF 硬换行切断了词）
@@ -695,6 +698,7 @@ src/query_milvus.py    查 Milvus（**可选**：语义检索 / 按名查 / 查�
 src/check_milvus.py    Milvus 层校验（**可选**：8 组判据，含正负例 golden set）
 src/check_milvus_judgement.py Milvus 检查的判别力自检（**可选**：注入脏数据 → 必须报红）
 requirements-milvus.txt Milvus 层的依赖（**可选装**，主项目不需要）
+data.html              **数据一览页**（入库，77 KB 静态单文件，全部数据集可搜）
 data/DATASETS.json     **数据清单**（入库，35 个数据集：是什么/怎么取/字段/样本）
 data/learn-cards.jsonl  知识点自学卡（入库，8,590 张 / 六面 / 17 MB）
 data/page-index.json    教材原页段落索引（入库，2,825 概念 / 6,414 段）
@@ -1044,6 +1048,7 @@ Milvus 官方 workshop 那份 `15-retrieval-tier-selection.md` 自己写着
 | `src/check_kx.py` | 小学站 13 项 |
 | `src/check_milvus.py` | Milvus 层 8 组（表 / 条数 / 正例召回 / **负例不误召回** / 过滤 / 版权不外泄 / 与学习卡不打架 / 先修边两端真实） |
 | `src/check_milvus_judgement.py` | Milvus 检查的**判别力自检**（注入脏数据 → 检查必须报红） |
+| `src/test_data_browser.mjs` | 数据一览页 10 项（真 Chrome：搜索过滤、样本展开、导航齐全） |
 
 `check_learn_cards.py` 里的**前置链那条**是在真浏览器里跑的 ——
 加载站点页面、调它自己的 `pathRows()`，跟学习卡逐条比。

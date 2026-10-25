@@ -286,7 +286,13 @@ def count_records(path: pathlib.Path):
 
 
 def fields_of(path: pathlib.Path) -> list:
-    """取字段名（jsonl 取第一条的键；json 取顶层结构）。"""
+    """取字段名（jsonl 取第一条的键；json 取顶层结构）。
+
+    ⚠️ **顶层是 dict 时，别把键当字段** ——
+    `quote-repairs.json` 的顶层是 {缓存键: {q,kind,ev}}，
+    15,282 个缓存键被当成字段名，字段列表瞬间涨到 455 KB
+    （占整个清单的 95%）。这种情况要报**值的结构**。
+    """
     try:
         if path.suffix == ".jsonl":
             with path.open(encoding="utf-8") as f:
@@ -296,6 +302,16 @@ def fields_of(path: pathlib.Path) -> list:
             return []
         d = json.load(path.open(encoding="utf-8"))
         if isinstance(d, dict):
+            # 顶层键是**子表名**（page-index 的 _pages/_byConcept）还是**数据行**？
+            # 判据：值是 dict 且它的键看起来像字段名（短、不是 id）→ 子表
+            # 值是 dict 且键是长串 id → 数据行，报值的结构
+            subtables = {k: v for k, v in d.items() if k.startswith("_")}
+            if subtables:
+                return list(d.keys())
+            # 所有值都是 dict → 报第一个值的结构
+            for v in d.values():
+                if isinstance(v, dict) and v:
+                    return list(v.keys())
             return list(d.keys())
         if isinstance(d, list) and d and isinstance(d[0], dict):
             return list(d[0].keys())

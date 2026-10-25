@@ -824,7 +824,10 @@ def main():
         ("<span class=\"hi\">9–10 岁核心</span>", "<span class=\"hi\">初中</span>"),
         ("<span>低年级基础</span>", "<span>其他学段</span>"),
         # 注意：这里的引号是 U+0027，不是中文引号。少写一个收尾引号就会静默失配。
-        ("'<span>' + n.evn + ' 条掌握证据</span><span>重要度 '",
+        # ⚠️ 模板里是 `kgEsc(n.evn)` —— 0834c38（ISSUE-45 的 XSS 修复）给
+        #    innerHTML 插值补了转义，但**漏改了这里的 COPY 列表**，
+        #    于是主站从那次提交起就构建不出来（实测：文案未命中 → 构建中止）。
+        ("'<span>' + kgEsc(n.evn) + ' 条掌握证据</span><span>重要度 '",
          "'<span>课程要求：' + n.evn + '</span><span>被依赖度 '"),
         # 年龄轴：模板写死 "age N"，我们画的是年级
         ("ctx.fillText('age ' + age, sx, sy);",

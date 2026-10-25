@@ -275,7 +275,7 @@ code{{background:#191d25;padding:1px 5px;border-radius:4px;font-size:11.5px}}
 </head>
 <body>
 <div class="wrap">
-<div class="nav"><a href="./">← 回到图谱</a><a href="./shanghai.html">上海版</a><a href="./shanghai-quality.html">上海版数据质量</a><a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph">源码</a></div>
+<div class="nav"><a href="./">← 回到图谱</a><a href="./data.html">数据一览</a><a href="./shanghai.html">上海版</a><a href="./shanghai-quality.html">上海版数据质量</a><a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph">源码</a></div>
 <h1>数据质量</h1>
 <p class="sub">这张图谱有多少条边是可信的、有多少条是有问题的、问题具体是什么 —— 全部摊开。
 <b>发现问题 ≠ 隐藏问题</b>：上游数据一字未改，问题逐条记在这里。</p>

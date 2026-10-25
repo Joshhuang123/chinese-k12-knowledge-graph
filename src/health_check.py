@@ -378,6 +378,27 @@ def layer1(g, sb, payload):
     else:
         warn("data/DATASETS.json 不存在 —— 跳过数据清单核查")
 
+    # 1h. 数据一览页（data.html）
+    #
+    # 它是清单的**投影** —— 内容全部来自 DATASETS.json。
+    # 所以要查两件事：页面在不在、页面里的数据集数跟清单一致。
+    DATAPAGE = BASE / "data.html"
+    if DATAPAGE.exists() and CATALOG.exists():
+        cat = json.load(open(CATALOG, encoding="utf-8"))
+        page = DATAPAGE.read_text(encoding="utf-8")
+        n_ds = len(cat.get("datasets") or [])
+        # 页面里每个数据集会渲染成一张卡片（class="ds"）
+        n_card = page.count('class="ds"')
+        ok(n_card == n_ds,
+           f"数据一览页的卡片数跟清单一致（{n_card} vs {n_ds}）",
+           f"页面 {n_card} 张，清单 {n_ds} 个 —— 重跑 src/build_data_browser.py")
+        # 清单里每个文件的路径都要出现在页面上
+        miss = [d["file"] for d in (cat.get("datasets") or [])
+                if d["file"] not in page]
+        ok(not miss, "每个数据集都在数据一览页上", f"{miss[:3]}")
+    else:
+        warn("data.html 不存在 —— 跳过数据一览页核查")
+
     return payload
 
 

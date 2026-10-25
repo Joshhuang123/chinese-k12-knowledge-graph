@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数据一览 · 中文 K12 知识图谱</title>
+<style>
+:root {
+  --bg:#08090C; --fg:#E8EAF0; --muted:#8B93A7; --accent:#FF9F45;
+  --line:rgba(255,255,255,.09); --card:rgba(255,255,255,.032);
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--fg);
+  font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB",
+       "Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap { max-width:1080px; margin:0 auto; padding:28px 20px 80px; }
+h1 { font-size:28px; margin:0 0 6px; letter-spacing:-.01em; }
+h2 { font-size:18px; margin:44px 0 14px; }
+.lede { color:var(--muted); margin:0 0 26px; max-width:760px; }
+.nav { display:flex; gap:16px; flex-wrap:wrap; padding:12px 0 22px;
+       border-bottom:1px solid var(--line); margin-bottom:26px; }
+.nav a { color:var(--muted); text-decoration:none; font-size:13.5px; }
+.nav a:hover { color:var(--accent); }
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+         gap:12px; margin:0 0 8px; }
+.stat { background:var(--card); border:1px solid var(--line); border-radius:12px;
+        padding:14px 16px; }
+.stat b { display:block; font-size:22px; font-weight:650; }
+.stat span { color:var(--muted); font-size:12.5px; }
+.pick { background:var(--card); border:1px solid var(--line); border-radius:12px;
+        padding:14px 18px 14px 34px; margin:0 0 6px; }
+.pick li { margin:5px 0; }
+.pick b { color:var(--accent); font-weight:600; }
+#q { width:100%; padding:11px 14px; border-radius:10px; border:1px solid var(--line);
+     background:rgba(255,255,255,.04); color:var(--fg); font-size:14.5px;
+     font-family:inherit; }
+#q:focus { outline:none; border-color:var(--accent); }
+#cnt { color:var(--muted); font-size:13px; margin:10px 0 16px; }
+.ds { background:var(--card); border:1px solid var(--line); border-radius:14px;
+      padding:18px 20px; margin:0 0 12px; }
+.ds:hover { border-color:rgba(255,159,69,.32); }
+.ds h3 { margin:0 0 8px; font-size:15.5px; font-weight:600; }
+.ds code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+           font-size:13.5px; color:var(--accent); }
+.meta { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:11px; }
+.m { font-size:12px; color:var(--muted); background:rgba(255,255,255,.05);
+     padding:2px 8px; border-radius:6px; }
+.rec { color:var(--fg); }
+.p { margin:6px 0; font-size:14px; }
+.p b { color:var(--muted); font-weight:600; margin-right:2px; }
+.use { color:#C9CEDA; }
+.crit { margin-top:10px; padding:9px 12px; border-radius:9px; font-size:13px;
+        background:rgba(255,159,69,.09); border:1px solid rgba(255,159,69,.26);
+        color:#FFD9AE; }
+details { margin-top:12px; }
+summary { cursor:pointer; font-size:13px; color:var(--muted); user-select:none; }
+summary:hover { color:var(--accent); }
+.fields { display:flex; gap:6px; flex-wrap:wrap; margin:12px 0 10px; }
+.chip { font-size:11.5px; padding:2px 8px; border-radius:6px;
+         background:rgba(120,200,255,.10); color:#9FD8F5;
+         font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+.chip.more { background:rgba(255,255,255,.06); color:var(--muted); }
+.chip.nogit { background:rgba(255,209,102,.12); color:#FFD166; }
+.sample { margin:10px 0 0; padding:12px 14px; border-radius:9px;
+           background:rgba(0,0,0,.34); border:1px solid var(--line);
+           font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+           font-size:12.5px; line-height:1.6; overflow-x:auto;
+           white-space:pre-wrap; word-break:break-word; color:#C4CAD8; }
+.sample .k { color:#9FD8F5; }
+.empty { color:var(--muted); font-size:13px; padding:10px 0; }
+footer { margin-top:46px; padding-top:20px; border-top:1px solid var(--line);
+         color:var(--muted); font-size:12.5px; }
+footer a { color:var(--muted); }
+@media (max-width:640px) {
+  h1 { font-size:23px; }
+  .wrap { padding:20px 14px 60px; }
+  .ds { padding:15px 16px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="nav">
+  <a href="./">← 回到图谱</a>
+  <a href="./shanghai.html">上海版</a>
+  <a href="./kx.html">小学科学</a>
+  <a href="./quality.html">数据质量</a>
+  <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph">源码</a>
+</div>
+
+<h1>这个项目有什么数据</h1>
+<p class="lede">
+35 个数据集，共 141 MB。
+每个都是<strong>结构化事实</strong>（不是教材原件 —— 教材 PDF 有版权，不随仓库分发）。
+不知道用哪个？先看下面的「按需求查」，或者直接搜。
+</p>
+
+<div class="stats">
+  <div class="stat"><b>35</b><span>数据集</span></div>
+  <div class="stat"><b>141 MB</b><span>总体积</span></div>
+  <div class="stat"><b>108,852</b><span>总条数</span></div>
+  <div class="stat"><b>0</b><span>第三方依赖（主项目）</span></div>
+</div>
+
+<h2>按需求查</h2>
+<ul class="pick">
+<li>「我要某节课讲了什么」→ lessons.jsonl（人教）/ lessons-sh.jsonl（沪教）</li><li>「我要这个概念的教材原话」→ concept-text.jsonl（人教）/ concept-text-sh.jsonl（沪教）</li><li>「我要公式和图形」→ concept-vision*.jsonl</li><li>「我要自学一个概念」→ learn-cards.jsonl（<strong>六个面一次给全</strong>）</li><li>「这个概念在教材哪几页」→ page-index.json</li><li>「这个概念前面该学什么」→ learn-cards.jsonl 的 prereq 面（跟站点「学习路径」面板同源）</li><li>「用自己的话问教材」→ Milvus 层（可选，见 README 九之四）</li>
+</ul>
+
+<h2>全部数据集</h2>
+<input id="q" type="search" placeholder="搜「浮力」「先修边」「公式」「沪教」…" autocomplete="off">
+<div id="cnt">35 个数据集</div>
+<div id="list">
+
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/concept-vision-sh.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">2,373 行</span>
+      <span class="m">20 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">概念的<strong>公式 / 图形语义 / 例题</strong>（沪教版）</p>
+  <p class="use"><b>能回答什么</b>：同上，沪教那套</p>
+  <p class="how"><b>怎么取</b>：按 id 取；字段同上</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">name</span><span class="chip">subject</span><span class="chip">books</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;math_8b_rjb_cpt3&quot;,
+ <span class="k">&quot;name&quot;</span>: &quot;(√a)^2 = a&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;math&quot;,
+ <span class="k">&quot;books&quot;</span>: {
+  <span class="k">&quot;sh-hk-数学-s-7b&quot;</span>: {
+   <span class="k">&quot;bookZh&quot;</span>: &quot;（根据2022年版课程标准修订）义务教育教科书·数学七年级下册&quot;,
+   <span class="k">&quot;edition&quot;</span>: &quot;沪科版&quot;,
+   <span class="k">&quot;graphBook&quot;</span>: &quot;7b&quot;,
+   <span class="k">&quot;evidence&quot;</span>: [
+    &quot;集中&quot;
+   ],
+   <span class="k">&quot;match&quot;</span>: &quot;同册&quot;,
+   <span class="k">&quot;share&quot;</span>: 0.615,
+   <span class="k">&quot;tocHit&quot;</span>: null,
+   <span class="k">&quot;pages&quot;</span>: [
+    64,
+    65,
+    70
+   ],
+   <span class="k">&quot;formulas&quot;</span>: [
+    &quot;m &gt; n&quot;,
+    &quot;a^m \\div a^n = \\underline{\\quad\\quad\\quad} = \\underline{\\quad\\quad\\quad}&quot;,
+    &quot;a^m \\div a^n = a^{m-n} \\ (a \\neq 0, \\text{ } m, n \\text{ 都是正整数, 且 } m &gt; n)&quot;
+   ],
+   <span class="k">&quot;formulaContexts&quot;</span>: [
+    {
+     <span class="k">&quot;latex&quot;</span>: &quot;m &gt; n&quot;,
+     <span class="k">&quot;context&quot;</span>: &quot;正整数条件限定&quot;
+    },
+    {
+     <span class="k">&quot;latex&quot;</span>: &quot;a^m \\div a^n = \\underline{\\quad\\quad\\quad} = \\underline{\\quad\\quad\\quad}&quot;,
+     <span class="k">&quot;context&quot;</span>: &quot;同底数幂除法运算法则推导填空&quot;
+    },
+    {
+     <span class="k">&quot;latex&quot;</span>: &quot;a^m \\div a^n = a^{m-n} \\ (a \\neq 0, \\text{ } m, n \\text{ 都是正整数, 且 } m &gt; n)&quot;,
+     <span class="k">&quot;context&quot;</span>: &quot;幂的运算性质4&quot;
+    }
+   ],
+   <span class="k">&quot;figures&quot;</span>: [
+    {
+     <span class="k">&quot;caption&quot;</span>: &quot;(1)&quot;,
+     <span class="k">&quot;kind&quot;</span>: &quot;几何图形&quot;,
+     <span class="k">&quot;description&quot;</span>: &quot;通过几何图形面积割补解释完全平方公式 $(a+b)^2$。左侧为一个边长为 $a+b$ 的正方形，边长被分割标注为 $a$ 和 $b$，总面积标注为 $(a+b)^2$；等号右边为该大正方形割补分解后的四部分之和：一个边长为 $a$ 的蓝色正方形（标有面积 $a^2$）、两个边长为 $a$ 和 $b$ 的绿色长方形（分别标有面积 $ab$），以及一个边长为 $b$ 的紫色小正方形（未标面积文字），图形之间用加号相连。&quot;,
+     <span class="k">&quot;provenance&quot;</span>: &quot;described&quot;
+    }
+   ],
+   <span class="k">&quot;exercises&quot;</span>: [
+    {
+     <span class="k">&quot;type&quot;</span>: &quot;探究&quot;,
+     <span class="k">&quot;stem&quot;</span>: &quot;观察上表，同底数幂相除有什么规律？\n一般地，如果 m, n 都是正整数 (m &gt; n)，那么\na^m ÷ a^n = ______ = ______.&quot;,
+     <span class="k">&quot;steps&quot;</span>: [],
+     <span class="k">&quot;provenance&quot;</span>: &quot;page&quot;
+    },
+    {
+     <span class="k">&quot;type&quot;</span>: &quot;例题&quot;,
+     <span class="k">&quot;stem&quot;</span>: &quot;例 6 计算：\n(1) a^5 \\div a;\n(2) (-x)^5 \\div (-x)^2;\n(3) (ab)^3 \\div ab;\n(4) (x - y)^9 \\div (y - x)^6.&quot;,
+     <span class="k">&quot;steps&quot;</span>: [
+      &quot;(1) a^5 \\div a = a^{5-1} = a^4.&quot;,
+      &quot;(2) (-x)^5 \\div (-x)^2 = (-x)^{5-2} = (-x)^3 = -x^3.&quot;,
+      &quot;(3) (ab)^3 \\div ab = (ab)^{3-1} = (ab)^2 = a^2b^2.&quot;
+     ],
+     <span class="k">&quot;provenance&quot;</span>: &quot;page&quot;
+    },
+    {
+     <span class="k">&quot;type&quot;</span>: &quot;练习&quot;,
+     <span class="k">&quot;stem&quot;</span>: &quot;下面的计算是否正确？为什么？\n(1) $a^{10} \\div a^2 = a^5$.\t( )\n(2) $x^5 \\div x^4 = x$.\t( )\n(3) $a^3 \\div a = a^3$.\t( )\n(4) $(-b)^4 \\div (-b)^2 = -b^2$.\t( )\n(5) $(-x)^6 \\div (-x) = x^6$.\t( )\n(6) $(-y)^3 \\div y^2 = y$.\t( )&quot;,
+     <span class="k">&quot;steps&quot;</span>: [],
+     <span class="k">&quot;provenance&quot;</span>: &quot;page&quot;
+    }
+   ],
+   <span class="k">&quot;tables&quot;</span>: [
+    {
+     <span class="k">&quot;caption&quot;</span>: &quot;页面顶部的同底数幂相除算式表&quot;,
+     <span class="k">&quot;rows&quot;</span>: [
+      [
+       &quot;算 式&quot;,
+       &quot;运算过程&quot;,
+       &quot;结 果&quot;
+      ],
+      [
+       &quot;3^5 \\div 3^2&quot;,
+       &quot;\\frac{3 \\times 3 \\times 3 \\times 3 \\times 3}{3 \\times 3}&quot;,
+       &quot;3^3&quot;
+      ],
+      [
+       &quot;4^6 \\div 4^3&quot;,
+       &quot;&quot;,
+       &quot;&quot;
+      ]
+     ],
+     <span class="k">&quot;provenance&quot;</span>: &quot;page&quot;
+    }
+   ]
+  }
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/learn-cards.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">8,590 行</span>
+      <span class="m">17 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">知识点<strong>自学卡</strong>，<strong>一个概念一张</strong></p>
+  <p class="use"><b>能回答什么</b>：<strong>给「我要自学这个概念」用的</strong> —— 六个面一次给全，每段带来源标记</p>
+  <p class="how"><b>怎么取</b>：按 id 或 name 取；what/how/practice/prereq/where/read 六个面</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">name</span><span class="chip">subjectZh</span><span class="chip">bookZh</span><span class="chip">label</span><span class="chip">what</span><span class="chip">how</span><span class="chip">practice</span><span class="chip">prereq</span><span class="chip">where</span><span class="chip">read</span><span class="chip">layers</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;math_1a_rjb_cpt48&quot;,
+ <span class="k">&quot;name&quot;</span>: &quot;10以内的减法&quot;,
+ <span class="k">&quot;subjectZh&quot;</span>: &quot;一上&quot;,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;一上&quot;,
+ <span class="k">&quot;label&quot;</span>: &quot;一上·概念&quot;,
+ <span class="k">&quot;what&quot;</span>: [
+  {
+   <span class="k">&quot;text&quot;</span>: &quot;从一个0到10之间的整数中减去另一个整数的运算。&quot;,
+   <span class="k">&quot;kind&quot;</span>: &quot;图谱定义&quot;,
+   <span class="k">&quot;source&quot;</span>: &quot;图谱定义&quot;,
+   <span class="k">&quot;edition&quot;</span>: &quot;上游 K12-KGraph&quot;
+  }
+ ],
+ <span class="k">&quot;how&quot;</span>: {
+  <span class="k">&quot;formulas&quot;</span>: [],
+  <span class="k">&quot;figures&quot;</span>: []
+ },
+ <span class="k">&quot;practice&quot;</span>: [],
+ <span class="k">&quot;prereq&quot;</span>: [
+  {
+   <span class="k">&quot;id&quot;</span>: &quot;math_1a_rjb_cpt47&quot;,
+   <span class="k">&quot;name&quot;</span>: &quot;10以内的加法&quot;,
+   <span class="k">&quot;bookZh&quot;</span>: &quot;一上&quot;,
+   <span class="k">&quot;grade&quot;</span>: 1,
+   <span class="k">&quot;src&quot;</span>: &quot;模型重建&quot;
+  },
+  {
+   <span class="k">&quot;id&quot;</span>: &quot;math_1a_rjb_cpt46&quot;,
+   <span class="k">&quot;name&quot;</span>: &quot;10以内的数&quot;,
+   <span class="k">&quot;bookZh&quot;</span>: &quot;一上&quot;,
+   <span class="k">&quot;grade&quot;</span>: 1,
+   <span class="k">&quot;src&quot;</span>: &quot;上游&quot;
+  },
+  {
+   <span class="k">&quot;id&quot;</span>: &quot;math_1a_rjb_cpt28&quot;,
+   <span class="k">&quot;name&quot;</span>: &quot;分与合（拆分与组合）&quot;,
+   <span class="k">&quot;bookZh&quot;</span>: &quot;一上&quot;,
+   <span class="k">&quot;grade&quot;</span>: 1,
+   <span class="k">&quot;src&quot;</span>: &quot;模型重建&quot;
+  }
+ ],
+ <span class="k">&quot;where&quot;</span>: [
+  {
+   <span class="k">&quot;edition&quot;</span>: &quot;人教版&quot;,
+   <span class="k">&quot;bookZh&quot;</span>: &quot;一上&quot;,
+   <span class="k">&quot;chapter&quot;</span>: &quot;整理和复习&quot;,
+   <span class="k">&quot;unit&quot;</span>: &quot;整理和复习&quot;,
+   <span class="k">&quot;pages&quot;</span>: [],
+   <span class="k">&quot;note&quot;</span>: &quot;教材单元（按人教版册次）&quot;
+  }
+ ],
+ <span class="k">&quot;read&quot;</span>: [],
+ <span class="k">&quot;layers&quot;</span>: [
+  &quot;图谱定义&quot;
+ ]
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/vision-pages-alt.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">7,784 行</span>
+      <span class="m">16 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">页面的<strong>视觉层</strong>（其他出版社版本）</p>
+  <p class="use"><b>能回答什么</b>：沪教/冀教/北京/华东师大等版本教材的公式图形</p>
+  <p class="how"><b>怎么取</b>：按 id 取，id 里的出版社前缀要分清</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">book</span><span class="chip">subject</span><span class="chip">bookZh</span><span class="chip">publisher</span><span class="chip">page</span><span class="chip">pdf</span><span class="chip">ok</span><span class="chip">data</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;alt:初中数学冀教版:七上-p1&quot;,
+ <span class="k">&quot;book&quot;</span>: &quot;alt:初中数学冀教版:七上&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;math&quot;,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;七上&quot;,
+ <span class="k">&quot;publisher&quot;</span>: &quot;初中数学冀教版&quot;,
+ <span class="k">&quot;page&quot;</span>: 1,
+ <span class="k">&quot;pdf&quot;</span>: &quot;七上.pdf&quot;,
+ <span class="k">&quot;ok&quot;</span>: true,
+ <span class="k">&quot;data&quot;</span>: {
+  <span class="k">&quot;formulas&quot;</span>: [
+   {
+    <span class="k">&quot;latex&quot;</span>: &quot;(+8)-(-2)=10&quot;,
+    <span class="k">&quot;context&quot;</span>: &quot;封面背景公式&quot;
+   },
+   {
+    <span class="k">&quot;latex&quot;</span>: &quot;2x+4(35-x)=94&quot;,
+    <span class="k">&quot;context&quot;</span>: &quot;封面背景公式&quot;
+   },
+   {
+    <span class="k">&quot;latex&quot;</span>: &quot;s_2=1\\;280-80t&quot;,
+    <span class="k">&quot;context&quot;</span>: &quot;封面背景公式&quot;
+   }
+  ],
+  <span class="k">&quot;figures&quot;</span>: [
+   {
+    <span class="k">&quot;caption&quot;</span>: &quot;无&quot;,
+    <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+    <span class="k">&quot;description&quot;</span>: &quot;封面图片，展示了天坛的建筑图像。&quot;
+   },
+   {
+    <span class="k">&quot;caption&quot;</span>: &quot;无&quot;,
+    <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+    <span class="k">&quot;description&quot;</span>: &quot;封面图片，展示了笼子里的兔子和鸡，隐喻“鸡兔同笼”问题。&quot;
+   },
+   {
+    <span class="k">&quot;caption&quot;</span>: &quot;无&quot;,
+    <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+    <span class="k">&quot;description&quot;</span>: &quot;由圆点组成的数字“7”，代表七年级。&quot;
+   }
+  ],
+  <span class="k">&quot;tables&quot;</span>: [],
+  <span class="k">&quot;exercises&quot;</span>: []
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/vision-pages-sh.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">9,009 行</span>
+      <span class="m">15 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">页面的<strong>视觉层</strong>（沪教版）</p>
+  <p class="use"><b>能回答什么</b>：同上</p>
+  <p class="how"><b>怎么取</b>：按 id 取</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">book</span><span class="chip">subject</span><span class="chip">bookZh</span><span class="chip">edition</span><span class="chip">graphBook</span><span class="chip">page</span><span class="chip">source</span><span class="chip">ok</span><span class="chip">data</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;sh-hj-数学-w-1b-p1&quot;,
+ <span class="k">&quot;book&quot;</span>: &quot;sh-hj-数学-w-1b&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;math&quot;,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学一年级下册&quot;,
+ <span class="k">&quot;edition&quot;</span>: &quot;沪教版&quot;,
+ <span class="k">&quot;graphBook&quot;</span>: &quot;1b&quot;,
+ <span class="k">&quot;page&quot;</span>: 1,
+ <span class="k">&quot;source&quot;</span>: &quot;国家中小学智慧教育平台（页图）&quot;,
+ <span class="k">&quot;ok&quot;</span>: true,
+ <span class="k">&quot;data&quot;</span>: {
+  <span class="k">&quot;formulas&quot;</span>: [],
+  <span class="k">&quot;figures&quot;</span>: [
+   {
+    <span class="k">&quot;caption&quot;</span>: &quot;封面插图&quot;,
+    <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+    <span class="k">&quot;description&quot;</span>: &quot;展示了教室里的测量活动情境。黑板上贴有三幅身体测量工具示意图：一拃（手掌张开大拇指到食指/中指的距离）、一步/脚长、一庹（双臂平展的长度）。讲台周围有四名小学生正在使用不同的方法测量讲台：一名蹲在左侧手持米尺测量高度（米尺刻度标有10到100），一名在讲台后张开双臂测量长度，一名在讲台前迈步测量，一名在右侧用手指比划一拃测量。&quot;
+   }
+  ],
+  <span class="k">&quot;tables&quot;</span>: [],
+  <span class="k">&quot;exercises&quot;</span>: []
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/concept-vision.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">2,012 行</span>
+      <span class="m">14 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">概念的<strong>公式 / 图形语义 / 例题</strong>（人教版）</p>
+  <p class="use"><b>能回答什么</b>：OCR 丢掉的公式和图形，这一层用多模态模型捞回来了</p>
+  <p class="how"><b>怎么取</b>：按 id 取；formulas 是 LaTeX，figureDescriptions 是据图转述，exercises 是题干</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">name</span><span class="chip">subject</span><span class="chip">book</span><span class="chip">bookZh</span><span class="chip">match</span><span class="chip">pages</span><span class="chip">broadPages</span><span class="chip">bySource</span><span class="chip">formulas</span><span class="chip">formulaContexts</span><span class="chip">figureDescriptions</span><span class="chip">altFormulas</span><span class="chip">altFormulaContexts</span><span class="chip">altFigures</span><span class="chip">altPages</span><span class="chip">exercises</span><span class="chip">tables</span><span class="chip">counts</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;biology_7a_rjb_cpt1&quot;,
+ <span class="k">&quot;name&quot;</span>: &quot;生物&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;biology&quot;,
+ <span class="k">&quot;book&quot;</span>: &quot;7a&quot;,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;七上&quot;,
+ <span class="k">&quot;match&quot;</span>: &quot;exact&quot;,
+ <span class="k">&quot;pages&quot;</span>: [
+  1,
+  2,
+  3
+ ],
+ <span class="k">&quot;broadPages&quot;</span>: [],
+ <span class="k">&quot;bySource&quot;</span>: {
+  <span class="k">&quot;bio-7a&quot;</span>: {
+   <span class="k">&quot;publisher&quot;</span>: &quot;人教版&quot;,
+   <span class="k">&quot;bookZh&quot;</span>: &quot;七年级上册&quot;,
+   <span class="k">&quot;edition&quot;</span>: &quot;&quot;,
+   <span class="k">&quot;pages&quot;</span>: [
+    1,
+    2,
+    3
+   ]
+  }
+ },
+ <span class="k">&quot;formulas&quot;</span>: [],
+ <span class="k">&quot;formulaContexts&quot;</span>: [],
+ <span class="k">&quot;figureDescriptions&quot;</span>: [
+  {
+   <span class="k">&quot;caption&quot;</span>: &quot;图 1-10 狗的一家&quot;,
+   <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+   <span class="k">&quot;description&quot;</span>: &quot;展示了一群沙皮狗（亲代与子代）趴卧在一起的景象，体现生物的遗传与变异。&quot;,
+   <span class="k">&quot;provenance&quot;</span>: &quot;described&quot;,
+   <span class="k">&quot;tier&quot;</span>: &quot;topical&quot;
+  },
+  {
+   <span class="k">&quot;caption&quot;</span>: &quot;无&quot;,
+   <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+   <span class="k">&quot;description&quot;</span>: &quot;生物共同特征的思维导图图解框架。左侧中心节点为“生物”，向右延伸出六个分支：第一行为“需要[营养]——例如：[蜜蜂吃花粉、花蜜]”；其余五行分别以“能……”、“能……”、“能……”、“能……”、“具有……”为引导，后接空白矩形填空框及“例如：”对应的空白填空框。&quot;,
+   <span class="k">&quot;provenance&quot;</span>: &quot;described&quot;,
+   <span class="k">&quot;tier&quot;</span>: &quot;topical&quot;
+  },
+  {
+   <span class="k">&quot;caption&quot;</span>: &quot;封面&quot;,
+   <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+   <span class="k">&quot;description&quot;</span>: &quot;封面主体绘制了一只展翅飞翔的朱鹮，其具有弯曲的长喙、红色的裸露面部以及粉红色的羽翼；背景为具有动态模糊效果的绿色田野山林，上方为蓝天与白云。&quot;,
+   <span class="k">&quot;provenance&quot;</span>: &quot;described&quot;,
+   <span class="k">&quot;tier&quot;</span>: &quot;topical&quot;
+  }
+ ],
+ <span class="k">&quot;altFormulas&quot;</span>: [],
+ <span class="k">&quot;altFormulaContexts&quot;</span>: []
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/lessons.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">12,939 行</span>
+      <span class="m">14 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">教材正文，<strong>一页一条</strong>（人教版）</p>
+  <p class="use"><b>能回答什么</b>：agent 想读「第 22 章第 2 节这一课到底讲了什么」，读一条就行</p>
+  <p class="how"><b>怎么取</b>：按 id 直接取：math-9a-p102</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">book</span><span class="chip">subject</span><span class="chip">page</span><span class="chip">chapter</span><span class="chip">text</span><span class="chip">sentences</span><span class="chip">concepts</span><span class="chip">quality</span><span class="chip">cjkRatio</span><span class="chip">isToc</span><span class="chip">source</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;biology-7a-p1&quot;,
+ <span class="k">&quot;book&quot;</span>: &quot;7a&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;biology&quot;,
+ <span class="k">&quot;page&quot;</span>: 1,
+ <span class="k">&quot;chapter&quot;</span>: &quot;&quot;,
+ <span class="k">&quot;text&quot;</span>: &quot;®YIWUJIAOYUJIAOKESHU\n义务教育教科书\nSHENGWUXUE\n全国优秀教材一等奖七年级\n义务教育教科书\n生物学七年级上册封面动物／朱\n绿色印刷产品\n(5.18)初中封面生物学7上绿色标志12022/6/713:13&quot;,
+ <span class="k">&quot;sentences&quot;</span>: 8,
+ <span class="k">&quot;concepts&quot;</span>: [],
+ <span class="k">&quot;quality&quot;</span>: 0.96,
+ <span class="k">&quot;cjkRatio&quot;</span>: 0.574,
+ <span class="k">&quot;isToc&quot;</span>: false,
+ <span class="k">&quot;source&quot;</span>: &quot;rjb-bio-7a.txt&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/lessons-sh.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">9,009 行</span>
+      <span class="m">12 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">教材正文，<strong>一页一条</strong>（沪教版/沪科版）</p>
+  <p class="use"><b>能回答什么</b>：上海的孩子按沪教版教材看，正文层是这一份</p>
+  <p class="how"><b>怎么取</b>：按 id 直接取：sh-hk-物理-w-8b-p52</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">book</span><span class="chip">subject</span><span class="chip">page</span><span class="chip">text</span><span class="chip">sentences</span><span class="chip">cjkRatio</span><span class="chip">isToc</span><span class="chip">source</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;sh-hk-科学-w-2b-p1&quot;,
+ <span class="k">&quot;book&quot;</span>: &quot;sh-hk-科学-w-2b&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;科学&quot;,
+ <span class="k">&quot;page&quot;</span>: 1,
+ <span class="k">&quot;text&quot;</span>: &quot;&quot;,
+ <span class="k">&quot;sentences&quot;</span>: 0,
+ <span class="k">&quot;cjkRatio&quot;</span>: 0.0,
+ <span class="k">&quot;isToc&quot;</span>: false,
+ <span class="k">&quot;source&quot;</span>: &quot;国家中小学智慧教育平台（页图 OCR）&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/vision-pages.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">4,390 行</span>
+      <span class="m">8 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">页面的<strong>视觉层</strong>（人教版）—— 一页一条</p>
+  <p class="use"><b>能回答什么</b>：公式和图形的<strong>页面级</strong>原始记录（概念层是从这里聚合出来的）</p>
+  <p class="how"><b>怎么取</b>：按 id 取</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">book</span><span class="chip">subject</span><span class="chip">bookZh</span><span class="chip">publisher</span><span class="chip">page</span><span class="chip">pdf</span><span class="chip">ok</span><span class="chip">data</span><span class="chip">graphBook</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;math-7a-p1&quot;,
+ <span class="k">&quot;book&quot;</span>: &quot;math-7a&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;math&quot;,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;七年级上册&quot;,
+ <span class="k">&quot;publisher&quot;</span>: &quot;人教版&quot;,
+ <span class="k">&quot;page&quot;</span>: 1,
+ <span class="k">&quot;pdf&quot;</span>: &quot;rjb-math-7a.pdf&quot;,
+ <span class="k">&quot;ok&quot;</span>: true,
+ <span class="k">&quot;data&quot;</span>: {
+  <span class="k">&quot;formulas&quot;</span>: [
+   {
+    <span class="k">&quot;latex&quot;</span>: &quot;a(b+c)=ab+ac&quot;,
+    <span class="k">&quot;context&quot;</span>: &quot;封面右上部“分配律”文字下方的乘法分配律公式&quot;
+   },
+   {
+    <span class="k">&quot;latex&quot;</span>: &quot;3+2(n-1)=2n+1&quot;,
+    <span class="k">&quot;context&quot;</span>: &quot;封面中部火柴棒拼成的三角形骨架下方的规律计算公式&quot;
+   },
+   {
+    <span class="k">&quot;latex&quot;</span>: &quot;\\frac{x}{60}-\\frac{x}{70}=1&quot;,
+    <span class="k">&quot;context&quot;</span>: &quot;封面左下部公路背景上方的行程问题一元一次方程&quot;
+   }
+  ],
+  <span class="k">&quot;figures&quot;</span>: [
+   {
+    <span class="k">&quot;caption&quot;</span>: &quot;封面插图&quot;,
+    <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+    <span class="k">&quot;description&quot;</span>: &quot;由火柴棒搭成的连续三角形结构，下方标注规律公式3+2(n-1)=2n+1；下方是一条呈S形弯曲的公路，两侧有绿化带和行道树，路面上行驶着一辆白顶蓝色车头的厢式货车和一辆红白相间的公交车，路面旁及路面上写有关于行程问题的方程和关系式。&quot;
+   }
+  ],
+  <span class="k">&quot;tables&quot;</span>: [],
+  <span class="k">&quot;exercises&quot;</span>: []
+ },
+ <span class="k">&quot;graphBook&quot;</span>: &quot;7a&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/shanghai-graph.json</code></h3>
+    <div class="meta">
+      <span class="m rec">6,567 条</span>
+      <span class="m">8 MB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">上海版<strong>图谱</strong>（节点 / 单元链 / 先修边）</p>
+  <p class="use"><b>能回答什么</b>：上海教材的版本（沪教版/沪科版），跟主站同一套前置关系</p>
+  <p class="how"><b>怎么取</b>：nodes / edges / units 三段</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_source</span><span class="chip">_note</span><span class="chip">_gradeRule</span><span class="chip">nodes</span><span class="chip">units</span><span class="chip">edges</span><span class="chip">isa</span></div><pre class="sample">{
+ <span class="k">&quot;nodes&quot;</span>: {
+  <span class="k">&quot;id&quot;</span>: &quot;math_8b_rjb_cpt3&quot;,
+  <span class="k">&quot;name&quot;</span>: &quot;(√a)^2 = a&quot;,
+  <span class="k">&quot;subject&quot;</span>: &quot;math&quot;,
+  <span class="k">&quot;bookSubject&quot;</span>: &quot;数学&quot;,
+  <span class="k">&quot;kind&quot;</span>: &quot;sh&quot;,
+  <span class="k">&quot;def&quot;</span>: &quot;对于所有 a ≥ 0，有 (√a)^2 = a。&quot;,
+  <span class="k">&quot;rjbBook&quot;</span>: &quot;八下&quot;,
+  <span class="k">&quot;grade&quot;</span>: 7,
+  <span class="k">&quot;stage&quot;</span>: 1,
+  <span class="k">&quot;mainBook&quot;</span>: &quot;sh-hk-数学-s-7b&quot;,
+  <span class="k">&quot;books&quot;</span>: {
+   <span class="k">&quot;sh-hk-数学-s-7b&quot;</span>: {
+    <span class="k">&quot;bookId&quot;</span>: &quot;sh-hk-数学-s-7b&quot;,
+    <span class="k">&quot;title&quot;</span>: &quot;（根据2022年版课程标准修订）义务教育教科书·数学七年级下册&quot;,
+    <span class="k">&quot;edition&quot;</span>: &quot;沪科版&quot;,
+    <span class="k">&quot;system&quot;</span>: &quot;s&quot;,
+    <span class="k">&quot;graphBook&quot;</span>: &quot;7b&quot;,
+    <span class="k">&quot;volName&quot;</span>: &quot;七下&quot;,
+    <span class="k">&quot;grade&quot;</span>: 7,
+    <span class="k">&quot;stage&quot;</span>: 1,
+    <span class="k">&quot;evidence&quot;</span>: [
+     &quot;集中&quot;
+    ],
+    <span class="k">&quot;pages&quot;</span>: [
+     64,
+     65,
+     70
+    ],
+    <span class="k">&quot;sections&quot;</span>: [
+     {
+      <span class="k">&quot;chapter&quot;</span>: &quot;第8章&quot;,
+      <span class="k">&quot;chapterName&quot;</span>: &quot;整式乘法与因式分解&quot;,
+      <span class="k">&quot;section&quot;</span>: &quot;8.1&quot;,
+      <span class="k">&quot;sectionName&quot;</span>: &quot;幂的运算&quot;,
+      <span class="k">&quot;page&quot;</span>: 51
+     },
+     {
+      <span class="k">&quot;chapter&quot;</span>: &quot;第8章&quot;,
+      <span class="k">&quot;chapterName&quot;</span>: &quot;整式乘法与因式分解&quot;,
+      <span class="k">&quot;section&quot;</span>: &quot;8.2&quot;,
+      <span class="k">&quot;sectionName&quot;</span>: &quot;整式乘法&quot;,
+      <span class="k">&quot;page&quot;</span>: 65
+     },
+     {
+      <span class="k">&quot;chapter&quot;</span>: &quot;第8章&quot;,
+      <span class="k">&quot;chapterName&quot;</span>: &quot;整式乘法与因式分解&quot;,
+      <span class="k">&quot;section&quot;</span>: &quot;8.3&quot;,
+      <span class="k">&quot;sectionName&quot;</span>: &quot;完全平方公式与平方差公式&quot;,
+      <span class="k">&quot;page&quot;</span>: 74
+     }
+    ]
+   }
+  },
+  <span class="k">&quot;bookTitles&quot;</span>: [
+   &quot;（根据2022年版课程标准修订）义务教育教科书·数学七年级下册&quot;
+  ],
+  <span class="k">&quot;editions&quot;</span>: [
+   &quot;沪科版&quot;
+  ],
+  <span class="k">&quot;sections&quot;</span>: [
+   {
+    <span class="k">&quot;chapter&quot;</span>: &quot;第8章&quot;,
+    <span class="k">&quot;chapterName&quot;</span>: &quot;整式乘法与因式分解&quot;,
+    <span class="k">&quot;section&quot;</span>: &quot;8.1&quot;,
+    <span class="k">&quot;sectionName&quot;</span>: &quot;幂的运算&quot;,
+    <span class="k">&quot;page&quot;</span>: 51
+   },
+   {
+    <span class="k">&quot;chapter&quot;</span>: &quot;第8章&quot;,
+    <span class="k">&quot;chapterName&quot;</span>: &quot;整式乘法与因式分解&quot;,
+    <span class="k">&quot;section&quot;</span>: &quot;8.2&quot;,
+    <span class="k">&quot;sectionName&quot;</span>: &quot;整式乘法&quot;,
+    <span class="k">&quot;page&quot;</span>: 65
+   },
+   {
+    <span class="k">&quot;chapter&quot;</span>: &quot;第8章&quot;,
+    <span class="k">&quot;chapterName&quot;</span>: &quot;整式乘法与因式分解&quot;,
+    <span class="k">&quot;section&quot;</span>: &quot;8.3&quot;,
+    <span class="k">&quot;sectionName&quot;</span>: &quot;完全平方公式与平方差公式&quot;,
+    <span class="k">&quot;page&quot;</span>: 74
+   }
+  ]
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/page-index.json</code></h3>
+    <div class="meta">
+      <span class="m rec">11,052 条</span>
+      <span class="m">7 MB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what"><strong>概念 → 教材页</strong>反查表</p>
+  <p class="use"><b>能回答什么</b>：想知道「这个概念在哪几页」时用；页文本已经切好了</p>
+  <p class="how"><b>怎么取</b>：_byConcept[概念id] → [{book,page,pageId,text}]</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_pages</span><span class="chip">_byConcept</span></div><pre class="sample">{
+ <span class="k">&quot;_pages&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;_byConcept&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/concept-text-sh.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">2,114 行</span>
+      <span class="m">1 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">概念的<strong>教材原话</strong>，<strong>一个概念一条</strong>（沪教版）</p>
+  <p class="use"><b>能回答什么</b>：同上，沪教那套</p>
+  <p class="how"><b>怎么取</b>：按 id 取；这层用 books + pages 记位置（<strong>印刷页码</strong>，不是扫描页码）</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">name</span><span class="chip">subject</span><span class="chip">books</span><span class="chip">pages</span><span class="chip">quotes</span><span class="chip">quoteKinds</span><span class="chip">hasDefinition</span><span class="chip">match</span><span class="chip">source</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;math_2a_rjb_cpt23&quot;,
+ <span class="k">&quot;name&quot;</span>: &quot;7的乘法口诀&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;math&quot;,
+ <span class="k">&quot;books&quot;</span>: [
+  &quot;sh-hj-数学-w-2a&quot;
+ ],
+ <span class="k">&quot;pages&quot;</span>: [
+  59
+ ],
+ <span class="k">&quot;quotes&quot;</span>: [
+  &quot;编7的乘法口诀。&quot;
+ ],
+ <span class="k">&quot;quoteKinds&quot;</span>: [
+  &quot;text&quot;
+ ],
+ <span class="k">&quot;hasDefinition&quot;</span>: false,
+ <span class="k">&quot;match&quot;</span>: &quot;exact&quot;,
+ <span class="k">&quot;source&quot;</span>: &quot;国家中小学智慧教育平台（页图 OCR）&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/vision-pages-kx.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">1,036 行</span>
+      <span class="m">1 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">页面的<strong>视觉层</strong>（小学科学）</p>
+  <p class="use"><b>能回答什么</b>：人教版《小学科学》12 本的视觉层</p>
+  <p class="how"><b>怎么取</b>：按 id 取</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">book</span><span class="chip">subject</span><span class="chip">bookZh</span><span class="chip">edition</span><span class="chip">graphBook</span><span class="chip">page</span><span class="chip">source</span><span class="chip">ok</span><span class="chip">data</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;rjb-science-s6-1a-p1&quot;,
+ <span class="k">&quot;book&quot;</span>: &quot;rjb-science-s6-1a&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;science&quot;,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;（根据2022年版课程标准修订）义务教育教科书·科学一年级上册&quot;,
+ <span class="k">&quot;edition&quot;</span>: &quot;人教版&quot;,
+ <span class="k">&quot;graphBook&quot;</span>: &quot;1a&quot;,
+ <span class="k">&quot;page&quot;</span>: 1,
+ <span class="k">&quot;source&quot;</span>: &quot;国家中小学智慧教育平台（页图）&quot;,
+ <span class="k">&quot;ok&quot;</span>: true,
+ <span class="k">&quot;data&quot;</span>: {
+  <span class="k">&quot;formulas&quot;</span>: [],
+  <span class="k">&quot;figures&quot;</span>: [
+   {
+    <span class="k">&quot;caption&quot;</span>: &quot;封面插图&quot;,
+    <span class="k">&quot;kind&quot;</span>: &quot;示意图&quot;,
+    <span class="k">&quot;description&quot;</span>: &quot;俯视视角下的水池或鱼缸场景，两条金鱼在水中游动。其中上方的一条呈红白相间花纹，尾鳍展开如薄纱；下方的一条主要呈鲜艳的红橙色，胸鳍和尾鳍边缘带白色。背景为模糊的绿色水草和水面透明的气泡与水波。&quot;
+   }
+  ],
+  <span class="k">&quot;tables&quot;</span>: [],
+  <span class="k">&quot;exercises&quot;</span>: []
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/quote-repairs.json</code></h3>
+    <div class="meta">
+      <span class="m rec">15,282 条</span>
+      <span class="m">1 MB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">引文的<strong>最终判定缓存</strong></p>
+  <p class="use"><b>能回答什么</b>：教材 PDF 抽取时把词切断了（“有机物”→“机物中的…”），这一份是回原文补全后的结果</p>
+  <p class="how"><b>怎么取</b>：顶层是 {缓存键: {q, kind, ev}}；缓存键 = “版本#概念id#引文序号”</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">q</span><span class="chip">kind</span></div><pre class="sample">{
+ <span class="k">&quot;人教版#math_1a_rjb_cpt4#1&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;人教版#math_1a_rjb_cpt4#2&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;沪教版#math_1a_rjb_cpt4#0&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;沪教版#math_1a_rjb_cpt4#1&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;沪教版#math_1a_rjb_cpt4#2&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;沪教版#math_1a_rjb_cpt4#3&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;沪教版#math_1a_rjb_cpt4#5&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;人教版#math_1a_rjb_cpt5#2&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;人教版#math_1a_rjb_cpt5#3&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;人教版#math_1a_rjb_cpt6#2&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;人教版#math_1a_rjb_cpt14#0&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;人教版#math_1a_rjb_cpt14#1&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;人教版#math_1a_rjb_cpt14#2&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;人教版#math_1a_rjb_cpt14#3&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/concept-text.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">1,361 行</span>
+      <span class="m">1 MB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">概念的<strong>教材原话</strong>，<strong>一个概念一条</strong>（人教版）</p>
+  <p class="use"><b>能回答什么</b>：写视频稿要「教材原话 + 页码 + 第几节」，直接拿这条</p>
+  <p class="how"><b>怎么取</b>：按 id 或 name 取；quotes 里有原话，quoteKinds 标了哪句是定义句</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">name</span><span class="chip">subject</span><span class="chip">book</span><span class="chip">bookZh</span><span class="chip">chapter</span><span class="chip">pages</span><span class="chip">mentions</span><span class="chip">quotes</span><span class="chip">quoteKinds</span><span class="chip">hasDefinition</span><span class="chip">quality</span><span class="chip">match</span><span class="chip">source</span><span class="chip">otherEditions</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;biology_7a_rjb_cpt15&quot;,
+ <span class="k">&quot;name&quot;</span>: &quot;生物与环境的关系&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;biology&quot;,
+ <span class="k">&quot;book&quot;</span>: &quot;7a&quot;,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;七上&quot;,
+ <span class="k">&quot;chapter&quot;</span>: &quot;第二章 了解生物圈&quot;,
+ <span class="k">&quot;pages&quot;</span>: [
+  4,
+  19
+ ],
+ <span class="k">&quot;mentions&quot;</span>: 2,
+ <span class="k">&quot;quotes&quot;</span>: [
+  &quot;第一节生物与环境的关系.......................................12&quot;,
+  &quot;第一节生物与环境的关系&quot;
+ ],
+ <span class="k">&quot;quoteKinds&quot;</span>: [
+  &quot;text&quot;,
+  &quot;text&quot;
+ ],
+ <span class="k">&quot;hasDefinition&quot;</span>: false,
+ <span class="k">&quot;quality&quot;</span>: 1.0,
+ <span class="k">&quot;match&quot;</span>: &quot;exact&quot;,
+ <span class="k">&quot;source&quot;</span>: &quot;rjb-bio-7a.txt&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/kx-ocr.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">1,036 行</span>
+      <span class="m">646 KB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">小学科学教材的<strong>OCR 正文</strong></p>
+  <p class="use"><b>能回答什么</b>：人教版《小学科学》1上~6下，1,036 页</p>
+  <p class="how"><b>怎么取</b>：按 id 取</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">book</span><span class="chip">page</span><span class="chip">text</span></div><pre class="sample">{
+ <span class="k">&quot;book&quot;</span>: &quot;s6-1a&quot;,
+ <span class="k">&quot;page&quot;</span>: 1,
+ <span class="k">&quot;text&quot;</span>: &quot;AAA 广 轧务专家二N 性 冤 让 心 一年级 上册 ea 儿 人并大贡x据社 湖北教育出版社&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/concept-vision-kx.jsonl</code></h3>
+    <div class="meta">
+      <span class="m rec">146 行</span>
+      <span class="m">252 KB</span>
+      <span class="m fmt">jsonl（每行一条）</span>
+      
+    </div>
+  </header>
+  <p class="what">小学科学概念的<strong>公式 / 图形 / 例题</strong></p>
+  <p class="use"><b>能回答什么</b>：146 个概念定位到小学科学的书/节/页</p>
+  <p class="how"><b>怎么取</b>：按 id 取</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">name</span><span class="chip">subject</span><span class="chip">books</span><span class="chip">graphBooks</span><span class="chip">upBook</span><span class="chip">upBookZh</span><span class="chip">match</span><span class="chip">hitPages</span><span class="chip">nHits</span><span class="chip">perBook</span><span class="chip">units</span><span class="chip">sections</span><span class="chip">pageSections</span><span class="chip">def</span></div><pre class="sample">{
+ <span class="k">&quot;id&quot;</span>: &quot;biology_7b_rjb_cpt134&quot;,
+ <span class="k">&quot;name&quot;</span>: &quot;感觉器官&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;biology&quot;,
+ <span class="k">&quot;books&quot;</span>: [
+  &quot;s6-1a&quot;
+ ],
+ <span class="k">&quot;graphBooks&quot;</span>: [
+  &quot;1a&quot;
+ ],
+ <span class="k">&quot;upBook&quot;</span>: &quot;7b&quot;,
+ <span class="k">&quot;upBookZh&quot;</span>: &quot;七下&quot;,
+ <span class="k">&quot;match&quot;</span>: &quot;目录&quot;,
+ <span class="k">&quot;hitPages&quot;</span>: [
+  5,
+  24,
+  32
+ ],
+ <span class="k">&quot;nHits&quot;</span>: 7,
+ <span class="k">&quot;perBook&quot;</span>: {
+  <span class="k">&quot;s6-1a&quot;</span>: {
+   <span class="k">&quot;units&quot;</span>: [
+    &quot;我们的感觉器官&quot;
+   ],
+   <span class="k">&quot;sections&quot;</span>: [
+    &quot;保护感觉器官&quot;,
+    &quot;单元回顾&quot;,
+    &quot;我们怎样知道&quot;
+   ],
+   <span class="k">&quot;unit&quot;</span>: &quot;我们的感觉器官&quot;,
+   <span class="k">&quot;section&quot;</span>: &quot;保护感觉器官&quot;,
+   <span class="k">&quot;secHits&quot;</span>: {
+    <span class="k">&quot;我们怎样知道&quot;</span>: 1,
+    <span class="k">&quot;保护感觉器官&quot;</span>: 3
+   },
+   <span class="k">&quot;secStarts&quot;</span>: {
+    <span class="k">&quot;“钓鱼”游戏&quot;</span>: 7,
+    <span class="k">&quot;不倒翁&quot;</span>: 10,
+    <span class="k">&quot;怎样学科学&quot;</span>: 14,
+    <span class="k">&quot;单元回顾&quot;</span>: 67,
+    <span class="k">&quot;我们怎样知道&quot;</span>: 22,
+    <span class="k">&quot;观察水果&quot;</span>: 27,
+    <span class="k">&quot;保护感觉器官&quot;</span>: 31,
+    <span class="k">&quot;金鱼&quot;</span>: 40,
+    <span class="k">&quot;猫和兔&quot;</span>: 44,
+    <span class="k">&quot;更多的家养动物&quot;</span>: 49,
+    <span class="k">&quot;常见的工具&quot;</span>: 56,
+    <span class="k">&quot;拆装玩具&quot;</span>: 59,
+    <span class="k">&quot;制作杯垫&quot;</span>: 63
+   },
+   <span class="k">&quot;offset&quot;</span>: 5
+  }
+ },
+ <span class="k">&quot;units&quot;</span>: [
+  &quot;我们的感觉器官&quot;
+ ],
+ <span class="k">&quot;sections&quot;</span>: [
+  &quot;保护感觉器官&quot;,
+  &quot;单元回顾&quot;,
+  &quot;我们怎样知道&quot;
+ ],
+ <span class="k">&quot;pageSections&quot;</span>: [
+  {
+   <span class="k">&quot;book&quot;</span>: &quot;s6-1a&quot;,
+   <span class="k">&quot;page&quot;</span>: 24,
+   <span class="k">&quot;unit&quot;</span>: &quot;我们的感觉器官&quot;,
+   <span class="k">&quot;section&quot;</span>: &quot;我们怎样知道&quot;
+  },
+  {
+   <span class="k">&quot;book&quot;</span>: &quot;s6-1a&quot;,
+   <span class="k">&quot;page&quot;</span>: 32,
+   <span class="k">&quot;unit&quot;</span>: &quot;我们的感觉器官&quot;,
+   <span class="k">&quot;section&quot;</span>: &quot;保护感觉器官&quot;
+  },
+  {
+   <span class="k">&quot;book&quot;</span>: &quot;s6-1a&quot;,
+   <span class="k">&quot;page&quot;</span>: 33,
+   <span class="k">&quot;unit&quot;</span>: &quot;我们的感觉器官&quot;,
+   <span class="k">&quot;section&quot;</span>: &quot;保护感觉器官&quot;
+  }
+ ]
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/shanghai-toc.json</code></h3>
+    <div class="meta">
+      <span class="m rec">2 条</span>
+      <span class="m">192 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">上海教材的<strong>目录</strong>（26 本 / 521 节）</p>
+  <p class="use"><b>能回答什么</b>：教材自己的章节顺序，用来核对图谱的章序对不对</p>
+  <p class="how"><b>怎么取</b>：按 book 取</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_source</span><span class="chip">books</span></div><pre class="sample">{
+ <span class="k">&quot;_source&quot;</span>: &quot;上海教材目录页 —— 视觉模型读版式（不是 OCR，tesseract 在彩色目录上太脏）&quot;,
+ <span class="k">&quot;books&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/alt-align.json</code></h3>
+    <div class="meta">
+      <span class="m rec">4 条</span>
+      <span class="m">140 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what"><strong>跨版本对照</strong>（人教节 ↔ 其他版本节）</p>
+  <p class="use"><b>能回答什么</b>：同一节在不同出版社教材里叫什么</p>
+  <p class="how"><b>怎么取</b>：byConcept[概念id] → [{label, alt, chapter}]</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_comment</span><span class="chip">minSim</span><span class="chip">align</span><span class="chip">byConcept</span></div><pre class="sample">{
+ <span class="k">&quot;_comment&quot;</span>: &quot;人教节 → 其他出版社节的对应。匹配靠 difflib 相似度（编号相同直接算 1.0），低于阈值的标 unmatched，不硬凑。&quot;,
+ <span class="k">&quot;minSim&quot;</span>: 0.55,
+ <span class="k">&quot;align&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;byConcept&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/alt-editions.json</code></h3>
+    <div class="meta">
+      <span class="m rec">8 条</span>
+      <span class="m">101 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">其他版本教材的<strong>视觉层</strong></p>
+  <p class="use"><b>能回答什么</b>：沪教/冀教/北京等的公式图形</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">七上</span><span class="chip">七下</span><span class="chip">九上</span><span class="chip">九下</span><span class="chip">八上</span><span class="chip">八下</span></div><pre class="sample">{
+ <span class="k">&quot;初中数学冀教版&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;初中数学北京版&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;初中数学华东师大版&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;初中数学沪科技版&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;初中数学浙教版&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;初中数学湘教版&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;初中数学苏科版&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;初中数学青岛版&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/vision-cover-alt.json</code></h3>
+    <div class="meta">
+      <span class="m rec">4 条</span>
+      <span class="m">100 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">教材<strong>封面</strong>图（其他版本）</p>
+  <p class="use"><b>能回答什么</b>：同上</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_total</span><span class="chip">_ok</span><span class="chip">_failed</span><span class="chip">books</span></div><pre class="sample">{
+ <span class="k">&quot;_total&quot;</span>: 7784,
+ <span class="k">&quot;_ok&quot;</span>: 7784,
+ <span class="k">&quot;_failed&quot;</span>: 0,
+ <span class="k">&quot;books&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/shanghai-textbook-catalog.json</code></h3>
+    <div class="meta">
+      <span class="m rec">298 条</span>
+      <span class="m">85 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">上海教材<strong>清单</strong></p>
+  <p class="use"><b>能回答什么</b>：哪些版本、哪几册</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_source</span><span class="chip">_url</span><span class="chip">_pdf</span><span class="chip">_editionCodes</span><span class="chip">entries</span></div><pre class="sample">{
+ <span class="k">&quot;entries&quot;</span>: {
+  <span class="k">&quot;num&quot;</span>: &quot;Ⅱ－XB－2019027&quot;,
+  <span class="k">&quot;subject&quot;</span>: &quot;道德与法治&quot;,
+  <span class="k">&quot;title&quot;</span>: &quot;义务教育教科书（五·四学制）·道德与法治活动册（三/一）&quot;,
+  <span class="k">&quot;editionCode&quot;</span>: &quot;人教社&quot;,
+  <span class="k">&quot;publisher&quot;</span>: &quot;人民教育出版社&quot;,
+  <span class="k">&quot;term&quot;</span>: &quot;三年级第一学期&quot;,
+  <span class="k">&quot;pending&quot;</span>: false,
+  <span class="k">&quot;note&quot;</span>: &quot;配套义务教育教科书(五·四学制)·道德与法治(三年级上册)&quot;
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/vision-cover.json</code></h3>
+    <div class="meta">
+      <span class="m rec">4 条</span>
+      <span class="m">57 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">教材<strong>封面</strong>图（人教版）</p>
+  <p class="use"><b>能回答什么</b>：封面不在库里（教材 PDF 有版权），这里存的是提取出来的封面信息</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_total</span><span class="chip">_ok</span><span class="chip">_failed</span><span class="chip">books</span></div><pre class="sample">{
+ <span class="k">&quot;_total&quot;</span>: 4390,
+ <span class="k">&quot;_ok&quot;</span>: 4390,
+ <span class="k">&quot;_failed&quot;</span>: 0,
+ <span class="k">&quot;books&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/kx-graph.json</code></h3>
+    <div class="meta">
+      <span class="m rec">67 条</span>
+      <span class="m">48 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">小学科学<strong>独立图谱</strong>（67 节点 / 25 边）</p>
+  <p class="use"><b>能回答什么</b>：小学科学站的图谱 —— <strong>节点不来自上游</strong>，是自己从教材目录+正文建的</p>
+  <p class="how"><b>怎么取</b>：nodes / edges</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_source</span><span class="chip">srczh</span><span class="chip">nodes</span><span class="chip">edges</span><span class="chip">books</span></div><pre class="sample">{
+ <span class="k">&quot;srczh&quot;</span>: &quot;上游&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/shanghai-textbooks.json</code></h3>
+    <div class="meta">
+      <span class="m rec">67 条</span>
+      <span class="m">33 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">上海教材的<strong>元信息</strong></p>
+  <p class="use"><b>能回答什么</b>：册次、出版社、版本</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_source</span><span class="chip">_indexUrls</span><span class="chip">_detailTpl</span><span class="chip">books</span></div><pre class="sample">{
+ <span class="k">&quot;books&quot;</span>: {
+  <span class="k">&quot;contentId&quot;</span>: &quot;b2041c8b-e20d-48a0-891a-fe164f8a5757&quot;,
+  <span class="k">&quot;title&quot;</span>: &quot;（根据2022年版课程标准修订）义务教育教科书•数学七年级上册&quot;,
+  <span class="k">&quot;publisher&quot;</span>: &quot;上海科学技术出版社&quot;,
+  <span class="k">&quot;edition&quot;</span>: &quot;沪科版&quot;,
+  <span class="k">&quot;subject&quot;</span>: &quot;数学&quot;,
+  <span class="k">&quot;imageBase&quot;</span>: &quot;https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/b2041c8b-e20d-48a0-891a-fe164f8a5757.t/zh-CN/1787023102748/transcode/image&quot;,
+  <span class="k">&quot;pages&quot;</span>: 238,
+  <span class="k">&quot;graphBook&quot;</span>: &quot;7a&quot;,
+  <span class="k">&quot;system&quot;</span>: &quot;s&quot;,
+  <span class="k">&quot;bookId&quot;</span>: &quot;sh-hk-数学-s-7a&quot;
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/kx-sections.json</code></h3>
+    <div class="meta">
+      <span class="m rec">105 条</span>
+      <span class="m">31 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">小学科学的<strong>节判定</strong>（105 节）</p>
+  <p class="use"><b>能回答什么</b>：哪一节是概念、哪一节是活动 —— 视觉模型逐节读的</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">book</span><span class="chip">unit</span><span class="chip">section</span><span class="chip">page</span><span class="chip">scanPage</span><span class="chip">bookZh</span><span class="chip">isConcept</span><span class="chip">concept</span><span class="chip">summary</span><span class="chip">type</span><span class="chip">vocab</span></div><pre class="sample">{
+ <span class="k">&quot;book&quot;</span>: &quot;s6-1a&quot;,
+ <span class="k">&quot;unit&quot;</span>: &quot;走近科学&quot;,
+ <span class="k">&quot;section&quot;</span>: &quot;“钓鱼”游戏&quot;,
+ <span class="k">&quot;page&quot;</span>: 2,
+ <span class="k">&quot;scanPage&quot;</span>: 7,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;1a&quot;,
+ <span class="k">&quot;isConcept&quot;</span>: false,
+ <span class="k">&quot;concept&quot;</span>: &quot;&quot;,
+ <span class="k">&quot;summary&quot;</span>: &quot;通过“钓鱼”游戏探究“小鱼”能够被钓起来的奥秘&quot;,
+ <span class="k">&quot;type&quot;</span>: &quot;活动&quot;,
+ <span class="k">&quot;vocab&quot;</span>: null
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/kx-toc.json</code></h3>
+    <div class="meta">
+      <span class="m rec">12 条</span>
+      <span class="m">27 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">小学科学的<strong>目录</strong>（含页码偏移实测值）</p>
+  <p class="use"><b>能回答什么</b>：12 本的目录，_offset 字段是印刷页码→扫描页码的实测偏移</p>
+  <p class="how"><b>怎么取</b>：按 book 取</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">units</span><span class="chip">_sections</span><span class="chip">_offset</span></div><pre class="sample">{
+ <span class="k">&quot;s6-2a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-1b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-1a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-2b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-3a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-3b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-4b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-4a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-6b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-6a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-5a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;s6-5b&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/alt-editions-manifest.json</code></h3>
+    <div class="meta">
+      <span class="m rec">1 条</span>
+      <span class="m">20 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">其他版本教材的<strong>清单</strong></p>
+  <p class="use"><b>能回答什么</b>：版本、来源、覆盖情况</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">初中数学人教版</span><span class="chip">初中数学冀教版</span><span class="chip">初中数学北京版</span><span class="chip">初中数学华东师大版</span><span class="chip">初中数学沪科技版</span><span class="chip">初中数学浙教版</span><span class="chip">初中数学湘教版</span><span class="chip">初中数学苏科版</span><span class="chip">初中数学青岛版</span></div><pre class="sample">{
+ <span class="k">&quot;editions&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/textbook-editions.json</code></h3>
+    <div class="meta">
+      <span class="m rec">8 条</span>
+      <span class="m">17 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">教材<strong>版本指纹</strong></p>
+  <p class="use"><b>能回答什么</b>：我们引用的到底是哪一代教材</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_comment</span><span class="chip">generated</span><span class="chip">books</span><span class="chip">_generation</span></div><pre class="sample">{
+ <span class="k">&quot;_comment&quot;</span>: &quot;每本教材的版本指纹。**引用「第几章第几节」必须钉在这个版本上** —— 人教版初中 2024 秋起换新版，章号全变了。由 src/book_editions.py 从 PDF 版权页生成。&quot;,
+ <span class="k">&quot;generated&quot;</span>: &quot;2026-10-20 19:49&quot;,
+ <span class="k">&quot;books&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;_generation&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/l0-abilities.json</code></h3>
+    <div class="meta">
+      <span class="m rec">20 条</span>
+      <span class="m">12 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what"><strong>能力底座</strong>（L0 层）</p>
+  <p class="use"><b>能回答什么</b>：跨学科的基础能力（注意力、读图、计算…），先修图谱里最底层那一层</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_about</span><span class="chip">_why</span><span class="chip">_rules</span><span class="chip">abilities</span></div><pre class="sample">{
+ <span class="k">&quot;_rules&quot;</span>: &quot;aliases 必须来自模型真实产出（src/merge_prereq.py 的 ability 类），不能凭空造&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/intro-links.json</code></h3>
+    <div class="meta">
+      <span class="m rec">25 条</span>
+      <span class="m">11 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">教材的<strong>引入路径</strong>（概念 → 首次出现的那一课）</p>
+  <p class="use"><b>能回答什么</b>：「这个概念是从哪节课冒出来的」</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_comment</span><span class="chip">links</span></div><pre class="sample">{
+ <span class="k">&quot;links&quot;</span>: {
+  <span class="k">&quot;from&quot;</span>: &quot;math_7a_rjb_cpt1&quot;,
+  <span class="k">&quot;to&quot;</span>: &quot;math_7a_rjb_cpt6&quot;,
+  <span class="k">&quot;evidence&quot;</span>: &quot;在小学;我们学过正数及0的加法运算.引入负数后;怎样进行加法运算呢？ 实际问题中;有时也会遇到与负数有关的加法运算.例如;在本章引言中; 把收入记作&quot;,
+  <span class="k">&quot;source&quot;</span>: &quot;人教7a 1.3.1 有理数的加法（我们学过…）&quot;,
+  <span class="k">&quot;match&quot;</span>: &quot;EXACT&quot;,
+  <span class="k">&quot;status&quot;</span>: &quot;confirmed&quot;
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/cover-gaps.json</code></h3>
+    <div class="meta">
+      <span class="m rec">17 条</span>
+      <span class="m">10 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what"><strong>封面缺口</strong>清单</p>
+  <p class="use"><b>能回答什么</b>：哪些书的封面图没拿到（不影响正文）</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_comment</span><span class="chip">nodes</span><span class="chip">edges</span></div><pre class="sample">{
+ <span class="k">&quot;nodes&quot;</span>: {
+  <span class="k">&quot;id&quot;</span>: &quot;textbook_math_7b_cpt_zhui_xian&quot;,
+  <span class="k">&quot;name&quot;</span>: &quot;垂线及其性质&quot;,
+  <span class="k">&quot;label&quot;</span>: &quot;Concept&quot;,
+  <span class="k">&quot;subject&quot;</span>: &quot;math&quot;,
+  <span class="k">&quot;book&quot;</span>: &quot;7b&quot;,
+  <span class="k">&quot;stage&quot;</span>: &quot;初中&quot;,
+  <span class="k">&quot;grade&quot;</span>: 7,
+  <span class="k">&quot;source&quot;</span>: &quot;textbook&quot;,
+  <span class="k">&quot;definition&quot;</span>: &quot;垂线：与一条直线相交的点叫垂足，这条直线叫另一条直线的垂线。垂直是相交的特殊情形。垂线的性质：垂线段最短，到直线各点的距离里垂足最近。&quot;,
+  <span class="k">&quot;textbookRef&quot;</span>: &quot;人教七下 第五章 相交线与平行线 · 本章知识结构图（p040）&quot;
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/kx-visual-books.json</code></h3>
+    <div class="meta">
+      <span class="m rec">12 条</span>
+      <span class="m">6 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">小学科学<strong>视觉层用到的书</strong></p>
+  <p class="use"><b>能回答什么</b>：哪些书跑了视觉层</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">books</span></div><pre class="sample">{
+ <span class="k">&quot;books&quot;</span>: {
+  <span class="k">&quot;contentId&quot;</span>: &quot;64e96b25-9c23-498a-91da-c63e1ef531c7&quot;,
+  <span class="k">&quot;title&quot;</span>: &quot;（根据2022年版课程标准修订）义务教育教科书·科学一年级上册&quot;,
+  <span class="k">&quot;publisher&quot;</span>: &quot;湖北教育出版社&quot;,
+  <span class="k">&quot;edition&quot;</span>: &quot;人教版&quot;,
+  <span class="k">&quot;subject&quot;</span>: &quot;科学&quot;,
+  <span class="k">&quot;imageBase&quot;</span>: &quot;https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/64e96b25-9c23-498a-91da-c63e1ef531c7.t/zh-CN/1787020650456/transcode/image&quot;,
+  <span class="k">&quot;pages&quot;</span>: 71,
+  <span class="k">&quot;graphBook&quot;</span>: &quot;1a&quot;,
+  <span class="k">&quot;system&quot;</span>: &quot;s6&quot;,
+  <span class="k">&quot;bookId&quot;</span>: &quot;rjb-science-s6-1a&quot;,
+  <span class="k">&quot;slug&quot;</span>: &quot;s6-1a&quot;
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/kx-textbooks.json</code></h3>
+    <div class="meta">
+      <span class="m rec">12 条</span>
+      <span class="m">6 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">小学科学<strong>教材清单</strong>（12 本）</p>
+  <p class="use"><b>能回答什么</b>：出版社、版本、册次</p>
+  <p class="how"><b>怎么取</b>：顶层是数组</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">book</span><span class="chip">subject</span><span class="chip">bookZh</span><span class="chip">title</span><span class="chip">edition</span><span class="chip">publisher</span><span class="chip">std</span><span class="chip">contentId</span><span class="chip">pages</span><span class="chip">imgBase</span><span class="chip">system</span></div><pre class="sample">{
+ <span class="k">&quot;book&quot;</span>: &quot;1a&quot;,
+ <span class="k">&quot;subject&quot;</span>: &quot;science&quot;,
+ <span class="k">&quot;bookZh&quot;</span>: &quot;一年级上册&quot;,
+ <span class="k">&quot;title&quot;</span>: &quot;（根据2022年版课程标准修订）义务教育教科书·科学一年级上册&quot;,
+ <span class="k">&quot;edition&quot;</span>: &quot;人教版&quot;,
+ <span class="k">&quot;publisher&quot;</span>: &quot;湖北教育出版社&quot;,
+ <span class="k">&quot;std&quot;</span>: &quot;2024&quot;,
+ <span class="k">&quot;contentId&quot;</span>: &quot;64e96b25-9c23-498a-91da-c63e1ef531c7&quot;,
+ <span class="k">&quot;pages&quot;</span>: 71,
+ <span class="k">&quot;imgBase&quot;</span>: &quot;https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/64e96b25-9c23-498a-91da-c63e1ef531c7.t/zh-CN/1787020650456/transcode/image&quot;,
+ <span class="k">&quot;system&quot;</span>: &quot;六年制&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="不可再生（gitignore 白名单）">
+  <header>
+    <h3><code>data/normalized/selfbuilt-edges.json</code></h3>
+    <div class="meta">
+      <span class="m rec">13,461 条</span>
+      <span class="m">4 MB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what"><strong>自建先修边</strong>（13,461 条，模型重建）</p>
+  <p class="use"><b>能回答什么</b>：上游只给了 3,703 条先修边、70.1% 的概念零前置 —— 这一层是补上的那部分（实测比上游准：上游 38 条争议里模型全对）</p>
+  <p class="how"><b>怎么取</b>：edges 数组；source 字段标来源（model / derived / intro）</p>
+  <div class="crit">在 .gitignore 里有白名单 —— <strong>不可再生</strong>，删了构建会永久降级</div>
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">l0_nodes</span><span class="chip">derived_edges</span><span class="chip">derived_nodes</span><span class="chip">textbook_nodes</span><span class="chip">cover_edges</span><span class="chip">l0_edges</span><span class="chip">ability_unmapped</span><span class="chip">model_edges</span><span class="chip">intro_edges</span><span class="chip">intro_dup</span><span class="chip">conflicts</span><span class="chip">dedup</span></div><pre class="sample">{
+ <span class="k">&quot;nodes&quot;</span>: {
+  <span class="k">&quot;id&quot;</span>: &quot;l0_01&quot;,
+  <span class="k">&quot;name&quot;</span>: &quot;识字与阅读&quot;,
+  <span class="k">&quot;label&quot;</span>: &quot;Ability&quot;,
+  <span class="k">&quot;subject&quot;</span>: &quot;math&quot;,
+  <span class="k">&quot;subjectZh&quot;</span>: &quot;数学&quot;,
+  <span class="k">&quot;scope&quot;</span>: &quot;common&quot;,
+  <span class="k">&quot;book&quot;</span>: &quot;&quot;,
+  <span class="k">&quot;bookZh&quot;</span>: &quot;—&quot;,
+  <span class="k">&quot;stage&quot;</span>: &quot;能力底座&quot;,
+  <span class="k">&quot;definition&quot;</span>: &quot;能读懂题目里每个字和每句话，知道题目在问什么。&quot;,
+  <span class="k">&quot;blocks&quot;</span>: &quot;题目里出现「便宜」「剩下」「平均」这些词，读不懂就是不知道该算什么 —— 不是算错，是根本没进入计算。低年级到四年级最集中。&quot;,
+  <span class="k">&quot;core&quot;</span>: &quot;会用数学的语言表达现实世界&quot;,
+  <span class="k">&quot;aliases&quot;</span>: [
+   &quot;识字&quot;,
+   &quot;阅读理解&quot;,
+   &quot;阅读理解能力&quot;
+  ],
+  <span class="k">&quot;source&quot;</span>: &quot;l0&quot;
+ }
+}</pre></details>
+</article>
+<article class="ds" data-kind="不可再生（gitignore 白名单）">
+  <header>
+    <h3><code>data/normalized/confirmed-wrong.json</code></h3>
+    <div class="meta">
+      <span class="m rec">25 条</span>
+      <span class="m">8 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what"><strong>人工逐条裁决的账本</strong></p>
+  <p class="use"><b>能回答什么</b>：哪些上游边被判定为错、错在哪 —— 这是「我们不盲信上游」的证据</p>
+  <p class="how"><b>怎么取</b>：顶层数组，每条记了裁决理由</p>
+  <div class="crit">在 .gitignore 里有白名单 —— <strong>不可再生</strong>，人工裁决一次就一次</div>
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_comment</span><span class="chip">verdicts</span></div><pre class="sample">{
+ <span class="k">&quot;verdicts&quot;</span>: {
+  <span class="k">&quot;from&quot;</span>: &quot;chemistry_xzxbx3_rjb_skl52&quot;,
+  <span class="k">&quot;to&quot;</span>: &quot;biology_bx1_rjb_cpt40&quot;,
+  <span class="k">&quot;fromName&quot;</span>: &quot;根据水解产物对糖类进行分类&quot;,
+  <span class="k">&quot;toName&quot;</span>: &quot;单糖&quot;,
+  <span class="k">&quot;action&quot;</span>: &quot;反向&quot;,
+  <span class="k">&quot;fromMatch&quot;</span>: &quot;single&quot;,
+  <span class="k">&quot;toMatch&quot;</span>: &quot;ambiguous:2&quot;,
+  <span class="k">&quot;grade&quot;</span>: &quot;A&quot;,
+  <span class="k">&quot;basis&quot;</span>: &quot;模型 dispute + 教材顺序倒挂（两条独立证据）&quot;
+ }
+}</pre></details>
+</article>
+</div>
+
+<footer>
+本页由 <code>src/build_data_browser.py</code> 从 <code>data/DATASETS.json</code> 生成
+—— 内容单一来源，改了数据重跑一次就同步。<br>
+字段说明和取用示例见仓库里的 <code>docs/agent-data.md</code>；
+已知问题见 <code>quality.html</code>。
+</footer>
+
+</div>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var list = document.getElementById('list');
+  var cnt = document.getElementById('cnt');
+  var items = Array.prototype.slice.call(list.querySelectorAll('.ds'));
+  var total = items.length;
+  function apply() {
+    var s = q.value.trim().toLowerCase();
+    var n = 0;
+    items.forEach(function (el) {
+      var hit = !s || el.textContent.toLowerCase().indexOf(s) >= 0;
+      el.style.display = hit ? '' : 'none';
+      if (hit) n++;
+    });
+    cnt.textContent = s ? (n + ' / ' + total + ' 个数据集（搜「' + s + '」）')
+                        : (total + ' 个数据集');
+  }
+  q.addEventListener('input', apply);
+  apply();
+})();
+</script>
+</body>
+</html>
