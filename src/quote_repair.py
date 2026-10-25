@@ -57,7 +57,9 @@ import pathlib
 import re
 import sys
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+# **脚本相对路径** —— 写死开发机的绝对路径，换机器就全废
+# （ISSUE-45：远端已把 14 个脚本统一改成这个写法）
+BASE = pathlib.Path(__file__).resolve().parent.parent
 
 # ── 版面判据 ──────────────────────────────────────────────
 # 行内 ≥6 个连续空格 = 这行跨了栏（正文 + 侧栏）
@@ -230,6 +232,11 @@ def build_book_sentences() -> dict:
     源：`data/pdf-cache/rjb-*.txt`（PDF 文本层）。
     **只有文本层能修** —— `.ocr.txt` 是 OCR 出来的，
     断行位置跟版面无关，接回去是瞎接。
+
+    ⚠️ **pdf-cache 不入库**（教材 PDF 有版权），
+    所以修复结果必须**落盘成缓存**，否则换台机器 clone 下来
+    跑出来的学习卡跟入库的不一样（实测差 129 张卡）。
+    缓存是**从里面抽出来的文本**，不是教材原件 —— 可以入库。
     """
     import glob
     cache = BASE / "data" / "pdf-cache"
@@ -259,6 +266,41 @@ def build_book_sentences() -> dict:
         # 原文（归一后）单独存 —— 回溯校验要用
         out[(k[0], k[1], "raw")] = norm_punct(v[0][1])
     return out
+
+
+# ── 修复结果缓存 ──────────────────────────────────────────
+# 为什么要缓存（ISSUE-45 的可复现性）：
+#
+# `data/pdf-cache/` **不入库**（教材 PDF 有版权）。
+# 没有它就补不了引文 —— 那学习卡的产物就依赖开发机，
+# 换台机器 clone 下来跑出来的东西跟入库的不一样（实测差 129 张卡）。
+#
+# 缓存里存的是**从教材里抽出来的句子**，不是教材原件 —— 可以入库。
+CACHE = BASE / "data" / "quote-repairs.json"
+
+
+def save_cache(pairs: dict) -> None:
+    """把补全成功的 (概念id, 原引文) → 完整句 存成缓存。"""
+    if not pairs:
+        return
+    old = {}
+    if CACHE.exists():
+        try:
+            old = json.loads(CACHE.read_text(encoding="utf-8"))
+        except Exception:
+            old = {}
+    old.update(pairs)
+    CACHE.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+    print(f"修复缓存 → {CACHE.name}（累计 {len(old):,} 条）")
+
+
+def load_cache() -> dict:
+    if not CACHE.exists():
+        return {}
+    try:
+        return json.loads(CACHE.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
 
 
 def repair_quote(quote: str, book_sents: list[str],

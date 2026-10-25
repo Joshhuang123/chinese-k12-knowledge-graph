@@ -1,0 +1,280 @@
+{
+ "_comment": "M3 逐条裁决的 A 档（双证据高置信）+ 机械双证据（教材顺序 + 字面结构）。只在 build_viz 里用于剔除/反向**派生边集**，上游数据本身不动。",
+ "verdicts": [
+  {
+   "from": "chemistry_xzxbx3_rjb_skl52",
+   "to": "biology_bx1_rjb_cpt40",
+   "fromName": "根据水解产物对糖类进行分类",
+   "toName": "单糖",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "ambiguous:2",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "chemistry_xzxbx2_rjb_cpt94",
+   "to": "chemistry_bx2_rjb_cpt254",
+   "fromName": "sp³杂化轨道",
+   "toName": "甲烷分子结构",
+   "action": "删除",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_4b_rjb_cpt30",
+   "to": "math_1b_rjb_cpt1",
+   "fromName": "三角形两边之和大于第三边",
+   "toName": "三角形",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_8a_rjb_cpt6",
+   "to": "math_1b_rjb_cpt1",
+   "fromName": "三角形的高",
+   "toName": "三角形",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_2a_rjb_cpt6",
+   "to": "math_1b_rjb_cpt7",
+   "fromName": "两位数减法的竖式计算",
+   "toName": "退位减法",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_3b_rjb_cpt13",
+   "to": "math_2b_rjb_cpt2",
+   "fromName": "数据整理",
+   "toName": "统计表",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_4b_rjb_skl13",
+   "to": "math_2b_rjb_cpt11",
+   "fromName": "根据对称轴补全图形",
+   "toName": "轴对称图形",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_4b_rjb_skl14",
+   "to": "math_2b_rjb_cpt12",
+   "fromName": "根据方向与格数进行平移绘图",
+   "toName": "平移",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_5b_rjb_cpt31",
+   "to": "math_2b_rjb_cpt13",
+   "fromName": "旋转中心",
+   "toName": "旋转",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_5b_rjb_cpt32",
+   "to": "math_2b_rjb_cpt13",
+   "fromName": "旋转方向",
+   "toName": "旋转",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_5b_rjb_cpt33",
+   "to": "math_2b_rjb_cpt13",
+   "fromName": "旋转角度",
+   "toName": "旋转",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_4a_rjb_cpt18",
+   "to": "math_3a_rjb_skl11",
+   "fromName": "三位数乘两位数的笔算",
+   "toName": "笔算乘法",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_7b_rjb_cpt1",
+   "to": "math_4a_rjb_cpt23",
+   "fromName": "相交线",
+   "toName": "垂直",
+   "action": "删除",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_6b_rjb_cpt28",
+   "to": "math_5a_rjb_cpt24",
+   "fromName": "运算律",
+   "toName": "方程",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_8a_rjb_cpt77",
+   "to": "math_7a_rjb_cpt51",
+   "fromName": "最简公分母",
+   "toName": "去分母",
+   "action": "重指",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_8a_rjb_skl4",
+   "to": "math_7a_rjb_cpt76",
+   "fromName": "作角的平分线的方法",
+   "toName": "角的平分线",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_xzxbx2_rjb_cpt47",
+   "to": "math_bx1_rjb_cpt43",
+   "fromName": "导数的正负与单调性的关系",
+   "toName": "函数的单调性",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_xzxbx2_rjb_skl12",
+   "to": "math_bx1_rjb_cpt43",
+   "fromName": "利用导数判定单调性",
+   "toName": "函数的单调性",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "math_bx2_rjb_cpt114",
+   "to": "math_7b_rjb_cpt90",
+   "fromName": "样本平均数估计总体平均数",
+   "toName": "简单随机抽样",
+   "action": "反向",
+   "fromMatch": "single",
+   "toMatch": "single",
+   "grade": "A",
+   "basis": "模型 dispute + 教材顺序倒挂（两条独立证据）"
+  },
+  {
+   "from": "biology_xzxbx1_rjb_cpt112",
+   "to": "biology_7b_rjb_cpt153",
+   "fromName": "促甲状腺激素（TSH）",
+   "toName": "甲状腺激素",
+   "action": "反向",
+   "fromMatch": "EXACT",
+   "toMatch": "EXACT",
+   "grade": "A2",
+   "basis": "教材顺序倒挂 + 名字字面结构（两个独立证据源）"
+  },
+  {
+   "from": "biology_bx1_rjb_cpt187",
+   "to": "biology_7a_rjb_cpt4",
+   "fromName": "光合作用色素",
+   "toName": "光合作用",
+   "action": "反向",
+   "fromMatch": "EXACT",
+   "toMatch": "EXACT",
+   "grade": "A2",
+   "basis": "教材顺序倒挂 + 名字字面结构（两个独立证据源）"
+  },
+  {
+   "from": "physics_bx2_rjb_skl11",
+   "to": "physics_8b_rjb_cpt69",
+   "fromName": "力的分解方法",
+   "toName": "功",
+   "action": "反向",
+   "fromMatch": "EXACT",
+   "toMatch": "EXACT",
+   "grade": "A2",
+   "basis": "教材顺序倒挂 + 名字字面结构（两个独立证据源）"
+  },
+  {
+   "from": "chemistry_bx1_rjb_cpt188",
+   "to": "chemistry_9a_rjb_cpt138",
+   "fromName": "原子结构模型",
+   "toName": "原子",
+   "action": "反向",
+   "fromMatch": "EXACT",
+   "toMatch": "EXACT",
+   "grade": "A2",
+   "basis": "教材顺序倒挂 + 名字字面结构（两个独立证据源）"
+  },
+  {
+   "from": "physics_xzxbx3_rjb_cpt41",
+   "to": "physics_8a_rjb_cpt51",
+   "fromName": "晶体的微观结构",
+   "toName": "晶体",
+   "action": "反向",
+   "fromMatch": "EXACT",
+   "toMatch": "EXACT",
+   "grade": "A2",
+   "basis": "教材顺序倒挂 + 名字字面结构（两个独立证据源）"
+  },
+  {
+   "from": "biology_xzxbx2_rjb_cpt81",
+   "to": "biology_7a_rjb_cpt23",
+   "fromName": "生态系统的组成成分",
+   "toName": "生态系统",
+   "action": "反向",
+   "fromMatch": "EXACT",
+   "toMatch": "EXACT",
+   "grade": "A2",
+   "basis": "教材顺序倒挂 + 名字字面结构（两个独立证据源）"
+  }
+ ]
+}

@@ -69,7 +69,9 @@ import sys
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import quote_repair  # noqa: E402  —— 同目录模块
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+# **脚本相对路径** —— 写死开发机的绝对路径，换机器就全废
+# （ISSUE-45：远端已把 14 个脚本统一改成这个写法）
+BASE = pathlib.Path(__file__).resolve().parent.parent
 CT_RJB = BASE / "data" / "concept-text.jsonl"        # 人教教材原话
 CT_SH = BASE / "data" / "concept-text-sh.jsonl"      # 沪教教材原话
 CV_RJB = BASE / "data" / "concept-vision.jsonl"      # 人教公式/图/例题
@@ -437,10 +439,20 @@ def main() -> int:
     cvsh = load_jsonl(CV_SH)
 
     # 引文修复用的原文（人教有文本层，沪教是页图 OCR 修不了）
+    #
+    # ⚠️ **pdf-cache 不入库**（教材 PDF 版权），所以修复结果走缓存：
+    #    `data/quote-repairs.json` 里存的是**从教材里抽出来的完整句**。
+    #    有原文就现算现更新缓存；没原文就只用缓存 ——
+    #    这样换台机器 clone 下来跑出来的结果跟入库的一致（ISSUE-45 的可复现性）。
     repair_all = quote_repair.build_book_sentences()
     book_sents = {k: v for k, v in repair_all.items() if len(k) == 2}
     # 原文也按 (subject, book) 存 —— 查询时要用同一个 key
     book_raw = {k[:2]: v for k, v in repair_all.items() if len(k) == 3}
+    repair_cache = quote_repair.load_cache()
+    if not book_sents:
+        print("！没有 data/pdf-cache/（教材 PDF 不入库）—— "
+              "引文补全只能用缓存 data/quote-repairs.json")
+        print(f"  缓存里有 {len(repair_cache):,} 条补全结果")
 
     # 页原文段落（概念 → 教材原页上的那一段）
     page_by_concept = {}
@@ -454,6 +466,7 @@ def main() -> int:
 
     cards = []
     stat = collections.Counter()
+    new_repairs = 0
     for node in pnodes:
         i, zh, en, subj, dz, cid = node[0], node[1], node[2], node[3], node[4], node[5]
         # **只给上游知识点做卡** —— 自建的「能力底座」不是教材知识点
@@ -490,13 +503,13 @@ def main() -> int:
             quotes = r.get("quotes") or []
             kinds = r.get("quoteKinds") or []
             defs, mentions = [], []
-            for q, k in zip(quotes, kinds):
+            for qi, (q, k) in enumerate(zip(quotes, kinds)):
                 if not q or not q.strip():
                     continue
                 q = q.strip()
                 if is_question(q) or is_figure_caption(q):
                     continue
-                # **残缺句回原文补全**（人教有文本层能补；沪教是 OCR 补不了）
+                # **残缺句回原文补全**
                 #
                 # 判据不是猜的，是**回原文核对**：
                 # 用引文的尾部（最可靠的部分）去原文句表里找，
@@ -507,9 +520,40 @@ def main() -> int:
                 # 引文是「…形成的统一整体就是生态系统」，
                 # 原文另有一处「…所形成的统一的整体叫做生态系统」，
                 # 两者不是同一句，不能替换）。
-                key = (r.get("subject"), r.get("book"))
-                ss = book_sents.get(key)
-                raw = book_raw.get(key)
+                #
+                # ⚠️ **缓存存的是「最终采用的引文 + 类别」**，不是只存补全文本 ——
+                # 因为「补全后算定义句」和「原样算提及句」会让**下游分类不同**
+                # （实测 129 张卡因此不一致）。
+                # ⚠️ 键里必须带**版本** —— 人教和沪教**共用同一个 concept id**
+                # （上游节点 id 不分出版社），引文下标 qi 各是各的，
+                # 键撞了就会把沪教的引文当成人教的缓存读出来（实测串味）。
+                ckey = f"{ver}#{cid}#{qi}"
+                cached = repair_cache.get(ckey)
+                if cached is not None and cached.get("kind") == "skip":
+                    # 这条在有原文时被判定为**题干/图注**而丢弃 ——
+                    # 没有原文时也要一样丢弃（否则两边不一致）
+                    stat["引文取自缓存（丢弃）"] += 1
+                    continue
+                if cached and cached.get("q"):
+                    q = cached["q"]
+                    if cached.get("kind") == "def":
+                        defs.append({"text": q, "kind": "教材定义句",
+                                     "evidence": "教材给这个概念下了定义"})
+                    else:
+                        mentions.append({"text": q, "kind": "教材提及句",
+                                         "evidence": cached.get("ev")
+                                         or "教材提到了这个概念（不是定义句）"})
+                    stat["引文取自缓存"] += 1
+                    continue
+                # ⚠️ **只有人教版能补全** ——
+                # 沪教版（concept-text-sh）的 concept id 跟人教版**是同一套**
+                # （上游节点 id 不分出版社），`book` 字段也长得一样
+                # （都是 math/1b 这种册次码）。
+                # 不加这个判断，沪教的引文会拿**人教教材的原文**去补 ——
+                # 那是拿另一套教材的话冒充这一套（实测 313 张卡受影响）。
+                key = (r.get("subject"), r.get("book")) if ver == "人教版" else None
+                ss = book_sents.get(key) if key else None
+                raw = book_raw.get(key) if key else None
                 if ss:
                     fixed = quote_repair.repair_quote(q, ss, raw)
                     if fixed and _is_extension_of(q, fixed):
@@ -524,6 +568,12 @@ def main() -> int:
                 # 那是一道题，不是教材的定义）。
                 if is_question(q) or is_figure_caption(q):
                     stat["补全后变题干（丢弃）"] += 1
+                    # ⚠️ **被丢弃的也要写缓存** ——
+                    # 「补全后变题干」这个判断依赖有没有原文，
+                    # 不缓存的话无 pdf-cache 时这条会**留在卡里**，
+                    # 两边就不一致了（实测 10 张卡）。
+                    repair_cache[ckey] = {"q": "", "kind": "skip"}
+                    new_repairs += 1
                     continue
                 # 补不上、开头还是残的 → 不当定义句用，降级成提及句
                 if looks_broken_head(q):
@@ -531,13 +581,29 @@ def main() -> int:
                     if mentions_this(q, core) and len(han(q)) >= 8:
                         mentions.append({"text": q, "kind": "教材提及句",
                                          "evidence": "教材提到了这个概念（这句开头残缺）"})
+                        repair_cache[ckey] = {"q": q, "kind": "men",
+                                               "ev": "教材提到了这个概念（这句开头残缺）"}
+                        new_repairs += 1
                     continue
                 if defines_this(q, core):
                     defs.append({"text": q, "kind": "教材定义句",
                                  "evidence": "教材给这个概念下了定义"})
+                    repair_cache[ckey] = {"q": q, "kind": "def",
+                                           "ev": "教材给这个概念下了定义"}
+                    new_repairs += 1
                 elif mentions_this(q, core) and len(han(q)) >= 8:
                     mentions.append({"text": q, "kind": "教材提及句",
                                      "evidence": "教材提到了这个概念（不是定义句）"})
+                    repair_cache[ckey] = {"q": q, "kind": "men",
+                                           "ev": "教材提到了这个概念（不是定义句）"}
+                    new_repairs += 1
+                else:
+                    # **不入选的也要写缓存** ——
+                    # 「这条不入选」的判断同样依赖有没有原文。
+                    # 不缓存的话，无 pdf-cache 时它会被当成提及句收进去
+                    # （实测 8 张卡：赤铁矿、圆心角、收缩压…）。
+                    repair_cache[ckey] = {"q": "", "kind": "skip"}
+                    new_repairs += 1
             for d in defs[:2]:
                 d = dict(d)
                 d["source"] = f"教材原话·{ver}"
@@ -750,6 +816,8 @@ def main() -> int:
 
     n = len(cards)
     print(f"学习卡 {n:,} 条 → {OUT}  ({OUT.stat().st_size/1024/1024:.1f} MB)")
+    if new_repairs:
+        quote_repair.save_cache(repair_cache)
     print("\n各面覆盖：")
     for k, v in stat.most_common():
         print(f"  {k}: {v:,}  ({v/n*100:.1f}%)")

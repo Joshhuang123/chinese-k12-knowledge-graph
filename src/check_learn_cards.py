@@ -34,7 +34,9 @@ import re
 import subprocess
 import sys
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+# **脚本相对路径** —— 写死开发机的绝对路径，换机器就全废
+# （ISSUE-45：远端已把 14 个脚本统一改成这个写法）
+BASE = pathlib.Path(__file__).resolve().parent.parent
 CARDS = BASE / "data" / "learn-cards.jsonl"
 SITE = BASE / "index.html"
 OUT = BASE / "src" / "check_learn_cards.mjs"
@@ -243,6 +245,52 @@ def main() -> int:
                     break
         ok(not mismatch, "教材原文段落都能在页索引里找到出处",
            f"{len(mismatch)} 张对不上")
+
+    # ── 8. 可复现性（ISSUE-45）────────────────────────────
+    print("\n8. 可复现性")
+    # 引文补全依赖 `data/pdf-cache/`（教材 PDF，不入库）。
+    # 所以**最终判定结果必须落盘成缓存**，否则换台机器 clone 下来
+    # 跑出来的学习卡跟入库的不一样（实测差 313 张卡）。
+    CACHE = BASE / "data" / "quote-repairs.json"
+    if CACHE.exists():
+        cache = json.load(open(CACHE, encoding="utf-8"))
+        ok(len(cache) > 0, f"引文判定缓存存在（{len(cache):,} 条）")
+        # 缓存里的引文必须**确实出现在学习卡里**（缓存不能有孤儿）
+        card_ids = {c["id"] for c in cards}
+        orphan = [k for k in cache
+                  if k.split("#")[1] not in card_ids and len(k.split("#")) > 2]
+        ok(not orphan, "缓存里没有孤儿条目（概念 id 都真实存在）",
+           f"{len(orphan)} 条孤儿")
+        # **缓存与产物必须一致**（反向验证）
+        #
+        # ⚠️ 方向只能是「卡里的引文能在缓存里找到」——
+        # 缓存是**逐条引文**的判定表（一个概念 10 条引文都记了），
+        # 卡里只取前 2 条定义句 / 1 条提及句。
+        # 反过来查（缓存每条都要在卡里）会误报 840 条 —— 那不是不一致，
+        # 是「缓存更全」。
+        mismatch = []
+        by_id = {c["id"]: c for c in cards}
+        for c in cards:
+            for w in c["what"]:
+                if not w["kind"].startswith("教材"):
+                    continue
+                ver = "人教版" if "人教" in w.get("source", "") else "沪教版"
+                hit = False
+                for k, v in cache.items():
+                    parts = k.split("#")
+                    if len(parts) != 3 or parts[0] != ver or parts[1] != c["id"]:
+                        continue
+                    if v.get("q") == w["text"]:
+                        hit = True
+                        break
+                if not hit:
+                    mismatch.append((c["id"], w["text"][:40]))
+        ok(not mismatch,
+           "卡里的每条教材原话都能在缓存里找到出处（缓存与产物一致）",
+           f"{len(mismatch)} 条对不上：{mismatch[:3]}")
+    else:
+        ok(False, "缺 data/quote-repairs.json —— 没有它就复现不出同样的产物",
+           "跑 python3 src/build_learn_cards.py 生成")
 
     print()
     if _fail:

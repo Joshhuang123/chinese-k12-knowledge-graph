@@ -39,7 +39,9 @@ import pathlib
 import re
 import sys
 
-BASE = pathlib.Path("/Users/huangjunhai/Documents/个人/项目/中文知识图谱")
+# **脚本相对路径** —— 写死开发机的绝对路径，换机器就全废
+# （ISSUE-45：远端已把 14 个脚本统一改成这个写法）
+BASE = pathlib.Path(__file__).resolve().parent.parent
 GRAPH = BASE / "data" / "normalized" / "graph.json"
 LESSONS = BASE / "data" / "lessons.jsonl"          # 人教
 LESSONS_SH = BASE / "data" / "lessons-sh.jsonl"    # 沪教

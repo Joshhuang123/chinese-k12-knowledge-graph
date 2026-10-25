@@ -655,10 +655,11 @@ src/build_quality.py    数据质量公开页 quality.html
 src/build_learn_cards.py 知识点「学习卡」（R-1：让人能自学）
 src/build_page_index.py 教材原页段落索引（引文反查定位）
 src/quote_repair.py    教材原话回原文补全（PDF 硬换行切断了词）
-src/check_learn_cards.py 学习卡体检（7 组判据）
+src/check_learn_cards.py 学习卡体检（8 组判据）
 src/check_learn_cards.mjs 学习卡 × 站点「学习路径」交叉验证（浏览器端）
 data/learn-cards.jsonl  知识点自学卡（入库，8,590 张 / 六面 / 17 MB）
 data/page-index.json    教材原页段落索引（入库，2,825 概念 / 6,414 段）
+data/quote-repairs.json 引文判定缓存（入库，15,282 条 / 1.2 MB）
 data/lessons.jsonl      教材正文（入库，12,939 页）
 data/concept-text.jsonl 概念的教材原话（入库，1,361 概念）
 data/vision-pages.jsonl 页面的公式与图形（入库，4,390 页）
@@ -923,13 +924,18 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 
 | 文件 | 测什么 |
 |---|---|
-| `src/health_check.py` | 上线体检 95 项：数据层 / 构建层 / 判别力自检 |
-| `src/check_learn_cards.py` | 学习卡 7 组判据（覆盖率 / 来源分层 / 定义句准确 / 噪声控制 / 前置链一致 / 冷启动 / 原文段落） |
+| `src/health_check.py` | 上线体检 98 项：数据层 / 构建层 / 判别力自检 |
+| `src/check_learn_cards.py` | 学习卡 8 组判据（覆盖率 / 来源分层 / 定义句准确 / 噪声控制 / 前置链一致 / 冷启动 / 原文段落 / 可复现性） |
 | `src/check_kx.py` | 小学站 13 项 |
 
 `check_learn_cards.py` 里的**前置链那条**是在真浏览器里跑的 ——
 加载站点页面、调它自己的 `pathRows()`，跟学习卡逐条比。
 站点逻辑一改，这条立刻红。
+
+**可复现性**（ISSUE-45）：学习卡的引文补全依赖 `data/pdf-cache/`
+（教材 PDF，**不入库**），所以最终判定落盘在 `data/quote-repairs.json`。
+实测把整个项目复制到别的路径（没有 pdf-cache）重跑，
+产物跟入库的**逐字节一致** —— 否则换台机器就复现不出来。
 
 **判别力验证**（撤掉修复它会不会红）——
 四条检查都实测破坏过：

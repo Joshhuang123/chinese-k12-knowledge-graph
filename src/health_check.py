@@ -320,6 +320,26 @@ def layer1(g, sb, payload):
                f"{len(junk)} 张不合格")
         else:
             warn("data/page-index.json 不存在 —— 跳过教材原文段落核查")
+
+        # 引文判定缓存（ISSUE-45 的可复现性）
+        #
+        # 引文补全依赖 data/pdf-cache/（教材 PDF，**不入库**）。
+        # 所以最终判定结果必须落盘，否则换台机器 clone 下来
+        # 跑出来的学习卡跟入库的不一样（实测差 313 张卡）。
+        QCACHE = BASE / "data" / "quote-repairs.json"
+        if QCACHE.exists():
+            qc = json.load(open(QCACHE, encoding="utf-8"))
+            ok(len(qc) > 0, f"引文判定缓存存在（{len(qc):,} 条）")
+            # 缓存里的概念 id 必须真实存在
+            ghost = [k for k in qc
+                     if len(k.split("#")) == 3 and k.split("#")[1] not in up_ids]
+            ok(not ghost, "缓存里没有幽灵概念 id", f"{len(ghost)} 条")
+            # 最长的引文不能太长（不是整页复制）
+            longest = max((len(v.get("q") or "") for v in qc.values()), default=0)
+            ok(longest <= 400, f"缓存里的引文不是整页复制（最长 {longest} 字）")
+        else:
+            ok(False, "缺 data/quote-repairs.json —— 没有它就复现不出同样的产物",
+               "跑 python3 src/build_learn_cards.py 生成")
     else:
         warn("data/learn-cards.jsonl 不存在 —— 跳过学习卡核查")
 
