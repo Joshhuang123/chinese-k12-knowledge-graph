@@ -1,0 +1,20 @@
+# Milvus 层（**可选**）—— 装它不影响主项目的任何功能
+#
+# 主项目（静态站点 + jsonl 数据层 + 学���卡）**不需要这个文件里的任何东西**。
+# 只有你想用**向量检索**（「用自己的话问教材」）才装。
+#
+#   python3 -m pip install -r requirements-milvus.txt
+#
+# ⚠️ **需要 Python ≥ 3.10**（milvus-lite 3.x 的要求）。
+#    Python 只有 3.9 的话，装旧版组合：
+#      pip install "milvus-lite==2.5.1" "pymilvus==2.5.1"
+#    ⚠️ 两代的**库格式不兼容** —— 换版本要重建（45 分钟）。
+#
+# 还要单独下嵌入模型（教材不出境，嵌入全在本机算）：
+#   ollama pull bge-m3        # 1.2 GB
+
+# milvus-lite 3.x：纯 Python 重写版，官方定位是
+# 「local development, notebooks, tests, and small-scale AI applications」
+# ——跟我们的用法（本地小规模检索）对得上。
+milvus-lite>=3.2
+pymilvus>=3.0

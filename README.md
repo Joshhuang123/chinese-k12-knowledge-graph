@@ -12,6 +12,10 @@
 （上海的孩子按**沪教版/沪科版**教材的顺序看，同一套前置关系 + 教材原页上的公式和难点）
 
 **本地玩**：双击 `index.html` 或 `viz/知识图谱3D.html`（上海版是 `shanghai.html`）
+—— **不需要装任何东西**（零 npm 依赖，数据层是 jsonl，agent 直接读）。
+
+> 有一个**可选**的向量检索层（用自己的话问教材），见「九之四」。
+> 它需要额外装依赖和模型，**不装不影响上面任何功能**。
 
 ---
 
@@ -657,13 +661,15 @@ src/build_page_index.py 教材原页段落索引（引文反查定位）
 src/quote_repair.py    教材原话回原文补全（PDF 硬换行切断了词）
 src/check_learn_cards.py 学习卡体检（8 组判据）
 src/check_learn_cards.mjs 学习卡 × 站点「学习路径」交叉验证（浏览器端）
-src/build_milvus.py    灌 Milvus 数据库（R-3：三张表，教材段落 / 概念 / 先修边）
-src/query_milvus.py    查 Milvus（语义检索 / 按名查 / 查前置）
-src/check_milvus.py    Milvus 层校验（8 组判据，含正负例 golden set）
+src/build_milvus.py    灌 Milvus 数据库（**可选**：R-3 三张表，教材段落 / 概念 / 先修边）
+src/query_milvus.py    查 Milvus（**可选**：语义检索 / 按名查 / 查前置）
+src/check_milvus.py    Milvus 层校验（**可选**：8 组判据，含正负例 golden set）
+src/check_milvus_judgement.py Milvus 检查的判别力自检（**可选**：注入脏数据 → 必须报红）
+requirements-milvus.txt Milvus 层的依赖（**可选装**，主项目不需要）
 data/learn-cards.jsonl  知识点自学卡（入库，8,590 张 / 六面 / 17 MB）
 data/page-index.json    教材原页段落索引（入库，2,825 概念 / 6,414 段）
 data/quote-repairs.json 引文判定缓存（入库，15,282 条 / 1.2 MB）
-data/milvus/kg_lite.db  Milvus Lite 库（**不入库**，二进制库文件）
+data/milvus/kg_lite.db  Milvus Lite 库（**不入库**，375 MB 二进制派生产物）
 data/lessons.jsonl      教材正文（入库，12,939 页）
 data/concept-text.jsonl 概念的教材原话（入库，1,361 概念）
 data/vision-pages.jsonl 页面的公式与图形（入库，4,390 页）
@@ -913,22 +919,44 @@ PyObjC），没有可靠来源就不硬凑一张 1,602 字的拼音表——**�
 
 ---
 
-### 九之四、Milvus 数据库层：让项目能被「查」
+### 九之四、（可选）向量检索：用自己的话问教材
+
+> **这一层是可选的 —— 装它不影响主项目的任何功能。**
+>
+> 主项目是**静态站点 + jsonl 数据层**：双击 `index.html` 就能玩，
+> agent 直接读 `data/learn-cards.jsonl` 就能用，**不需要任何第三方依赖**。
+>
+> 这一层给「**用我自己的话说这个概念**」用的 ——
+> 上游概念名大量是改写过的（「ATP（能量储存形式）」「DNA（遗传信息载体）」），
+> 教材里根本不这么写，**精确字面匹配只覆盖 4.6%**。
+> 学习卡解决不了这个（它按概念名查），向量检索能。
+
+**代价说清楚**（实测）：
+
+| | |
+|---|---|
+| 装依赖 | `pip install -r requirements-milvus.txt`（**需要 Python ≥ 3.10**） |
+| 下模型 | `ollama pull bge-m3`（1.2 GB，**教材不出境**） |
+| 灌库 | **45 分钟**（5.5 万段教材） |
+| 库大小 | 375 MB（**不入库**，是派生产物） |
+| 换来 | 「用自己的话问」这个能力 + 按字段筛选查询 |
+
+**这是取舍，不是免费午餐** —— 想清楚再装。
 
 > **提的人**：2026-10-25，朋友是 **Milvus 生态负责人**，要拿这个项目来自学术理化。
 
-前五层都是**文件**：agent 读 jsonl，人得自己写脚本过滤。
-这一层是**数据库** —— 能 SQL 查、能向量检索、能按字段筛。
+三张表：
 
 | 表 | 是什么 | 粒度 | 条数 |
 |---|---|---|---|
-| `kg_textbook` | 教材原文**段落** | 一段 | 57,904 |
+| `kg_textbook` | 教材原文**段落** | 一段 | 55,242 |
 | `kg_concept` | 知识点 | 一个概念 | 8,590 |
 | `kg_prereq` | 先修边 | 一条边 | 17,164 |
 
 ```bash
-# 起库（milvus-lite 单文件，不需要 Docker）
-python3 -m pip install milvus-lite "pymilvus==2.5.1"
+# 起库
+python3 -m pip install -r requirements-milvus.txt
+ollama pull bge-m3
 python3 src/build_milvus.py
 
 # 查
@@ -937,31 +965,28 @@ python3 src/query_milvus.py "浮力" --edition 人教版 --book 8b
 python3 src/query_milvus.py --prereq 浮力                # 查前置关系
 ```
 
-**为什么要向量检索**：上游概念名大量是改写过的
-（「ATP（能量储存形式）」「DNA（遗传信息载体）」），教材里根本不这么写 ——
-**精确字面匹配只覆盖 4.6%**。向量检索补的就是这一段。
+**没有直接上 Milvus，先按它自己的方法论评估**：
+Milvus 官方 workshop 那份 `15-retrieval-tier-selection.md` 自己写着
+「从阶梯顶端起步是**教学选择，不是工程默认**」，
+而且它实测的结论是 **T0→T1（词法 + 查询改写）带来全部质量增益，T2（向量）相对 T1 是 0**。
 
-**但纯向量不是最优解**。按 Milvus 官方 workshop 那份
-`15-retrieval-tier-selection.md` 的检索复杂度阶梯（它自己说：
-「从阶梯顶端起步是教学选择，不是工程默认」），
-加上我们自己的实测（12 个「BM25 找不到定义句」的真实概念）：
+我们自己的实测（12 个「BM25 找不到定义句」的真实概念）：
 
 | 方案 | 结果 |
 |---|---|
 | 纯 BM25 | 5/5 命中 |
 | 纯语义（`nomic-embed-text`，本机 274 MB） | **0/15** —— 英文模型，「邻补角」召回「近似数」 |
 | 纯语义（`qwen3-embedding:8b`，本机 4.7 GB） | 4/4 正确项排第一，但 10 秒/条 → 全量 37 小时 |
-| 纯语义（**`bge-m3`**，本机 1.2 GB） | 5/5 正确项在 top-2，**0.05 秒/条** → 全量 48 分钟 |
+| 纯语义（**`bge-m3`**，本机 1.2 GB） | 5/5 正确项在 top-2，**0.05 秒/条** → 全量 45 分钟 |
 
-**选 `bge-m3`**：中文质量够、速度够、本机跑得动、
-**教材不出境**（有版权，嵌入全在本机算完，只把向量存本地）。
+**选 `bge-m3`**：中文质量够、速度够、本机跑得动、**教材不出境**
+（教材有版权，嵌入全在本机算完，只把向量存本地）。
 
 ⚠️ **版权页不进库**：教材前十几页是版权页 / 编者信息
 （「版权所有…未经许可不得另做他用」「美术编辑：…」）。
 这些页进向量库 = 检索时召回版权声明，
 而且**把教材版权信息复制进了数据库** ——
 项目一直守着「教材 PDF 不入库、只存抽出来的结构化事实」这条线，不能在这儿破。
-入库前按关键词 + 汉字密度筛掉（21,948 页 → 57,904 段，版权页 0 条）。
 
 ⚠️ **段落边界不能切在词中间** —— 按句末标点切。
 

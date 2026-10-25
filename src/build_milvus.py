@@ -72,6 +72,12 @@ MILVUS_PORT = os.environ.get("MILVUS_PORT", "19530")
 MILVUS_BACKEND = os.environ.get("MILVUS_BACKEND", "lite")
 MILVUS_LITE_PATH = os.environ.get(
     "MILVUS_LITE_PATH", str(BASE / "data" / "milvus" / "kg_lite.db"))
+# ⚠️ **milvus-lite 有两代，格式不兼容**：
+#   2.5.x（C++ 内核版）→ 单个 .db 文件，配 pymilvus==2.5.1
+#   3.x（纯 Python 重写）→ .db 是个**目录**，配 pymilvus>=3.0，**要求 Python ≥3.10**
+# 两种都能用（MilvusClient 接口一样），但**库不能互相读** ——
+# 换版本 = 重建（45 分钟）。
+# 文档默认推 3.x（依赖是当前版，不用锁死），Python 3.9 只能退回 2.5.1。
 
 # ── 嵌入 ──────────────────────────────────────────────────
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "bge-m3")

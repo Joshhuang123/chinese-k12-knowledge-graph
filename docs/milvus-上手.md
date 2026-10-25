@@ -1,7 +1,16 @@
 # 给「想查这个项目」的人：Milvus 数据库层
 
-> 这份文档是给**第一次接触这个项目**的人写的 ——
-> 你不需要读代码，照着做就能把 2.3 万页教材装进一个能查的数据库。
+> **这一层是可选的 —— 不装不影响主项目的任何功能。**
+>
+> 主项目是静态站点 + jsonl 数据层：双击 `index.html` 就能玩，
+> agent 直接读 `data/learn-cards.jsonl` 就能用，**零第三方依赖**。
+>
+> 这一层只解决一件事：**让你能用自己���话说出那个概念**。
+> 上游概念名大量是改写过的（「ATP（能量储存形式）」「DNA（遗传信息载体）」），
+> 教材里根本不这么写 —— 精确字面匹配只覆盖 4.6%。
+>
+> **代价**（实测）：装依赖 + 下 1.2 GB 模型 + 灌库 45 分钟 + 375 MB 库文件。
+> 想清楚再装。
 
 ---
 
@@ -35,17 +44,31 @@ python3 src/query_milvus.py "浮力"
 ```bash
 cd ~/Documents/个人/项目/中文知识图谱/
 
-# 1. 装依赖（版本必须配 pymilvus==2.5.1，配 3.0.2 起不来）
-python3 -m pip install milvus-lite "pymilvus==2.5.1"
+# 1. 装依赖
+# ⚠️ **需要 Python ≥ 3.10**（milvus-lite 3.x 的要求）。
+#    本机默认的 python3 是 3.9 —— 用 python3.12 建个虚拟环境。
+python3.12 -m venv ~/kg-venv
+source ~/kg-venv/bin/activate
+pip install "milvus-lite>=3.2" "pymilvus>=3.0"
 
 # 2. 下嵌入模型（1.2 GB，本机跑，教材不出境）
 ollama pull bge-m3
 
-# 3. 灌数据（约 50 分钟，5.8 万段教材 + 8,590 概念 + 1.7 万条先修边）
+# 3. 灌数据（约 45 分钟，5.5 万段教材 + 8,590 概念 + 1.7 万条先修边）
 python3 src/build_milvus.py
 ```
 
-灌完会有 `data/milvus/kg_lite.db`（约 100 MB）。
+灌完会有 `data/milvus/kg_lite.db`。
+
+⚠️ **milvus-lite 有两代，格式不兼容**：
+
+| 版本 | 要求 | 库的样子 |
+|---|---|---|
+| **3.x**（推荐，当前版） | Python ≥ 3.10 + `pymilvus>=3.0` | `.db` 是个**目录** |
+| 2.5.x（老版） | Python 3.9 + `pymilvus==2.5.1` | `.db` 是**单个文件** |
+
+**两代的库不能互相读** —— 换版本 = 重建（45 分钟）。
+用 3.x 除非你的 Python 只有 3.9。
 
 ### 方式 B：Milvus Standalone（要多人同时查 / 远程访问时）
 
@@ -56,7 +79,7 @@ cd ../..
 MILVUS_BACKEND=server python3 src/build_milvus.py
 ```
 
-⚠️ 镜像从 Docker Hub 拉，**国内网络可能要很久**。
+⚠️ 镜像从 Docker Hub 拉，**国内网络可能要很久**（实测拉了 50 分钟没到）。
 镜像拉不动时用方式 A —— 功能一样（向量检索 + 标量过滤），
 只是不能多人同时写同一个库。
 
