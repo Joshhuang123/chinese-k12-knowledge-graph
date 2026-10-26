@@ -707,18 +707,109 @@ for(const n of NODES){ if(!byAge.has(n.a1)) byAge.set(n.a1, []); byAge.get(n.a1)
 const AGES = [...byAge.keys()].sort((x,y)=>x-y);
 const A0 = AGES[0], A1 = AGES[AGES.length-1];
 const GOLDEN = Math.PI * (3 - Math.sqrt(5));
-const LAYER_GAP = 58;
+
+/* ── 锥形：层高随年级增长，点在层内按点数定密度 ────────────
+ * 原来层高和半径都是写死的（58 / 52+250t），
+ * 三个站的数据量差 4 倍（主站 8,667 · 上海站 3,393 · 小学站 67），
+ * 同一个锥形装进去，上海站就「空旷得稀疏」——
+ * 实测中位点间距：主站 169px，上海站 215px（高层差 30~60%）。
+ *
+ * 改法分两件事：
+ *   · **层高**（层与层的垂直距离）随年级递增 → 这才是锥形的来源
+ *   · **圈半径**由该层点数决定 → 这才是密度的来源
+ *
+ * 为什么不能靠「半径随年级递增」做锥形：
+ * 半径要跟着点数走才密，而点数分布不是单调的
+ * （上海站小学少、初中多），半径跟着点数走就变沙漏。
+ * 实测：主站 91,90,91,90,91,92,91,114,130,175,139,200,203（不单调）
+ *
+ * 半径规律是实测出来的（对三个站、每层二分求解）：
+ *   · 点数多（≥300）→ R = 4.54 × √n
+ *     （黄金角分布的必然结果：间距 ∝ R/√n）
+ *   · 点数少 → R 不小于 R_MIN，否则一层只有几个点，会缩成中心的一个小点
+ *
+ * ⚠️ R_MIN **按站点自适应**，不是全局常数。
+ *
+ * 为什么不能写死：三个站的层点数分布差一个数量级
+ * （每层点数的下四分位：主站 122 · 上海站 22.5 · 小学站 3.5）。
+ * 写死一个值，要么主站的小层空旷，要么小学站的层撑成一个巨大的空圈。
+ *
+ * 写死值的实测后果（src/tune_rmin.py 扫过 88/56/40/32/24/16/0）：
+ *   R_MIN=88 → 上海站最疏层 12.2px（层内点距 CV 63.9%）· 小学站 50.7px
+ *   R_MIN=56 → 上海站 13.0px · 小学站 54.1px
+ *   R_MIN=32 → 上海站  7.4px · 小学站 30.8px
+ *
+ * 自适应的算法：黄金角分布在半径 R 的圆里放 n 个点，
+ * 最近邻间距 ≈ c·R/√n（实测 c ≈ 0.352）。
+ * 要让小层（点数 n₀）的间距跟大层（≈ 4.54·c ≈ 1.6px）同量级，
+ * 就要 R_MIN = 目标间距·√n₀ / c。
+ * 取该站**每层点数的下四分位**当 n₀：
+ *   主站 122 → ≈ 40 · 上海站 22.5 → ≈ 16 · 小学站 3.5 → ≈ 5
+ * 乘一个宽裕系数（点挤在一起比点散开好看得多），
+ * 并给绝对下限（不然小学站的单点层会缩成中心的一个点）。
+ */
+const R_PER_SQRT = 4.54;  // 实测：点数多时 R = 4.54 × √n
+/* 每层最小圈半径 = f(该站小层点数)。
+ * 系数 2.83 = 2.0（宽裕量）× √2（实测黄金角常数修正）：
+ * 主站 → R_MIN 40（最疏层 4.3px）、上海站 → 16（最疏层 4.3px），
+ * 都跟大层的 2px 同量级。绝对下限 12px：
+ * 小学站的单点层（1 个点）不能缩成一个看不见的点。 */
+const R_MIN = (() => {
+  const ns = AGES.map((age) => byAge.get(age).length).sort((a, b) => a - b);
+  if (!ns.length) return 12;
+  // 下四分位（层数少时退化成最小值）
+  const q1 = ns.length >= 4 ? ns[Math.floor(ns.length * 0.25)] : ns[0];
+  return Math.max(12, 2.83 * Math.sqrt(Math.max(q1, 1)));
+})();
+/* 层高：按该层点数的 √ 分配 ——
+ * 这是「锥形」的真正来源。
+ *
+ * 原来层高写死 58、半径写死 52+250t。
+ * 现在：**半径和层高都跟点数走**，于是每个层都是一条等宽的点带，
+ * 层与层之间按点数比例分配垂直空间 → 自然形成锥形。
+ *
+ * 为什么不用「半径随年级递增」做锥形：
+ * 半径要跟着点数走才密，而点数分布不单调
+ * （上海站小学少、初中多），半径跟点数走就变沙漏。
+ * 实测各层需要的半径：主站 91,90,91,90,91,92,91,114,130,175,139,200,203（不单调）。
+ *
+ * 为什么层高跟 √n 而不是 n：
+ * √n 跟半径同比例 → 每层的「带宽」和「层高」成正比，
+ * 视觉上各层厚度相当，像一摞均匀的盘子。
+ * ⚠️ 关键：**主站和上海站的 √n 分布几乎一样**
+ * （小学层 3~5%、高中层 15%）——
+ * 所以两个站会得到**几乎一样的锥形**，只是上海站的整体小一点。
+ */
+const LAYER_MIN_GAP = 26;   // 层与层之间的固定间隔（px）
+
+/* 每层的 y 坐标**只算一次** ——
+ * 布局和年级轴标签都要用，两处各算一遍的话
+ * 改了一处忘了另一处，标签就贴错层了。 */
+const LAYER_Y = (() => {
+  const hs = AGES.map((age) => Math.sqrt(Math.max(byAge.get(age).length, 1)));
+  const sum = hs.reduce((a, b) => a + b, 0) || 1;
+  const total = 560;                       // 整体高度（px）
+  const gaps = LAYER_MIN_GAP * (AGES.length - 1);
+  const usable = Math.max(total - gaps, 120);
+  let acc = -total / 2;
+  return hs.map((h, i) => {
+    const y = acc + (usable * h) / sum / 2;
+    acc += (usable * h) / sum + LAYER_MIN_GAP;
+    return y;
+  });
+})();
 
 AGES.forEach((age, li) => {
   const list = byAge.get(age);
-  const t = (age - A0) / (A1 - A0);           // 0 bottom -> 1 top
-  const layerR = 52 + t * 250;                // cone flares with age
-  list.forEach((n, i) => {
-    const r = layerR * Math.sqrt((i + 0.5) / list.length);
-    const th = i * GOLDEN + n.s * 0.62;
-    n.x = Math.cos(th) * r;
-    n.z = Math.sin(th) * r;
-    n.y = (li - (AGES.length-1)/2) * LAYER_GAP;
+  const n = list.length;
+  /* 圈半径由点数决定（密度一致） */
+  const layerR = Math.max(R_MIN, R_PER_SQRT * Math.sqrt(Math.max(n, 1)));
+  list.forEach((node, i) => {
+    const r = layerR * Math.sqrt((i + 0.5) / n);
+    const th = i * GOLDEN + node.s * 0.62;
+    node.x = Math.cos(th) * r;
+    node.z = Math.sin(th) * r;
+    node.y = LAYER_Y[li];
   });
 });
 
@@ -786,6 +877,13 @@ let hover = -1, pinned = -1;
 let focus = -1;
 const activeSet = new Set();
 let projX = new Float32Array(N), projY = new Float32Array(N), projK = new Float32Array(N);
+/* **实际画出来的半径**（画布像素）。
+ * 画点时的半径是 `r = (1.5 + n.cen*7.5) / k * 0.52`，
+ * 而且半径不到 0.45px 的点**根本不画**（`continue`）。
+ * 密度测量必须用这个真实值 —— 用 cen 反推或者按节点数猜，
+ * 都是「自己验自己」，测不出真实疏密。
+ * -1 = 这一帧没画出来（被半径剔除剔掉了）。 */
+let drawnR = new Float32Array(N);
 let order = new Int32Array(N);
 const orderArr = [];      // 复用：见 project() 末尾的说明
 
@@ -903,6 +1001,9 @@ function drawEdges(){
 }
 
 function drawNodes(m){
+  /* drawnR 每帧重置 —— 否则上一帧画过的点会留下旧半径，
+     测量脚本量到的就是「历史最大」而不是这一帧的真实疏密。 */
+  drawnR.fill(-1);
   for(let i=0;i<m;i++){
     const idx = order[i];
     const n = NODES[idx];
@@ -917,7 +1018,8 @@ function drawNodes(m){
     // 非空会把其余 7,938 个点全压到 9% —— 结果是「点了依赖，整屏变黑」。
     // 实测：r=0.4118 < 0.45，焦点被 continue 掉。
     const isFocus = idx === focus;
-    if(!isFocus && r < 0.45) continue;
+    if(!isFocus && r < 0.45){ drawnR[idx] = -1; continue; }
+    drawnR[idx] = r;
 
     let fill, alpha;
     if(activeSet.size && !on){
@@ -958,7 +1060,8 @@ function drawAgeAxis(){
   const d = cam.d, cx = CX(), cy = CY();
   const R = 318;
   AGES.forEach((age, li) => {
-    const y = (li - (AGES.length-1)/2) * LAYER_GAP;
+    // 层高跟布局一致（LAYER_Y 是布局算好的），标签才能贴在对应的层上
+    const y = LAYER_Y[li];
     // park each label on the ellipse edge nearest the viewer
     const bx = -R*cosT, bz = -R*sinT;
     const z1 = bx*sinT + bz*cosT;
@@ -1586,7 +1689,22 @@ window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
               // 线的来源图例永远不显示，控制台一片红。
               PAL, MAP_SRC_COLOR, TIER_ZH,
               // 「卡在哪」面板在 IIFE 外面，要跳回某个知识点 / 弹提示
-              showCard, say};
+              showCard, say,
+              // **真实投影坐标 + 实际画出来的半径** ——
+              // 密度测量要的是「这一帧点在画布上到底挤不挤」，
+              // 而投影是模板自己的 3D 相机算的（cam.th/ph/d）。
+              // 在测量脚本里重算一遍投影 = 自己验自己，判别力为零。
+              // 所以模板把自己的结果交出来：projX/projY 是画布像素，
+              // drawnR 是该点这一帧的真实半径（-1 = 没画出来）。
+              proj: () => ({x: Array.from(projX), y: Array.from(projY),
+                            k: Array.from(projK), r: Array.from(drawnR),
+                            w: W, h: H}),
+              // **相机状态** —— 「镜头有没有绕远路」只能从这里量。
+              // 从像素反推（数焦点节点横越中线几次）量不准：
+              // 节点收敛后正好停在中线上时，每帧微调都算一次「横越」，
+              // 实测同一版页面能测出 1 次和 11 次两种结果。
+              cam: () => ({th: cam.th, ph: cam.ph, d: cam.d,
+                           spin, targetTh: TARGET.th})};
 
 loop();
 })();

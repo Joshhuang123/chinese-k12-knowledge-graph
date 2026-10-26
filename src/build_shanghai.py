@@ -155,7 +155,10 @@ def main() -> int:
             best = (bid, b["sections"][0] if b["sections"] else None)
         node_units[n["id"]] = (n, best)
 
+
+
     payload_nodes = []
+
     idx_of = {}
     ordered = sorted(node_units.items(), key=lambda kv: (kv[1][0]["name"], kv[0]))
     for i, (nid, (n, best)) in enumerate(ordered):
@@ -200,11 +203,11 @@ def main() -> int:
             desc = (desc + "　｜　" + pos) if desc else pos
         payload_nodes.append([
             i, n["name"], "", si, dz, nid,
-            grade, grade, 0.0, 1 if stage == 1 else 0, desc, "—",
+            grade, grade,
+            0.0,                              # cen → 被依赖度（下面回填）
+            1 if stage == 1 else 0, desc, "—",
             [], [], slot, stage,
         ])
-    print(f"节点 {len(payload_nodes)} 个")
-
     # ── 4. 边 ────────────────────────────────────────────────
     # payload 边的约定是 **[后继, 先修]** —— 模板里
     # `pre.get(e[0]).push(e[1])` 表示「e[0] 的前置是 e[1]」。
@@ -231,13 +234,33 @@ def main() -> int:
     #   **方向反了是最难发现的 bug** —— 页面照常渲染，
     #   只是每一句话都在说反，而且「看着还挺通顺」。
     edges = []
+    indeg = collections.Counter()
     for e in sg["edges"]:
-        pre, suc = idx_of.get(e[0]), idx_of.get(e[1])
+        pre_id, suc_id = e[0], e[1]
+        pre, suc = idx_of.get(pre_id), idx_of.get(suc_id)
         if pre is None or suc is None:
             continue
         # sg 的 [0] 是前置、[1] 是后继 → payload 要 [后继, 前置]
         edges.append([suc, pre, e[2] if len(e) > 2 else 0, 0])
+        # 被依赖度：前置被这个后继依赖
+        indeg[pre_id] += 1
     print(f"边 {len(edges)} 条")
+
+    # ── 被依赖度（cen）回填 ────────────────────────────────
+    # 模板里 `r = (1.5 + n.cen*7.5) / k * 0.52` ——
+    # **cen 直接决定点的大小**（被依赖得多的概念画得大）。
+    # 上海站原来硬编码 0.0 → 所有点都是最小半径（0.78px），
+    # 视觉上「点几乎看不见」，
+    # 实测圆点像素占比只有 1.48%（主站 30.67%）——
+    # 一半的原因是节点少，一半是点太小。
+    #
+    # 算法跟主站一致（`build_viz.py` 的 indeg）：
+    # 主站是 `prereq[后继].add(前置)` 然后 `indeg[前置] += 1`
+    # —— **indeg 统计的是「前置」的入度**（被多少个后继依赖）。
+    mx = max(indeg.values()) if indeg else 1
+    for i, (nid, _v) in enumerate(ordered):
+        payload_nodes[i][8] = round(indeg.get(nid, 0) / mx, 4)
+
 
     # ── 5. 教材公式 / 图 / 难点（沪教版的）────────────────────
     # **按 (书, 页) 存** —— 按书存的话每个节点会挂上整本书的公式。

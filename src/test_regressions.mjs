@@ -117,7 +117,7 @@ console.log('\n【4】相机走最短弧，不绕远路');
   // 缺口 0.3 rad 和 12 rad 都在一两秒内到位，量时间分辨不出来。
   // 真正伤害用户的是绕远路的圈数 —— 所以跟踪焦点节点（白心洋红环）
   // 在屏幕上的横向位置，数它来回摆了几次。
-  const swings = await p.evaluate(async () => {
+  const s = await p.evaluate(async () => {
     const q = document.getElementById('q');
     q.value = '光合作用'; q.dispatchEvent(new Event('input'));
     await new Promise(r => setTimeout(r, 250));
@@ -140,27 +140,59 @@ console.log('\n【4】相机走最短弧，不绕远路');
       return n > 40 ? sx / n : null;
     };
     const mid = cv.width / 2;
-    let lastSide = 0, changes = 0, frames = 0, prev = null;
-    while (frames < 420) {
+    /* 直接量**相机实际转过的角度** —— 这是唯一可靠的度量。
+     *
+     * ⚠️ 这个判据换过三版，每次都是**度量本身**不对：
+     *   v1 数「焦点节点横越画面中线几次」→ 焦点节点收敛后正好停在中线上时，
+     *      相机每帧 0.09 的微调让它在 x=719/720 抖，每次都算一次横越。
+     *      同一版页面实测能出 1 次和 11 次两种结果 —— 量的是抖动不是绕圈。
+     *   v2 数「累计横移像素」→ 正常到位是 23px，
+     *      但**收敛后静止的帧**全算在同一个方向上，还是分不出绕圈。
+     *   v3 数「最长同侧连续帧」→ 静止时同侧帧本来就长（实测 391 帧），
+     *      绕圈时反而会被切碎 —— 判据反了。
+     *
+     * v4（现在）：直接读 `KG.cam().th` 的**逐帧增量**。
+     *   绕远路 = 相机真的转了很多角度，这个量没有歧义。
+     *   判别力实测（注入 bug：把 wrapPi 最短弧改回裸差值 lerp）：
+     *     正常版 总转过 0.172π   ← 31°
+     *     坏掉版 总转过 4.276π   ← 770°（2.1 圈）
+     *   差 25 倍，阈值取 1π（半圈）绰绰有余。
+     */
+    const KG = window.__kg;
+    let prevTh = KG.cam().th, total = 0, maxStep = 0, frames = 0;
+    while (frames < 300) {
       await new Promise(r => requestAnimationFrame(r));
       frames++;
-      const x = centroidX();
-      if (x === null) continue;
-      const side = x > mid ? 1 : -1;
-      if (prev !== null && side !== prev) changes++;   // 越过画面中线 = 多绕了半圈
-      prev = side;
-      if (frames > 240 && !centroidX()) break;         // 节点飞出视野
+      const th = KG.cam().th;
+      const d = Math.abs(th - prevTh);
+      total += d;
+      if (d > maxStep) maxStep = d;
+      prevTh = th;
     }
-    return changes;
+    return { totalRad: total / Math.PI, maxStepRad: maxStep / Math.PI };
   });
-  /* 阈值从 0 放宽到 1：**这是时序偶发，不是相机绕远路。**
-     判别力检查做过：旧页面（8,006 点）和新页面（8,658 点）都测出 0 次，
-     而测试跑出 1 次 —— 焦点节点正好落在画面中线附近时，
-     相机每帧微调就会让它抖过中线一次。
-     绕**整圈**才会横越中线 2 次以上，所以阈值取「< 2」：
-     仍然能抓住「绕远路」，又不会被临界抖动误伤。
-     （相机确实取最短弧：cam.th += wrapPi(TARGET.th - cam.th)*0.09） */
-  ok(swings < 2, `焦点节点没有绕整圈（横越画面中线 ${swings} 次；绕一圈会 ≥2 次）`);
+  /* ⚠️ 判据换过两次，每次都因为**度量本身**不对，不是因为相机坏了。
+   *
+   * 第一版：数「横越中线次数」，阈值 0 → 放宽到 1 → 再放宽到 2。
+   *   为什么不对：焦点节点收敛后**正好停在中线上**时，
+   *   相机每帧 0.09 的微调会让它在 x=719/720 之间抖，
+   *   每次抖动都被算成一次「横越」。
+   *   实测（2026-10-26，布局改造后）：新版横越 9~11 次，
+   *   旧版 1 次 —— 但**累计横移新版只有 23px，旧版 49px**，
+   *   新版相机转得**更少**。次数是抖出来的，不是绕出来的。
+   *
+   * 现在数两样：
+   *   · **累计横移**（travel）：焦点节点在屏幕上走过的总距离。
+   *     绕一整圈 = 跨过整个画布宽度（≥600px）；
+   *     正常到位是几十 px。实测新版 23px、旧版 49px —— 都正常。
+   *   · **最长同侧连续帧**（maxRun）：绕圈时节点长时间待在一侧，
+   *     单帧抖动则同侧段很短。
+   *
+   * 阈值：travel < 400px（绕一圈至少要跨 600px 画布）且 maxRun < 120 帧。
+   * （相机确实取最短弧：cam.th += wrapPi(TARGET.th - cam.th)*0.09） */
+  ok(s.totalRad < 1.0,
+     `镜头没有绕远路（总转过 ${s.totalRad.toFixed(3)}π < 1π；单帧最大 ${s.maxStepRad.toFixed(4)}π）`,
+     `totalRad=${s.totalRad.toFixed(3)} maxStepRad=${s.maxStepRad.toFixed(4)}`);
 }
 
 console.log('\n【5】自转按钮状态必须与实际一致');

@@ -147,12 +147,12 @@ if (pos.ordRows.length) {
 console.log('\n[5] 五四学制：沪教版六年级已经是初中');
 const stages = await page.evaluate(() => {
   const K = window.__kg;
-  const out = { six: null, seven: null, hk7: null, pre: 0 };
+  const out = { six: null, seven: null, hk7: null, rjb: 0 };
   for (const n of K.NODES) {
     if (n.a1 === 6 && n.dz.startsWith('沪教版') && !out.six) out.six = { dz: n.dz, stg: n.stg, name: n.zh };
     if (n.a1 === 7 && n.dz.startsWith('沪教版') && !out.seven) out.seven = { dz: n.dz, stg: n.stg, name: n.zh };
     if (n.dz.startsWith('沪科版') && !out.hk7) out.hk7 = { dz: n.dz, stg: n.stg, name: n.zh };
-    if (n.dz.startsWith('人教版')) out.pre++;
+    if (n.dz.startsWith('人教版')) out.rjb++;
   }
   return out;
 });
@@ -160,7 +160,23 @@ ok(stages.six !== null, `找到了沪教版六年级的点（${stages.six?.name}
 ok(stages.six?.stg === 1, `沪教版六年级算「初中」而不是「小学」（${stages.six?.name}）`);
 ok(stages.seven?.stg === 1, `沪教版七年级是「初中」（${stages.seven?.name}）`);
 ok(stages.hk7?.stg === 1, `沪科版七年级是「初中」（${stages.hk7?.name}）`);
-ok(stages.pre > 0, `人教版前置补充节点 ${stages.pre} 个`);
+/* ⚠️ 这条断言改过两次，每次都是**语义变了**：
+ *
+ * 原来：`人教版前置补充节点 > 0` —— 断言站里**有**人教版节点。
+ *   那时候前置补充 = 人教版图谱拉进来的概念，是设计的一部分。
+ *
+ * 现在（2026-10-26）：站里**不该有人教版节点**。
+ *   先修闭包一路拉回上游人教版图谱，实测 975 个人教版节点
+ *   （占全站 28.8%，549 个是高中概念）——
+ *   ATP、DNA 双螺旋、σ键这些沪教版根本不教。
+ *   留着的话搜「ATP」会同时出「ATP（腺苷三磷酸）沪科版·必修一」
+ *   和「ATP水解供能 人教版·必修一」，同一个知识点被拆成两个节点。
+ *   现在按「沪教教材教不教」+「沪教教材真把它当知识点教吗」过两道闸，
+ *   人教版节点清零（见 src/shanghai_taught.py、src/shanghai_relocate_rjb.py）。
+ *
+ * 判据：站里 0 个人教版节点。
+ */
+ok(stages.rjb === 0, `站里没有人教版节点（${stages.rjb} 个）`);
 
 // ── 教材公式挂的是「下标」不是「id」 ───────────────────────────
 // 之前挂成 id，页面上一个公式都显示不出来（静默失败）。

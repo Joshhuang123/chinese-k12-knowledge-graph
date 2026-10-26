@@ -401,6 +401,30 @@ def layer1(g, sb, payload):
            f"三个站的先修边方向都对（最高可疑率 {worst.split('可疑')[-1].strip() if worst else '?'}）",
            out[-600:])
 
+    # 1h2. 布局密度（视觉稀疏度）
+    #
+    # 2026-10-26 用户报：「上海的这个视觉上比较稀疏」。
+    # 查出来是**模板布局写死**（半径 52+250t、层高 58）——
+    # 三个站数据量差 4 倍，同一份锥形装进去，上海站就空旷。
+    #
+    # 判据 = **每点占多少画布**（凸包面积 ÷ 点数）。
+    # 这个量跟数据量无关，所以三个站能直接比；
+    # 实测旧布局上海站 77.2 px²/点、主站 30.6（差 2.5 倍），
+    # 新布局 29.5 / 18.4（差 1.6 倍）。
+    #
+    # ⚠️ 这个检查**需要真浏览器**（投影是 3D 相机算的，
+    # 脚本里重算 = 自己验自己），所以走 node 而不是 python。
+    DENSCHK = BASE / "src" / "check_layout_density.mjs"
+    sites = [BASE / f for f in ("index.html", "shanghai.html", "kx.html")]
+    sites = [s for s in sites if s.exists()]
+    if DENSCHK.exists() and sites:
+        r = subprocess.run(["node", str(DENSCHK), *[str(s) for s in sites]],
+                           capture_output=True, text=True, cwd=BASE, timeout=900)
+        out = (r.stdout or "") + (r.stderr or "")
+        ok(r.returncode == 0,
+           f"三个站的视觉密度都在阈值内（每点占画布 ≤ 40px²，跨站比 ≤ 2）",
+           out[-800:])
+
     # 1h. 数据一览页（data.html）
     #
     # 它是清单的**投影** —— 内容全部来自 DATASETS.json。

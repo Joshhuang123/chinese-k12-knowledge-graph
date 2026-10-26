@@ -1,0 +1,512 @@
+{
+ "chemistry_9a_rjb_cpt401": {
+  "id": "chemistry_9a_rjb_cpt401",
+  "name": "燃烧反应",
+  "subject": "chemistry",
+  "edition": "沪教版",
+  "volName": "9a",
+  "book": "沪教版·9a",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.4
+ },
+ "math_3a_rjb_cpt33": {
+  "id": "math_3a_rjb_cpt33",
+  "name": "交集",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "bx1",
+  "book": "沪教版·bx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.6
+ },
+ "math_bx1_rjb_cpt71": {
+  "id": "math_bx1_rjb_cpt71",
+  "name": "对数的定义",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "bx1",
+  "book": "沪教版·bx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "math_bx1_rjb_cpt9": {
+  "id": "math_bx1_rjb_cpt9",
+  "name": "并集",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "bx1",
+  "book": "沪教版·bx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 4,
+  "share": 0.5
+ },
+ "math_xzxbx1_rjb_cpt43": {
+  "id": "math_xzxbx1_rjb_cpt43",
+  "name": "两点间距离公式",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "bx2",
+  "book": "沪教版·bx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.75
+ },
+ "math_bx1_rjb_cpt86": {
+  "id": "math_bx1_rjb_cpt86",
+  "name": "任意角",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "bx2",
+  "book": "沪教版·bx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 4,
+  "share": 1.0
+ },
+ "math_1a_rjb_cpt57": {
+  "id": "math_1a_rjb_cpt57",
+  "name": "时针",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "bx2",
+  "book": "沪教版·bx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.5
+ },
+ "math_bx1_rjb_cpt128": {
+  "id": "math_bx1_rjb_cpt128",
+  "name": "简谐运动",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "bx2",
+  "book": "沪教版·bx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "math_9a_rjb_cpt79": {
+  "id": "math_9a_rjb_cpt79",
+  "name": "事件概率",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "bx3",
+  "book": "沪教版·bx3",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.5
+ },
+ "math_xzxbx1_rjb_cpt54": {
+  "id": "math_xzxbx1_rjb_cpt54",
+  "name": "椭圆的焦点",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "xzxbx1",
+  "book": "沪教版·xzxbx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "math_4a_rjb_cpt28": {
+  "id": "math_4a_rjb_cpt28",
+  "name": "梯形",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "5a",
+  "book": "沪教版·5a",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 7,
+  "share": 0.467
+ },
+ "math_3b_rjb_cpt20": {
+  "id": "math_3b_rjb_cpt20",
+  "name": "面积单位",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "5a",
+  "book": "沪教版·5a",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.6
+ },
+ "math_6a_rjb_cpt30": {
+  "id": "math_6a_rjb_cpt30",
+  "name": "百分比",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "6b",
+  "book": "沪教版·6b",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.429
+ },
+ "math_8a_rjb_cpt54": {
+  "id": "math_8a_rjb_cpt54",
+  "name": "积的乘方",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "7a",
+  "book": "沪教版·7a",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.75
+ },
+ "math_4b_rjb_cpt42": {
+  "id": "math_4b_rjb_cpt42",
+  "name": "对称轴",
+  "subject": "math",
+  "edition": "沪教版",
+  "volName": "9a",
+  "book": "沪教版·9a",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 17,
+  "share": 0.436
+ },
+ "biology_7b_rjb_cpt83": {
+  "id": "biology_7b_rjb_cpt83",
+  "name": "红细胞",
+  "subject": "biology",
+  "edition": "沪教版",
+  "volName": "8a",
+  "book": "沪教版·8a",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.4
+ },
+ "biology_7b_rjb_cpt12": {
+  "id": "biology_7b_rjb_cpt12",
+  "name": "精子",
+  "subject": "biology",
+  "edition": "沪教版",
+  "volName": "8b",
+  "book": "沪教版·8b",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.75
+ },
+ "chemistry_bx2_rjb_cpt245": {
+  "id": "chemistry_bx2_rjb_cpt245",
+  "name": "皂化反应",
+  "subject": "chemistry",
+  "edition": "沪科版",
+  "volName": "bx2",
+  "book": "沪科版·bx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "chemistry_xzxbx1_rjb_cpt36": {
+  "id": "chemistry_xzxbx1_rjb_cpt36",
+  "name": "活化能",
+  "subject": "chemistry",
+  "edition": "沪科版",
+  "volName": "xzxbx1",
+  "book": "沪科版·xzxbx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "chemistry_xzxbx1_rjb_cpt42": {
+  "id": "chemistry_xzxbx1_rjb_cpt42",
+  "name": "浓度商",
+  "subject": "chemistry",
+  "edition": "沪科版",
+  "volName": "xzxbx1",
+  "book": "沪科版·xzxbx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "chemistry_xzxbx3_rjb_cpt29": {
+  "id": "chemistry_xzxbx3_rjb_cpt29",
+  "name": "酰胺",
+  "subject": "chemistry",
+  "edition": "沪科版",
+  "volName": "xzxbx3",
+  "book": "沪科版·xzxbx3",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "math_7a_rjb_cpt69": {
+  "id": "math_7a_rjb_cpt69",
+  "name": "线段中点",
+  "subject": "math",
+  "edition": "沪科版",
+  "volName": "7a",
+  "book": "沪科版·7a",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.4
+ },
+ "math_9a_rjb_cpt2": {
+  "id": "math_9a_rjb_cpt2",
+  "name": "一元二次方程的一般形式",
+  "subject": "math",
+  "edition": "沪科版",
+  "volName": "8b",
+  "book": "沪科版·8b",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 5,
+  "share": 0.5
+ },
+ "physics_9_rjb_cpt201": {
+  "id": "physics_9_rjb_cpt201",
+  "name": "太阳能",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "9b",
+  "book": "沪科版·9b",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 4,
+  "share": 0.5
+ },
+ "physics_bx1_rjb_cpt38": {
+  "id": "physics_bx1_rjb_cpt38",
+  "name": "胡克定律",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "bx1",
+  "book": "沪科版·bx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.667
+ },
+ "physics_xzxbx1_rjb_cpt30": {
+  "id": "physics_xzxbx1_rjb_cpt30",
+  "name": "胡克定律（弹簧弹力）",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "bx1",
+  "book": "沪科版·bx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.667
+ },
+ "physics_bx1_rjb_cpt2": {
+  "id": "physics_bx1_rjb_cpt2",
+  "name": "参考系",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "bx2",
+  "book": "沪科版·bx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 1.0
+ },
+ "physics_8b_rjb_cpt8": {
+  "id": "physics_8b_rjb_cpt8",
+  "name": "弹性",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "bx2",
+  "book": "沪科版·bx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.5
+ },
+ "physics_8b_rjb_cpt76": {
+  "id": "physics_8b_rjb_cpt76",
+  "name": "弹性势能",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "bx2",
+  "book": "沪科版·bx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.667
+ },
+ "physics_xzxbx1_rjb_cpt74": {
+  "id": "physics_xzxbx1_rjb_cpt74",
+  "name": "临界角",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "xzxbx1",
+  "book": "沪科版·xzxbx1",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "physics_9_rjb_cpt6": {
+  "id": "physics_9_rjb_cpt6",
+  "name": "分子动能",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "xzxbx3",
+  "book": "沪科版·xzxbx3",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 1.0
+ },
+ "physics_9_rjb_cpt4": {
+  "id": "physics_9_rjb_cpt4",
+  "name": "分子间作用力",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "xzxbx3",
+  "book": "沪科版·xzxbx3",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.667
+ },
+ "physics_9_rjb_cpt194": {
+  "id": "physics_9_rjb_cpt194",
+  "name": "裂变",
+  "subject": "physics",
+  "edition": "沪科版",
+  "volName": "xzxbx3",
+  "book": "沪科版·xzxbx3",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 3,
+  "share": 0.6
+ },
+ "biology_7b_rjb_cpt82": {
+  "id": "biology_7b_rjb_cpt82",
+  "name": "血细胞",
+  "subject": "biology",
+  "edition": "沪科版",
+  "volName": "xzxbx2",
+  "book": "沪科版·xzxbx2",
+  "evidence": [
+   "集中"
+  ],
+  "score": 2,
+  "tocHit": null,
+  "hits": 2,
+  "share": 0.5
+ }
+}

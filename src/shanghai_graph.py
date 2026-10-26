@@ -54,11 +54,15 @@ import pathlib
 import re
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from shanghai_taught import taught_in_shanghai      # noqa: E402
+
 BASE = pathlib.Path(__file__).resolve().parent.parent
 TOC = BASE / "data" / "shanghai-toc.json"
 CVIS = BASE / "data" / "concept-vision-sh.jsonl"
 GRAPH = BASE / "data" / "normalized" / "graph.json"
 OUT = BASE / "data" / "shanghai-graph.json"
+RJB_POS = BASE / "data" / "shanghai-rjb-positions.json"
 
 STAGE_ZH = ["小学", "初中", "高中"]
 
@@ -287,6 +291,15 @@ def main() -> int:
                 closure.add(p)
                 q.append(p)
     added = 0
+    skipped_rjb = 0        # 因「沪教教材不教」而剔除的人教版节点
+    # 沪教教材位置表（src/shanghai_relocate_rjb.py 产出）
+    # —— 人教版前置节点在沪教教材里的真实位置。
+    # 没有位置的，说明沪教教材**没把它当知识点教** → 剔除。
+    rjb_positions = {}
+    if RJB_POS.exists():
+        rjb_positions = json.load(open(RJB_POS, encoding="utf-8"))
+    print(f"沪教位置表 {len(rjb_positions)} 条"
+          + ("" if rjb_positions else "（先跑 src/shanghai_relocate_rjb.py）"))
     for cid in closure:
         if cid in nodes:
             continue
@@ -317,6 +330,43 @@ def main() -> int:
         grade = n.get("grade") or 0
         stage = {"小学": 0, "初中": 1, "高中": 2}.get(n.get("stage"), 1)
         vol = n.get("book") or ""
+        # ── 上海教材边界：沪教不教的概念，不进这个站 ──────────
+        #
+        # 这个站叫「上海的孩子学什么」。
+        # 先修闭包会一路拉回上游人教版图谱 —— 实测 975 个人教版节点，
+        # 占全站 28.8%，其中 549 个是高中概念
+        # （ATP、DNA 双螺旋、σ键、sp²杂化轨道…），
+        # **这些在沪教版教材里根本不存在**。
+        #
+        # 后果不是「多了几个点」：
+        #   · 搜「ATP」同时出「ATP（腺苷三磷酸）沪科版·必修一」和
+        #     「ATP水解供能 人教版·必修一」—— 同一知识点被拆成两个节点
+        #   · 学习路径面板里「单项式的次数 · 人教版·七上」跟
+        #     「沪教版·六上」并排，用户分不出哪个是上海教材
+        #   · 73 条边年级倒挂：八年级学「中枢神经系统」要先会高一的「脑」
+        #
+        # 判据：概念名（含名称变体）是否出现在**同学科**的沪教教材原文里。
+        # 详见 src/shanghai_taught.py（含判据选型过程）。
+        # 实测：975 → 保留 314（沪教真教）· 剔除 661（沪教不教）。
+        if not taught_in_shanghai(n.get("subject") or "math", n["name"]):
+            skipped_rjb += 1
+            continue
+        # ── 更严的一道：沪教教材**真的把它当知识点教**吗？────────
+        #
+        # 「出现在教材里」≠「是教材的知识点」。
+        # 「DNA复制」在沪科版必修二出现过，但沪教节点集里没有它单列 ——
+        # 保留它，页面上就会出现「DNA复制 · 人教版·必修二」，
+        # 用户还是分不清哪个是上海教材。
+        #
+        # 所以用跟沪教节点集**同一套判据**（「目录」/「集中」档，
+        # 见 src/shanghai_relocate_rjb.py）再筛一遍：
+        # 实测 314 → 34。
+        # 这 34 个能拿到**沪教教材的真实位置**，
+        # 标签改成「沪科版·必修二 …」而不是「人教版·必修二」。
+        rjb_pos = rjb_positions.get(cid)
+        if not rjb_pos:
+            skipped_rjb += 1
+            continue
         nodes[cid] = {
             "id": cid, "name": n["name"], "subject": n.get("subject") or "math",
             "kind": "pre",
@@ -324,16 +374,27 @@ def main() -> int:
             "grade": grade, "stage": stage,
             "mainBook": "", "books": {},
             "bookTitles": [n.get("bookZh") or ""],
-            "editions": ["人教版"],
-            "sections": [], "pages": [], "evidence": [],
-            "preNote": "人教版图谱里的对应概念（沪教版页面上没单独出现）",
-            "volName": VOL_CN.get(vol, vol),
+            # **版别改成沪教** —— 这个节点在沪教教材里确实教，
+            # 位置也按沪教教材算（src/shanghai_relocate_rjb.py）。
+            # 留着「人教版·必修二」会让人以为上海的孩子在学人教版。
+            "editions": [rjb_pos.get("edition") or "沪教版"],
+            "sections": [], "pages": [], "evidence": rjb_pos.get("evidence", []),
+            "preNote": "人教版图谱里的对应概念（沪教版教材里也教，但没单列成节点）",
+            "volName": rjb_pos.get("volName") or VOL_CN.get(vol, vol),
+            "rjbVolName": VOL_CN.get(vol, vol),
+            # **dz = 页面上显示的册次标签** ——
+            # 必须是沪教的版别（「沪科版·必修二」），
+            # 不能是人教版的（「人教版·必修二」）——
+            # 这是用户一眼判断「这是不是上海教材」的依据。
+            "dz": f"{rjb_pos.get('edition') or '沪教版'}·{rjb_pos.get('volName') or VOL_CN.get(vol, vol)}",
             "def": ((n.get("props") or {}).get("definition") or "")[:200],
             "rjbBook": n.get("bookZh") or "",
             "desc": (n.get("props") or {}).get("definition") or "",
         }
         added += 1
-    print(f"先修闭包补充 {added} 个（灰点）")
+    print(f"先修闭包补充 {added} 个（灰点）"
+          + (f"；其中 {skipped_rjb} 个人教版节点因沪教教材不教而剔除"
+             if skipped_rjb else ""))
 
     ids = set(nodes)
     edges = []

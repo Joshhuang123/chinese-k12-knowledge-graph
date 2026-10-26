@@ -343,8 +343,19 @@ OCR 会把拼音一起读出来（「tai yang shsng」）。
 
 https://joshhuang123.github.io/chinese-k12-knowledge-graph/shanghai.html
 
-**3,393 节点（2,373 个沪教概念 + 1,020 个前置补充）· 6,567 条先修边 · 1,350 个教材单元 · 354 章。**
+**2,452 节点（2,373 个沪教概念 + 79 个前置补充）· 3,649 条先修边 · 1,350 个教材单元 · 354 章。**
 复用主站同一个 `viz/template.html`，**只换 payload** —— 模板不知道数据是人教还是沪教。
+
+**站里没有一个人教版节点。** 先修闭包本来会一路拉回上游人教版图谱
+（实测 975 个人教版节点，占全站 28.8%，其中 549 个是高中概念 ——
+ATP、DNA 双螺旋、σ键、sp²杂化轨道，这些沪教版根本不教）。
+留着的话，搜「ATP」会同时出现「ATP（腺苷三磷酸）沪科版·必修一」和
+「ATP水解供能 人教版·必修一」—— 同一个知识点被拆成两个节点；
+学习路径面板里「人教版·七上」跟「沪教版·六上」并排，用户分不出哪个是上海教材。
+所以按**「沪教教材教不教」**过一道闸（判据见 `src/shanghai_taught.py`），
+再按**「沪教教材真的把它当知识点教吗」**过第二道
+（用跟沪教节点集同一套「目录/集中」判据，见 `src/shanghai_relocate_rjb.py`）。
+两道闸留下 34 个节点，它们在沪教教材里的真实位置也一并标上。
 
 **五个学科都在**：数学 26 本 · 物理 14 本 · 化学 9 本 · 生物 9 本 · 小学科学 9 本，
 沪教版（上海教育出版社，五四学制）和沪科版（上海科学技术出版社，六三制）两套并行。
@@ -526,14 +537,27 @@ K12-KGraph 的教材 PDF 由论文作者从 [`TapXWorld/ChinaTextbook`](https://
 python3 src/normalize.py     # 原件 → data/normalized/graph.json
 python3 src/validate.py      # → data/normalized/validation.json，有硬错误时 exit 1
 python3 src/build_viz.py     # → viz/知识图谱3D.html
-python3 src/health_check.py  # 上线体检：数据层 + 构建层 + 判别力自检（82 项）
+python3 src/health_check.py  # 上线体检：数据层 + 构建层 + 判别力自检（106 项）
 ```
 
 上海版站点（数据已入库，直接重建即可）：
 
 ```bash
+python3 src/shanghai_relocate_rjb.py  # → data/shanghai-rjb-positions.json（人教版节点的沪教位置）
 python3 src/shanghai_graph.py   # → data/shanghai-graph.json
 python3 src/build_shanghai.py    # → shanghai.html
+```
+
+> `shanghai_graph.py` 依赖 `shanghai-rjb-positions.json` ——
+> 那是「人教版前置节点在沪教教材里的真实位置」表，
+> 用来把站里混进来的人教版节点挡在门外（详见 README 第九节）。
+> 改了沪教教材原文层就要重跑第一个脚本。
+
+**视觉密度自查**（三个站的画布密度，用真浏览器量）：
+
+```bash
+node src/check_layout_density.mjs index.html shanghai.html kx.html
+node src/measure_density.mjs index.html shanghai.html kx.html   # 只测量不判定
 ```
 
 只想到成品页，直接 `open viz/知识图谱3D.html` 就行。
@@ -588,7 +612,7 @@ OCR 只能救回汉字，**公式和图形会全丢**。视觉层换成让多模
 | `data/kx-graph.json` | 小学科学图谱：节点 / 教材序边 / 教材位置 | 67 节点 / 25 边 |
 | `data/concept-vision-kx.jsonl` | 上游概念 → 小学科学的书/节/页 | 146 个概念 |
 | `data/shanghai-toc.json` | **教材自己的目录**（视觉模型读的，1,350 节） | 67 本 |
-| `data/shanghai-graph.json` | 上海版图谱：节点 / 单元链 / 先修边 | 3,393 节点 / 6,567 边 |
+| `data/shanghai-graph.json` | 上海版图谱：节点 / 单元链 / 先修边 | 2,452 节点 / 3,649 边 |
 
 **判据不靠「页面里出现过」** —— 概念名「小数」「分子」「等式」在 20 本书的题干里
 都出现过，它们不是「这本书教这个概念」的证据。所以沪教这一侧用四个信号：
@@ -661,7 +685,7 @@ known-issues.md        已知问题清单
 后面这几层是后来加的，**都不动原始数据**，只从上面三层长出来：
 
 ```
-src/health_check.py     上线体检：三层 + 判别力自检（80 项）
+src/health_check.py     上线体检：三层 + 判别力自检（106 项）
 src/diagnose.py         「卡在哪」：杠杆 × 早晚 × 链根 × 症状距离 × 覆盖薄弱
 src/merge_prereq.py     先修边合并：七档来源 + 冲突裁决（247 组）
 src/pdf_to_units.py     教材 → OCR 层数据（12,939 页 / 1,361 概念）
@@ -678,8 +702,12 @@ src/explore_formula_dep.py 跨节公式引用（教材自己划的关联）
 src/hujiao_fetch.py      上海教材（沪教版/沪科版）：清单 + 页图
 src/vision_images.py     对已下载页图跑视觉层（上海教材用）
 src/shanghai_toc_vision.py 上海教材目录（视觉模型读目录页，tesseract 读不动）
-src/shanghai_graph.py    上海版图谱：节点 / 单元链 / 先修边
+src/shanghai_graph.py    上海版图谱：节点 / 单元链 / 先修边（人教版节点在此被挡掉）
+src/shanghai_taught.py  判据：这个概念沪教教材教不教
+src/shanghai_relocate_rjb.py  人教版前置节点在沪教教材里的真实位置
 src/build_shanghai.py    上海版站点 → shanghai.html（复用同一个模板）
+src/check_layout_density.mjs  三站视觉密度判据（每点占画布面积，跨站可比）
+src/measure_density.mjs  三站视觉密度实测（真投影 + 去重掩膜）
 src/ocr_sh.py          上海教材的 OCR 原文层（页图 → 汉字正文 → 定义句）
 src/fix_vision_subject.py  视觉层的学科字段归一（中文名 → 图谱口径的英文码）
 src/build_shanghai_quality.py 上海版质量页 + 内容缺口地图
@@ -1046,13 +1074,15 @@ Milvus 官方 workshop 那份 `15-retrieval-tier-selection.md` 自己写着
 
 | 文件 | 测什么 |
 |---|---|
-| `src/health_check.py` | 上线体检 98 项：数据层 / 构建层 / 判别力自检 |
+| `src/health_check.py` | 上线体检 106 项：数据层 / 构建层 / 判别力自检 |
 | `src/check_learn_cards.py` | 学习卡 8 组判据（覆盖率 / 来源分层 / 定义句准确 / 噪声控制 / 前置链一致 / 冷启动 / 原文段落 / 可复现性） |
 | `src/check_kx.py` | 小学站 13 项 |
 | `optional/milvus/check_milvus.py` | Milvus 层 8 组（表 / 条数 / 正例召回 / **负例不误召回** / 过滤 / 版权不外泄 / 与学习卡不打架 / 先修边两端真实） |
 | `optional/milvus/check_milvus_judgement.py` | Milvus 检查的**判别力自检**（注入脏数据 → 检查必须报红） |
 | `src/test_data_browser.mjs` | 数据一览页 10 项（真 Chrome：搜索过滤、样本展开、导航齐全） |
 | `src/check_edge_direction.py` | 先修边**方向自查**（三个站）—— 方向反了是最难发现的 bug，页面照常渲染但每句话都在说反 |
+| `src/check_layout_density.mjs` | 三站**视觉密度**自查 —— 布局参数写死时，节点少的站会「看着稀疏」但自动检查全绿 |
+| `src/shanghai_taught.py` | 判据：**这个概念沪教教材教不教**（上海站挡人教版节点用） |
 
 `check_learn_cards.py` 里的**前置链那条**是在真浏览器里跑的 ——
 加载站点页面、调它自己的 `pathRows()`，跟学习卡逐条比。
