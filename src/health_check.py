@@ -378,6 +378,29 @@ def layer1(g, sb, payload):
     else:
         warn("data/DATASETS.json 不存在 —— 跳过数据清单核查")
 
+    # 1h2. 先修边方向
+    #
+    # 2026-10-26 用户报：上海站「二次函数」的后继列的是「函数」——
+    # 查出来上海站的 6,567 条边**方向全反了**。
+    # 方向反了是最难发现的 bug：页面照常渲染，每句话都在说反，
+    # 而且「看着还挺通顺」。
+    #
+    # 判据：前置在教材里不该比后继更晚。
+    # 方向全反时可疑率 31.5%，正常是 2.6%–5.7% —— 差一个数量级。
+    DIRCHK = BASE / "src" / "check_edge_direction.py"
+    if DIRCHK.exists():
+        r = subprocess.run([sys.executable, str(DIRCHK)],
+                           capture_output=True, text=True, cwd=BASE, timeout=900)
+        out = (r.stdout or "") + (r.stderr or "")
+        # 取**最差**的那一行（三个站里可疑率最高的）
+        worst = ""
+        for line in out.split("\n"):
+            if "可疑" in line and "%" in line:
+                worst = line.strip()
+        ok(r.returncode == 0,
+           f"三个站的先修边方向都对（最高可疑率 {worst.split('可疑')[-1].strip() if worst else '?'}）",
+           out[-600:])
+
     # 1h. 数据一览页（data.html）
     #
     # 它是清单的**投影** —— 内容全部来自 DATASETS.json。

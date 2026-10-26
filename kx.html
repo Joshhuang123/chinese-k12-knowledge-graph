@@ -522,9 +522,11 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
     这一站<b>不依赖</b> K12-KGraph 的小学数据 —— 上游小学段只有数学，物化生一个都没有。节点全部来自人教版《小学科学》教材的目录与正文。</span><br>
     <b>可视化与校验</b> 本项目自建 · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
     · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a>
+    · <a href="./data.html" target="_blank" rel="noopener">数据一览</a>
     · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a>
     · <a href="./kx.html" target="_blank" rel="noopener">小学科学版</a><br>
-    <span class="attr2">数据质量页把倒挂、覆盖缺口、可疑边、裁决账本全摊开 —— 有问题的边不藏。</span>
+    <span class="attr2">数据质量页把倒挂、覆盖缺口、可疑边、裁决账本全摊开 —— 有问题的边不藏。<br>
+    数据一览页是这个项目<b>全部 35 个数据集</b>的索引 —— 有什么、能回答什么、怎么取，一页看完。</span>
   </div>
 </div>
 
@@ -1360,7 +1362,7 @@ function showCard(id){
   document.getElementById('cDesc').textContent = n.desc || '（该条目没有描述文本）';
   document.getElementById('cMeta').innerHTML =
     (n.core ? '<span class="hi">小学特有</span>' : '<span>对齐上游</span>') +
-    '<span>课程要求：' + kgEsc(n.evn) + '</span><span>被依赖度 ' + n.cen.toFixed(3) + '</span>';
+    '<span>课程要求：' + n.evn + '</span><span>被依赖度 ' + n.cen.toFixed(3) + '</span>';
 
   // 前后依赖：直接列出名字，并且每一项都能点进去。
   // 名字里有尖括号的（数据里确实有「反比例函数的性质（k<0）」这类），

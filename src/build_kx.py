@@ -401,7 +401,10 @@ def main() -> int:
         # 先改了文字，再去匹配整句就匹配不上了（失配即中止）。
         ("<span class=\"hi\">9–10 岁核心</span>", "<span class=\"hi\">小学特有</span>"),
         ("<span>低年级基础</span>", "<span>对齐上游</span>"),
-        ("'<span>' + n.evn + ' 条掌握证据</span><span>重要度 '",
+        # ⚠️ 模板里是 `kgEsc(n.evn)` —— 0834c38（ISSUE-45 的 XSS 修复）
+        #    给 innerHTML 插值补了转义，但**漏改了这里的 COPY 列表**，
+        #    于是这个构建脚本从那次提交起就构建不出来（实测：文案未命中 → 构建中止）。
+        ("'<span>' + kgEsc(n.evn) + ' 条掌握证据</span><span>重要度 '",
          "'<span>课程要求：' + n.evn + '</span><span>被依赖度 '"),
         ("ctx.fillText('age ' + age, sx, sy);",
          "ctx.fillText(GRADE_ZH[age] || age, sx, sy);"),

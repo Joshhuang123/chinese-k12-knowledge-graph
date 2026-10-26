@@ -206,13 +206,37 @@ def main() -> int:
     print(f"节点 {len(payload_nodes)} 个")
 
     # ── 4. 边 ────────────────────────────────────────────────
-    # 边是 [后继, 先修, 来源] —— 方向别搞反，反了前置闭包全空。
+    # payload 边的约定是 **[后继, 先修]** —— 模板里
+    # `pre.get(e[0]).push(e[1])` 表示「e[0] 的前置是 e[1]」。
+    # 主站 `build_viz.py` 的 `payload_edges = [[b, a, ...]]` 就是这个顺序。
+    #
+    # ⚠️⚠️ **这里原来写反了**（2026-10-26 修）：
+    #   `shanghai-graph.json` 的边是 **[前置, 后继]**
+    #   （`src/shanghai_graph.py` 里 `pre[e["to"]].add(e["from"])` →
+    #    `pre[后继].add(前置)` → 边写成 [前置, 后继]）
+    #   原来直接 `edges.append([a, b])` 原样透传 —— **6,567 条边方向全反了**。
+    #
+    #   症状（用户报的）：在「上海的孩子学什么」里点开「二次函数」，
+    #   右侧「后继 1 层」列的是「函数」「一次函数」——
+    #   八上的函数是九上二次函数的**前置**，不是后继。
+    #   左侧「先修 1 层」列的是「二次函数 y=ax²的图象」「二次函数模型」
+    #   「二次函数一般式」—— 这些是学完二次函数**之后**才有的。
+    #
+    #   实测（浏览器里查 KG.pre / KG.unlocks）：
+    #   修之前 pre[二次函数] = {二次函数y=ax²的图象, 二次函数一般式, 二次函数模型}
+    #                    unlocks[二次函数] = {函数, 一次函数, 二次函数与一元二次方程的联系}
+    #   修之后 pre[二次函数] = {函数, 一次函数}   ✓
+    #          unlocks[二次函数] = {二次函数y=ax²的图象, ...} ✓
+    #
+    #   **方向反了是最难发现的 bug** —— 页面照常渲染，
+    #   只是每一句话都在说反，而且「看着还挺通顺」。
     edges = []
     for e in sg["edges"]:
-        a, b = idx_of.get(e[0]), idx_of.get(e[1])
-        if a is None or b is None:
+        pre, suc = idx_of.get(e[0]), idx_of.get(e[1])
+        if pre is None or suc is None:
             continue
-        edges.append([a, b, e[2] if len(e) > 2 else 0, 0])
+        # sg 的 [0] 是前置、[1] 是后继 → payload 要 [后继, 前置]
+        edges.append([suc, pre, e[2] if len(e) > 2 else 0, 0])
     print(f"边 {len(edges)} 条")
 
     # ── 5. 教材公式 / 图 / 难点（沪教版的）────────────────────
@@ -383,7 +407,10 @@ def main() -> int:
         ("只看 9–10 岁", "只看初中"),
         ("<span class=\"hi\">9–10 岁核心</span>", "<span class=\"hi\">初中</span>"),
         ("<span>低年级基础</span>", "<span>其他学段</span>"),
-        ("'<span>' + n.evn + ' 条掌握证据</span><span>重要度 '",
+        # ⚠️ 模板里是 `kgEsc(n.evn)` —— 0834c38（ISSUE-45 的 XSS 修复）
+        #    给 innerHTML 插值补了转义，但**漏改了这里的 COPY 列表**，
+        #    于是这个构建脚本从那次提交起就构建不出来（实测：文案未命中 → 构建中止）。
+        ("'<span>' + kgEsc(n.evn) + ' 条掌握证据</span><span>重要度 '",
          "'<span>课程要求：' + n.evn + '</span><span>被依赖度 '"),
         ("ctx.fillText('age ' + age, sx, sy);",
          "ctx.fillText(GRADE_ZH[age] || age, sx, sy);"),

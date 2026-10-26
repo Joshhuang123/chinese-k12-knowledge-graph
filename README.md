@@ -70,9 +70,9 @@ cat data/DATASETS.json      # 机器可读（含每个数据集的字段表和�
 
 从「校验上游漏的两个环」走到现在，做的是同一件事：**上游没说清楚的地方，一件一件查清楚，查了就记下来**。
 
-已经 **34 条**，记在 [`known-issues.md`](known-issues.md)，每条都带复现命令——包括我们自己的校验层出过的 bug。
+已经 **46 条**，记在 [`known-issues.md`](known-issues.md)，每条都带复现命令——包括我们自己的校验层出过的 bug。
 
-> 快照日期 **2026-10-21**。下面每个数字都是从脚本跑出来的，不是手抄的。
+> 快照日期 **2026-10-26**。下面每个数字都是从脚本跑出来的，不是手抄的。
 
 ### 一、图谱本身：7,938 点 3,408 条线 → 8,667 点 16,845 条线
 
@@ -693,6 +693,7 @@ src/build_page_index.py 教材原页段落索引（引文反查定位）
 src/quote_repair.py    教材原话回原文补全（PDF 硬换行切断了词）
 src/check_learn_cards.py 学习卡体检（8 组判据）
 src/check_learn_cards.mjs 学习卡 × 站点「学习路径」交叉验证（浏览器端）
+src/check_edge_direction.py 先修边**方向自查**（三个站，前置不该比后继更晚）
 optional/milvus/       **可选组件**：向量检索层（Milvus）—— 见它的 README
   ├─ build_milvus.py       灌 Milvus（三张表：教材段落 / 概念 / 先修边）
   ├─ query_milvus.py       查 Milvus（语义检索 / 按名查 / 查前置）
@@ -1051,6 +1052,7 @@ Milvus 官方 workshop 那份 `15-retrieval-tier-selection.md` 自己写着
 | `optional/milvus/check_milvus.py` | Milvus 层 8 组（表 / 条数 / 正例召回 / **负例不误召回** / 过滤 / 版权不外泄 / 与学习卡不打架 / 先修边两端真实） |
 | `optional/milvus/check_milvus_judgement.py` | Milvus 检查的**判别力自检**（注入脏数据 → 检查必须报红） |
 | `src/test_data_browser.mjs` | 数据一览页 10 项（真 Chrome：搜索过滤、样本展开、导航齐全） |
+| `src/check_edge_direction.py` | 先修边**方向自查**（三个站）—— 方向反了是最难发现的 bug，页面照常渲染但每句话都在说反 |
 
 `check_learn_cards.py` 里的**前置链那条**是在真浏览器里跑的 ——
 加载站点页面、调它自己的 `pathRows()`，跟学习卡逐条比。
