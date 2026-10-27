@@ -5,7 +5,7 @@
 
 | 数据集 | 是什么 | 条数 | 体积 | 怎么取 |
 |---|---|---|---|---|
-| `data/concept-vision-sh.jsonl` | 概念的公式 / 图形语义 / 例题（沪教版） | 2,373 | 20 MB | 按 id 取；字段同上 |
+| `data/concept-vision-sh.jsonl` | 概念的公式 / 图形语义 / 例题（沪教版） | 3,453 | 20 MB | 按 id 取；字段同上 |
 | `data/learn-cards.jsonl` | 知识点自学卡，一个概念一张 | 8,590 | 17 MB | 按 id 或 name 取；what/how/practice/prereq/w… |
 | `data/vision-pages-alt.jsonl` | 页面的视觉层（其他出版社版本） | 7,784 | 16 MB | 按 id 取，id 里的出版社前缀要分清 |
 | `data/vision-pages-sh.jsonl` | 页面的视觉层（沪教版） | 9,009 | 15 MB | 按 id 取 |
@@ -13,7 +13,7 @@
 | `data/lessons.jsonl` | 教材正文，一页一条（人教版） | 12,939 | 14 MB | 按 id 直接取：math-9a-p102 |
 | `data/lessons-sh.jsonl` | 教材正文，一页一条（沪教版/沪科版） | 9,009 | 12 MB | 按 id 直接取：sh-hk-物理-w-8b-p52 |
 | `data/vision-pages.jsonl` | 页面的视觉层（人教版）—— 一页一条 | 4,390 | 8 MB | 按 id 取 |
-| `data/shanghai-graph.json` | 上海版图谱（节点 / 单元链 / 先修边） | 6,567 | 8 MB | nodes / edges / units 三段 |
+| `data/shanghai-graph.json` | 上海版图谱（节点 / 单元链 / 先修边） | 5,552 | 8 MB | nodes / edges / units 三段 |
 | `data/page-index.json` | 概念 → 教材页反查表 | 11,052 | 7 MB | _byConcept[概念id] → [{book,page,pageId,te… |
 | `data/concept-text-sh.jsonl` | 概念的教材原话，一个概念一条（沪教版） | 2,114 | 1 MB | 按 id 取；这层用 books + pages 记位置（印刷页码，不是扫描页码… |
 | `data/vision-pages-kx.jsonl` | 页面的视觉层（小学科学） | 1,036 | 1 MB | 按 id 取 |
@@ -36,6 +36,7 @@
 | `data/l0-abilities.json` | 能力底座（L0 层） | 20 | 12 KB | 顶层是数组 |
 | `data/intro-links.json` | 教材的引入路径（概念 → 首次出现的那一课） | 25 | 11 KB | 顶层是数组 |
 | `data/cover-gaps.json` | 封面缺口清单 | 17 | 10 KB | 顶层是数组 |
+| `data/shanghai-rjb-positions.json` | 人教版前置节点在沪教教材里的真实位置 | 34 | 9 KB | 按上游概念 id 取：给出沪教版别、册次、证据档 |
 | `data/kx-visual-books.json` | 小学科学视觉层用到的书 | 12 | 6 KB | 顶层是数组 |
 | `data/kx-textbooks.json` | 小学科学教材清单（12 本） | 12 | 6 KB | 顶层是数组 |
 | `data/normalized/selfbuilt-edges.json` | 自建先修边（13,461 条，模型重建） | 13,461 | 4 MB | edges 数组；source 字段标来源（model / derived / … |

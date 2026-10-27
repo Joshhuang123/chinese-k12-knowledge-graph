@@ -48,6 +48,8 @@ import sys
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
 VPAGES_SH = BASE / "data" / "vision-pages-sh.jsonl"
+# 教材正文（OCR）。**概念匹配必须用它** —— 见下面第 4 步的说明。
+OCR_SH = BASE / "data" / "lessons-sh.jsonl"
 TOC = BASE / "data" / "shanghai-toc.json"
 GRAPH = BASE / "data" / "normalized" / "graph.json"
 OUT = BASE / "data" / "concept-vision-sh.jsonl"
@@ -200,10 +202,39 @@ def main() -> int:
     # ── 3. 目录 ────────────────────────────────────────────────
     toc_books = json.load(open(TOC, encoding="utf-8"))["books"] if TOC.exists() else {}
 
+    # ── 3b. 教材正文（OCR）───────────────────────────────────────
+    #
+    # **为什么概念匹配必须用正文层** ——
+    # `topical_blob` 只取图注/表题/题干/步骤，**不含教材正文**。
+    # 那个设计对「引用教材的公式和图」是对的（要干净、不能带模型转述），
+    # 但拿来当**概念匹配**的输入就太窄了：
+    # 教材的知识点恰恰写在正文里（「退位减法」「两位数减一位数」这类）。
+    #
+    # 实测（2026-10-26）：1,123 个概念「沪教版确实教、却没进上海站」，
+    # 其中 651 个在 blob 里一个页都没命中，只在正文里有；
+    # 另 371 个只命中 1 页，被 MIN_HITS=2 挡掉。
+    #
+    # 所以正文层作为**独立的证据档「正文」**加进来：
+    # 概念名出现在同学科教材的正文里，本身就是「这本教材教它」的直接证据。
+    ocr_by_book = collections.defaultdict(str)
+    if OCR_SH.exists():
+        for line in OCR_SH.open(encoding="utf-8"):
+            line = line.strip()
+            if not line or line[0] != "{":
+                continue
+            try:
+                r = json.loads(line)
+            except Exception:
+                continue
+            if isinstance(r, dict) and isinstance(r.get("book"), str):
+                ocr_by_book[r["book"]] += r.get("text") or ""
+    print(f"教材正文层 {len(ocr_by_book)} 本 · {sum(len(v) for v in ocr_by_book.values())} 字")
+
     # ── 4. 先算「每本书 × 每个概念」的命中页数 ──────────────────
     # 这一步要跨全部 26 本书（集中度信号的分母），所以先扫一遍。
     tops_by_book = {}
     hits = collections.defaultdict(lambda: collections.Counter())   # bid -> cid -> 页数
+    body_hits = collections.defaultdict(lambda: collections.Counter())  # bid -> cid -> 正文命中
     for bid, pgs in by_book.items():
         tops = [topical_blob(r["data"]) for r in pgs]
         tops_by_book[bid] = tops
@@ -219,14 +250,40 @@ def main() -> int:
                     n += 1
             if n:
                 hits[bid][c["id"]] = n
+            # **正文命中单独记** —— 它是独立证据档，不混进 blob 的页数里
+            # （混进去会改掉「集中」判据的份额分母，老概念的证据档会跟着变）。
+            otxt = ocr_by_book.get(bid, "")
+            if otxt and (nm in otxt or (core and core in otxt)):
+                body_hits[bid][c["id"]] = 1
     total_hits = collections.Counter()
-    best_book = {}
     for bid, cnt in hits.items():
         for cid, n in cnt.items():
             total_hits[cid] += n
-            if n > hits.get(best_book.get(cid, ""), {}).get(cid, -1):
+    # best_book 用「blob 页数 + 正文命中」一起算 ——
+    # 否则一个只在正文里出现的概念，best_book 会是空的，
+    # 「正文」这一档就没法判断「是不是它出现最多的那本书」。
+    total_any = collections.Counter()
+    for bid, cnt in hits.items():
+        for cid, n in cnt.items():
+            total_any[cid] += n
+    for bid, cnt in body_hits.items():
+        for cid in cnt:
+            total_any[cid] += 1
+    best_book = {}
+    for bid, cnt in hits.items():
+        for cid, n in cnt.items():
+            score = n + body_hits[bid].get(cid, 0)
+            best = best_book.get(cid)
+            bscore = (hits.get(best, {}).get(cid, 0)
+                      + body_hits.get(best, {}).get(cid, 0)) if best else -1
+            if score > bscore:
                 best_book[cid] = bid
-    print(f"命中统计完成（{sum(total_hits.values())} 个 book×concept 命中对）")
+    for bid, cnt in body_hits.items():
+        for cid in cnt:
+            if cid not in best_book:
+                best_book[cid] = bid
+    print(f"命中统计完成（blob {sum(total_hits.values())} 对 · "
+          f"正文 {sum(total_any.values()) - sum(total_hits.values())} 对）")
 
     # ── 5. 逐本匹配 ────────────────────────────────────────────
     recs = {}          # cid -> {id, name, subject, books:{bid:{...}}}
@@ -290,6 +347,13 @@ def main() -> int:
                     and (best_bid is None or best_bid == bid))
             # ④ 同册：人教图谱里的家 == 这本书的册次
             same = c["vol"] == gvol and h >= 1
+            # ⑤ 正文（新增）：概念名出现在这本教材的**正文**里。
+            #
+            # 这是「这本教材教它」最直接的证据 —— 教材自己用了这个词。
+            # 「它在这本书里出现最多」这半句不能少：
+            # 「长方形」在沪教版 1a/1b/3a/5a/7b 都出现，
+            # 没有这半句，每个本都算一份，会把通用词的概念铺到十几个年级。
+            body = bool(body_hits[bid].get(c["id"])) and (best_bid is None or best_bid == bid)
             ev = []
             if toc_hit:
                 ev.append("目录")
@@ -297,9 +361,17 @@ def main() -> int:
                 ev.append("目录近似")
             if conc:
                 ev.append("集中")
+            if body:
+                ev.append("正文")
             if same:
                 ev.append("同册")
-            if not ev:
+            # **「同册」不再单独成立** ——
+            # 它只说明「同一册 + 某个图注/题干里出现过这个词」，
+            # 太弱：实测原来有 115 个概念就是这么混进来的
+            # （沪教版教材里根本没有它们）。
+            # 至少要有「目录」「正文」「集中」其中之一 ——
+            # 那是「教材确实教它」的直接证据。
+            if not (toc_hit or near or conc or body):
                 continue
             picked.append((c, h, share, ev, toc_hit))
 

@@ -94,15 +94,15 @@ footer a { color:var(--muted); }
 
 <h1>这个项目有什么数据</h1>
 <p class="lede">
-35 个数据集，共 141 MB。
+36 个数据集，共 142 MB。
 每个都是<strong>结构化事实</strong>（不是教材原件 —— 教材 PDF 有版权，不随仓库分发）。
 不知道用哪个？先看下面的「按需求查」，或者直接搜。
 </p>
 
 <div class="stats">
-  <div class="stat"><b>35</b><span>数据集</span></div>
-  <div class="stat"><b>141 MB</b><span>总体积</span></div>
-  <div class="stat"><b>108,852</b><span>总条数</span></div>
+  <div class="stat"><b>36</b><span>数据集</span></div>
+  <div class="stat"><b>142 MB</b><span>总体积</span></div>
+  <div class="stat"><b>108,951</b><span>总条数</span></div>
   <div class="stat"><b>0</b><span>第三方依赖（主项目）</span></div>
 </div>
 
@@ -113,14 +113,14 @@ footer a { color:var(--muted); }
 
 <h2>全部数据集</h2>
 <input id="q" type="search" placeholder="搜「浮力」「先修边」「公式」「沪教」…" autocomplete="off">
-<div id="cnt">35 个数据集</div>
+<div id="cnt">36 个数据集</div>
 <div id="list">
 
 <article class="ds" data-kind="data">
   <header>
     <h3><code>data/concept-vision-sh.jsonl</code></h3>
     <div class="meta">
-      <span class="m rec">2,373 行</span>
+      <span class="m rec">3,453 行</span>
       <span class="m">20 MB</span>
       <span class="m fmt">jsonl（每行一条）</span>
       
@@ -576,7 +576,7 @@ footer a { color:var(--muted); }
   <header>
     <h3><code>data/shanghai-graph.json</code></h3>
     <div class="meta">
-      <span class="m rec">6,567 条</span>
+      <span class="m rec">5,552 条</span>
       <span class="m">8 MB</span>
       <span class="m fmt">json</span>
       
@@ -1300,6 +1300,37 @@ footer a { color:var(--muted); }
   <span class="k">&quot;definition&quot;</span>: &quot;垂线：与一条直线相交的点叫垂足，这条直线叫另一条直线的垂线。垂直是相交的特殊情形。垂线的性质：垂线段最短，到直线各点的距离里垂足最近。&quot;,
   <span class="k">&quot;textbookRef&quot;</span>: &quot;人教七下 第五章 相交线与平行线 · 本章知识结构图（p040）&quot;
  }
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/shanghai-rjb-positions.json</code></h3>
+    <div class="meta">
+      <span class="m rec">34 条</span>
+      <span class="m">9 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">人教版前置节点在<strong>沪教教材里的真实位置</strong></p>
+  <p class="use"><b>能回答什么</b>：上海站要挡住人教版节点，就得先知道这些概念沪教教材到底在哪儿教的</p>
+  <p class="how"><b>怎么取</b>：按上游概念 id 取：给出沪教版别、册次、证据档</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">id</span><span class="chip">name</span><span class="chip">subject</span><span class="chip">edition</span><span class="chip">volName</span><span class="chip">book</span><span class="chip">evidence</span><span class="chip">score</span><span class="chip">tocHit</span><span class="chip">hits</span><span class="chip">share</span></div><pre class="sample">{
+ <span class="k">&quot;chemistry_9a_rjb_cpt401&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_3a_rjb_cpt33&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_bx1_rjb_cpt71&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_bx1_rjb_cpt9&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_xzxbx1_rjb_cpt43&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_bx1_rjb_cpt86&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_1a_rjb_cpt57&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_bx1_rjb_cpt128&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_9a_rjb_cpt79&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_xzxbx1_rjb_cpt54&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_4a_rjb_cpt28&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_3b_rjb_cpt20&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_6a_rjb_cpt30&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math_8a_rjb_cpt54&quot;</span>: &quot;&lt;dict&gt;&quot;
 }</pre></details>
 </article>
 <article class="ds" data-kind="data">
