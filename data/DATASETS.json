@@ -901,6 +901,50 @@
    "critical_note": ""
   },
   {
+   "file": "data/learn-questions.jsonl",
+   "name": "learn-questions.jsonl",
+   "what": "**可自动判分的练习题**（从教材原话 / 图谱定义反推）",
+   "use_for": "学习页「练一练」的题库。每道题都逐字来自教材，可以自己回教材对",
+   "how_to_use": "按 concept 字段取概念名；type=choice 时 options + answer 是可判分的选项",
+   "records": 397,
+   "unit": "行（jsonl，一行一条）",
+   "bytes": 281113,
+   "format": "jsonl（每行一条）",
+   "fields": [
+    "id",
+    "type",
+    "edition",
+    "concept",
+    "grade",
+    "book",
+    "stem",
+    "options",
+    "answer",
+    "explanation",
+    "from"
+   ],
+   "sample": {
+    "id": "sh_a_0",
+    "type": "choice",
+    "edition": "sh",
+    "concept": "万有引力",
+    "grade": 11,
+    "book": "沪科版·必修二",
+    "stem": "下面哪一句是教材给「万有引力」下的定义？（＿＿ 是教材里被挖掉的部分）",
+    "options": [
+     "宇宙间所有物体之间都存在互相吸引的力，称为＿＿。",
+     "性别比例(genderratio)则是指＿＿中雌雄个体数量的比例。",
+     "由两种元素组成的化合物中，其中一种元素是氧元素的化合物叫做＿＿。"
+    ],
+    "answer": "A",
+    "explanation": "图谱定义：「宇宙间所有物体之间都存在互相吸引的力，称为万有引力。」",
+    "from": "图谱定义"
+   },
+   "in_git": false,
+   "kind": "data",
+   "critical_note": ""
+  },
+  {
    "file": "data/concept-vision-kx.jsonl",
    "name": "concept-vision-kx.jsonl",
    "what": "小学科学概念的**公式 / 图形 / 例题**",
@@ -1199,6 +1243,46 @@
     "srczh": "上游"
    },
    "in_git": true,
+   "kind": "data",
+   "critical_note": ""
+  },
+  {
+   "file": "data/page-images.json",
+   "name": "page-images.json",
+   "what": "**教材原页图的直链基址**（67 本沪教教材）",
+   "use_for": "学习页「教材原页」板块的图片地址。页码是**扫描序号**",
+   "how_to_use": "按 bookId 取；拼图地址 = base + '/' + 扫描页码 + '.jpg'",
+   "records": 67,
+   "unit": "条（顶层对象：键 → 对象）",
+   "bytes": 34121,
+   "format": "json",
+   "fields": [
+    "base",
+    "maxPreview",
+    "contentId",
+    "title",
+    "edition",
+    "subject",
+    "pages",
+    "bookZh"
+   ],
+   "sample": {
+    "sh-hk-数学-s-7a": "<dict>",
+    "sh-hk-数学-s-7b": "<dict>",
+    "sh-hk-数学-s-8a": "<dict>",
+    "sh-hk-数学-s-8b": "<dict>",
+    "sh-hk-数学-s-9a": "<dict>",
+    "sh-hk-数学-s-9b": "<dict>",
+    "sh-hk-物理-s-8b": "<dict>",
+    "sh-hk-物理-s-9a": "<dict>",
+    "sh-hk-物理-s-9b": "<dict>",
+    "sh-hj-化学-s-9a": "<dict>",
+    "sh-hj-化学-s-9b": "<dict>",
+    "sh-hj-数学-s-bx1": "<dict>",
+    "sh-hj-数学-s-bx2": "<dict>",
+    "sh-hj-数学-s-bx3": "<dict>"
+   },
+   "in_git": false,
    "kind": "data",
    "critical_note": ""
   },
@@ -1559,6 +1643,27 @@
     "system": "六年制"
    },
    "in_git": true,
+   "kind": "data",
+   "critical_note": ""
+  },
+  {
+   "file": "data/learn-videos.json",
+   "name": "learn-videos.json",
+   "what": "**讲解视频索引**（按知识点挂载外部视频）",
+   "use_for": "学生自学时的讲解视频。键是概念 id 或概念名，值是 {yt}/{bv}/{url}",
+   "how_to_use": "改完不用重建数据层 —— 学习页运行时读这个文件",
+   "records": 4,
+   "unit": "条（顶层对象，主数据在 `_说明`）",
+   "bytes": 685,
+   "format": "json",
+   "fields": [
+    "_说明",
+    "_示例"
+   ],
+   "sample": {
+    "_说明": "讲解视频索引：按知识点挂载外部视频（YouTube / B站 / 网盘直链）。"
+   },
+   "in_git": false,
    "kind": "data",
    "critical_note": ""
   },

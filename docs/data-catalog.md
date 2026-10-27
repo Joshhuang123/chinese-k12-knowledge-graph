@@ -20,6 +20,7 @@
 | `data/quote-repairs.json` | 引文的最终判定缓存 | 15,282 | 1 MB | 顶层是 {缓存键: {q, kind, ev}}；缓存键 = “版本#概念id#… |
 | `data/concept-text.jsonl` | 概念的教材原话，一个概念一条（人教版） | 1,361 | 1 MB | 按 id 或 name 取；quotes 里有原话，quoteKinds 标了哪… |
 | `data/kx-ocr.jsonl` | 小学科学教材的OCR 正文 | 1,036 | 646 KB | 按 id 取 |
+| `data/learn-questions.jsonl` | 可自动判分的练习题（从教材原话 / 图谱定义反推） | 397 | 275 KB | 按 concept 字段取概念名；type=choice 时 options +… |
 | `data/concept-vision-kx.jsonl` | 小学科学概念的公式 / 图形 / 例题 | 146 | 252 KB | 按 id 取 |
 | `data/shanghai-toc.json` | 上海教材的目录（26 本 / 521 节） | 2 | 192 KB | 按 book 取 |
 | `data/alt-align.json` | 跨版本对照（人教节 ↔ 其他版本节） | 4 | 140 KB | byConcept[概念id] → [{label, alt, chapter}… |
@@ -28,6 +29,7 @@
 | `data/shanghai-textbook-catalog.json` | 上海教材清单 | 298 | 85 KB | 顶层是数组 |
 | `data/vision-cover.json` | 教材封面图（人教版） | 4 | 57 KB | 顶层是数组 |
 | `data/kx-graph.json` | 小学科学独立图谱（67 节点 / 25 边） | 67 | 48 KB | nodes / edges |
+| `data/page-images.json` | 教材原页图的直链基址（67 本沪教教材） | 67 | 33 KB | 按 bookId 取；拼图地址 = base + '/' + 扫描页码 + '.… |
 | `data/shanghai-textbooks.json` | 上海教材的元信息 | 67 | 33 KB | 顶层是数组 |
 | `data/kx-sections.json` | 小学科学的节判定（105 节） | 105 | 31 KB | 顶层是数组 |
 | `data/kx-toc.json` | 小学科学的目录（含页码偏移实测值） | 12 | 27 KB | 按 book 取 |
@@ -39,6 +41,7 @@
 | `data/shanghai-rjb-positions.json` | 人教版前置节点在沪教教材里的真实位置 | 34 | 9 KB | 按上游概念 id 取：给出沪教版别、册次、证据档 |
 | `data/kx-visual-books.json` | 小学科学视觉层用到的书 | 12 | 6 KB | 顶层是数组 |
 | `data/kx-textbooks.json` | 小学科学教材清单（12 本） | 12 | 6 KB | 顶层是数组 |
+| `data/learn-videos.json` | 讲解视频索引（按知识点挂载外部视频） | 4 | 1 KB | 改完不用重建数据层 —— 学习页运行时读这个文件 |
 | `data/normalized/selfbuilt-edges.json` | 自建先修边（13,461 条，模型重建） | 13,461 | 4 MB | edges 数组；source 字段标来源（model / derived / … |
 | `data/normalized/confirmed-wrong.json` | 人工逐条裁决的账本 | 25 | 8 KB | 顶层数组，每条记了裁决理由 |
 

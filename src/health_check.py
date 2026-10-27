@@ -401,6 +401,36 @@ def layer1(g, sb, payload):
            f"三个站的先修边方向都对（最高可疑率 {worst.split('可疑')[-1].strip() if worst else '?'}）",
            out[-600:])
 
+    # 1h1. 学习页数据层
+    #
+    # 学习站（learn.html）的数据是**另一条链**：
+    #   data/learn-{sh,rjb,kx}.js   三版本各一份（单文件，双击能开）
+    #   data/learn-questions.js     练习题
+    #   data/page-images.js         教材原页图基址（67 本沪教教材）
+    #   data/learn-videos.js        讲解视频索引
+    #
+    # 校验脚本（src/check_learn_site.py）查的是**数据本身对不对**，
+    # 浏览器测试（src/test_learn_site.mjs）查的是**页面用起来对不对**。
+    LEARNCHK = BASE / "src" / "check_learn_site.py"
+    if LEARNCHK.exists():
+        r = subprocess.run([sys.executable, str(LEARNCHK)],
+                           capture_output=True, text=True, cwd=BASE, timeout=900)
+        out = (r.stdout or "") + (r.stderr or "")
+        worst = [ln for ln in out.split("\n") if ln.strip().startswith("✗")]
+        ok(r.returncode == 0,
+           f"学习页数据层是对的（页图指向正文页 · 原话不串版 · 公式已转纯文本）",
+           "\n".join(worst[:6]))
+
+    LEARNWEB = BASE / "src" / "test_learn_site.mjs"
+    if LEARNWEB.exists():
+        r = subprocess.run(["node", str(LEARNWEB)],
+                           capture_output=True, text=True, cwd=BASE, timeout=1200)
+        out = (r.stdout or "") + (r.stderr or "")
+        worst = [ln for ln in out.split("\n") if ln.strip().startswith("  ✗")]
+        ok(r.returncode == 0,
+           "学习页用起来是对的（三版本 · 搜索 · 做题判分 · 页图 · 站内跳转）",
+           "\n".join(worst[:6]))
+
     # 1h2. 布局密度（视觉稀疏度）
     #
     # 2026-10-26 用户报：「上海的这个视觉上比较稀疏」。

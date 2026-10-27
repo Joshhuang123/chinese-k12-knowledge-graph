@@ -421,6 +421,56 @@ https://joshhuang123.github.io/chinese-k12-knowledge-graph/shanghai.html
 
 ---
 
+### 十、学习页站点：一个知识点一页
+
+https://joshhuang123.github.io/chinese-k12-knowledge-graph/learn.html
+
+图谱站回答「这个知识点在哪本书哪一节、缺哪些前置」。
+**学习页**回答的是下一个问题：**「我到底会不会，卡在哪」**。
+
+一个知识点一页，六个板块：
+
+| 板块 | 内容 | 从哪来 |
+|---|---|---|
+| **讲解视频** | 外部视频（B站/YouTube/直链），按知识点挂载 | `data/learn-videos.json`（**运行时读，改完不用重建**） |
+| **教材原页** | 该概念在沪教版教材上的**那一页原图** | 国家中小学智慧教育平台的页图直链（67 本沪教教材） |
+| **教材原话** | 教材自己写的定义句 / 提及句，带页码 | `data/concept-text-sh.jsonl`（沪教）/ `concept-text.jsonl`（人教） |
+| **公式 / 图** | 教材原书上的公式和图（**转成纯文本**，不引 KaTeX） | 概念视觉层 |
+| **练一练** | 可自动判分的选择题，答完给解析 | `data/learn-questions.jsonl` |
+| **前置 / 后继** | 往前追，看卡在哪一环 | 站点 payload 的先修边 |
+
+**三版共用一个引擎**：`?v=sh`（沪教版/沪科版）· `?v=rjb`（人教版初中高中）· `?v=kx`（小学科学）。
+数据分三个文件按需加载，`file://` 下也能双击打开（用 `<script>` 而不是 `fetch` ——
+后者在 `file://` 下被 CORS 挡掉）。
+
+**练习题是自己出的，不是抄来的。**
+上游 [cn-math-taxonomy](https://github.com/xiaoyang111222/cn-math-taxonomy) 有 9,399 道题
+（CC BY-NC），但它的概念名跟我们的**只重合 12.3%**，自动映射的召回只有 1.1%
+（实测见 `src/probe_mapping.py`：对方的「单元/章/节号」三段命名跟我们完全不同，
+纯名称模糊匹配会错配成「5以内的加法」→「10以内的加法」）。
+
+所以题从**教材原话和图谱定义**反推，两种题型：
+
+- **定义配对**：「下面哪一句是教材给「X」下的定义？」—— 1 句真定义 + 3 句别的概念的真定义
+- **概念配对**：「教材里说『……』——说的是哪个概念？」
+
+关键的一步是**把概念名挖空**（「几个单项式的和叫做＿＿」）：
+教材的定义句本来含概念名（「几个单项式的和叫做整式」），
+不挖空的话学生不看选项就知道答案 —— 这跟「题干泄露答案」是同一件事。
+
+质量闸卡得很严（宁可少出，不出废题）：
+定义句必须**完整收尾**、**括号配对**、**含定义动词且动词在后半段**、
+**被挖掉的位置必须紧跟定义动词**（不然「因数」题会拿「最大公因数就是1」当答案）、
+挖空后**只能有一个空**。
+
+产出 **397 道**（沪教 212 · 人教 185）。每一道都能回教材对。
+
+**已知限制**：人教版和小学科学**没有教材原页图** ——
+它们的教材来自 ChinaTextbook 的 PDF，平台没有对应扫描本，
+页码体系不同源，硬拼会翻到错的页。
+
+---
+
 ## 数据出处与署名
 
 本项目现在有**三个**数据来源，不是一个。
@@ -643,6 +693,10 @@ OCR 只能救回汉字，**公式和图形会全丢**。视觉层换成让多模
 | `data/concept-vision-kx.jsonl` | 上游概念 → 小学科学的书/节/页 | 146 个概念 |
 | `data/shanghai-toc.json` | **教材自己的目录**（视觉模型读的，1,350 节） | 67 本 |
 | `data/shanghai-graph.json` | 上海版图谱：节点 / 单元链 / 先修边 | 3,503 节点 / 5,552 边 |
+| `data/learn-sh.js` / `learn-rjb.js` / `learn-kx.js` | 学习页数据（三版本各一份） | 3,503 / 8,667 / 67 节点 |
+| `data/learn-questions.jsonl` | 可自动判分的练习题（教材原话反推） | 397 道 |
+| `data/page-images.json` | 教材原页图直链基址 | 67 本沪教教材 |
+| `data/learn-videos.json` | 讲解视频索引（按知识点挂载） | 运行时读 |
 
 **判据不靠「页面里出现过」** —— 概念名「小数」「分子」「等式」在 20 本书的题干里
 都出现过，它们不是「这本书教这个概念」的证据。所以沪教这一侧用四个信号：
@@ -734,6 +788,11 @@ src/vision_images.py     对已下载页图跑视觉层（上海教材用）
 src/shanghai_toc_vision.py 上海教材目录（视觉模型读目录页，tesseract 读不动）
 src/shanghai_graph.py    上海版图谱：节点 / 单元链 / 先修边（人教版节点在此被挡掉）
 src/shanghai_taught.py  判据：这个概念沪教教材教不教
+src/build_learn_site.py 学习页数据层（三版本各一份 .js）
+src/build_learn_questions.py  从教材原话 + 图谱定义反推练习题
+src/fetch_page_images.py 抓教材原页图基址（67 本沪教教材）
+src/check_learn_site.py  学习页**数据层**校验（页图指向正文页 · 原话不串版 · 公式已转纯文本）
+src/test_learn_site.mjs   学习页**浏览器**测试（三版本 · 搜索 · 判分 · 页图 · 跳转）
 src/shanghai_relocate_rjb.py  人教版前置节点在沪教教材里的真实位置
 src/build_shanghai.py    上海版站点 → shanghai.html（复用同一个模板）
 src/check_layout_density.mjs  三站视觉密度判据（每点占画布面积，跨站可比）
@@ -1111,6 +1170,8 @@ Milvus 官方 workshop 那份 `15-retrieval-tier-selection.md` 自己写着
 | `optional/milvus/check_milvus_judgement.py` | Milvus 检查的**判别力自检**（注入脏数据 → 检查必须报红） |
 | `src/test_data_browser.mjs` | 数据一览页 10 项（真 Chrome：搜索过滤、样本展开、导航齐全） |
 | `src/check_edge_direction.py` | 先修边**方向自查**（三个站）—— 方向反了是最难发现的 bug，页面照常渲染但每句话都在说反 |
+| `src/check_learn_site.py` | 学习页**数据层**校验 —— 页图指向正文页（不是目录页）· 教材原话不串版 · 公式已转纯文本 |
+| `src/test_learn_site.mjs` | 学习页**浏览器**测试（36 项）—— 三版本 · 搜索 · 做题判分 · 页图 URL · 站内跳转 |
 | `src/check_layout_density.mjs` | 三站**视觉密度**自查 —— 布局参数写死时，节点少的站会「看着稀疏」但自动检查全绿 |
 | `src/shanghai_taught.py` | 判据：**这个概念沪教教材教不教**（上海站挡人教版节点用） |
 
