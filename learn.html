@@ -423,7 +423,15 @@ function nodeHTML(n){
     if (u){
       imgHTML = `<div class="card"><h2>教材原页<span class="n">${esc(loc.ed||'')}·${esc(loc.vol||'')} 第 ${scan[0]} 页</span></h2>
         <div class="pageimg">
+          <!-- ⚠️ **referrerpolicy="no-referrer" 是必须的** ——
+               教材平台的 CDN 有**防盗链**：带外部 Referer 的请求直接 403，
+               而且返回的是 **text/html 错误页**（不是图片）——
+               Chrome 的 ORB 机制会把这种响应拦掉，页面上的图就变成空白。
+               实测：不带 Referer → 200 image/jpeg；带 Referer → 403 text/html。
+               本地 file:// 打开时本来就不发 Referer，所以本地看着好好的，
+               线上必坏 —— 这个坑查了半天才定位到。 -->
           <img src="${esc(u)}" alt="${esc(n.n)} 在教材第 ${scan[0]} 页" loading="lazy"
+               referrerpolicy="no-referrer"
                onerror="this.outerHTML='<div class=\\'fail\\'>这一页的原图暂时取不到（教材平台的图片需要联网）。<br>可以按上面的「第 ${scan[0]} 页」去翻书。</div>'">
           <div class="cap">${esc(loc.ed||'')}·${esc(loc.vol||'')} 第 ${scan[0]} 页${scan.length>1?`（该知识点还出现在第 ${scan.slice(1).join('、')} 页）`:''}</div>
         </div></div>`;

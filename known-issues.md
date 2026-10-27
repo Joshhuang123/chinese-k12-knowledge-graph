@@ -4653,3 +4653,59 @@ src/probe_relax_criteria.py  各种判据组合能救回多少（1,115/1,123）
 - 题库映射层（接他们的 9,399 道题）
 - 自适应诊断引擎（用户选了「等题量够了再说」—— 诊断的价值在题量）
 - 沪教版概念**独立拆解**（ISSUE-49 的遗留层）
+
+---
+
+## ISSUE-51　教材原页图在线上全是空白：CDN 防盗链 + Chrome ORB
+
+**症状**：2026-10-27 用户报「里面没有教材原页呀」。
+
+**本地好好的，线上全白。** 本地测试 38 项全绿，线上图加载不出来。
+
+### 根因：两个条件叠在一起
+
+1. **教材平台的 CDN 有防盗链** —— 带外部 `Referer` 的请求直接 **403**，
+   而且返回的是 **`text/html` 错误页**（350 字节），**不是图片**。
+   逐头测出来的（同一个 URL，只改请求头）：
+
+   | 请求头 | 结果 |
+   |---|---|
+   | 默认 | HTTP 200 · `image/jpeg` · 479 KB |
+   | 只加 `Accept: image/avif,...` | HTTP 200 · `image/jpeg` |
+   | 只加 `Sec-Fetch-*` | HTTP 200 · `image/jpeg` |
+   | 只加 `User-Agent: Chrome` | HTTP 200 · `image/jpeg` |
+   | **只加 `Referer`** | **HTTP 403 · `text/html`** |
+
+2. **Chrome 的 ORB（Opaque Response Blocking）** ——
+   跨域 no-cors 响应如果返回的不是图片/媒体，
+   浏览器会**当潜在的 MIME 嗅探攻击拦掉**。
+   报错是 `net::ERR_BLOCKED_BY_ORB`，**页面上表现为一片空白**，
+   没有任何错误提示。
+
+### 为什么本地测不出来
+
+**`file://` 打开时浏览器不发 Referer** —— 正好绕过了防盗链。
+所以本地双击打开永远看着好好的，线上必坏。
+
+**教训：涉及外部图片的检查，必须在 http 环境下做。**
+（`python3 -m http.server` 起个本地服务就是带 Referer 的。）
+
+### 修法
+
+`<img>` 加 **`referrerpolicy="no-referrer"`** —— 浏览器就不发 Referer 了。
+
+### 判别力验证
+
+| | 横越中线… 不对，是图片 |
+|---|---|
+| 加上 `referrerpolicy="no-referrer"` | HTTP 200 · `image/jpeg` · **naturalWidth 1303** ✓ |
+| 去掉它（对照组） | `net::ERR_BLOCKED_BY_ORB` · **naturalWidth 0** · 显示降级文案 ✗ |
+
+已加进 `src/test_learn_site.mjs` 第 [7] 组：**检查 img 标签带没带 `referrerpolicy="no-referrer"`** ——
+漏了这条，线上就是白板，而本地测试还是全绿。
+
+### 另一处同类风险
+
+`learn.html` 里还有别的外部资源吗？
+- 页图 → 平台 CDN（有防盗链）→ 已加 `referrerpolicy`
+- 视频 → B站/YouTube 播放器 → 官方允许跨域嵌入，无需处理

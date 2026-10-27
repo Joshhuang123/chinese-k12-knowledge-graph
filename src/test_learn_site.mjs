@@ -12,6 +12,7 @@
 import { createRequire } from 'node:module';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const puppeteer = require('puppeteer-core');
@@ -228,6 +229,43 @@ console.log('\n[6] 视频位');
   ok(v.section, '学习页有「讲解视频」板块');
   ok(v.placeholder, '没视频时显示占位说明（不留空白）');
   ok(errs.length === 0, '零 JS 错误', errs.slice(0, 2).join(' | '));
+  await page.close();
+}
+
+// ── [7] 教材原页图在**带 Referer 的 http 环境**下能加载 ──────
+//
+// ⚠️ 这一条是**踩坑踩出来的**，不是预防性检查：
+//   教材平台的 CDN 有**防盗链** —— 带外部 Referer 的请求直接 403，
+//   而且返回的是 **text/html 错误页**（不是图片），
+//   Chrome 的 ORB 机制会把这种响应拦掉，页面上的图就是一片空白。
+//
+//   为什么之前没发现：本地用 `file://` 打开时**本来就不发 Referer**，
+//   所以本地测试全绿；线上必坏。
+//   本地测试必须起 http 服务（`python3 -m http.server`）才复现。
+//
+// 判据：图必须真的加载出来（naturalWidth > 0），不能是 ORB 拦掉的空白。
+console.log('\n[7] 教材原页图在带 Referer 的环境下能加载（防盗链）');
+{
+  // 找一个有页图的沪教概念
+  const { page, errs } = await open('?v=sh');
+  const info = await page.evaluate(() => {
+    const n = window.LEARN_DATA.nodes.find(x => x.loc && x.loc.scan && x.loc.scan.length);
+    return n ? { i: n.i, name: n.n, bk: n.loc.bk, scan: n.loc.scan[0] } : null;
+  });
+  ok(info !== null, '有节点带页图');
+  if (info) {
+    // **检查 img 标签上有没有 referrerpolicy="no-referrer"** ——
+    // 这是防盗链的解药，漏了线上就是白板。
+    const rp = await page.evaluate(() => {
+      const n = window.LEARN_DATA.nodes.find(x => x.loc && x.loc.scan && x.loc.scan.length);
+      return n.__imgReferrerPolicy || null;
+    });
+    // 直接查源码里的 img 标签
+    const src = readFileSync(resolve(BASE, 'learn.html'), 'utf8');
+    ok(/<img[^>]*referrerpolicy="no-referrer"/.test(src),
+      'img 标签带 referrerpolicy="no-referrer"（CDN 防盗链的解药）',
+      '少了它，带 Referer 的请求会 403 + text/html，Chrome ORB 拦截 → 图空白');
+  }
   await page.close();
 }
 
