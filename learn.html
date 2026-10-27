@@ -458,14 +458,16 @@ function nodeHTML(n){
   // 键可以是概念 id，也可以是概念名（两种都试）。
   let vidHTML = '';
   const vHit = VIDEOS && Object.keys(VIDEOS).filter(k=>!k.startsWith('_')).length
-    ? (VIDEOS[n.__id] || VIDEOS[norm(n.n)]) : null;
+    ? (VIDEOS[n.id] || VIDEOS[norm(n.n)]) : null;
   const vv = vHit || n.v;
   if (vv && (vv.url || vv.bv || vv.yt || vv.id)){
     const src = vv.bv ? 'https://player.bilibili.com/player.html?bvid='+vv.bv+'&page=1'
              : vv.yt ? 'https://www.youtube.com/embed/'+vv.yt
              : vv.url;
     vidHTML = `<div class="card"><h2>讲解视频</h2><div class="vid"><iframe src="${esc(src)}" allowfullscreen loading="lazy"></iframe>
-      <p style="margin:10px 0 0"><a href="${esc(vv.url||src)}" target="_blank" rel="noopener">在原平台打开</a></p></div></div>`;
+      <p style="margin:10px 0 0"><a href="${esc(vv.url || (vv.bv ? 'https://www.bilibili.com/video/'+vv.bv : vv.yt ? 'https://www.youtube.com/watch?v='+vv.yt : src))}"
+         target="_blank" rel="noopener">在原平台打开</a>
+         ${vv.title?` · ${esc(vv.title)}`:''}${vv.dur?` · ${esc(vv.dur)}`:''}</p></div></div>`;
   } else {
     vidHTML = `<div class="card"><h2>讲解视频</h2><div class="vidnone">这个知识点还没有讲解视频。<br>
       <span style="color:var(--dim)">视频按知识点挂载，索引在 <code>data/learn-videos.json</code>。</span></div></div>`;

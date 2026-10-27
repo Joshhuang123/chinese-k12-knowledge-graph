@@ -163,6 +163,9 @@ def main() -> int:
 
             rec = {
                 "i": i,
+                # **上游概念 id** —— 视频索引按 id 挂载时要用
+                # （id 在三个版本里是同一套，沪教节点也是人教 id）
+                "id": nid,
                 "n": name,
                 "s": subj,
                 "g": grade,
