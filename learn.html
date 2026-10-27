@@ -197,7 +197,9 @@ const VERSIONS = [
 ];
 
 let DATA = null;          // 当前版本的数据
-let PAGES = null;         // 教材页图基址
+let PAGES = null;         // 教材页图基址（沪教版，平台外链）
+let PAGE_IMAGES_RJB = null;  // 人教版/小学科学页图（本地 PDF 渲染，入库）
+let PAGE_OFFSETS = {};     // 教材册次 → 印刷页码偏移（扫描页 + offset = 书上印的页码）
 let VIDEOS = null;        // 视频索引
 let QUESTIONS = [];       // 练习题
 const QUIZ_BY_IDX = {};    // 题（渲染期ID:题号 → 题），每次渲染用新的 RENDER_ID
@@ -337,9 +339,22 @@ $('#vtabs').addEventListener('click', e=>{
 });
 
 /* ── 教材页图 ───────────────────────────────────────────── */
-function pageImgUrl(bookId, scanPage){
-  if (!PAGES || !PAGES[bookId] || !scanPage) return null;
-  return PAGES[bookId].base + '/' + scanPage + '.jpg';
+function pageImgUrl(bookId, scanPage, pdfBook){
+  /* 两种教材原页来源：
+   *  · **沪教版/沪科版** → 平台的官方扫描页图（外链，不占仓库）
+   *     PAGE_IMAGES[bookId].base + '/' + 扫描页码 + '.jpg'
+   *  · **人教版/小学科学** → 从本地 PDF 渲染的页图（入库）
+   *     PAGE_IMAGES_RJB[pdfBook][扫描页码] = 'data/pages/…/N.webp'
+   *     页码就是本地 PDF 的扫描页 —— **天然对齐**（见 src/render_page_images.py）
+   */
+  if (pdfBook && PAGE_IMAGES_RJB && PAGE_IMAGES_RJB[pdfBook]) {
+    const f = PAGE_IMAGES_RJB[pdfBook][String(scanPage)];
+    if (f) return f;
+  }
+  if (PAGES && PAGES[bookId] && scanPage) {
+    return PAGES[bookId].base + '/' + scanPage + '.jpg';
+  }
+  return null;
 }
 
 /* ── 渲染 ───────────────────────────────────────────────── */
@@ -353,6 +368,12 @@ async function render(){
     // 用 <script> 而不是 fetch —— fetch 读本地 json 在 file:// 下被 CORS 挡掉
     try{ await loadScript('data/page-images.js'); PAGES = window.PAGE_IMAGES || {}; }
     catch(e){ PAGES = {}; }
+  }
+  if (!PAGE_IMAGES_RJB){
+    try{ await loadScript('data/page-images-rjb.js'); PAGE_IMAGES_RJB = window.PAGE_IMAGES_RJB || {}; }
+    catch(e){ PAGE_IMAGES_RJB = {}; }
+    try{ await loadScript('data/page-offsets.js'); PAGE_OFFSETS = window.PAGE_OFFSETS || {}; }
+    catch(e){ PAGE_OFFSETS = {}; }
   }
   buildIndex();
   const main = $('#main');
@@ -418,10 +439,20 @@ function nodeHTML(n){
   // 教材原页图
   let imgHTML = '';
   const scan = (loc.scan||[]);
-  if (loc.bk && scan.length){
-    const u = pageImgUrl(loc.bk, scan[0]);
+  // ⚠️ 门禁必须是 `(loc.bk || loc.pdfBook)` ——
+  // 沪教用 `loc.bk`（沪教书号），人教/小学科学用 `loc.pdfBook`（教材册次码），
+  // **人教版的 loc.bk 是空串**。原来只判 `loc.bk`，
+  // 于是人教版 1,878 个有页图的节点**一张图都渲染不出来**，
+  // 而测试全绿 —— 因为浏览器测试只测了 `?v=sh`。
+  if ((loc.bk || loc.pdfBook) && scan.length){
+    const u = pageImgUrl(loc.bk, scan[0], loc.pdfBook);
     if (u){
-      imgHTML = `<div class="card"><h2>教材原页<span class="n">${esc(loc.ed||'')}·${esc(loc.vol||'')} 第 ${scan[0]} 页</span></h2>
+      // 印刷页码 = 扫描页 + 每册偏移（封面/目录页数不同）
+      const off = (loc.pdfBook && PAGE_OFFSETS[loc.pdfBook]) || 0;
+      const printed = off ? scan[0] + off : null;
+      const pageLabel = printed ? `第 ${printed} 页` : `第 ${scan[0]} 页`;
+      const extra = printed ? `（PDF 第 ${scan[0]} 页）` : '';
+      imgHTML = `<div class="card"><h2>教材原页<span class="n">${esc(loc.ed||'')}·${esc(loc.vol||'')} ${pageLabel}</span></h2>
         <div class="pageimg">
           <!-- ⚠️ **referrerpolicy="no-referrer" 是必须的** ——
                教材平台的 CDN 有**防盗链**：带外部 Referer 的请求直接 403，
@@ -430,10 +461,10 @@ function nodeHTML(n){
                实测：不带 Referer → 200 image/jpeg；带 Referer → 403 text/html。
                本地 file:// 打开时本来就不发 Referer，所以本地看着好好的，
                线上必坏 —— 这个坑查了半天才定位到。 -->
-          <img src="${esc(u)}" alt="${esc(n.n)} 在教材第 ${scan[0]} 页" loading="lazy"
+          <img src="${esc(u)}" alt="${esc(n.n)} 在教材${pageLabel}" loading="lazy"
                referrerpolicy="no-referrer"
-               onerror="this.outerHTML='<div class=\\'fail\\'>这一页的原图暂时取不到（教材平台的图片需要联网）。<br>可以按上面的「第 ${scan[0]} 页」去翻书。</div>'">
-          <div class="cap">${esc(loc.ed||'')}·${esc(loc.vol||'')} 第 ${scan[0]} 页${scan.length>1?`（该知识点还出现在第 ${scan.slice(1).join('、')} 页）`:''}</div>
+               onerror="this.outerHTML='<div class=\\'fail\\'>这一页的原图暂时取不到（教材平台的图片需要联网）。<br>可以按上面的「${pageLabel}」去翻书。</div>'">
+          <div class="cap">${esc(loc.ed||'')}·${esc(loc.vol||'')} ${pageLabel}${extra}${loc.pdfBook?'（本地教材原书）':'（国家中小学智慧教育平台电子教材）'}</div>
         </div></div>`;
     }
   }
@@ -592,6 +623,10 @@ document.addEventListener('click', e=>{
   await ensureData(CURRENT);
   try{ await loadScript('data/page-images.js'); PAGES = window.PAGE_IMAGES || {}; }
   catch(e){ PAGES = {}; }
+  try{ await loadScript('data/page-images-rjb.js'); PAGE_IMAGES_RJB = window.PAGE_IMAGES_RJB || {}; }
+  catch(e){ PAGE_IMAGES_RJB = {}; }
+  try{ await loadScript('data/page-offsets.js'); PAGE_OFFSETS = window.PAGE_OFFSETS || {}; }
+  catch(e){ PAGE_OFFSETS = {}; }
   try{ await loadScript('data/learn-videos.js'); VIDEOS = window.LEARN_VIDEOS || {}; }
   catch(e){ VIDEOS = {}; }
   try{ await loadScript('data/learn-questions.js'); QUESTIONS = window.LEARN_QUESTIONS || []; }

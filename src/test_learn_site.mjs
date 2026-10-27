@@ -12,7 +12,7 @@
 import { createRequire } from 'node:module';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const puppeteer = require('puppeteer-core');
@@ -177,6 +177,81 @@ console.log('\n[4] 教材原页图');
         return img ? img.getAttribute('src') : '';
       });
       ok(real === expect, '页面上的图 URL = 基址 + 扫描页码', `${real.slice(-30)} vs ${expect.slice(-30)}`);
+    }
+  }
+  await page.close();
+}
+
+// ── [4b] 人教版的教材原页图也真的画出来了 ────────────────
+//
+// ⚠️ 这一条是**踩坑踩出来的**：
+//   `nodeHTML` 原来的门禁是 `if (loc.bk && scan.length)`，
+//   而**人教版的 `loc.bk` 是空串**（人教版用的是 `loc.pdfBook`）。
+//   于是人教版 1,878 个有页图的节点**一张图都渲染不出来** ——
+//   但测试全绿，因为[4]只测了 `?v=sh`（沪教版有 `loc.bk`）。
+//
+//   **判别力**：把门禁改回 `loc.bk` → 这一条必红。
+console.log('\n[4b] 人教版教材原页图');
+{
+  const { page, errs } = await open('?v=rjb');
+  const info = await page.evaluate(() => {
+    const n = window.LEARN_DATA.nodes.find(x => x.loc && x.loc.pdfBook && x.loc.scan && x.loc.scan.length);
+    return n ? { i: n.i, name: n.n, pdfBook: n.loc.pdfBook, scan: n.loc.scan[0], bk: n.loc.bk } : null;
+  });
+  ok(info !== null, '有节点带页图');
+  if (info) {
+    await page.goto(pathToFileURL(resolve(BASE, 'learn.html')).href + `?v=rjb&c=${info.i}`, { waitUntil: 'load' });
+    await sleep(2000);
+
+    const img = await page.evaluate(() => {
+      const el = document.querySelector('.pageimg img');
+      return el ? { src: el.getAttribute('src'), w: el.naturalWidth } : null;
+    });
+    ok(img !== null, '页面上真的有 <img>（门禁不能只判 loc.bk）');
+    if (img) {
+      const idx = await page.evaluate(pb => (window.PAGE_IMAGES_RJB || {})[pb] || null, info.pdfBook);
+      ok(!!idx, `${info.pdfBook} 在页图索引里`);
+      if (idx) {
+        const expect = idx[String(info.scan)];
+        ok(!!expect, `索引里有第 ${info.scan} 页`);
+        ok(img.src.endsWith(expect.replace(/^data\//, '')) || img.src === expect,
+          '图 URL = 索引里的本地页图路径', `${img.src.slice(-40)} vs ${expect}`);
+        // 文件必须真的在磁盘上，且不是 0 字节
+        const fp = resolve(BASE, expect);
+        let size = -1;
+        try { size = statSync(fp).size; } catch (e) { size = -1; }
+        ok(size > 2000, `页图文件存在且非空（${size} 字节）`, expect);
+        ok(img.w > 0, `图真的加载出来了（naturalWidth=${img.w}）`);
+      }
+    }
+  }
+  ok(errs.length === 0, '零 JS 错误', errs.slice(0, 2).join(' | '));
+  await page.close();
+}
+
+// ── [4c] 印刷页码 ≠ 扫描页码，面板要显示书上印的那个 ──────
+//
+// 学生手里是纸书。面板上写「第 43 页」才翻得到，
+// 写 PDF 扫描页号（50）翻过去是别的内容。
+console.log('\n[4c] 教材原页显示印刷页码');
+{
+  const { page } = await open('?v=rjb');
+  const info = await page.evaluate(() => {
+    const n = window.LEARN_DATA.nodes.find(x => x.loc && x.loc.pdfBook && x.loc.scan && x.loc.scan.length
+      && (window.PAGE_OFFSETS || {})[x.loc.pdfBook] !== undefined);
+    return n ? { i: n.i, pdfBook: n.loc.pdfBook, scan: n.loc.scan[0] } : null;
+  });
+  ok(info !== null, '有节点的册次带印刷页码偏移');
+  if (info) {
+    await page.goto(pathToFileURL(resolve(BASE, 'learn.html')).href + `?v=rjb&c=${info.i}`, { waitUntil: 'load' });
+    await sleep(1800);
+    const cap = await page.evaluate(() => document.querySelector('.pageimg .cap')?.textContent || '');
+    const off = await page.evaluate(pb => (window.PAGE_OFFSETS || {})[pb], info.pdfBook);
+    ok(off !== undefined && off !== null, `${info.pdfBook} 有印刷页码偏移`, String(off));
+    if (off !== undefined && off !== null) {
+      const printed = info.scan + off;
+      ok(cap.includes(`第 ${printed} 页`), `图注写的是印刷页码（第 ${printed} 页）`, cap.slice(0, 70));
+      ok(cap.includes(`PDF 第 ${info.scan} 页`), `同时标出 PDF 扫描页（第 ${info.scan} 页）`, cap.slice(0, 80));
     }
   }
   await page.close();

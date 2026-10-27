@@ -91,6 +91,73 @@ def site_payload(path):
     return json.loads(m.group(1))
 
 
+def pick_rjb_page(texts, pages, name, unit=""):
+    """从候选页里挑**真正讲这个概念的那一页**。
+
+    判据（按优先级）：
+      ① 页面正文里有**教材单元名**（如「21.1 一元二次方程」），且不是目录页
+         —— 这是最准的：概念就属于这一节，这一页就是讲它的那页。
+      ② 页面正文里有**概念名**，且不是目录页
+      ③ 页面不是目录页（有正文）
+      ④ 第一个候选页（兜底）
+
+    ⚠️ 目录页必须排除 —— 目录里每个概念名都出现，
+    拿目录页当「教材原页」等于什么都没说。
+    ⚠️ 光有「概念名」也不够 —— 「一元二次方程」在「本册导引」里被顺带提了一句，
+    但真正的讲解在第二十一章那一节。单元名才认得出「讲解页」。
+    """
+    if not pages:
+        return None
+    unit = (unit or "").strip()
+    # **去掉单元名的序号前缀** ——
+    # 单元名是「第一节 一元二次方程」，而正文页写的是「21.1 一元二次方程」，
+    # 整串对不上；只用核心名（「一元二次方程」）两边才都能匹配上。
+    unit_core = re.sub(r"^第[0-9一二三四五六七八九十]+[节章]\s*", "", unit).strip()
+    # **页首窗口** ——
+    # 概念名会在好几页出现，但只有「讲解它的那一页」把它放在**标题位置**（页首）。
+    # 顺带提到的那页，概念名出现在页中或页尾
+    # （实测「一元二次方程」在「本册导引」里被提到，第 4 页，
+    #   真正的讲解在第 8~9 页，概念名在页首）。
+    HEAD = 80
+
+    def clean(tx):
+        return re.sub(r"目\s*录|\bContents\b", "", tx)
+
+    # ① 页首就出现单元核心名 —— 讲解页
+    for p in pages:
+        tx = texts.get(p) or ""
+        if not tx.strip() or re.search(r"目\s*录|\bContents\b", tx):
+            continue
+        if unit_core and len(unit_core) >= 3 and unit_core in tx[:HEAD]:
+            return p
+    # ② 页首出现概念名
+    for p in pages:
+        tx = texts.get(p) or ""
+        if not tx.strip() or re.search(r"目\s*录|\bContents\b", tx):
+            continue
+        if name and name in tx[:HEAD]:
+            return p
+    # ③ 页内出现单元核心名
+    for p in pages:
+        tx = texts.get(p) or ""
+        if not tx.strip() or re.search(r"目\s*录|\bContents\b", tx):
+            continue
+        if unit_core and len(unit_core) >= 3 and unit_core in tx:
+            return p
+    # ④ 页内出现概念名
+    for p in pages:
+        tx = texts.get(p) or ""
+        if not tx.strip() or re.search(r"目\s*录|\bContents\b", tx):
+            continue
+        if name and name in tx:
+            return p
+    for p in pages:
+        tx = texts.get(p) or ""
+        if tx.strip() and not re.search(r"目\s*录|\bContents\b", tx):
+            return p
+    return pages[0]
+
+
 def main() -> int:
     # ── 学习卡 ──
     cards = {}
@@ -100,6 +167,47 @@ def main() -> int:
 
     # 教材正文（按书 → {扫描页: 文字}）——
     # 用来挑「这个概念真正被讲的那一页」（目录页和序章都不算）。
+    # 人教版：读本地 PDF 的文本层，用来**挑真正讲这个概念的那一页**。
+    # 概念视觉层给的 pages 是「这个名字在哪些页出现过」，
+    # **第一个往往是目录页**（实测「光合作用」→ biology-7a 第 5 页是目录，
+    # 真正讲它在第 27 页）。目录页当「教材原页」等于什么都没说。
+    pdf_text = {}
+    PDFC = BASE / "data" / "pdf-cache"
+    if PDFC.exists():
+        import fitz
+        # ⚠️ **学科缩写两边不一样** ——
+        #   PDF 文件名   rjb-bio-7a.pdf   → 'bio'
+        #   概念视觉层   subject='biology'  → 'biology'
+        # 不转换的话 pdf_text 里全是 'bio-7a'，而查的时候用 'biology-7a'，
+        # 于是**每一页都查不到文本**，只能 fallback 到第一页（常常是目录页）。
+        SUBJ_ABBR = {"biology": "bio", "chemistry": "chem", "physics": "phys",
+                     "math": "math"}
+        for f in sorted(PDFC.glob("rjb-*.pdf")):
+            bid = f.stem[4:]          # math-7a / bio-7a —— 已含学科（缩写）
+            # 反查成视觉层那套命名（biology-7a）
+            for full, abbr in SUBJ_ABBR.items():
+                if bid.startswith(abbr + "-"):
+                    bid = full + bid[len(abbr):]
+                    break
+            try:
+                doc = fitz.open(f)
+                # ⚠️ 键要用 **1 起**的页码 ——
+                # 概念视觉层给的 pages 是 1 起的页号，
+                # 用 0 起的 PDF 索引去查会整体差一页（实测「光合作用」选到了序言页）。
+                # ⚠️ **必须 NFKC 归一化** ——
+                # 人教社 PDF 的数字是**全角**（`２１．１一元二次方程`），
+                # 不归一化就匹配不上「一元二次方程」。
+                # 实测：NFKC 后第 9 页命中「21.1一元二次方程」✓
+                import unicodedata
+                pdf_text[bid] = {
+                    i + 1: unicodedata.normalize("NFKC", doc[i].get_text())
+                    for i in range(doc.page_count)
+                }
+                doc.close()
+            except Exception:
+                continue
+        print(f"PDF 文本层 {len(pdf_text)} 本")
+
     ocr = collections.defaultdict(dict)
     for r in read_jsonl(BASE / "data" / "lessons-sh.jsonl"):
         b = r.get("book")
@@ -149,6 +257,17 @@ def main() -> int:
             a, b = e[0], e[1]
             pre_of[a].append(b)
             suc_of[b].append(a)
+
+        # 节点 → 教材单元名（用来挑「真正讲它的那一页」）
+        # cns[i] = [单元名, 册次, 学科槽位, 第一个可点概念下标]
+        unit_of = {}
+        if vtag == "rjb":
+            d0 = site_payload(BASE / "index.html")
+            cns = d0.get("cns") or []
+            for i, n in enumerate(nodes):
+                oc = n[14] if len(n) > 14 else -1
+                if isinstance(oc, int) and 0 <= oc < len(cns):
+                    unit_of[i] = cns[oc][0] or ""
 
         out = []
         idx_of = {}
@@ -263,10 +382,33 @@ def main() -> int:
                            "scan": [p for p in ([pick] if pick else []) ],
                            "all": scan[:8],
                            "hit": len(hit)}
-            elif vis and vis.get("books"):
-                bb0 = list(vis["books"].values())[0]
+            elif vis:
+                # ⚠️ 人教版的概念视觉层结构**不一样**：
+                #   沪教版 concept-vision-sh.jsonl → books{bid:{pages:[…]}}
+                #   人教版 concept-vision.jsonl     → 顶层 book / bookZh / pages:[…]
+                # 之前只判了 `vis.get("books")`，
+                # 于是人教版的 loc.scan 一直是空的 → 学习页没有「教材原页」。
+                #
+                # **页码就是本地 PDF 的扫描页号** —— 这意味着从 PDF 渲染出来的图
+                # 与页码**天然对齐**，不需要任何偏移校准。
+                # pdfBook 用**视觉层那套命名**（biology-7a），
+                # 渲染脚本负责转成 PDF 文件名的缩写。
+                pbk = (f"{vis.get('subject')}-{vis.get('book')}"
+                       if vis.get("subject") and vis.get("book") else "")
+                pgs = sorted(set(vis.get("pages") or []))
+                pick = pick_rjb_page(pdf_text.get(pbk, {}), pgs, name, unit_of.get(i, ""))
                 loc = {"bk": "", "vol": vis.get("bookZh"), "ed": "人教版",
-                       "sec": [], "scan": sorted(set(bb0.get("pages") or []))[:6]}
+                       "sec": [], "scan": [pick] if pick else [],
+                       "pdfBook": pbk}
+            elif vtag == "kx" and vis and vis.get("books"):
+                # 小学科学：概念视觉层结构又不一样 ——
+                #   books: ['s6-1a']（教材册次）· hitPages: [页码]
+                bk = (vis.get("books") or [None])[0]
+                hp = sorted(set(vis.get("hitPages") or []))
+                pick = pick_rjb_page({}, hp, name)
+                loc = {"bk": "", "vol": bk, "ed": "小学科学",
+                       "sec": [], "scan": [pick] if pick else [],
+                       "pdfBook": f"kx/{bk}" if bk else ""}
             elif card and card.get("where"):
                 w = card["where"][0]
                 loc = {"bk": "", "vol": w.get("bookZh"), "ed": w.get("edition"),

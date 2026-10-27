@@ -29,6 +29,19 @@ data/gov/
 # 需要时跑 `python3 src/verify_order.py --fetch` 重新拉。
 data/pdf-cache/
 
+# ── 从教材 PDF 渲染的页图（**已决定入库**，2026-10-27）──
+# 渲染脚本：src/render_page_images.py
+#   data/pages/<册次>/<页>.webp   1,128 页 / 82.1 MB
+#   data/page-images-rjb.json/.js  索引
+#
+# ⚠️ 页图是**教材页面的复制**，每页都印着「版权所有…未经许可不得采用任何方式
+# 擅自复制或使用本产品任何部分」。
+# **沪教版那边走的是平台官方外链**（仓库里不存教材内容）；
+# 人教版这边**本地 PDF 与平台副本页码对不上**（平台只有 2024 新版小学、
+# 初中差印次），所以只能从本地 PDF 渲染 —— 渲染完就与我们的数据源**天然对齐**。
+# 入库是用户 2026-10-27 的明确决定：**接受再分发，仓库 +82 MB**。
+# 换成 JPEG 体积翻倍（WebP 1055px 宽 44 KB vs JPEG 91 KB），所以用 WebP。
+
 # ── 盲测批次（派生产物）──
 # src/make_batches.py 从 graph.json 切出来的模型输入片，760 KB。
 # 切法随时会改，固化的是脚本不是片。要跑先 python3 src/make_batches.py

@@ -1,0 +1,3197 @@
+{
+ "math-1a": {
+  "ours": {
+   "book": "1a",
+   "subject": "math",
+   "vol": "1a",
+   "pdf": "data/pdf-cache/rjb-math-1a.pdf",
+   "pages": 119
+  },
+  "candidates": [
+   {
+    "id": "c3e06fe4-c6b3-49cb-8727-4f8ff69bbfbc",
+    "title": "（根据2022年版课程标准修订）义务教育教科书 · 数学一年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 一年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "7b435b01-7a16-4b72-8b38-653fe9eb94ae",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学一年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document",
+     "小学数学 一年级 上册"
+    ]
+   },
+   {
+    "id": "e9a3cef0-a95c-4ad6-93c2-eb0aaadc8891",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学一年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  一年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "dc10c400-3f13-4856-867d-87659e985049",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学一年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学一年级上册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "932af069-bc0a-41b7-aa94-1eaff1c99323",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学一年级上册",
+    "label": [
+     "zxx",
+     "[D]2-23 一年级数学上册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b26657ba-65dc-4876-9db9-319dcaadbd7f",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学一年级上册",
+    "label": [
+     "zxx",
+     "6-1上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1553984b-b9c5-4687-80c2-6dc8333c55f2",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学一年级上册",
+    "label": [
+     "zxx",
+     "5-1上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "3e6eb324-6ea9-4c3a-a51f-fc37e07b38c1",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学一年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "15、义务教育教科书·数学_一年级_上册_西南大学出版社",
+     "x_document"
+    ]
+   },
+   {
+    "id": "18deb512-b4c0-54cf-6fc1-6974f55fa02e",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学一年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-1b": {
+  "ours": {
+   "book": "1b",
+   "subject": "math",
+   "vol": "1b",
+   "pdf": "data/pdf-cache/rjb-math-1b.pdf",
+   "pages": 111
+  },
+  "candidates": [
+   {
+    "id": "fcb591d2-ba58-4e82-80db-c104da90e275",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学一年级下册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "小学数学 一年级 下册",
+     "x_document"
+    ]
+   },
+   {
+    "id": "83939ed0-3a79-417b-b3b5-17e12c280263",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学一年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  一年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d81f9c58-1e8e-47db-87e5-6ebff77e18e2",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学一年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学一年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "e62ac75c-971b-4487-bbb3-ba6b5014172b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学一年级下册",
+    "label": [
+     "zxx",
+     "[D]2-23 一年级数学下册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "0e2e4d56-6627-4263-9c64-45dcf5d3cb8c",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学一年级下册",
+    "label": [
+     "zxx",
+     "6-1下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d533bf7d-cf73-40b3-a1f6-67cb7136a669",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学一年级下册",
+    "label": [
+     "zxx",
+     "5-1下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "6bf8ae7e-d987-40b4-8fb3-bbb98fcb50b5",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学一年级下册",
+    "label": [
+     "义务教育教科书 数学 一年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "13eff838-24b9-48dc-ace4-fc6e8e34dd2c",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学一年级下册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "15、义务教育教科书·数学_一年级_下册_西南大学出版社",
+     "x_document"
+    ]
+   },
+   {
+    "id": "12118d5e-0af8-b9c9-9f3b-d2d901f8c5a2",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学一年级下册",
+    "label": []
+   }
+  ]
+ },
+ "math-2a": {
+  "ours": {
+   "book": "2a",
+   "subject": "math",
+   "vol": "2a",
+   "pdf": "data/pdf-cache/rjb-math-2a.pdf",
+   "pages": 116
+  },
+  "candidates": [
+   {
+    "id": "8cfc5a2a-425c-4b9a-a97c-e78d4a4c1e3a",
+    "title": "（根据2022年版课程标准修订）义务教育教科书 · 数学二年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 二年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d2295f31-7938-4be3-87ea-d052ec77341b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学二年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "小学数学 二年级 上册",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "958f88db-49ad-45d3-aa3f-e7245e8e6650",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学二年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  二年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "8f7a0e3f-eca0-445a-a5db-7b4981d5acd4",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学二年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学二年级上册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d9874022-3a12-40d0-88be-db1692079535",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学二年级上册",
+    "label": [
+     "zxx",
+     "[D]2-23 二年级数学上册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "411b72de-8888-4d7d-9fe8-bdfff4ee301f",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级上册",
+    "label": [
+     "zxx",
+     "6-2上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "4ef2ab71-a2e2-4856-9876-d1bd9b7ce213",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学二年级上册",
+    "label": [
+     "zxx",
+     "5-2上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "3dc3f373-f828-4b30-b02a-c4bf3b52ad25",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "13、义务教育教科书·数学_二年级_上册_西南大学出版社",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ba55763b-2dc0-b05b-fb65-898bcfe44590",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学二年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-2b": {
+  "ours": {
+   "book": "2b",
+   "subject": "math",
+   "vol": "2b",
+   "pdf": "data/pdf-cache/rjb-math-2b.pdf",
+   "pages": 131
+  },
+  "candidates": [
+   {
+    "id": "b70ca861-8b08-4f0f-8fd8-aee11c42727f",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级下册",
+    "label": [
+     "zxx",
+     "小学数学 二年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "874c5b49-2843-4a5f-9a43-9b870c73fb61",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  二年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b177c707-3c24-4190-866a-1259209a28d1",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学二年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "da861684-c034-4000-973d-d3f26120bdfd",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级下册",
+    "label": [
+     "zxx",
+     "[D]2-23 二年级数学下册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2f618ba7-365e-458b-9d55-5ab60273aa41",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级下册",
+    "label": [
+     "zxx",
+     "6-2下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b0a3e541-c0a9-42a8-8aaf-438ca91daaa5",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学二年级下册",
+    "label": [
+     "zxx",
+     "5-2下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c1897b18-b302-4e8d-9fd4-40915c4b05c2",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级下册",
+    "label": [
+     "义务教育教科书 数学 二年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f9bc6959-814e-43fa-bd59-e26fafa91138",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学二年级下册",
+    "label": [
+     "13、义务教育教科书·数学_二年级_下册_西南大学出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "dd9095f9-d3db-9a03-a80b-4fbb97ef68b8",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学二年级下册",
+    "label": []
+   }
+  ]
+ },
+ "math-3a": {
+  "ours": {
+   "book": "3a",
+   "subject": "math",
+   "vol": "3a",
+   "pdf": "data/pdf-cache/rjb-math-3a.pdf",
+   "pages": 123
+  },
+  "candidates": [
+   {
+    "id": "33c8d495-9862-4e19-aab9-61d2af08608a",
+    "title": "（根据2022年版课程标准修订）义务教育教科书 · 数学三年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 三年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "09bc5d13-3b26-4448-a0ba-d95ea8b893a8",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学三年级上册",
+    "label": [
+     "小学数学 三年级 上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "66e175c4-e1a7-4d09-b9d3-36865b91ff39",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学三年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  三年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b74494d2-c132-4897-a9a1-bb6a4c04e664",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学三年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学三年级上册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c0cc18a9-e27d-40ab-96dd-b9236e19080c",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学三年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "[D]2-23 三年级数学上册压缩",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "a00c0062-0e02-4479-ae8a-bea60d55b816",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级上册",
+    "label": [
+     "zxx",
+     "6-3上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2f1b301f-60c9-443f-9f04-5f21f4e3b9ea",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学三年级上册",
+    "label": [
+     "zxx",
+     "5-3上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "e03d3479-1f4f-4c16-806c-dccb8083e0fc",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "14、义务教育教科书·数学_三年级_上册_西南大学出版社",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c5a37cee-b62d-396e-526c-c101aa443029",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学三年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-3b": {
+  "ours": {
+   "book": "3b",
+   "subject": "math",
+   "vol": "3b",
+   "pdf": "data/pdf-cache/rjb-math-3b.pdf",
+   "pages": 119
+  },
+  "candidates": [
+   {
+    "id": "18d9a56e-8dfe-4770-b058-2350d303a20b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级下册",
+    "label": [
+     "zxx",
+     "小学数学 三年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "83ac3d84-ba3a-4672-ac43-09dbc81c4769",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学 三年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1a7e201b-1ba9-43f2-9289-4126ccd818c3",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学三年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5f8e164a-5510-466f-b58b-4728edd09eb2",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级下册",
+    "label": [
+     "zxx",
+     "[D]2-23 三年级数学下册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f429e31d-43ee-4e4f-bfc0-cae1662805da",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级下册",
+    "label": [
+     "zxx",
+     "6-3下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "01f92c05-efcf-4f90-acf3-daafeece14f5",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学三年级下册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "5-3下",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "8666a8bd-a0e7-49aa-ba07-bf419ceead24",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级下册",
+    "label": [
+     "义务教育教科书 数学 三年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "26e00113-eaae-4d5d-ae9e-56ee2680438f",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学三年级下册",
+    "label": [
+     "14、义务教育教科书·数学_三年级_下册_西南大学出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   }
+  ]
+ },
+ "math-4a": {
+  "ours": {
+   "book": "4a",
+   "subject": "math",
+   "vol": "4a",
+   "pdf": "data/pdf-cache/rjb-math-4a.pdf",
+   "pages": 127
+  },
+  "candidates": [
+   {
+    "id": "654e3d1e-c995-4340-81c5-abd7881d835b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书 · 数学四年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 四年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "65f743d1-40c4-4654-8fc9-7ae458c841cb",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学四年级上册",
+    "label": [
+     "zxx",
+     "小学数学 四年级 上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ed7a0403-f6d3-47f1-8680-7a5faefe70a8",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学四年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  四年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "cec9d1c2-f4d0-4f73-a971-66f03259f894",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学四年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学四年级上册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "07c75bda-7fff-4c4b-a271-9be638af37de",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学四年级上册",
+    "label": [
+     "[D]2-23 四年级数学上册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b7aa52b3-4dd7-4566-8033-ddd0000b43d8",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学四年级上册",
+    "label": [
+     "zxx",
+     "6-4上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "51f5d4ab-fe7b-4c25-a6a3-d987730d5dcc",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学四年级上册",
+    "label": [
+     "zxx",
+     "5-4上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "869d3e6b-b65c-4995-952c-1ce11ed58d75",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学四年级上册",
+    "label": [
+     "10、义务教育教科书·数学_四年级_上册_西南大学出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2c153557-85de-492e-37b1-e2298d37cd1e",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学四年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-4b": {
+  "ours": {
+   "book": "4b",
+   "subject": "math",
+   "vol": "4b",
+   "pdf": "data/pdf-cache/rjb-math-4b.pdf",
+   "pages": 124
+  },
+  "candidates": [
+   {
+    "id": "b033e40e-3e39-4ea6-91e0-b5b267fa6e25",
+    "title": "义务教育教科书·数学四年级下册",
+    "label": [
+     "zxx",
+     "小学数学 四年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "9fbeead2-f321-48ee-a184-d2d5ea15c5d1",
+    "title": "义务教育教科书·数学四年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学 四年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "3e5626c3-d58f-4d72-a289-58d503ee8f15",
+    "title": "义务教育教科书·数学四年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学四年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "27458ba8-dbf1-4860-a6cc-a0571756292d",
+    "title": "义务教育教科书·数学四年级下册",
+    "label": [
+     "zxx",
+     "[D]2-23 四年级数学下册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b63cbc17-2e45-4e49-87f4-cedd218de9ca",
+    "title": "义务教育教科书·数学四年级下册",
+    "label": [
+     "zxx",
+     "6-4下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "6fc612f4-b014-4d5c-8b0e-4e54633b0763",
+    "title": "义务教育教科书（五•四学制）·数学四年级下册",
+    "label": [
+     "zxx",
+     "5-4下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "aa00ab9d-b343-4542-b16d-9c3900b3444b",
+    "title": "义务教育教科书·数学四年级下册",
+    "label": [
+     "义务教育教科书 数学 四年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "884061ba-3c8e-449e-a36e-8f73af3ce09f",
+    "title": "义务教育教科书·数学四年级下册",
+    "label": [
+     "10、义务教育教科书·数学_四年级_下册_西南大学出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   }
+  ]
+ },
+ "math-5a": {
+  "ours": {
+   "book": "5a",
+   "subject": "math",
+   "vol": "5a",
+   "pdf": "data/pdf-cache/rjb-math-5a.pdf",
+   "pages": 125
+  },
+  "candidates": [
+   {
+    "id": "d0d6252f-2233-4f66-9ac9-440638d56fec",
+    "title": "（根据2022年版课程标准修订）义务教育教科书 · 数学五年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 五年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "9a5120d1-ce55-4649-a01b-030d1dcc38d6",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学五年级上册",
+    "label": [
+     "zxx",
+     "小学数学 五年级 上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "760cbab5-6fe6-4037-8826-d78727f7f39f",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学五年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学 五年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "359bf8fb-c7fe-425f-a070-c5b6def6e5d8",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学五年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "义务教育教科书数学五年级上册-河北教育出版社",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "92406f69-3b1b-404a-82c8-95adecae875f",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学五年级上册",
+    "label": [
+     "zxx",
+     "[D]2-23 五年级数学上册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "6e43f20b-060a-4961-88ce-883644994290",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学五年级上册",
+    "label": [
+     "zxx",
+     "6-5上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "0b155b26-7765-47fa-ab6a-2b4652f2f669",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学五年级上册",
+    "label": [
+     "zxx",
+     "5-5上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c9ceddc0-1145-43fe-98e7-18991e7b4659",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学五年级上册",
+    "label": [
+     "12、义务教育教科书·数学_五年级_上册_西南大学出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b0da7742-d5ca-f0b3-bff0-f056eaab024c",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学五年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-5b": {
+  "ours": {
+   "book": "5b",
+   "subject": "math",
+   "vol": "5b",
+   "pdf": "data/pdf-cache/rjb-math-5b.pdf",
+   "pages": 132
+  },
+  "candidates": [
+   {
+    "id": "5514a06c-772f-4923-92f5-738c6ab01afb",
+    "title": "义务教育教科书·数学五年级下册",
+    "label": [
+     "zxx",
+     "小学数学 五年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "0cfca9aa-6235-4213-aa84-906d7ea67b0a",
+    "title": "义务教育教科书·数学五年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学 五年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b1debf81-3263-4320-837e-b11cec5b0c3d",
+    "title": "义务教育教科书·数学五年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学五年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "14d4c93e-0a6a-4e2f-8b7a-24f0be4c64fc",
+    "title": "义务教育教科书·数学五年级下册",
+    "label": [
+     "zxx",
+     "[D]2-23 五年级数学下册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "07bb2a41-75c2-444f-91c0-5ad9f54b4df4",
+    "title": "义务教育教科书·数学五年级下册",
+    "label": [
+     "zxx",
+     "6-5下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c385cb0b-767f-415c-acba-fa6b7902ef97",
+    "title": "义务教育教科书（五•四学制）·数学五年级下册",
+    "label": [
+     "zxx",
+     "5-5下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "83339b94-2b33-4a9b-ba0e-026b4fdd4f0e",
+    "title": "义务教育教科书·数学五年级下册",
+    "label": [
+     "义务教育教科书 数学 五年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "14fe2472-4d5b-4ca1-be51-c3c4be1a96c5",
+    "title": "义务教育教科书·数学五年级下册",
+    "label": [
+     "12、义务教育教科书·数学_五年级_下册_西南大学出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   }
+  ]
+ },
+ "math-6a": {
+  "ours": {
+   "book": "6a",
+   "subject": "math",
+   "vol": "6a",
+   "pdf": "data/pdf-cache/rjb-math-6a.pdf",
+   "pages": 127
+  },
+  "candidates": [
+   {
+    "id": "845136d4-e27b-4e7e-b9a9-00cadf4f9e20",
+    "title": "（根据2022年版课程标准修订）义务教育教科书 · 数学六年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 六年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "a19ce1ec-8cf9-4b30-b0cf-8fe05b561e3e",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学六年级上册",
+    "label": [
+     "zxx",
+     "小学数学 六年级 上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "45fe27cf-8cb3-4670-8397-a482731412fc",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学六年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  六年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "3ee210a5-1077-4208-bd6f-677536597f27",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学六年级上册",
+    "label": [
+     "义务教育教科书数学六年级上册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b75ce244-1cf7-4ae7-b256-c6036e4d83e5",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学六年级上册",
+    "label": [
+     "zxx",
+     "[D]2-23 六年级数学上册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "51c24965-0510-43d3-a570-eca7b64e0fea",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学六年级上册",
+    "label": [
+     "zxx",
+     "6-6上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1f51a3db-2364-4187-be51-fa8d65377ecb",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学六年级上册",
+    "label": [
+     "zxx",
+     "（五四）数学 六年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5c4b368f-df07-4288-b0b2-86309b7913e9",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学六年级上册",
+    "label": [
+     "11、义务教育教科书·数学_六年级_上册_西南大学出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "84695cf7-446d-1d28-3285-6b42d31003e6",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学六年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-6b": {
+  "ours": {
+   "book": "6b",
+   "subject": "math",
+   "vol": "6b",
+   "pdf": "data/pdf-cache/rjb-math-6b.pdf",
+   "pages": 123
+  },
+  "candidates": [
+   {
+    "id": "876be786-adea-4f7e-9245-beb1774b84b6",
+    "title": "义务教育教科书·数学六年级下册",
+    "label": [
+     "zxx",
+     "小学数学 六年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d346ef5a-9c46-40c0-ad12-069479115825",
+    "title": "义务教育教科书·数学六年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学 六年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "eeffa796-f99c-4223-89c4-0e07eba4be60",
+    "title": "义务教育教科书·数学六年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学六年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5ed4f298-793d-4502-a4e3-f53bbf493deb",
+    "title": "义务教育教科书·数学六年级下册",
+    "label": [
+     "zxx",
+     "[D]2-23 六年级数学下册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5f43de2d-fe3a-41b6-a179-910180aab047",
+    "title": "义务教育教科书·数学六年级下册",
+    "label": [
+     "zxx",
+     "6-6下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "7babfb85-3808-4789-8b6c-0ddd66feb85b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学六年级下册",
+    "label": [
+     "zxx",
+     "（五四）数学 六年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "8e650f4c-e616-4699-ac0a-4911b22e2f2e",
+    "title": "义务教育教科书·数学六年级下册",
+    "label": [
+     "义务教育教科书 数学 六年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "98f6a715-6d4d-4f86-ba7d-786bce9be7b9",
+    "title": "义务教育教科书·数学六年级下册",
+    "label": [
+     "11、义务教育教科书·数学_六年级_下册_西南大学出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "3e205dcb-0b51-85c2-8b66-4b623ccc3988",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学六年级下册",
+    "label": []
+   }
+  ]
+ },
+ "math-7a": {
+  "ours": {
+   "book": "7a",
+   "subject": "math",
+   "vol": "7a",
+   "pdf": "data/pdf-cache/rjb-math-7a.pdf",
+   "pages": 163
+  },
+  "candidates": [
+   {
+    "id": "79ff9e95-34e6-4c37-8294-a2a7e1619eb9",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "中学数学 七年级 上册",
+     "x_document"
+    ]
+   },
+   {
+    "id": "8376191d-2d32-4c68-aba9-2f6c9dbfdf4a",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  七年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "bd6e3358-ba9e-455d-8042-53a9780287da",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学七年级上册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "a5509537-33e3-4699-abe3-98608b20cc01",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+    "label": [
+     "zxx",
+     "湘教版 数学七年级上 彩_压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "fa3baef9-8acc-4ae6-88c0-8dd06eff9f6d",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document",
+     "义务教育教科书 数学 七年级上册"
+    ]
+   },
+   {
+    "id": "01e365c7-9178-4155-8640-c862c5eff5e6",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+    "label": [
+     "zxx",
+     "初中数学 七年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "77f52403-bb32-4f2b-b786-a324ea64732a",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级上册",
+    "label": [
+     "zxx",
+     "青岛版数学教材 七上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "540ac93d-67fc-4353-9e49-1ef20d02b5a4",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 七年级 上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b2041c8b-e20d-48a0-891a-fe164f8a5757",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 七年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "913b98d8-ee64-4b08-bb18-5c09ef22034b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学七年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学七年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5b9ea73f-308c-4157-849d-beaa6bb48a6d",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学七年级上册",
+    "label": [
+     "zxx",
+     "（五四）数学 七年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "35542837-2e8b-58a9-ed6f-b678bf81135a",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学七年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-7b": {
+  "ours": {
+   "book": "7b",
+   "subject": "math",
+   "vol": "7b",
+   "pdf": "data/pdf-cache/rjb-math-7b.pdf",
+   "pages": 172
+  },
+  "candidates": [
+   {
+    "id": "15468d18-8f0e-499a-9c36-7fbfe1020c45",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "zxx",
+     "中学数学 七年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "547e13ff-e4c3-4542-b793-2c43dedb77c5",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  七年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ef12d0e9-b7a6-4657-929a-8b08e390c788",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学七年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "de58c9ca-8edf-4a1e-ae7f-0ab39faa4b54",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "zxx",
+     "湘教版 数学七年级下 彩_压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ae0543a7-8dfd-4a07-a35d-cb1a47029e0b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document",
+     "义务教育教科书 数学 七年级下册"
+    ]
+   },
+   {
+    "id": "f156dcad-f112-4937-a4bc-f4fa349beed6",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "zxx",
+     "初中数学 七年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "67602aeb-e6d9-40ee-a3c6-428ef2818da2",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "zxx",
+     "青岛版数学教材 七下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "81d65033-4cb1-4cf0-ae27-8c367c537c30",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 七年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ad4e72e9-625e-4a51-8e7e-3f3839438070",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document",
+     "义务教育教科书 数学 七年级下册"
+    ]
+   },
+   {
+    "id": "16364a36-7b06-487a-b455-0285f33351eb",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学七年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学七年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5c7b6d21-643f-43ec-afa2-e6ee007d1c3b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学七年级下册",
+    "label": [
+     "zxx",
+     "（五四）数学 七年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "bd9bb1d9-3f3d-3b64-57b6-de27fe319865",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学七年级下册",
+    "label": []
+   }
+  ]
+ },
+ "math-8a": {
+  "ours": {
+   "book": "8a",
+   "subject": "math",
+   "vol": "8a",
+   "pdf": "data/pdf-cache/rjb-math-8a.pdf",
+   "pages": 171
+  },
+  "candidates": [
+   {
+    "id": "039f3930-10a9-4501-bb89-1000dc26348c",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学八年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "中学数学 八年级 上册",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "85ac3198-7050-441c-a614-493ea53e8d4a",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学八年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  八年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "68bd7681-6c8c-41e3-bd68-3e9ed36ccb46",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学八年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学八年级上册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1671f52e-7a07-4637-8446-cac71b930857",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学八年级上册",
+    "label": [
+     "zxx",
+     "湘教版 数学八年级上 彩_压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c6ebaaca-f73a-461e-9fbc-4aa449551207",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学八年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 八年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "898de31a-e932-43ea-96af-83df3300020b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书•数学八年级上册",
+    "label": [
+     "zxx",
+     "初中数学 八年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "a5e2a48c-e861-4c97-b99a-8c407fb1ef99",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级上册",
+    "label": [
+     "zxx",
+     "青岛版数学教材 八上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "81264e9e-22bc-4289-8389-13b40433b5ba",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 八年级 上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "863bca53-39ee-48e3-b28e-34d081352343",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 八年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "cfbb9d5d-d4b8-4f8b-8ca6-ea19f9506139",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学八年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "bdbfa861-90e9-4206-93ce-93d3b6e13c68",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学八年级上册",
+    "label": [
+     "zxx",
+     "（五四）数学 八年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "dfeb4d8c-b711-0605-a182-3911b978ed59",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学八年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-8b": {
+  "ours": {
+   "book": "8b",
+   "subject": "math",
+   "vol": "8b",
+   "pdf": "data/pdf-cache/rjb-math-8b.pdf",
+   "pages": 145
+  },
+  "candidates": [
+   {
+    "id": "f97de89a-6d58-4781-8dee-2ea6c2ddeeed",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "zxx",
+     "中学数学 八年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "146b5d39-425a-46ee-a645-f62f4a61e1c1",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  八年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ea03ff0f-904e-478f-9b08-9a978a2eaa6e",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学八年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "47a94c3e-5369-4dac-a4e4-8d192d784c89",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "zxx",
+     "湘教版 数学八年级下 彩_压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5a20b663-4ceb-4f3e-94c0-ae3c1e22ea8a",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "义务教育教科书 数学 八年级下册",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "e2eb2248-6d8e-44fc-a1ef-a1eaead72992",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "zxx",
+     "初中数学 八年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1784b949-fbff-41aa-b6bc-e0bb0799d37f",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "zxx",
+     "青岛版数学教材 八下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "e91a6f80-2a9a-4452-a47e-b9ec164156ff",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 八年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1593eff5-060a-4299-b1e8-9c218fada1bd",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "义务教育教科书 数学 八年级下册",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "9214db36-d263-435c-8ae4-8417830fb993",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学八年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学八年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "cfcad318-999c-4332-bccc-b2bde9cf9861",
+    "title": "义务教育教科书（五•四学制）·数学八年级下册",
+    "label": [
+     "zxx",
+     "（五四）数学 八年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   }
+  ]
+ },
+ "math-9a": {
+  "ours": {
+   "book": "9a",
+   "subject": "math",
+   "vol": "9a",
+   "pdf": "data/pdf-cache/rjb-math-9a.pdf",
+   "pages": 164
+  },
+  "candidates": [
+   {
+    "id": "71a82bac-0c70-4d53-9e8f-22be536415f0",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "zxx",
+     "中学数学 九年级 上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "4f797247-0ec5-4a00-9ad5-9942d4ff32c6",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  九年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f7ccb251-568c-4fe5-8242-3f59766478b2",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "义务教育教科书数学九年级上册-河北教育出版社",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5a35ea46-f828-44f6-aafb-571cf9a81faa",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "zxx",
+     "湘教版 数学九年级上 彩_压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5f7531c8-7330-4e66-9634-e0a2c57ed74a",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 九年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "bd633723-cfca-47c7-bea3-7496e1648a91",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "初中数学 九年级上册",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5812b053-8927-4be0-a10c-124697c0f921",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "zxx",
+     "青岛版数学教材 九上",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "937a48c1-de81-4cc6-91b2-617cd859de4b",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 九年级 上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5fa8b6e0-1828-40e8-8fe2-c54570d091aa",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 九年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d1b3cecc-ba9f-4f84-aa97-a00135861540",
+    "title": "（根据2022年版课程标准修订）义务教育教科书·数学九年级上册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学九年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "e44ca345-a4f5-48b7-b5c5-28e4e740afc0",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）·数学九年级上册",
+    "label": [
+     "zxx",
+     "（五四）数学 九年级上册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1c20827e-c705-d730-8b0c-ce7402aeb905",
+    "title": "（根据2022年版课程标准修订）义务教育教科书（五•四学制）•数学九年级上册",
+    "label": []
+   }
+  ]
+ },
+ "math-9b": {
+  "ours": {
+   "book": "9b",
+   "subject": "math",
+   "vol": "9b",
+   "pdf": "data/pdf-cache/rjb-math-9b.pdf",
+   "pages": 121
+  },
+  "candidates": [
+   {
+    "id": "a5dccbc8-37c5-4183-9180-2e833e37ccd1",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "中学数学 九年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "fafe7c85-616a-4932-94d3-d6287b346e6b",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书  数学  九年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2a1bc249-b83e-4e51-919e-53e6d0e2be2e",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学九年级下册-河北教育出版社",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "72ac1a9f-f1ee-4a50-b83d-facd15b8088a",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "湘教版 数学九年级下 彩_压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "61d015f5-5998-45fa-b114-73aff2e0ed68",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "义务教育教科书 数学 九年级下册",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "33f1be2a-c063-4669-ba44-341c2b17a091",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "初中数学 九年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "e9e556bb-62d6-4a3e-a5cb-71ff81c4d126",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "青岛版数学教材 九下",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ab188631-292c-455e-8082-e09a0ab4001c",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 九年级 下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "cb01fcab-f57d-472f-aa22-e7d126dc4dda",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书 数学 九年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f2abe914-2b4d-4e58-a5d2-e2e07db9ec2b",
+    "title": "义务教育教科书·数学九年级下册",
+    "label": [
+     "zxx",
+     "义务教育教科书数学九年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ecae8feb-5133-4e90-844a-99b0148e4e80",
+    "title": "义务教育教科书（五•四学制）·数学九年级下册",
+    "label": [
+     "zxx",
+     "（五四）数学 九年级下册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   }
+  ]
+ },
+ "math-m1": {
+  "ours": {
+   "book": "m1",
+   "subject": "math",
+   "vol": "m1",
+   "pdf": "data/pdf-cache/rjb-math-m1.pdf",
+   "pages": 270
+  },
+  "candidates": [
+   {
+    "id": "6e764703-6e5e-4ea3-9462-34652c2678ef",
+    "title": "普通高中教科书·数学（A版）必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第一册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d296fc79-8d47-4b18-862c-6df49adc2ce0",
+    "title": "普通高中教科书·数学（A版）必修 第二册",
+    "label": [
+     "普通高中教科书 数学 必修 第二册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d0fd2c1f-6b4f-43f0-8229-de0a53b197df",
+    "title": "普通高中教科书·数学（A版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "99c1fb5b-d1e0-4238-90b9-a573ab84bf08",
+    "title": "普通高中教科书·数学（A版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ffaba6c3-497d-47b0-b91a-784f43625507",
+    "title": "普通高中教科书·数学（A版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "adb974b6-7312-4ad5-9adc-6e8d135eddbc",
+    "title": "普通高中教科书·数学（B版）必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第一册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "02011dad-8881-4a85-8476-8aeb69e6eb54",
+    "title": "普通高中教科书·数学（B版）必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第二册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b1c260b8-c917-4751-b095-9863f69c8f77",
+    "title": "普通高中教科书·数学（B版）必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第三册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "350da632-7888-42fb-afc5-a022adaa28ac",
+    "title": "普通高中教科书·数学（B版）必修 第四册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第四册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "47306eac-960e-4799-b600-1c23212779a8",
+    "title": "普通高中教科书·数学（B版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "89dcdee0-a094-433f-ba9f-f7a5a2dd7c24",
+    "title": "普通高中教科书·数学（B版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "92c2948c-2c0c-410b-bae0-22e9d592759b",
+    "title": "普通高中教科书·数学（B版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b9b57499-3594-4ae3-a33b-4c440739c28a",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "4dbbf35b-31dc-4fde-88ba-8369a8999874",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "6fd52efc-6395-4a42-b810-8810064d075e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2767a985-949c-416c-83b6-cce0bca67b03",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5136d0eb-69b1-43cb-81e2-9f5f52ed06ca",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学教科书 必修第一册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "066ef32a-2360-49b1-a862-680b40b0ab2a",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学教科书 必修第二册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "55265e13-60fd-4b6e-8eb3-c4ce84dfdbe7",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学选择性必修第一册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "833cae74-4d4d-4472-8f56-a99fa306af96",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学 选择性必修第二册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1cc53b27-108b-4d61-8948-ff135daadf77",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学必修第一册（封面+正文)压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "807d9aac-53ac-4b3e-b254-e37f5298be6e",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "鄂教版高中数学必修第二册（封面+正文）压缩",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "9ce0ef2b-139f-496a-8e55-02a599826648",
+    "title": "普通高中教科书·数学必修 第三册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document",
+     "鄂教版高中数学必修第三册（封面+正文）压缩"
+    ]
+   },
+   {
+    "id": "59292625-06b0-4cfd-a6af-4f3039e6ad80",
+    "title": "普通高中教科书·数学必修 第四册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学必修第四册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "745e8f68-1a78-4f83-b0f5-e22df893c390",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第一册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "fa94efb7-3958-48d2-b4e3-0092464a97eb",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第二册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5d704eba-eb45-4cae-9f13-07a943d25b9d",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选修性必修 第三册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "71ede6e4-951d-43a5-ae62-58bd9ec0a2a0",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5ac46cdf-5972-454f-b799-216329b8c2bc",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "zxx",
+     "必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "dfa0f514-a260-4d5c-a00f-7e717ac1e63a",
+    "title": "普通高中教科书·数学必修 第三册",
+    "label": [
+     "zxx",
+     "必修 第三册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "71b9d50c-aa99-4c34-859b-7aea35c0b11a",
+    "title": "普通高中教科书·数学必修 第四册",
+    "label": [
+     "zxx",
+     "必修 第四册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c142386a-85de-4c44-bb42-29a70b50056e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "选择性必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "24ca7cd7-8add-4661-85ac-5823dadf28e1",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "选择性必修 第三册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "75d71a33-a32d-48c8-bc79-2fb7dd679a42",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版  高中数学 必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "16daab2a-2bcc-454d-9f1d-26e04556d969",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版 高中数学 必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "a939d024-348c-4137-8aab-80d8db0e0b5c",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版  高中数学 选择性必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f7f22402-4ee2-4bc0-82f5-100f9201c6a6",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版 高中数学 选择性必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "561c947a-b8b7-7b91-11d5-98dbb04e2e82",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": []
+   }
+  ]
+ },
+ "math-m2": {
+  "ours": {
+   "book": "m2",
+   "subject": "math",
+   "vol": "m2",
+   "pdf": "data/pdf-cache/rjb-math-m2.pdf",
+   "pages": 282
+  },
+  "candidates": [
+   {
+    "id": "6e764703-6e5e-4ea3-9462-34652c2678ef",
+    "title": "普通高中教科书·数学（A版）必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第一册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d296fc79-8d47-4b18-862c-6df49adc2ce0",
+    "title": "普通高中教科书·数学（A版）必修 第二册",
+    "label": [
+     "普通高中教科书 数学 必修 第二册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "d0fd2c1f-6b4f-43f0-8229-de0a53b197df",
+    "title": "普通高中教科书·数学（A版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "99c1fb5b-d1e0-4238-90b9-a573ab84bf08",
+    "title": "普通高中教科书·数学（A版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ffaba6c3-497d-47b0-b91a-784f43625507",
+    "title": "普通高中教科书·数学（A版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "adb974b6-7312-4ad5-9adc-6e8d135eddbc",
+    "title": "普通高中教科书·数学（B版）必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第一册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "02011dad-8881-4a85-8476-8aeb69e6eb54",
+    "title": "普通高中教科书·数学（B版）必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第二册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b1c260b8-c917-4751-b095-9863f69c8f77",
+    "title": "普通高中教科书·数学（B版）必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第三册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "350da632-7888-42fb-afc5-a022adaa28ac",
+    "title": "普通高中教科书·数学（B版）必修 第四册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修 第四册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "47306eac-960e-4799-b600-1c23212779a8",
+    "title": "普通高中教科书·数学（B版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "89dcdee0-a094-433f-ba9f-f7a5a2dd7c24",
+    "title": "普通高中教科书·数学（B版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "92c2948c-2c0c-410b-bae0-22e9d592759b",
+    "title": "普通高中教科书·数学（B版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "b9b57499-3594-4ae3-a33b-4c440739c28a",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "4dbbf35b-31dc-4fde-88ba-8369a8999874",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 必修第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "6fd52efc-6395-4a42-b810-8810064d075e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2767a985-949c-416c-83b6-cce0bca67b03",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5136d0eb-69b1-43cb-81e2-9f5f52ed06ca",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学教科书 必修第一册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "066ef32a-2360-49b1-a862-680b40b0ab2a",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学教科书 必修第二册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "55265e13-60fd-4b6e-8eb3-c4ce84dfdbe7",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学选择性必修第一册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "833cae74-4d4d-4472-8f56-a99fa306af96",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学 选择性必修第二册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "1cc53b27-108b-4d61-8948-ff135daadf77",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学必修第一册（封面+正文)压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "807d9aac-53ac-4b3e-b254-e37f5298be6e",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "鄂教版高中数学必修第二册（封面+正文）压缩",
+     "zxx",
+     "x_document"
+    ]
+   },
+   {
+    "id": "9ce0ef2b-139f-496a-8e55-02a599826648",
+    "title": "普通高中教科书·数学必修 第三册",
+    "label": [
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "zxx",
+     "x_document",
+     "鄂教版高中数学必修第三册（封面+正文）压缩"
+    ]
+   },
+   {
+    "id": "59292625-06b0-4cfd-a6af-4f3039e6ad80",
+    "title": "普通高中教科书·数学必修 第四册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学必修第四册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "745e8f68-1a78-4f83-b0f5-e22df893c390",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第一册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "fa94efb7-3958-48d2-b4e3-0092464a97eb",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第二册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5d704eba-eb45-4cae-9f13-07a943d25b9d",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选修性必修 第三册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "71ede6e4-951d-43a5-ae62-58bd9ec0a2a0",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5ac46cdf-5972-454f-b799-216329b8c2bc",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "zxx",
+     "必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "dfa0f514-a260-4d5c-a00f-7e717ac1e63a",
+    "title": "普通高中教科书·数学必修 第三册",
+    "label": [
+     "zxx",
+     "必修 第三册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "71b9d50c-aa99-4c34-859b-7aea35c0b11a",
+    "title": "普通高中教科书·数学必修 第四册",
+    "label": [
+     "zxx",
+     "必修 第四册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c142386a-85de-4c44-bb42-29a70b50056e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "选择性必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "24ca7cd7-8add-4661-85ac-5823dadf28e1",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "选择性必修 第三册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "75d71a33-a32d-48c8-bc79-2fb7dd679a42",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版  高中数学 必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "16daab2a-2bcc-454d-9f1d-26e04556d969",
+    "title": "普通高中教科书·数学必修 第二册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版 高中数学 必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "a939d024-348c-4137-8aab-80d8db0e0b5c",
+    "title": "普通高中教科书·数学必修 第一册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版  高中数学 选择性必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f7f22402-4ee2-4bc0-82f5-100f9201c6a6",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版 高中数学 选择性必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "561c947a-b8b7-7b91-11d5-98dbb04e2e82",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": []
+   }
+  ]
+ },
+ "math-x1": {
+  "ours": {
+   "book": "x1",
+   "subject": "math",
+   "vol": "x1",
+   "pdf": "data/pdf-cache/rjb-math-x1.pdf",
+   "pages": 154
+  },
+  "candidates": [
+   {
+    "id": "d0fd2c1f-6b4f-43f0-8229-de0a53b197df",
+    "title": "普通高中教科书·数学（A版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "99c1fb5b-d1e0-4238-90b9-a573ab84bf08",
+    "title": "普通高中教科书·数学（A版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ffaba6c3-497d-47b0-b91a-784f43625507",
+    "title": "普通高中教科书·数学（A版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "47306eac-960e-4799-b600-1c23212779a8",
+    "title": "普通高中教科书·数学（B版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "89dcdee0-a094-433f-ba9f-f7a5a2dd7c24",
+    "title": "普通高中教科书·数学（B版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "92c2948c-2c0c-410b-bae0-22e9d592759b",
+    "title": "普通高中教科书·数学（B版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "6fd52efc-6395-4a42-b810-8810064d075e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2767a985-949c-416c-83b6-cce0bca67b03",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "55265e13-60fd-4b6e-8eb3-c4ce84dfdbe7",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学选择性必修第一册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "833cae74-4d4d-4472-8f56-a99fa306af96",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学 选择性必修第二册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "745e8f68-1a78-4f83-b0f5-e22df893c390",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第一册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "fa94efb7-3958-48d2-b4e3-0092464a97eb",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第二册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5d704eba-eb45-4cae-9f13-07a943d25b9d",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选修性必修 第三册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c142386a-85de-4c44-bb42-29a70b50056e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "选择性必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "24ca7cd7-8add-4661-85ac-5823dadf28e1",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "选择性必修 第三册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "75d71a33-a32d-48c8-bc79-2fb7dd679a42",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版  高中数学 必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f7f22402-4ee2-4bc0-82f5-100f9201c6a6",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版 高中数学 选择性必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "561c947a-b8b7-7b91-11d5-98dbb04e2e82",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": []
+   }
+  ]
+ },
+ "math-x2": {
+  "ours": {
+   "book": "x2",
+   "subject": "math",
+   "vol": "x2",
+   "pdf": "data/pdf-cache/rjb-math-x2.pdf",
+   "pages": 114
+  },
+  "candidates": [
+   {
+    "id": "d0fd2c1f-6b4f-43f0-8229-de0a53b197df",
+    "title": "普通高中教科书·数学（A版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "99c1fb5b-d1e0-4238-90b9-a573ab84bf08",
+    "title": "普通高中教科书·数学（A版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ffaba6c3-497d-47b0-b91a-784f43625507",
+    "title": "普通高中教科书·数学（A版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "47306eac-960e-4799-b600-1c23212779a8",
+    "title": "普通高中教科书·数学（B版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "89dcdee0-a094-433f-ba9f-f7a5a2dd7c24",
+    "title": "普通高中教科书·数学（B版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "92c2948c-2c0c-410b-bae0-22e9d592759b",
+    "title": "普通高中教科书·数学（B版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "6fd52efc-6395-4a42-b810-8810064d075e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2767a985-949c-416c-83b6-cce0bca67b03",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "55265e13-60fd-4b6e-8eb3-c4ce84dfdbe7",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学选择性必修第一册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "833cae74-4d4d-4472-8f56-a99fa306af96",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学 选择性必修第二册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "745e8f68-1a78-4f83-b0f5-e22df893c390",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第一册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "fa94efb7-3958-48d2-b4e3-0092464a97eb",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第二册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5d704eba-eb45-4cae-9f13-07a943d25b9d",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选修性必修 第三册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c142386a-85de-4c44-bb42-29a70b50056e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "选择性必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "24ca7cd7-8add-4661-85ac-5823dadf28e1",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "选择性必修 第三册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "75d71a33-a32d-48c8-bc79-2fb7dd679a42",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版  高中数学 必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f7f22402-4ee2-4bc0-82f5-100f9201c6a6",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版 高中数学 选择性必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "561c947a-b8b7-7b91-11d5-98dbb04e2e82",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": []
+   }
+  ]
+ },
+ "math-x3": {
+  "ours": {
+   "book": "x3",
+   "subject": "math",
+   "vol": "x3",
+   "pdf": "data/pdf-cache/rjb-math-x3.pdf",
+   "pages": 155
+  },
+  "candidates": [
+   {
+    "id": "d0fd2c1f-6b4f-43f0-8229-de0a53b197df",
+    "title": "普通高中教科书·数学（A版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "99c1fb5b-d1e0-4238-90b9-a573ab84bf08",
+    "title": "普通高中教科书·数学（A版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "ffaba6c3-497d-47b0-b91a-784f43625507",
+    "title": "普通高中教科书·数学（A版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 A版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "47306eac-960e-4799-b600-1c23212779a8",
+    "title": "普通高中教科书·数学（B版）选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第一册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "89dcdee0-a094-433f-ba9f-f7a5a2dd7c24",
+    "title": "普通高中教科书·数学（B版）选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第二册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "92c2948c-2c0c-410b-bae0-22e9d592759b",
+    "title": "普通高中教科书·数学（B版）选择性必修 第三册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修 第三册 B版",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "6fd52efc-6395-4a42-b810-8810064d075e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "2767a985-949c-416c-83b6-cce0bca67b03",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "普通高中教科书 数学 选择性必修第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "55265e13-60fd-4b6e-8eb3-c4ce84dfdbe7",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学选择性必修第一册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "833cae74-4d4d-4472-8f56-a99fa306af96",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "[D]（正文）苏教版高中数学 选择性必修第二册压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "745e8f68-1a78-4f83-b0f5-e22df893c390",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第一册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "fa94efb7-3958-48d2-b4e3-0092464a97eb",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选择性必修 第二册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "5d704eba-eb45-4cae-9f13-07a943d25b9d",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "鄂教版高中数学选修性必修 第三册（封面+正文）压缩",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "c142386a-85de-4c44-bb42-29a70b50056e",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "选择性必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "24ca7cd7-8add-4661-85ac-5823dadf28e1",
+    "title": "普通高中教科书·数学选择性必修 第三册",
+    "label": [
+     "zxx",
+     "选择性必修 第三册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "75d71a33-a32d-48c8-bc79-2fb7dd679a42",
+    "title": "普通高中教科书·数学选择性必修 第一册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版  高中数学 必修 第一册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "f7f22402-4ee2-4bc0-82f5-100f9201c6a6",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": [
+     "zxx",
+     "2017课标 湘教版 高中数学 选择性必修 第二册",
+     "2cbuPWM3oXGSBI80OFKOSa",
+     "x_document"
+    ]
+   },
+   {
+    "id": "561c947a-b8b7-7b91-11d5-98dbb04e2e82",
+    "title": "普通高中教科书·数学选择性必修 第二册",
+    "label": []
+   }
+  ]
+ }
+}

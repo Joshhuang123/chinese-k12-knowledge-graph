@@ -53,6 +53,50 @@ def load(tag):
 def main() -> int:
     print("=== 学习页数据校验 ===\n")
 
+    # ── 人教版的教材正文：从本地 PDF 取 ──
+    # 沪教用 OCR 文本层（lessons-sh.jsonl），人教没有那套，
+    # 但我们有 PDF —— 而且**页码就是 PDF 的扫描页**，天然对齐。
+    rjb_index = {}
+    idx_f = DATA / "page-images-rjb.json"
+    if idx_f.exists():
+        rjb_index = json.loads(idx_f.read_text(encoding="utf-8"))
+    PDFC = DATA / "pdf-cache"
+    SUBJ_ABBR = {"biology": "bio", "chemistry": "chem", "physics": "phys", "math": "math"}
+    HIGH_VOL = {"bx1": "m1", "bx2": "m2", "bx3": "m3",
+                "xzxbx1": "x1", "xzxbx2": "x2", "xzxbx3": "x3"}
+    _docs = {}
+
+    def _rjb_pdf(pbk):
+        if pbk in _docs:
+            return _docs[pbk]
+        try:
+            head, rest = pbk.split("-", 1)
+            rest = HIGH_VOL.get(rest, rest)
+            p = PDFC / f"rjb-{SUBJ_ABBR.get(head, head)}-{rest}.pdf"
+            import fitz
+            try:
+                fitz.TOOLS.mupdf_display_errors(False)
+            except Exception:
+                pass
+            d = fitz.open(p) if p.exists() else None
+        except Exception:
+            d = None
+        _docs[pbk] = d
+        return d
+
+    def rjb_pages(pbk):
+        d = _rjb_pdf(pbk)
+        return d.page_count if d else None
+
+    def rjb_text(pbk, pg):
+        d = _rjb_pdf(pbk)
+        if not d or pg < 1 or pg > d.page_count:
+            return ""
+        try:
+            return d[pg - 1].get_text()
+        except Exception:
+            return ""
+
     # 教材正文
     ocr = collections.defaultdict(dict)
     for line in (DATA / "lessons-sh.jsonl").read_text(encoding="utf-8").splitlines():
@@ -73,28 +117,41 @@ def main() -> int:
 
         # ① 页图指向正文页
         #
-        # ⚠️ **只有沪教版有页图** ——
-        # 人教版的教材来自 ChinaTextbook 的 PDF，平台没有对应扫描本；
-        # 小学科学是人教版《小学科学》，同理。
-        # 页码体系不同源，硬拼会**翻到错的页** ——
-        # 那比不显示更坏。所以这两版不显示教材原页图，是已知限制，不是错误。
+        # ⚠️ **三个版本的页图来源不同**，门禁不能只认 `loc.bk`：
+        #   沪教版  loc.bk     = 沪教书号（sh-hk-数学-s-7b…）→ 平台扫描页图
+        #   人教版  loc.pdfBook = 教材册次码（math-7a…）       → **本地 PDF 渲染的页图**
+        #   小学科学 loc.pdfBook = kx/s6-1a…                   → 还没接（见下）
+        #
+        # 原来只判 `loc.bk`，于是人教版那条分支**一条都没跑**，
+        # 判据形同虚设（而它自己还在报「人教无教材原页图」——口径也过时了）。
         withimg = [n for n in nodes if n.get("loc", {}).get("scan")]
-        if tag == "sh":
+        if tag in ("sh", "rjb"):
             check(len(withimg) > 0, f"{tag}: 有节点带页图",
                   f"0 个（页面上的「教材原页」这一块会是空的）")
         else:
-            print(f"  · {tag}: 无教材原页图（教材来自 PDF，平台无对应扫描本）—— 已知限制")
+            print(f"  · {tag}: 无教材原页图（小学科学还没接页图）—— 已知限制")
         bad_page = 0
         dirish = 0
         notmentioned = 0
+        missing_file = 0
         for n in withimg:
             loc = n["loc"]
-            bk = loc["bk"]
+            bk = loc.get("bk") or ""
+            pbk = loc.get("pdfBook") or ""
             pg = loc["scan"][0]
-            total = (TB.get(bk) or {}).get("pages")
+            if pbk:
+                # 人教版：页码是本地 PDF 的扫描页，总页数按 PDF 算
+                total = rjb_pages(pbk)
+                txt = rjb_text(pbk, pg)
+                # 页图文件必须真的在磁盘上
+                f = rjb_index.get(pbk, {}).get(str(pg))
+                if not f or not (BASE / f).exists():
+                    missing_file += 1
+            else:
+                total = (TB.get(bk) or {}).get("pages")
+                txt = ocr.get(bk, {}).get(pg) or ""
             if total and pg > total:
                 bad_page += 1
-            txt = ocr.get(bk, {}).get(pg) or ""
             # 目录页特征：正文里出现「……第 N 页」这种目录条目串
             if len(re.findall(r"\.{3,}\s*\d+", txt)) >= 3:
                 dirish += 1
@@ -104,6 +161,9 @@ def main() -> int:
               f"{bad_page} 个越界")
         check(dirish == 0, f"{tag}: 显示页不是目录页",
               f"{dirish} 个是目录页（正文里出现大量「…N 页」条目）")
+        if tag == "rjb":
+            check(missing_file == 0, f"{tag}: 页图文件都在磁盘上",
+                  f"{missing_file} 个索引指向的文件不存在")
         # 「正文里提到概念」不是硬性要求（有些概念的页图是插图页），
         # 但不能太多 —— 超过 60% 说明页码挑错了
         if withimg:
