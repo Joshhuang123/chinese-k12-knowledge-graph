@@ -4960,3 +4960,87 @@ CSS 没跟着挪，就叠了。
 python3 src/check_layout_density.mjs viz/知识图谱3D.html   # 布局判据
 NODE_PATH=/tmp/kg-test/node_modules node src/test_search_browser.mjs
 ```
+
+---
+
+## ISSUE-55　仓库在 iCloud 同步范围内：文件被卸载成本地空壳，git 读 `.git/index` 直接超时
+
+2026-10-28 收尾时撞上的。`git status` 报：
+
+```
+fatal: .git/index: unable to map index file: Operation timed out
+```
+
+但 `git log` / `git show` 正常 —— 所以第一反应是「git 坏了」。
+
+### 真因：文件是 `dataless`（内容被 iCloud 卸载到云端）
+
+`stat -f "%Sf" .git/index`：
+
+```
+hidden,compressed,dataless
+```
+
+`dataless` = 这个文件**本地只剩一个壳**，内容在 iCloud 上。
+读它要先去云端拉回来；**本机代理 127.0.0.1:7897 正好在抽风**，拉取超时，
+于是 `cat` / `cp` / `git` 全部卡死。
+
+`brctl status` 里能直接看到它在 iCloud 的管辖范围内：
+
+```
+Under /Documents/个人/项目/中文知识图谱/data
+```
+
+`~/Documents` 开着「桌面与文稿」同步 → **整个仓库都在 iCloud 里**。
+
+### 范围
+
+- `.git/index`（148 KB）+ 对象库里 **67 个对象**（commit / tree / blob 都有）
+- 工作区的文件**没事** —— 只有 iCloud 认为「很少访问」的那些被卸载了
+- 这跟仓库大小直接相关：本项目现在有 **82 MB 教材页图 + 130 MB 视频**，
+  iCloud 优化存储必然会挑它们下手
+
+### 为什么「整读会超时、读头却正常」
+
+`git cat-file -t <sha>` 只读对象头部 → **成功**；
+`git cat-file commit <sha>` 读整个对象 → 也成功了（网络恢复后）；
+但 `cat .git/index` 连续 3 次 25 秒超时。
+
+**判据**：能不能 `cat` 出来，跟网络当时通不通有关，不是文件坏了。
+排查时别把它当成「文件损坏」去重建仓库。
+
+### 处置
+
+**当场恢复**（index 只是个可再生的缓存，重建没有任何信息损失）：
+
+```bash
+# 1. 在别处建一份新 index（read-tree 只写不读旧 index）
+GIT_INDEX_FILE=/tmp/idx.new git read-tree HEAD
+
+# 2. **原子改名**覆盖 —— 不能用 cp！
+#    cp 打开目标写入时，先要把 dataless 文件拉回来 → 一样超时
+python3 -c "import os,shutil; shutil.copyfile('/tmp/idx.new','/tmp/f'); os.replace('/tmp/f','.git/index')"
+```
+
+`os.replace` 是**改名**不是写入，所以完全绕开了「先拉取再写」那一步。
+
+对象库里的 dataless 对象**不用管**：网络一通，`git cat-file` 读的时候
+iCloud 会自动把内容拉回来（实测 commit 对象整读成功）。
+
+### 根上的修法（需要用户决定）
+
+iCloud 同步 `~/Documents` 的话，这个仓库**会反复被卸载**。三条路：
+
+| 方案 | 做法 | 代价 |
+|---|---|---|
+| **A. 搬出去**（推荐） | 仓库移到 `~/Projects/` 之类**不在同步范围**的目录，原路径留软链接 | 一次性搬 200 MB+；软链接路径要重新配 |
+| B. 固定在本地 | Finder 里对仓库文件夹右键「保留在本地」；或系统设置 → Apple ID → iCloud → 云盘 → 关掉「优化存储」 | 只对已固定的文件生效，新文件还会被卸载 |
+| C. 排除 `.git` | 把 `.git` 挪出同步范围 | 破坏仓库完整性，不做 |
+
+**未做**：搬仓库会动用户 200 MB+ 的目录结构和软链接，是**用户决定**，不是我能替他做的。
+
+### 教训
+
+**「git 报 I/O 错误」的第一反应不该是「仓库坏了」** —— 先 `stat -f "%Sf"` 看一眼文件状态。
+`dataless` 这个标记一眼就能看出来，跟内容损坏完全不是一回事。
+

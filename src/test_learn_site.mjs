@@ -70,6 +70,77 @@ console.log('\n[1] 三个版本都能打开');
   await page.close();
 }
 
+// ── [1b] 学习页标题字形必须**显式声明**（不许悄悄回落成别的字） ──
+//
+// 跟主站那条判据（test_search_browser.mjs [1d]）是同一套思路，但**各测各的**：
+// 主站测 viz/知识图谱3D.html，学习页测 learn.html —— 学习页是**另一套模板**，
+// 原来标题还在用无衬线，同一个站里两个视觉系统（2026-10-28 海报化时才发现）。
+//
+// 判据守的是**意图**，不是当年的解法：
+//   ① 字体族是**显式**声明的，不能靠 generic fallback
+//   ② 渲染结果必须等于**声明的那一款**字（像素指纹）
+//   ③ 声明栈的第一项**不能是西文字体**（那正是西文/中文混排的坑）
+//
+// 判别力：把 .hero h1 的 font-family 改回 sans-serif → 第 2、3、4 条报红。
+console.log('\n[1b] 学习页标题字形必须显式声明');
+{
+  const { page } = await open('');
+  const res = await page.evaluate(() => {
+    const T = '一个知识点，一页。';
+    const cv = document.createElement('canvas'); cv.width = 700; cv.height = 90;
+    const g = cv.getContext('2d');
+    const fp = s => {
+      g.clearRect(0, 0, 700, 90);
+      g.fillStyle = '#000'; g.fillRect(0, 0, 700, 90);
+      g.font = '400 60px ' + s; g.fillStyle = '#fff'; g.textBaseline = 'top';
+      g.fillText(T, 4, 4);
+      const d = g.getImageData(0, 0, 700, 90).data;
+      let h = 0; for (let i = 0; i < d.length; i += 4) h = (h * 31 + d[i]) | 0;
+      return h;
+    };
+    const el = document.querySelector('.hero h1');
+    if (!el) return { missing: true };
+    const cs = getComputedStyle(el);
+    return {
+      sans: fp('sans-serif'),
+      song: fp('"Songti SC"'),
+      actual: fp(cs.fontFamily),
+      decl: cs.fontFamily,
+      size: cs.fontSize,
+      weight: cs.fontWeight,
+      text: el.textContent || '',
+    };
+  });
+  ok(!res.missing, '首页有 hero 大标题');
+  if (!res.missing) {
+    ok(res.sans !== res.song, '基准成立：sans-serif 与中文衬线在本页渲染成不同字形');
+    ok(/^\s*["']Songti SC["']/.test(res.decl), 'hero 大标题显式声明了中文字体', res.decl);
+    ok(res.actual === res.song, 'hero 大标题渲染结果 = 声明的那款字', res.decl);
+    const first = res.decl.split(',')[0].trim();
+    ok(!/DM Serif|Georgia|Times/i.test(first), '声明栈第一项不是西文字体', first);
+    ok(Number.parseFloat(res.size) >= 34, `大标题字号撑得住首屏（${res.size}）`);
+    ok(res.weight === '400', `衬线标题用常规字重，不拿粗体压字形（${res.weight}）`);
+  }
+
+  // 节点页的知识点名 —— 那才是这个站的「海报」，得是同一款字
+  const nid = await page.evaluate(() => (window.LEARN_DATA?.nodes || [])[0]?.i);
+  ok(nid != null, '取得到一个知识点 id');
+  if (nid != null) {
+    const { page: p2 } = await open(`?v=sh&c=${nid}`);
+    const ct = await p2.evaluate(() => {
+      const el = document.querySelector('.ctitle');
+      if (!el) return null;
+      const cs = getComputedStyle(el);
+      return { decl: cs.fontFamily, size: cs.fontSize, text: el.textContent || '' };
+    });
+    ok(!!ct, '节点页有知识点标题', ct?.text);
+    ok(ct && /^\s*["']Songti SC["']/.test(ct.decl), '节点页标题也是同一款中文衬线', ct?.decl);
+    ok(ct && Number.parseFloat(ct.size) >= 26, `节点页标题字号够大（${ct?.size}）`);
+    await p2.close();
+  }
+  await page.close();
+}
+
 // ── [2] 搜索 → 学习页 ────────────────────────────────────
 console.log('\n[2] 搜索能到学习页');
 {

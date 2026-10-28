@@ -10,6 +10,11 @@
   --bg:#08090c; --panel:#0f1218; --panel2:#141822; --line:#232a36;
   --fg:#e8ebf2; --muted:#8b93a7; --dim:#5d6577;
   --acc:#ff3d7f; --amber:#ff9f45; --ok:#43d9c0; --blue:#7fd3ff;
+  /* **显式声明的中文衬线**，不是 generic fallback。
+     主站（图谱站）标题已经是这套；学习页是**另一套模板**，
+     原来还在用无衬线 —— 同一站里两个视觉系统。
+     声明栈第一项不能是西文字体（那正是主站踩过的混排坑）。 */
+  --serif:'Songti SC','Source Han Serif SC','Noto Serif CJK SC','SimSun',serif;
   --r:12px;
 }
 *{box-sizing:border-box}
@@ -66,7 +71,52 @@ main{max-width:1180px;margin:0 auto;padding:22px 20px 80px}
 .crumb b{color:var(--fg);font-weight:600}
 
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:16px}
-h1{font-size:28px;line-height:1.25;margin:0 0 10px;letter-spacing:-.4px}
+
+/* ── 海报式 hero ────────────────────────────────────────────
+ * 学习页原来是一堆 .card 堆在一起 —— 信息都在，但没有一个「主视觉」。
+ * 跟主站（图谱站）学的是**表现层**：一个衬线大标题撑住首屏，
+ * 底下才是卡片流。内容一个字没改。
+ *
+ * 底纹是极淡网格（0.055），跟图谱站画在 canvas 上的那层同一套规则。 */
+.hero{
+  position:relative;overflow:hidden;
+  border:1px solid var(--line);border-radius:16px;
+  padding:32px 30px 26px;margin-bottom:18px;
+  background:
+    radial-gradient(120% 150% at 6% -10%, rgba(255,157,69,.11), transparent 56%),
+    radial-gradient(95% 130% at 96% 4%, rgba(255,61,127,.10), transparent 58%),
+    linear-gradient(180deg,#111620,#0b0e14);
+}
+.hero::before{                     /* 极淡网格 0.055 */
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(190,190,210,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(190,190,210,.055) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(120% 120% at 20% 0%,#000 10%,transparent 72%);
+  -webkit-mask-image:radial-gradient(120% 120% at 20% 0%,#000 10%,transparent 72%);
+}
+.hero > *{position:relative;z-index:1}
+.hero .kicker{
+  display:flex;align-items:center;gap:9px;margin-bottom:16px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+}
+.hero .kicker .dot{width:5px;height:5px;border-radius:50%;background:var(--amber)}
+.hero h1{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(34px,5.4vw,64px);line-height:1.12;letter-spacing:.01em;
+  margin:0 0 14px;
+}
+.hero h1 em{font-style:normal;color:var(--acc)}
+.hero .lede{color:#c2c9d8;font-size:15.5px;line-height:1.85;max-width:64ch;margin:0 0 16px}
+.hero .lede b{color:var(--fg);font-weight:600}
+
+h1{
+  font-family:var(--serif);font-weight:400;
+  font-size:28px;line-height:1.25;margin:0 0 10px;letter-spacing:.01em;
+}
+/* 节点页的知识点名 —— 那才是这个站的「海报」，字号再上一档 */
+.ctitle{font-size:clamp(26px,3.4vw,40px);line-height:1.2;margin:0 0 12px}
 h2{font-size:15px;margin:0 0 12px;color:var(--fg);display:flex;align-items:center;gap:9px}
 h2::before{content:"";width:3px;height:15px;border-radius:2px;background:var(--acc)}
 h2 .n{color:var(--dim);font-weight:400;font-size:12.5px}
@@ -437,10 +487,11 @@ function homeHTML(){
   const withFormula = DATA.nodes.filter(n=>n.f && n.f.length).length;
   const withPr = DATA.nodes.filter(n=>n.pre && n.pre.length).length;
   return `
-  <div class="card">
-    <h1>一个知识点，一页</h1>
-    <div class="def">${esc(v.desc)}。每个知识点一页，把<b>看懂</b>（讲解视频 · 教材原页 · 教材原话 · 公式图）和<b>会做</b>（教材例题）放在一起，
-    再给出它的<b>前置链</b> —— 往前追，就能看出卡在哪一环。</div>
+  <section class="hero">
+    <div class="kicker"><span class="dot"></span>学习页 · ${esc(v.label)}</div>
+    <h1>一个知识点，<em>一页。</em></h1>
+    <p class="lede">${esc(v.desc)}。每个知识点一页，把<b>看懂</b>（讲解视频 · 教材原页 · 教材原话 · 公式图）和<b>会做</b>（教材例题）放在一起，
+    再给出它的<b>前置链</b> —— 往前追，就能看出卡在哪一环。</p>
     <div class="chips">
       <span class="chip">${total.toLocaleString()} 个知识点</span>
       <span class="chip">${withRead.toLocaleString()} 个有教材原话</span>
@@ -448,7 +499,7 @@ function homeHTML(){
       <span class="chip">${withPr.toLocaleString()} 个有前置</span>
     </div>
     <div class="empty" style="margin-top:12px">在上面的搜索框里搜一个知识点，或者从下面按教材翻、按年级进。</div>
-  </div>
+  </section>
   ${browseHTML()}
   <div class="card">
     <h2>按年级进<span class="n">${gs.length} 个年级层</span></h2>
@@ -734,7 +785,7 @@ function nodeHTML(n){
   return `
   <div class="crumb"><a href="#" data-home="1">${esc(DATA.label)}</a> · <b>${esc(n.n)}</b></div>
   <div class="card">
-    <h1>${esc(n.n)}</h1>
+    <h1 class="ctitle">${esc(n.n)}</h1>
     <div class="chips">${chips.join('')}</div>
     ${n.d?`<div class="def">${esc(n.d)}<span class="src">图谱定义</span></div>`:''}
   </div>
