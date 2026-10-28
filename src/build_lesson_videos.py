@@ -215,8 +215,16 @@ def _probe_duration(mp4):
 
 def write_indexes(ids):
     """把做好的视频挂进 learn-videos.json，并导出讲解稿文字版"""
+    # ⚠️ **写入前重读** —— 索引是累积的，
+    # 而一次运行可能横跨几小时，期间别的运行（或你自己手改）会往里加条目。
+    # 在启动时读一次、写的时候用内存里那份 → **会把别人的条目覆盖掉**。
     vids = json.loads(VIDEOS_JSON.read_text(encoding="utf-8")) if VIDEOS_JSON.exists() else {}
     expl = {}
+    if EXPLAINS_JS.exists():
+        try:
+            expl = json.loads(EXPLAINS_JS.read_text(encoding="utf-8").split("=", 1)[1].rstrip().rstrip(";"))
+        except Exception:
+            expl = {}
     for cid in ids:
         # ids 里带版本前缀（形如 rjb_math_9b_rjb_cpt1）
         sc = SCRIPTS / f"{cid}.json"
@@ -245,6 +253,15 @@ def write_indexes(ids):
         vids[key] = entry
         expl[key] = {"lines": L["explain"]["lines"], "from": L["explain"].get("from", "")}
 
+    # 再读一次，把这轮之外的改动并进来
+    if VIDEOS_JSON.exists():
+        try:
+            disk = json.loads(VIDEOS_JSON.read_text(encoding="utf-8"))
+            for k, v in disk.items():
+                if k not in vids:
+                    vids[k] = v
+        except Exception:
+            pass
     VIDEOS_JSON.write_text(json.dumps(vids, ensure_ascii=False, indent=2), encoding="utf-8")
     # ⚠️ **两个文件必须一起写** ——
     #   data/learn-videos.json  → build_learn_site.py 读的（合并进 rec["v"]）
