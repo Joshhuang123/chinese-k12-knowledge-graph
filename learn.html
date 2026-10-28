@@ -675,7 +675,7 @@ function nodeHTML(n){
       // ⚠️ 本地 mp4 走 <video>，不走 <iframe> ——
       // iframe 里放 mp4 会有浏览器的内嵌播放器边框，且没法调速。
       vidHTML = `<div class="card"><h2>讲解视频<span class="n">${esc(vv.dur||'')}</span></h2>
-        <div class="vid"><video src="${esc(vv.mp4)}" controls preload="none" playsinline
+        <div class="vid"><video src="${esc(vv.mp4)}" controls preload="none" playsinline referrerpolicy="no-referrer"
           poster="${esc(vv.poster||'')}"></video></div>
         <p style="margin:10px 0 0"><a href="${esc(vv.mp4)}" target="_blank" rel="noopener">另开窗口看</a>
         ${vv.title?` · ${esc(vv.title)}`:''}${vv.dur?` · ${esc(vv.dur)}`:''}</p></div>`;
