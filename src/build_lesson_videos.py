@@ -214,17 +214,35 @@ def _probe_duration(mp4):
 
 
 def write_indexes(ids):
-    """把做好的视频挂进 learn-videos.json，并导出讲解稿文字版"""
-    # ⚠️ **写入前重读** —— 索引是累积的，
-    # 而一次运行可能横跨几小时，期间别的运行（或你自己手改）会往里加条目。
-    # 在启动时读一次、写的时候用内存里那份 → **会把别人的条目覆盖掉**。
-    vids = json.loads(VIDEOS_JSON.read_text(encoding="utf-8")) if VIDEOS_JSON.exists() else {}
+    """把做好的视频挂进 learn-videos.json，并导出讲解稿文字版
+
+    ⚠️ **全量重建**（2026-10-28 改）：以前只处理这轮跑过的稿子，
+    其余靠「读磁盘再并进来」保住 —— 而那个合并只加不减，
+    加上循环里 `vids.pop(L["id"], None)`（清早期裸 id 键），
+    就出现了**条目被删掉后再也补不回来**的情况：
+      实测 rjb:biology_7a_rjb_cpt109 / rjb:biology_7a_rjb_cpt16
+      从索引里消失，而 mp4 文件一直在 —— 学习页上就挂不出来。
+    现在扫**全部稿子**，凡是有成片的都写进去：
+    索引永远是「稿子 × 成片」的完整快照，不依赖历史。
+    """
+    vids = {}
     expl = {}
     if EXPLAINS_JS.exists():
         try:
             expl = json.loads(EXPLAINS_JS.read_text(encoding="utf-8").split("=", 1)[1].rstrip().rstrip(";"))
         except Exception:
             expl = {}
+    # 全量重建：扫所有稿子，不管这轮跑没跑过
+    all_ids = []
+    for f in sorted(SCRIPTS.glob("*.json")):
+        try:
+            L = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        all_ids.append(f"{L.get('version') or 'sh'}_{L['id']}")
+    # 本轮跑出来的优先放前面（保持原有顺序）
+    ids = [c for c in ids if c in all_ids] + [c for c in all_ids if c not in ids]
+
     for cid in ids:
         # ids 里带版本前缀（形如 rjb_math_9b_rjb_cpt1）
         sc = SCRIPTS / f"{cid}.json"
@@ -253,12 +271,17 @@ def write_indexes(ids):
         vids[key] = entry
         expl[key] = {"lines": L["explain"]["lines"], "from": L["explain"].get("from", "")}
 
-    # 再读一次，把这轮之外的改动并进来
+    # ⚠️ 不再从磁盘合并 —— 全量重建本身就是完整快照。
+    # 保留一条：**人工手加的条目**（没有对应稿子的）不丢，
+    # 比如直接往索引里塞的外部视频（B站/YouTube）。
     if VIDEOS_JSON.exists():
         try:
             disk = json.loads(VIDEOS_JSON.read_text(encoding="utf-8"))
             for k, v in disk.items():
-                if k not in vids:
+                if k.startswith("_") or k in vids:
+                    continue
+                # 没有对应稿子的，才可能是手工加的外部条目
+                if isinstance(v, dict) and not str(v.get("mp4", "")).startswith("video/"):
                     vids[k] = v
         except Exception:
             pass

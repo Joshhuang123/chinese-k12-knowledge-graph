@@ -5027,6 +5027,22 @@ python3 -c "import os,shutil; shutil.copyfile('/tmp/idx.new','/tmp/f'); os.repla
 对象库里的 dataless 对象**不用管**：网络一通，`git cat-file` 读的时候
 iCloud 会自动把内容拉回来（实测 commit 对象整读成功）。
 
+### 已经做进仓库的工具
+
+`src/fix_git_index.py` —— 一条命令恢复（2026-10-28 加）：
+
+```bash
+python3 src/fix_git_index.py           # 查 + 修
+python3 src/fix_git_index.py --check   # 只查
+```
+
+它做三件事：看 `st_flags` 的 `UF_DATALESS` 标志 → 在别处 `git read-tree HEAD`
+建一份新 index → **`os.replace()` 原子改名**盖上去（rename 不打开目标文件，
+所以完全绕开「先拉取再写」那一步）。
+
+**这个坑在 2026-10-28 当天复发了一次**（做完上面那轮改动、准备提交时又 unloaded 了一次），
+所以工具是必要的，不是可选的。
+
 ### 根上的修法（需要用户决定）
 
 iCloud 同步 `~/Documents` 的话，这个仓库**会反复被卸载**。三条路：

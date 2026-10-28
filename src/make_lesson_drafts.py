@@ -46,6 +46,40 @@ def load(tag):
     return json.loads(t[t.index("=") + 1:].rstrip().rstrip(";"))
 
 
+def upstream_formulas():
+    """上游教材原式：id → props.formula（graph.json）
+
+    ⚠️ 这是**教材书上印的那个式子**，跟视觉层 OCR 出来的 `f` 是两个来源。
+    视觉层可能漏（或者把式子拆成几条），所以两个都要给写稿的人 ——
+    写稿的人才有得**逐字照抄**，而不是自己重新排版（排版 = 改写）。
+    """
+    out = {}
+    g = DATA / "normalized" / "graph.json"
+    if not g.exists():
+        return out
+    try:
+        d = json.loads(g.read_text(encoding="utf-8"))
+    except Exception:
+        return out
+    for n in d.get("nodes") or []:
+        f = (n.get("props") or {}).get("formula")
+        if f and n.get("id"):
+            out[n["id"]] = f
+    return out
+
+
+def _merge_formulas(vis, up):
+    """视觉层式子 + 上游教材原式，去重保序。
+
+    上游原式**放在最前面** —— 它是书上印的那一个，写稿的人要照抄它。
+    """
+    out = []
+    for x in ([up] if up else []) + list(vis or []):
+        if x and x not in out:
+            out.append(x)
+    return out[:8]
+
+
 def stage_of(g):
     if not g:
         return "其他"
@@ -63,6 +97,11 @@ def main() -> int:
     ap.add_argument("--versions", default="sh,rjb", help="要考虑的版本")
     ap.add_argument("--no-hard", action="store_true",
                     help="不要求教材标过难（放宽到全部候选）")
+    ap.add_argument("--only", action="append", default=[],
+                    help="只给指定的概念 id 建素材包（可重复）。"
+                         "绕过「必须有教材原话」这条筛选 —— "
+                         "有些核心概念没有教材原话，永远进不了素材包，"
+                         "讲解稿就没法自检。页码算不出来 / 选到前言页的仍不选。")
     args = ap.parse_args()
 
     outdir = BASE / args.out
@@ -105,6 +144,8 @@ def main() -> int:
             return None, ""
         return scan + o, f"{loc.get('ed') or ''}{loc.get('vol') or ''}"
 
+    up_formula = upstream_formulas()
+
     cands = []
     for tag in args.versions.split(","):
         D = load(tag)
@@ -115,7 +156,10 @@ def main() -> int:
             loc = n.get("loc") or {}
             if not loc.get("scan"):
                 continue
-            if not n.get("rd") or not n.get("core"):
+            # `--only` 时绕过「必须有教材原话」——
+            # 有些核心概念（如「浮力」）根本没有 rd，
+            # 它们永远进不了素材包，稿子就没法自检。
+            if not args.only and (not n.get("rd") or not n.get("core")):
                 continue
             # 前置**或**后继至少有一个 ——
             # 样板前置被数据层滤掉了（ISSUE-53），大部分概念的 pre 是空的，
@@ -123,7 +167,10 @@ def main() -> int:
             if not n.get("pre") and not n.get("suc"):
                 continue
             h = hard.get(n["id"])
-            if not args.no_hard and not h:
+            # `--only` 也绕过「教材标过难」——
+            # 那条是**选片偏好**（排序用），不是正确性条件；
+            # 定向给某个概念建包时不该拿它当门槛。
+            if not args.no_hard and not args.only and not h:
                 continue
             pp, pdesc = printed_page(loc)
             if pp is None:
@@ -148,7 +195,8 @@ def main() -> int:
                                for it in ((h or {}).get("items") or [])][:4],
                 "quotes": [{"text": r.get("t"), "def": r.get("def"), "page": r.get("p")}
                            for r in (n.get("rd") or [])][:4],
-                "formulas": (n.get("f") or [])[:6],
+                # 视觉层的式子 + **上游教材原式**（后者常被视觉层漏掉）
+                "formulas": _merge_formulas(n.get("f") or [], up_formula.get(n["id"])),
                 "figures": [{"cap": g.get("c"), "text": (g.get("t") or "")[:120]}
                             for g in (n.get("fg") or [])][:3],
                 "prereq": [{"name": nm} for _, nm in (n.get("pre") or [])][:6],
@@ -176,24 +224,37 @@ def main() -> int:
                 },
             })
 
+    # ── `--only`：定向取，不做均衡 ──
+    if args.only:
+        want = set(args.only)
+        picked = [c for c in cands if c["id"] in want]
+        missing = want - {c["id"] for c in picked}
+        for m in sorted(missing):
+            print(f"  !! 没找到可用的概念：{m}"
+                  f"（页码算不出来 / 选到前言页 / 该版本里没有）")
+        cands = picked
+    else:
+        picked = []
+
     # ── 跨版本 + 跨学段均衡 ──
     # 组：(版本, 学段)。组内按「教材标的难题数」降序，再按版本内依赖度排名。
-    groups = collections.defaultdict(list)
-    for c in cands:
-        groups[(c["version"], c["stage"])].append(c)
-    for k in groups:
-        groups[k].sort(key=lambda c: (-c["hard_count"], c["c_rank_in_version"]))
+    if not args.only:
+        groups = collections.defaultdict(list)
+        for c in cands:
+            groups[(c["version"], c["stage"])].append(c)
+        for k in groups:
+            groups[k].sort(key=lambda c: (-c["hard_count"], c["c_rank_in_version"]))
 
-    keys = sorted(groups, key=lambda k: (k[0], ["小学", "初中", "高中", "其他"].index(k[1])))
-    picked = []
-    round_i = 0
-    while len(picked) < args.n and any(groups[k] for k in keys):
-        for k in keys:
-            if len(picked) >= args.n:
-                break
-            if groups[k]:
-                picked.append(groups[k].pop(0))
-    # 组内取完再轮
+        keys = sorted(groups, key=lambda k: (k[0], ["小学", "初中", "高中", "其他"].index(k[1])))
+        picked = []
+        round_i = 0
+        while len(picked) < args.n and any(groups[k] for k in keys):
+            for k in keys:
+                if len(picked) >= args.n:
+                    break
+                if groups[k]:
+                    picked.append(groups[k].pop(0))
+        # 组内取完再轮
 
     # ⚠️ 文件名必须带版本 —— 上游的 id **跨版本共享**：
     #   math_7a_rjb_cpt58 在沪教版是「立体图形」，在人教版是另一本教材里的东西。

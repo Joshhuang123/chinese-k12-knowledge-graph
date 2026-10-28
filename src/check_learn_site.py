@@ -21,6 +21,7 @@ import collections
 import json
 import pathlib
 import re
+import subprocess
 import sys
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
@@ -255,6 +256,57 @@ def main() -> int:
 
     # ⑤ 页图基址可用性
     check(len(PAGE_IMG) == 67, "页图基址覆盖 67 本沪教教材", f"{len(PAGE_IMG)} 本")
+
+    # ⑥ 成片必须**真的能解码** ——
+    #   2026-10-28 撞上：21 条成片里有 1 条 mp4 的 mdat 是坏的
+    #   （「Invalid NAL unit size」× 4000+），文件在、封面帧也在、索引也正常，
+    #   **所有已有的检查都显示正常** —— 但视频播不出来。
+    #
+    #   ⚠️ `ffprobe` 只报时长是**抓不住**的：moov atom 完整，
+    #   时长读得出来，但 mdat 里的数据是垃圾 → 探时长通过、解码失败。
+    #   所以判据必须**整解码一遍**（`ffmpeg -f null -`），一条 0.66 秒。
+    vids = sorted((BASE / "video").glob("*.mp4"))
+    if vids:
+        broken = []
+        for v in vids:
+            try:
+                r = subprocess.run(
+                    ["ffmpeg", "-v", "error", "-i", str(v), "-f", "null", "-"],
+                    capture_output=True, text=True, timeout=60)
+                errs = sum(1 for ln in r.stderr.splitlines()
+                           if "Invalid NAL" in ln or "missing picture" in ln
+                           or "Error splitting" in ln)
+                if errs:
+                    broken.append(f"{v.name}({errs})")
+            except Exception as e:
+                broken.append(f"{v.name}({e})")
+        check(not broken, f"{len(vids)} 条成片都能整解码（不是只有文件在）",
+              " | ".join(broken[:3]) if broken else "")
+        # 每条成片都得有封面帧（播放器是 preload="none"，没封面就是个黑框）
+        noposter = [v.stem for v in vids if not (BASE / "video" / f"{v.stem}.jpg").exists()]
+        check(not noposter, "每条成片都有封面帧", " | ".join(noposter[:3]))
+
+        # ⑦ 成片文件与索引必须**一一对应** ——
+        #   2026-10-28 撞上：索引是**累积式**的，只处理这轮跑过的稿子，
+        #   其余靠「读磁盘再并进来」保住 —— 而那个合并只加不减，
+        #   加上循环里清「早期裸 id 键」的 pop，
+        #   就出现了条目被删掉**再也补不回来**的情况：
+        #   两条视频的 mp4 文件一直在，索引里却没了 → 学习页上挂不出来。
+        #   现在索引改成**全量重建**，这条判据守住它。
+        try:
+            vidx = json.loads((DATA / "learn-videos.json").read_text(encoding="utf-8"))
+        except Exception:
+            vidx = {}
+        indexed = {v.get("mp4") for v in vidx.values()
+                   if isinstance(v, dict) and v.get("mp4")}
+        on_disk = {f"video/{v.name}" for v in vids}
+        orphan = sorted(on_disk - indexed)
+        check(not orphan, "每条成片都在索引里（挂得出来）",
+              " | ".join(orphan[:3]) if orphan else f"{len(vids)} 条")
+        ghost = sorted(p for p in indexed - on_disk if p.startswith("video/"))
+        check(not ghost, "索引里没有指向不存在文件的条目", " | ".join(ghost[:3]))
+    else:
+        print("  · 没有成片，跳过解码检查")
 
     print(f"\n{'=' * 46}\n通过 {ok} · 失败 {fail}")
     return 1 if fail else 0

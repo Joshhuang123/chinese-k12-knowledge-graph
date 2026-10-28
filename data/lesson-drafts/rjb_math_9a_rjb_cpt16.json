@@ -46,6 +46,7 @@
   }
  ],
  "formulas": [
+  "y = ax^2 + bx + c",
   "y=ax²+bx+c (a, b, c 是常数, a≠ 0)",
   "y=ax²",
   "y=x²",

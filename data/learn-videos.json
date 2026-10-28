@@ -1,54 +1,21 @@
 {
-  "_说明": [
-    "讲解视频索引：按知识点挂载视频。",
-    "值 = {mp4: 'video/<id>.mp4'}（站内成片）或 {yt: 'YouTube id'} / {bv: 'B站 BV 号'} / {url: '可嵌入直链'}，可选 title / dur。",
-    "**键要带版本前缀** '<版本>:<概念id>'，如 'rjb:physics_8b_rjb_cpt51'。",
-    "  原因：上游的概念 id 是**跨版本共享**的 —— 沪教版 3,503 个 id 在人教版里全都同名，",
-    "  但指向**不同的教材位置**（不同册次、不同页码、不同教材原话）。",
-    "  用裸 id 挂视频，人教版的视频会出现在沪教版的概念上，而里面念的是另一版的页码。",
-    "  学习页的查找顺序：'<版本>:<id>' → '<版本>:<概念名>' → 裸 id → 裸名（后两个留给用户自己挂的通用外链）。",
-    "改完这个文件后，页面要重新加载才会生效（学习页每次打开都会读一遍）。"
-  ],
-  "_示例": {
-    "math_7b_rjb_cpt63": {
-      "bv": "BV1xx411c7mD",
-      "title": "一元一次不等式",
-      "dur": "4:12"
-    },
-    "浮力": {
-      "yt": "dQw4w9WgXcQ",
-      "title": "浮力到底浮的是什么"
-    }
+  "rjb:biology_7a_rjb_cpt101": {
+    "mp4": "video/rjb_biology_7a_rjb_cpt101.mp4",
+    "title": "种子萌发",
+    "dur": "1:02",
+    "poster": "video/rjb_biology_7a_rjb_cpt101.jpg"
   },
-  "rjb:physics_8b_rjb_cpt51": {
-    "mp4": "video/rjb_physics_8b_rjb_cpt51.mp4",
-    "title": "浮力",
-    "dur": "0:55",
-    "poster": "video/rjb_physics_8b_rjb_cpt51.jpg"
-  },
-  "sh:math_9b_rjb_cpt37": {
-    "mp4": "video/sh_math_9b_rjb_cpt37.mp4",
-    "title": "视图",
-    "dur": "1:09",
-    "poster": "video/sh_math_9b_rjb_cpt37.jpg"
-  },
-  "sh:math_8b_rjb_cpt43": {
-    "mp4": "video/sh_math_8b_rjb_cpt43.mp4",
-    "title": "函数",
+  "rjb:biology_7a_rjb_cpt109": {
+    "mp4": "video/rjb_biology_7a_rjb_cpt109.mp4",
+    "title": "发芽率",
     "dur": "1:05",
-    "poster": "video/sh_math_8b_rjb_cpt43.jpg"
+    "poster": "video/rjb_biology_7a_rjb_cpt109.jpg"
   },
-  "rjb:math_7b_rjb_cpt4": {
-    "mp4": "video/rjb_math_7b_rjb_cpt4.mp4",
-    "title": "同位角",
-    "dur": "1:07",
-    "poster": "video/rjb_math_7b_rjb_cpt4.jpg"
-  },
-  "rjb:math_9b_rjb_cpt1": {
-    "mp4": "video/rjb_math_9b_rjb_cpt1.mp4",
-    "title": "反比例函数",
+  "rjb:biology_7a_rjb_cpt16": {
+    "mp4": "video/rjb_biology_7a_rjb_cpt16.mp4",
+    "title": "环境（生物的生活环境）",
     "dur": "1:05",
-    "poster": "video/rjb_math_9b_rjb_cpt1.jpg"
+    "poster": "video/rjb_biology_7a_rjb_cpt16.jpg"
   },
   "rjb:math_7a_rjb_cpt58": {
     "mp4": "video/rjb_math_7a_rjb_cpt58.mp4",
@@ -56,29 +23,11 @@
     "dur": "1:11",
     "poster": "video/rjb_math_7a_rjb_cpt58.jpg"
   },
-  "sh:biology_7b_rjb_cpt80": {
-    "mp4": "video/sh_biology_7b_rjb_cpt80.mp4",
-    "title": "血液",
-    "dur": "1:04",
-    "poster": "video/sh_biology_7b_rjb_cpt80.jpg"
-  },
-  "sh:math_7a_rjb_cpt58": {
-    "mp4": "video/sh_math_7a_rjb_cpt58.mp4",
-    "title": "立体图形",
-    "dur": "1:05",
-    "poster": "video/sh_math_7a_rjb_cpt58.jpg"
-  },
-  "rjb:math_9a_rjb_cpt16": {
-    "mp4": "video/rjb_math_9a_rjb_cpt16.mp4",
-    "title": "二次函数",
-    "dur": "1:03",
-    "poster": "video/rjb_math_9a_rjb_cpt16.jpg"
-  },
-  "sh:math_9a_rjb_cpt41": {
-    "mp4": "video/sh_math_9a_rjb_cpt41.mp4",
-    "title": "圆心",
-    "dur": "1:03",
-    "poster": "video/sh_math_9a_rjb_cpt41.jpg"
+  "rjb:math_7b_rjb_cpt4": {
+    "mp4": "video/rjb_math_7b_rjb_cpt4.mp4",
+    "title": "同位角",
+    "dur": "1:07",
+    "poster": "video/rjb_math_7b_rjb_cpt4.jpg"
   },
   "rjb:math_9a_rjb_cpt1": {
     "mp4": "video/rjb_math_9a_rjb_cpt1.mp4",
@@ -86,11 +35,53 @@
     "dur": "1:10",
     "poster": "video/rjb_math_9a_rjb_cpt1.jpg"
   },
-  "rjb:biology_7a_rjb_cpt101": {
-    "mp4": "video/rjb_biology_7a_rjb_cpt101.mp4",
-    "title": "种子萌发",
+  "rjb:math_9a_rjb_cpt16": {
+    "mp4": "video/rjb_math_9a_rjb_cpt16.mp4",
+    "title": "二次函数",
+    "dur": "1:03",
+    "poster": "video/rjb_math_9a_rjb_cpt16.jpg"
+  },
+  "rjb:math_9b_rjb_cpt1": {
+    "mp4": "video/rjb_math_9b_rjb_cpt1.mp4",
+    "title": "反比例函数",
+    "dur": "1:05",
+    "poster": "video/rjb_math_9b_rjb_cpt1.jpg"
+  },
+  "rjb:physics_8b_rjb_cpt51": {
+    "mp4": "video/rjb_physics_8b_rjb_cpt51.mp4",
+    "title": "浮力",
+    "dur": "1:06",
+    "poster": "video/rjb_physics_8b_rjb_cpt51.jpg"
+  },
+  "sh:biology_7b_rjb_cpt80": {
+    "mp4": "video/sh_biology_7b_rjb_cpt80.mp4",
+    "title": "血液",
+    "dur": "1:04",
+    "poster": "video/sh_biology_7b_rjb_cpt80.jpg"
+  },
+  "sh:biology_8b_rjb_cpt85": {
+    "mp4": "video/sh_biology_8b_rjb_cpt85.mp4",
+    "title": "健康（世界卫生组织定义）",
+    "dur": "1:06",
+    "poster": "video/sh_biology_8b_rjb_cpt85.jpg"
+  },
+  "sh:chemistry_9b_rjb_cpt166": {
+    "mp4": "video/sh_chemistry_9b_rjb_cpt166.mp4",
+    "title": "pH",
+    "dur": "1:01",
+    "poster": "video/sh_chemistry_9b_rjb_cpt166.jpg"
+  },
+  "sh:math_7a_rjb_cpt38": {
+    "mp4": "video/sh_math_7a_rjb_cpt38.mp4",
+    "title": "同类项",
     "dur": "1:02",
-    "poster": "video/rjb_biology_7a_rjb_cpt101.jpg"
+    "poster": "video/sh_math_7a_rjb_cpt38.jpg"
+  },
+  "sh:math_7a_rjb_cpt58": {
+    "mp4": "video/sh_math_7a_rjb_cpt58.mp4",
+    "title": "立体图形",
+    "dur": "1:05",
+    "poster": "video/sh_math_7a_rjb_cpt58.jpg"
   },
   "sh:math_7a_rjb_cpt6": {
     "mp4": "video/sh_math_7a_rjb_cpt6.mp4",
@@ -104,29 +95,29 @@
     "dur": "1:07",
     "poster": "video/sh_math_7b_rjb_cpt53.jpg"
   },
+  "sh:math_7b_rjb_cpt71": {
+    "mp4": "video/sh_math_7b_rjb_cpt71.mp4",
+    "title": "数据",
+    "dur": "1:03",
+    "poster": "video/sh_math_7b_rjb_cpt71.jpg"
+  },
   "sh:math_7b_rjb_cpt76": {
     "mp4": "video/sh_math_7b_rjb_cpt76.mp4",
     "title": "全面调查",
     "dur": "1:00",
     "poster": "video/sh_math_7b_rjb_cpt76.jpg"
   },
-  "sh:chemistry_9b_rjb_cpt166": {
-    "mp4": "video/sh_chemistry_9b_rjb_cpt166.mp4",
-    "title": "pH",
-    "dur": "1:01",
-    "poster": "video/sh_chemistry_9b_rjb_cpt166.jpg"
+  "sh:math_8b_rjb_cpt43": {
+    "mp4": "video/sh_math_8b_rjb_cpt43.mp4",
+    "title": "函数",
+    "dur": "1:05",
+    "poster": "video/sh_math_8b_rjb_cpt43.jpg"
   },
-  "sh:biology_8b_rjb_cpt85": {
-    "mp4": "video/sh_biology_8b_rjb_cpt85.mp4",
-    "title": "健康（世界卫生组织定义）",
-    "dur": "1:06",
-    "poster": "video/sh_biology_8b_rjb_cpt85.jpg"
-  },
-  "sh:math_7b_rjb_cpt71": {
-    "mp4": "video/sh_math_7b_rjb_cpt71.mp4",
-    "title": "数据",
-    "dur": "0:54",
-    "poster": "video/sh_math_7b_rjb_cpt71.jpg"
+  "sh:math_9a_rjb_cpt41": {
+    "mp4": "video/sh_math_9a_rjb_cpt41.mp4",
+    "title": "圆心",
+    "dur": "1:03",
+    "poster": "video/sh_math_9a_rjb_cpt41.jpg"
   },
   "sh:math_9a_rjb_cpt67": {
     "mp4": "video/sh_math_9a_rjb_cpt67.mp4",
@@ -134,10 +125,10 @@
     "dur": "1:01",
     "poster": "video/sh_math_9a_rjb_cpt67.jpg"
   },
-  "sh:math_7a_rjb_cpt38": {
-    "mp4": "video/sh_math_7a_rjb_cpt38.mp4",
-    "title": "同类项",
-    "dur": "1:02",
-    "poster": "video/sh_math_7a_rjb_cpt38.jpg"
+  "sh:math_9b_rjb_cpt37": {
+    "mp4": "video/sh_math_9b_rjb_cpt37.mp4",
+    "title": "视图",
+    "dur": "1:09",
+    "poster": "video/sh_math_9b_rjb_cpt37.jpg"
   }
 }

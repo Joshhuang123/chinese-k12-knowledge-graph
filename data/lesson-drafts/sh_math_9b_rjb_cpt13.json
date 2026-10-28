@@ -1,0 +1,108 @@
+{
+ "id": "math_9b_rjb_cpt13",
+ "version": "sh",
+ "name": "相似三角形",
+ "book": "沪教版·九上",
+ "grade": 9,
+ "stage": "初中",
+ "definition": "对应角相等、对应边成比例的两个三角形称为相似三角形，可记作 △ABC ∼ △A'B'C'。",
+ "c": 0.035,
+ "c_rank_in_version": 391,
+ "src": "—",
+ "hard_count": 4,
+ "hard_items": [
+  {
+   "type": "思考",
+   "stem": "相似三角形的周长有什么关系？"
+  },
+  {
+   "type": "思考",
+   "stem": "相似三角形面积的比与相似比有什么关系？"
+  },
+  {
+   "type": "探究",
+   "stem": "活动1 测量旗杆的高度\n利用相似三角形可以计算某些不能直接测量的物体的高度. 图1显示了测量旗杆高度的几种方法，你能说出各种方法的道理吗？\n用类似的方法，与同学合作，测量校园中一些物体（如旗杆、树木等）的高度."
+  },
+  {
+   "type": "思考",
+   "stem": "相似三角形有哪些性质？位似图形呢？"
+  }
+ ],
+ "quotes": [
+  {
+   "text": "这个定理常被称为相似三角形的预备定理.",
+   "def": true,
+   "page": 62
+  },
+  {
+   "text": "又因为DEVBC，由相似三角形的预备定理，得AADEcAABC.",
+   "def": false,
+   "page": 62
+  },
+  {
+   "text": "由相似三角形的相关性质可知，至少需要知道直角三角形的一条边长.",
+   "def": false,
+   "page": 62
+  }
+ ],
+ "formulas": [
+  "∠ A = ∠ A', ∠ B = ∠ B', ∠ C = ∠ C'",
+  "AB/A'B' = BC/B'C' = AC/A'C' = k",
+  "∵ △ ABC ∽ △ A'B'C', ∴ ∠ B = ∠ B'",
+  "(S△ ABC)/(S△ A'B'C') = (½ BC · AD)/(½ B'C' · A'D') = BC/B'C' · AD/A'D' = k · k = k²",
+  "△ ABC ∼ △ A'B'C'",
+  "k = 1"
+ ],
+ "figures": [
+  {
+   "cap": "图 27.2-1",
+   "text": "画有两个相似三角形。左侧较小的三角形标记为顶点 A、B、C；右侧较大的三角形标记为顶点 A'、B'、C'，对应角相等且对应边成比例。"
+  },
+  {
+   "cap": "图 27.2-7",
+   "text": "包含两个相似三角形：左侧为较小的蓝色线条三角形 ABC，顶点分别为 A、B、C；右侧为较大的粉红色线条三角形 A'B'C'，顶点分别为 A'、B'、C'。"
+  }
+ ],
+ "prereq": [
+  {
+   "name": "三角形"
+  },
+  {
+   "name": "比例"
+  },
+  {
+   "name": "相似图形"
+  }
+ ],
+ "successor": [
+  {
+   "name": "平行线分线段成比例"
+  },
+  {
+   "name": "正弦"
+  },
+  {
+   "name": "余弦"
+  },
+  {
+   "name": "正切"
+  }
+ ],
+ "chain_title": "学它之前要先会",
+ "chain_label": "这几样要先会",
+ "exercises": [
+  "例 1 根据下列条件，判断 △ ABC 与 △ A'B'C' 是否相似，并说明理由：\n(1) AB = 4 cm, BC = 6 cm, AC = 8 cm,\nA'B' = 12 cm, B'C' = 18 cm, A'C' = 24 cm；\n(2) ∠ A = 120°, AB = 7 cm, AC = 14 cm,",
+  "相似三角形的周长有什么关系？",
+  "相似三角形面积的比与相似比有什么关系？"
+ ],
+ "page": {
+  "pdfBook": null,
+  "bk": "sh-hj-数学-w-9a",
+  "scan": 83,
+  "image": "https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/1c20827e-c705-d730-8b0c-ce7402aeb905.t/zh-CN/1786675955086/transcode/image/83.jpg",
+  "printed": 76,
+  "where": "沪教版九上 · 印刷页 76",
+  "vol": "九上",
+  "ed": "沪教版"
+ }
+}
