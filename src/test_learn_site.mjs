@@ -141,6 +141,53 @@ console.log('\n[1b] 学习页标题字形必须显式声明');
   await page.close();
 }
 
+// ── [1c] 首屏**不等数据**：主数据还在路上，海报也要先出来 ──
+//
+// 线上实测（2026-10-28）：主数据 data/learn-sh.js 是 **4.4 MB**，
+// 慢线上要 35 秒；原来这段时间页面上只有「加载中 / 数据文件…」五个字 ——
+// 跟没加载一样。用户点进来看到的是一片空白 + 五个字。
+//
+// 但**海报本身不依赖数据**（只有那几个统计 chip 依赖），
+// 所以改成：先画 hero，数据到了再补数字。
+//
+// 判别力：把 renderShell() 从 boot() 里撤掉 → 这一组必红。
+console.log('\n[1c] 首屏不等数据');
+{
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1440, height: 900 });
+  // 拦下主数据，拖 4 秒 —— 模拟慢线
+  await page.setRequestInterception(true);
+  page.on('request', req => {
+    if (/learn-(sh|rjb|kx)\.js/.test(req.url())) setTimeout(() => req.continue(), 4000);
+    else req.continue();
+  });
+  await page.goto(pathToFileURL(resolve(BASE, 'learn.html')).href, { waitUntil: 'domcontentloaded' });
+  await sleep(1600);                     // 这时候主数据还在路上
+  const early = await page.evaluate(() => ({
+    hero: !!document.querySelector('.hero h1'),
+    text: document.querySelector('.hero h1')?.textContent || '',
+    loading: !!document.querySelector('.hero .loading'),
+    loadingText: document.querySelector('.hero .loading')?.textContent || '',
+    data: !!window.LEARN_DATA,
+    chip: !!document.querySelector('.hero .chip'),
+  }));
+  ok(early.hero, '数据还没到，海报已经画出来了');
+  ok(early.text.includes('一个知识点'), '海报标题是对的', early.text);
+  ok(early.loading, '有「正在加载…」的提示，不是空白', early.loadingText);
+  ok(!early.data, '此刻数据确实还没到（证明真的是「不等数据」）');
+  ok(!early.chip, '统计数字此时不出现 —— 数据没到就不编数字');
+
+  // 数据到了以后，统计数字要补上、加载提示要撤掉
+  await sleep(7000);
+  const late = await page.evaluate(() => ({
+    chips: [...document.querySelectorAll('.hero .chip')].map(c => c.textContent),
+    loading: !!document.querySelector('.hero .loading'),
+  }));
+  ok(late.chips.length >= 3, `数据到了，统计数字补上了（${late.chips.slice(0, 2).join(' · ')}）`);
+  ok(!late.loading, '加载提示撤掉了');
+  await page.close();
+}
+
 // ── [2] 搜索 → 学习页 ────────────────────────────────────
 console.log('\n[2] 搜索能到学习页');
 {
@@ -566,6 +613,22 @@ console.log('\n[10] 讲解视频 + 文字讲解');
   }
   ok(e2.length === 0, '零 JS 错误', e2.slice(0, 2).join(' | '));
   await p2.close();
+}
+
+// ── README 里的测试项数不能烂 ─────────────────────────────────
+// 手抄的数字会过期（这里原来写的是 67，实际早就 88 了）。
+// 跟另外三个套件一样：**这条断言只能放在这里** —— 只有跑完的人知道真实通过数。
+{
+  const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
+  const want = '| `src/test_learn_site.mjs` | 96 |';
+  if (!rd.includes(want)) {
+    console.log(`  \u2717 README 里的 学习页 测试项数不是 96`);
+    console.log(`      README 里没找到「${want}」`);
+    fail++;
+  } else {
+    console.log(`  \u2713 README 里的 学习页 测试项数是 96（与本次实跑一致）`);
+    pass++;
+  }
 }
 
 await browser.close();

@@ -110,6 +110,16 @@ main{max-width:1180px;margin:0 auto;padding:22px 20px 80px}
 .hero h1 em{font-style:normal;color:var(--acc)}
 .hero .lede{color:#c2c9d8;font-size:15.5px;line-height:1.85;max-width:64ch;margin:0 0 16px}
 .hero .lede b{color:var(--fg);font-weight:600}
+/* 数据还没到时的提示 —— 宁可告诉用户在等什么，也不要给一块空白 */
+.hero .loading{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:13px;color:var(--muted);
+}
+.hero .loading::before{
+  content:"";width:7px;height:7px;border-radius:50%;background:var(--amber);
+  animation:pulse 1.1s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.25;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
 
 h1{
   font-family:var(--serif);font-weight:400;
@@ -456,9 +466,10 @@ async function render(){
   if (!PAGE_OFFSETS_SH || !Object.keys(PAGE_OFFSETS_SH).length){
     try{ await loadScript('data/page-offsets-sh.js'); PAGE_OFFSETS_SH = window.PAGE_OFFSETS_SH || {}; }
     catch(e){ PAGE_OFFSETS_SH = {}; }
-    try{ await loadScript('data/learn-explains.js'); LEARN_EXPLAINS = window.LEARN_EXPLAINS || {}; }
-    catch(e){ LEARN_EXPLAINS = {}; }
   }
+  /* ⚠️ 原来 `learn-explains.js` 是在上面这个 if **里面**加载的 ——
+     也就是说「页码偏移量已经加载过」的时候，讲解稿就永远加载不上。
+     现在它归到 loadSupportData()，跟其它支撑数据一样无条件加载。 */
   buildIndex();
   const main = $('#main');
   if (p.c == null){
@@ -471,6 +482,62 @@ async function render(){
   main.innerHTML = nodeHTML(n);
   window.scrollTo(0,0);
   $('#foot').innerHTML = footHTML();
+}
+
+/* ── 支撑数据：并行加载 ────────────────────────────────────
+ *
+ * 线上实测这 8 个脚本串行排在主数据后面，白白多花 ~10 秒。
+ * 它们**互相之间没有依赖**，也没人依赖它们 —— 全部并行。
+ * 缺哪个都不该让整页挂掉，所以各自 catch。
+ */
+async function loadSupportData(){
+  const jobs = [
+    ['data/page-images.js',     () => { PAGES = window.PAGE_IMAGES || {}; }],
+    ['data/page-images-rjb.js', () => { PAGE_IMAGES_RJB = window.PAGE_IMAGES_RJB || {}; }],
+    ['data/page-offsets.js',    () => { PAGE_OFFSETS = window.PAGE_OFFSETS || {}; }],
+    ['data/page-offsets-sh.js', () => { PAGE_OFFSETS_SH = window.PAGE_OFFSETS_SH || {}; }],
+    ['data/learn-explains.js',  () => { LEARN_EXPLAINS = window.LEARN_EXPLAINS || {}; }],
+    ['data/learn-videos.js',    () => { VIDEOS = window.LEARN_VIDEOS || {}; }],
+    ['data/learn-questions.js', () => { QUESTIONS = window.LEARN_QUESTIONS || []; }],
+  ];
+  await Promise.all(jobs.map(async ([src, assign]) => {
+    try{ await loadScript(src); assign(); }
+    catch(e){ /* 缺哪个都不该让整页挂掉 —— 变量保持初值 */ }
+  }));
+}
+
+/* ── 首屏不等数据 ──────────────────────────────────────────
+ *
+ * 主数据 4.4 MB，在慢线上要 35 秒。原来这段时间页面上只有
+ * 「加载中 / 数据文件…」五个字 —— 跟没加载一样。
+ * 但**海报本身不依赖数据**（只有那几个统计 chip 依赖），
+ * 所以先把 hero 画出来，数据到了再补上数字。
+ */
+function renderShell(){
+  const v = VERSIONS.find(x=>x.id===CURRENT) || VERSIONS[0];
+  $('#main').innerHTML = `
+  <section class="hero">
+    <div class="kicker"><span class="dot"></span>学习页 · ${esc(v.label)}</div>
+    <h1>一个知识点，<em>一页。</em></h1>
+    <p class="lede">${esc(v.desc)}。每个知识点一页，把<b>看懂</b>（讲解视频 · 教材原页 · 教材原话 · 公式图）和<b>会做</b>（教材例题）放在一起，
+    再给出它的<b>前置链</b> —— 往前追，就能看出卡在哪一环。</p>
+    <div class="loading">正在加载 ${esc(v.label)} 的知识点数据…</div>
+  </section>`;
+}
+
+/* hero 的标记只写一份 —— shell 和正式页共用，别抄两遍（抄一遍改一处忘一处，
+   就是 ISSUE-54 那种坑）。chips 传 null 表示数据还没到。 */
+function heroHTML(v, chips){
+  return `
+  <section class="hero">
+    <div class="kicker"><span class="dot"></span>学习页 · ${esc(v.label)}</div>
+    <h1>一个知识点，<em>一页。</em></h1>
+    <p class="lede">${esc(v.desc)}。每个知识点一页，把<b>看懂</b>（讲解视频 · 教材原页 · 教材原话 · 公式图）和<b>会做</b>（教材例题）放在一起，
+    再给出它的<b>前置链</b> —— 往前追，就能看出卡在哪一环。</p>
+    ${chips === null
+      ? '<div class="loading">正在加载知识点数据…</div>'
+      : `<div class="chips">${chips}</div>`}
+  </section>`;
 }
 
 function homeHTML(){
@@ -486,20 +553,14 @@ function homeHTML(){
   const withRead = DATA.nodes.filter(n=>n.rd && n.rd.length).length;
   const withFormula = DATA.nodes.filter(n=>n.f && n.f.length).length;
   const withPr = DATA.nodes.filter(n=>n.pre && n.pre.length).length;
+  const chips =
+      `<span class="chip">${total.toLocaleString()} 个知识点</span>` +
+      `<span class="chip">${withRead.toLocaleString()} 个有教材原话</span>` +
+      `<span class="chip">${withFormula.toLocaleString()} 个有公式</span>` +
+      `<span class="chip">${withPr.toLocaleString()} 个有前置</span>`;
   return `
-  <section class="hero">
-    <div class="kicker"><span class="dot"></span>学习页 · ${esc(v.label)}</div>
-    <h1>一个知识点，<em>一页。</em></h1>
-    <p class="lede">${esc(v.desc)}。每个知识点一页，把<b>看懂</b>（讲解视频 · 教材原页 · 教材原话 · 公式图）和<b>会做</b>（教材例题）放在一起，
-    再给出它的<b>前置链</b> —— 往前追，就能看出卡在哪一环。</p>
-    <div class="chips">
-      <span class="chip">${total.toLocaleString()} 个知识点</span>
-      <span class="chip">${withRead.toLocaleString()} 个有教材原话</span>
-      <span class="chip">${withFormula.toLocaleString()} 个有公式</span>
-      <span class="chip">${withPr.toLocaleString()} 个有前置</span>
-    </div>
-    <div class="empty" style="margin-top:12px">在上面的搜索框里搜一个知识点，或者从下面按教材翻、按年级进。</div>
-  </section>
+  ${heroHTML(v, chips)}
+  <div class="empty" style="margin-top:12px">在上面的搜索框里搜一个知识点，或者从下面按教材翻、按年级进。</div>
   ${browseHTML()}
   <div class="card">
     <h2>按年级进<span class="n">${gs.length} 个年级层</span></h2>
@@ -874,21 +935,12 @@ document.addEventListener('click', e=>{
   const p = params();
   CURRENT = VERSIONS.some(x=>x.id===p.v) ? p.v : 'sh';
   buildTabs();
-  await ensureData(CURRENT);
-  try{ await loadScript('data/page-images.js'); PAGES = window.PAGE_IMAGES || {}; }
-  catch(e){ PAGES = {}; }
-  try{ await loadScript('data/page-images-rjb.js'); PAGE_IMAGES_RJB = window.PAGE_IMAGES_RJB || {}; }
-  catch(e){ PAGE_IMAGES_RJB = {}; }
-  try{ await loadScript('data/page-offsets.js'); PAGE_OFFSETS = window.PAGE_OFFSETS || {}; }
-  catch(e){ PAGE_OFFSETS = {}; }
-  try{ await loadScript('data/page-offsets-sh.js'); PAGE_OFFSETS_SH = window.PAGE_OFFSETS_SH || {}; }
-  catch(e){ PAGE_OFFSETS_SH = {}; }
-  try{ await loadScript('data/learn-explains.js'); LEARN_EXPLAINS = window.LEARN_EXPLAINS || {}; }
-  catch(e){ LEARN_EXPLAINS = {}; }
-  try{ await loadScript('data/learn-videos.js'); VIDEOS = window.LEARN_VIDEOS || {}; }
-  catch(e){ VIDEOS = {}; }
-  try{ await loadScript('data/learn-questions.js'); QUESTIONS = window.LEARN_QUESTIONS || []; }
-  catch(e){ QUESTIONS = []; }
+  /* 先把海报画出来 —— 主数据 4.4 MB，慢线上要 35 秒，
+     这段时间页面上不该是一片空白。 */
+  renderShell();
+  /* 主数据和支撑数据**并行**（它们互不依赖），
+     别再一个接一个 await。 */
+  await Promise.all([ensureData(CURRENT), loadSupportData()]);
   buildIndex();
   render();
 })();
