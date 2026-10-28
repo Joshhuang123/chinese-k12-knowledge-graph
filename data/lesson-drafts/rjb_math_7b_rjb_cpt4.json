@@ -99,9 +99,10 @@
  "page": {
   "pdfBook": "math-7b",
   "bk": "",
-  "scan": 12,
-  "printed": 6,
-  "where": "人教版七下 · 印刷页 6",
+  "scan": 20,
+  "image": "data/pages/math-7b/20.webp",
+  "printed": 14,
+  "where": "人教版七下 · 印刷页 14",
   "vol": "七下",
   "ed": "人教版"
  }

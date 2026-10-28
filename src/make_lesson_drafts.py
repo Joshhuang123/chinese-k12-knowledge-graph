@@ -78,6 +78,12 @@ def main() -> int:
     # （差 4–7 页，学生按扫描页翻书会翻到下一节）
     off_rjb = {}
     off_sh = {}
+    # 沪教版**没有本地页图**（项目版权决定：沪教走平台官方外链，仓库不存教材内容），
+    # 视频里那一页只能是**平台的直链**。
+    platform_pages = {}
+    pf = DATA / "page-images.json"
+    if pf.exists():
+        platform_pages = json.loads(pf.read_text(encoding="utf-8"))
     for fn, dest in (("page-offsets.json", "rjb"), ("page-offsets-sh.json", "sh")):
         p = DATA / fn
         if p.exists():
@@ -122,6 +128,12 @@ def main() -> int:
             pp, pdesc = printed_page(loc)
             if pp is None:
                 continue        # 算不出印刷页码 → 不选（页码错了比没有更糟）
+            if pp <= 0:
+                # ⚠️ **印刷页 ≤ 0 = 选到前言页了**（封面 / 本册导引 / 目录）——
+                # 那些页书上**根本没印页码**，offset 一加就成负数。
+                # 实测：反比例函数选到「本册导引」（扫描页 3）→ 印刷页 -3。
+                # 前言页当「教材原页」等于没指到那一节。
+                continue
             cands.append({
                 "id": n["id"], "version": tag, "name": n["n"],
                 "book": n.get("b"), "grade": n.get("g"),
@@ -150,6 +162,12 @@ def main() -> int:
                 "page": {
                     "pdfBook": loc.get("pdfBook"), "bk": loc.get("bk"),
                     "scan": loc["scan"][0],
+                    # 页图来源：**人教版**从本地 PDF 渲染的页图；
+                    # **沪教版**是平台官方外链（仓库里不存教材内容）。
+                    "image": (f"data/pages/{loc['pdfBook']}/{loc['scan'][0]}.webp"
+                              if loc.get("pdfBook")
+                              else ((platform_pages.get(loc.get("bk") or "") or {}).get("base", "")
+                                    + f"/{loc['scan'][0]}.jpg")),
                     # ⚠️ **printed 是书上印的页码**，scan 是 PDF/平台扫描序号。
                     # 写稿一律用 printed（学生拿着纸书翻）。
                     "printed": pp,

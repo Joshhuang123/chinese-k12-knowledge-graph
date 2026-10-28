@@ -91,9 +91,10 @@
  "page": {
   "pdfBook": "biology-8b",
   "bk": "",
-  "scan": 12,
-  "printed": 8,
-  "where": "人教版八下 · 印刷页 8",
+  "scan": 101,
+  "image": "data/pages/biology-8b/101.webp",
+  "printed": 97,
+  "where": "人教版八下 · 印刷页 97",
   "vol": "八下",
   "ed": "人教版"
  }

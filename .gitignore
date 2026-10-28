@@ -42,6 +42,13 @@ data/pdf-cache/
 # 入库是用户 2026-10-27 的明确决定：**接受再分发，仓库 +82 MB**。
 # 换成 JPEG 体积翻倍（WebP 1055px 宽 44 KB vs JPEG 91 KB），所以用 WebP。
 
+# ── 讲解视频的中间产物 ──
+# src/lesson_video/work/<id>/ 里是 TTS 音频（mp3）和每句一帧的截图（png）。
+# **这些是可复现的中间产物**，不进仓库（一条视频几十 MB）。
+# 进仓库的是：data/lesson-scripts/（手写的讲解稿）、data/lesson-drafts/（素材包）、
+# video/（成片 mp4 + 封面帧 jpg）。
+src/lesson_video/work/
+
 # ── 盲测批次（派生产物）──
 # src/make_batches.py 从 graph.json 切出来的模型输入片，760 KB。
 # 切法随时会改，固化的是脚本不是片。要跑先 python3 src/make_batches.py

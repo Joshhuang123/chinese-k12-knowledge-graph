@@ -99,9 +99,10 @@
  "page": {
   "pdfBook": "math-9b",
   "bk": "",
-  "scan": 3,
-  "printed": -3,
-  "where": "人教版九下 · 印刷页 -3",
+  "scan": 7,
+  "image": "data/pages/math-9b/7.webp",
+  "printed": 1,
+  "where": "人教版九下 · 印刷页 1",
   "vol": "九下",
   "ed": "人教版"
  }

@@ -128,7 +128,13 @@ def build_one(L, force=False, keep=False):
     # 相对路径会指错地方。
     L2 = json.loads(json.dumps(L))
     if L2.get("page") and L2["page"].get("image"):
-        L2["page"]["image"] = str((BASE / L2["page"]["image"]).resolve())
+        img = L2["page"]["image"]
+        # ⚠️ **http(s) 开头的不要当本地路径拼** ——
+        # 沪教版的页图是**平台官方外链**（仓库里不存教材内容），
+        # `BASE / "https://..."` 会拼成一个不存在的本地路径，图直接裂。
+        if not img.startswith(("http://", "https://")):
+            img = str((BASE / img).resolve())
+        L2["page"]["image"] = img
     (wd / "lesson.json").write_text(json.dumps(L2, ensure_ascii=False), encoding="utf-8")
     run(["node", str(LV / "inject.js"), str(LV / "slide.html"),
          str(wd / "timeline.json"), str(wd / "slide.final.html"),
@@ -138,6 +144,18 @@ def build_one(L, force=False, keep=False):
          str(wd / "slide.final.html"), str(wd / "shots")], cwd=str(wd))
 
     OUTDIR.mkdir(exist_ok=True)
+    # **poster = 第一张截图（封面帧）** ——
+    # 页面上的播放器是 preload="none"（省流量），不加载就是个黑框。
+    # 给张封面帧，学生一眼知道这视频讲什么。
+    shot0 = wd / "shots" / "000.png"
+    poster = OUTDIR / f"{stem}.jpg"
+    if shot0.exists():
+        try:
+            from PIL import Image
+            Image.open(shot0).convert("RGB").save(poster, "JPEG", quality=72)
+        except Exception:
+            poster = None
+
     run(["bash", str(LV / "mux-shots.sh"), str(wd / "timeline.json"),
          str(wd / "shots"), str(wd / "音轨.wav"), str(out_mp4)], cwd=str(wd))
 
@@ -180,14 +198,26 @@ def write_indexes(ids):
         key = f"{ver}:{L['id']}"
         # 清掉可能存在的旧裸键（早期版本用过裸 id —— 跨版本会挂错）
         vids.pop(L["id"], None)
-        vids[key] = {
+        entry = {
             "mp4": f"video/{cid}.mp4",
             "title": L["name"],
             "dur": f"{dur//60}:{dur%60:02d}" if dur else "",
         }
+        poster = OUTDIR / f"{cid}.jpg"
+        if poster.exists():
+            entry["poster"] = f"video/{cid}.jpg"
+        vids[key] = entry
         expl[key] = {"lines": L["explain"]["lines"], "from": L["explain"].get("from", "")}
 
     VIDEOS_JSON.write_text(json.dumps(vids, ensure_ascii=False, indent=2), encoding="utf-8")
+    # ⚠️ **两个文件必须一起写** ——
+    #   data/learn-videos.json  → build_learn_site.py 读的（合并进 rec["v"]）
+    #   data/learn-videos.js    → 页面运行时读的（window.LEARN_VIDEOS）
+    # 以前只有一个 .js（手写的模板），构建脚本只写 .json ——
+    # 结果做好的视频**页面上一条也挂不上**（查不到就不显示）。
+    (BASE / "data" / "learn-videos.js").write_text(
+        "window.LEARN_VIDEOS=" + json.dumps(vids, ensure_ascii=False, separators=(",", ":")) + ";\n",
+        encoding="utf-8")
     EXPLAINS_JS.write_text("window.LEARN_EXPLAINS=" +
                             json.dumps(expl, ensure_ascii=False, separators=(",", ":")) + ";\n",
                             encoding="utf-8")
@@ -225,7 +255,9 @@ def main() -> int:
         L = load_lesson(f)
         try:
             build_one(L, force=args.force, keep=args.keep)
-            done.append(L["id"])
+            # ⚠️ 存的是 **版本前缀过的 stem**（rjb_<id>）——
+            # write_indexes 要按它找稿子文件和成品 mp4。
+            done.append(f"{L.get('version') or 'sh'}_{L['id']}")
         except SystemExit as e:
             print(f"  ✗ {L['id']}: {e}")
     write_indexes(done)

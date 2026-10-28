@@ -21,8 +21,9 @@
     }
   },
   "rjb:physics_8b_rjb_cpt51": {
-    "mp4": "video/physics_8b_rjb_cpt51.mp4",
+    "mp4": "video/rjb_physics_8b_rjb_cpt51.mp4",
     "title": "浮力",
-    "dur": "1:00"
+    "dur": "0:58",
+    "poster": "video/rjb_physics_8b_rjb_cpt51.jpg"
   }
 }

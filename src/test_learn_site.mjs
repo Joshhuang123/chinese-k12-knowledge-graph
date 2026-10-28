@@ -440,6 +440,63 @@ console.log('\n[9] 站点入口链得到学习页');
   await page.close();
 }
 
+// ── [10] 讲解视频 + 讲解稿文字版 ───────────────────────────
+//
+// 设计前提：**不看视频也能走完**。
+// 所以视频和文字讲解是**同一份稿子**的两个呈现 —— 页面必须同时有。
+//
+// 判别力：把 data/learn-videos.js 里的 mp4 条目删掉 → [10a] 红；
+//         把 data/learn-explains.js 清空 → [10b] 红。
+console.log('\n[10] 讲解视频 + 文字讲解');
+{
+  // ── [10a] 有视频的概念，页面上要有 <video>，且文件真的在磁盘上 ──
+  const { page, errs } = await open('?v=rjb');
+  const info = await page.evaluate(() => {
+    const vids = window.LEARN_VIDEOS || {};
+    const keys = Object.keys(vids).filter(k => !k.startsWith('_'));
+    const n = window.LEARN_DATA.nodes.find(x => vids['rjb:' + x.id]);
+    return { keys: keys.length, node: n ? { i: n.i, name: n.n, id: n.id } : null };
+  });
+  ok(info.keys > 0, `视频索引里有 ${info.keys} 条`);
+  ok(info.node !== null, '能找到一个挂了视频的概念');
+  if (info.node) {
+    await page.goto(pathToFileURL(resolve(BASE, 'learn.html')).href + `?v=rjb&c=${info.node.i}`, { waitUntil: 'load' });
+    await sleep(2000);
+    const v = await page.evaluate(() => {
+      const el = document.querySelector('.vid video');
+      return el ? { src: el.getAttribute('src'), poster: el.getAttribute('poster') } : null;
+    });
+    ok(v !== null, '页面上有 <video> 元素');
+    if (v) {
+      const f = resolve(BASE, v.src);
+      let size = -1;
+      try { size = statSync(f).size; } catch (e) { size = -1; }
+      ok(size > 100000, `视频文件在磁盘上且非空（${size} 字节）`, v.src);
+      ok(!!v.poster, '播放器有封面帧（不然是个黑框）');
+    }
+  }
+  ok(errs.length === 0, '零 JS 错误', errs.slice(0, 2).join(' | '));
+  await page.close();
+
+  // ── [10b] 文字讲解：同一份稿子的文字版必须在页面上 ──
+  const { page: p2, errs: e2 } = await open('?v=rjb');
+  const ex = await p2.evaluate(() => {
+    const E = window.LEARN_EXPLAINS || {};
+    const n = window.LEARN_DATA.nodes.find(x => E['rjb:' + x.id]);
+    return { total: Object.keys(E).length, node: n ? { i: n.i, lines: (E['rjb:' + n.id].lines || []).length } : null };
+  });
+  ok(ex.total > 0, `讲解稿索引里有 ${ex.total} 条`);
+  ok(ex.node !== null && ex.node.lines >= 3, '讲解稿有内容（≥3 段）');
+  if (ex.node) {
+    await p2.goto(pathToFileURL(resolve(BASE, 'learn.html')).href + `?v=rjb&c=${ex.node.i}`, { waitUntil: 'load' });
+    await sleep(1800);
+    const shown = await p2.evaluate(() => document.querySelectorAll('.expl').length);
+    ok(shown >= 3, `页面上有 ${shown} 段文字讲解`);
+  }
+  ok(e2.length === 0, '零 JS 错误', e2.slice(0, 2).join(' | '));
+  await p2.close();
+}
+
 await browser.close();
 console.log(`\n${'='.repeat(46)}\n通过 ${pass}，失败 ${fail}`);
 process.exit(fail ? 1 : 0);

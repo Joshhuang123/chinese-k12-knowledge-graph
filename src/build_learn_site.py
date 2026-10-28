@@ -230,11 +230,34 @@ def main() -> int:
                 # 不归一化就匹配不上「一元二次方程」。
                 # 实测：NFKC 后第 9 页命中「21.1一元二次方程」✓
                 import unicodedata
-                pdf_text[bid] = {
+                pages = {
                     i + 1: unicodedata.normalize("NFKC", doc[i].get_text())
                     for i in range(doc.page_count)
                 }
                 doc.close()
+                # ⚠️ **扫描件没有文本层** ——
+                # 实测 7 本（math-7b/8b/9b、bio-7b/8b、chem-9b、phys-8b）
+                # 整本是图，`get_text()` 返回空串。
+                # 于是挑页的四道判据**全部失效**（没有文本可比），
+                # 落到兜底「第一个候选页」—— 那常常是**前言页**。
+                #   实测：反比例函数选到「本册导引」（扫描页 3），
+                #   而真正的讲解在第 8 页。书上没印页码，页码算出来是 -3。
+                #
+                # 解法：**回落到已有的 OCR 文本**（`rjb-*.ocr.txt`，
+                # 格式是 `<<<PAGE n>>>` 分页）。挑页判据就能重新起作用。
+                if not any(t.strip() for t in pages.values()):
+                    ocr_f = PDFC / f"{f.stem}.ocr.txt"
+                    if ocr_f.exists():
+                        raw = ocr_f.read_text(encoding="utf-8", errors="replace")
+                        parts = re.split(r"<<<PAGE (\d+)>>>", raw)
+                        opages = {}
+                        for k in range(1, len(parts) - 1, 2):
+                            opages[int(parts[k])] = unicodedata.normalize(
+                                "NFKC", parts[k + 1])
+                        if opages:
+                            pages = opages
+                            print(f"  {f.stem}: 扫描件，用 OCR 文本（{len(opages)} 页）")
+                pdf_text[bid] = pages
             except Exception:
                 continue
         print(f"PDF 文本层 {len(pdf_text)} 本")
