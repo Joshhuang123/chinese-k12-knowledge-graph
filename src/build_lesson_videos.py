@@ -112,6 +112,29 @@ def build_one(L, force=False, keep=False):
 
     run(["node", str(LV / "prep.js"), str(wd / "script.json"), str(wd)], cwd=str(wd))
 
+    # ⚠️ **改了稿子文字，旧音频必须作废** ——
+    # tts.js 是「文件存在就跳过」，而音频文件名是 `<场id>_<句序>`，**跟文字无关**。
+    # 所以改了一句稿子再重跑，TTS 会跳过 → **配音还是旧的，画面文字是新的**，
+    # 而且**所有检查都显示正常**（时间轴自洽、音画时长对得上）。
+    # 解法：把上一次的句表存下来，逐句比对，变了就删掉那一句的 mp3。
+    # 跟**上一次实际合成的文字**比（不是跟上一次 sentences.json 比 ——
+    # 第一次跑这个机制时没有 prev 可比，会漏掉一次）。
+    sent_f = wd / "sentences.json"
+    used_f = wd / "audio" / "texts.json"
+    cur = {s["key"]: s["text"] for s in json.loads(sent_f.read_text(encoding="utf-8"))}
+    if used_f.exists():
+        try:
+            prev = json.loads(used_f.read_text(encoding="utf-8"))
+            for k, txt in cur.items():
+                if k in prev and prev[k] != txt:
+                    mp = wd / "audio" / f"{k}.mp3"
+                    if mp.exists():
+                        mp.unlink()
+                        print(f"  {stem}: 稿子改了，删掉旧音频 {k}")
+        except Exception:
+            pass
+    used_f.write_text(json.dumps(cur, ensure_ascii=False, indent=1), encoding="utf-8")
+
     t0 = time.time()
     run(["node", str(LV / "tts.js"), str(wd / "sentences.json"), str(wd / "audio")],
         cwd=str(wd))
@@ -127,6 +150,19 @@ def build_one(L, force=False, keep=False):
     # ⚠️ 页图路径要转成**绝对路径** —— slide.final.html 在 work/<id>/ 里，
     # 相对路径会指错地方。
     L2 = json.loads(json.dumps(L))
+    # ⚠️ **页图路径以素材包为准** ——
+    #   素材包（src/make_lesson_drafts.py 生成）知道这一页该用哪个文件：
+    #     人教版 → data/pages/<pdfBook>/<scan>.webp（本地 PDF 渲染，入库）
+    #     沪教版 → 平台官方外链（仓库不存教材内容）
+    #   写稿的人不该自己拼路径 —— 拼错了就是一张裂图。
+    pack_f = SCRIPTS.parent / "lesson-drafts" / f"{stem}.json"
+    if pack_f.exists():
+        pack = json.loads(pack_f.read_text(encoding="utf-8"))
+        pp = pack.get("page") or {}
+        if pp.get("image"):
+            L2.setdefault("page", {})["image"] = pp["image"]
+        if pp.get("where"):
+            L2["page"]["where"] = pp["where"]
     if L2.get("page") and L2["page"].get("image"):
         img = L2["page"]["image"]
         # ⚠️ **http(s) 开头的不要当本地路径拼** ——
@@ -250,6 +286,20 @@ def main() -> int:
             return 1
 
     print(f"讲解视频管线 · {W}×{H} @ {FPS}fps\n")
+    # ⚠️ **按重要性排序**（教材标的难题数降序）——
+    # TTS 是串行配额（实测 28 秒/句，并发反而更慢：6 句 358 秒），
+    # 40 条要 3 个多小时。所以中断时留下的必须是**最有价值的那几条**。
+    def priority(f):
+        pf = SCRIPTS.parent / "lesson-drafts" / f"{f.stem}.json"
+        if not pf.exists():
+            return (0, 0)
+        try:
+            d = json.loads(pf.read_text(encoding="utf-8"))
+            return (-int(d.get("hard_count") or 0), -float(d.get("c") or 0))
+        except Exception:
+            return (0, 0)
+    files.sort(key=priority)
+
     done = []
     for f in files:
         L = load_lesson(f)

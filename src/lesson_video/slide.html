@@ -111,10 +111,10 @@ html.push(`<div class="scene" data-i="2">
 html.push(`<div class="scene" data-i="3">
   <div class="kicker">${esc(L.kicker||'')}</div>
   <div class="rule"></div>
-  <div class="sect">${esc(L.chainTitle||'学它之前要先会')}</div>
+  <div class="sect">${esc(L.chain_title||L.chainTitle||'学它之前要先会')}</div>
   <div class="hub">
     <div class="hubnow"><span class="dot"></span>${esc(L.name)}<small>${esc((L.chain[0]||{}).tag||'现在学的')}</small></div>
-    <div class="hubarrow">↓<span>${esc(L.chainLabel||'这几样要先会')}</span></div>
+    <div class="hubarrow">↓<span>${esc(L.chain_label||L.chainLabel||'这几样要先会')}</span></div>
     <div class="hubrow">
       ${(L.chain||[]).slice(1).map(n=>`<div class="hubitem"><span class="dot"></span>${esc(n.name)}${n.tag?`<small>${esc(n.tag)}</small>`:''}</div>`).join('')}
     </div>

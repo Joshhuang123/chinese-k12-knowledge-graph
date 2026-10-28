@@ -1288,16 +1288,14 @@
    "how_to_use": "按册次取：{[册次]: {扫描页: 'data/pages/…/N.webp'}}；本体在 data/pages/（**入库**，82.1 MB）",
    "records": 31,
    "unit": "条（顶层对象：键 → 对象）",
-   "bytes": 46244,
+   "bytes": 46129,
    "format": "json",
    "fields": [
     "1",
     "10",
     "11",
-    "12",
     "13",
     "14",
-    "15",
     "17",
     "19",
     "20",
@@ -1308,7 +1306,6 @@
     "27",
     "28",
     "29",
-    "31",
     "32",
     "34",
     "38",
@@ -1318,6 +1315,7 @@
     "51",
     "52",
     "53",
+    "54",
     "56",
     "57",
     "58",
@@ -1340,6 +1338,7 @@
     "88",
     "89",
     "90",
+    "92",
     "93",
     "95",
     "96",
@@ -1355,7 +1354,6 @@
     "116",
     "117",
     "118",
-    "120",
     "121",
     "122",
     "123",
@@ -1795,6 +1793,28 @@
    "critical_note": ""
   },
   {
+   "file": "data/learn-videos.json",
+   "name": "learn-videos.json",
+   "what": "**讲解视频索引**（按知识点挂载外部视频）",
+   "use_for": "学生自学时的讲解视频。键是概念 id 或概念名，值是 {yt}/{bv}/{url}",
+   "how_to_use": "改完不用重建数据层 —— 学习页运行时读这个文件",
+   "records": 8,
+   "unit": "条（顶层对象，主数据在 `_说明`）",
+   "bytes": 1348,
+   "format": "json",
+   "fields": [
+    "_说明",
+    "_示例",
+    "rjb:physics_8b_rjb_cpt51"
+   ],
+   "sample": {
+    "_说明": "讲解视频索引：按知识点挂载视频。"
+   },
+   "in_git": true,
+   "kind": "data",
+   "critical_note": ""
+  },
+  {
    "file": "data/page-offsets-sh.json",
    "name": "page-offsets-sh.json",
    "what": "沪教版每册的**印刷页码偏移**",
@@ -1865,27 +1885,6 @@
     "sh-hj-数学-w-2b": -7,
     "sh-hj-数学-w-3a": -7,
     "sh-hj-数学-w-4a": -7
-   },
-   "in_git": false,
-   "kind": "data",
-   "critical_note": ""
-  },
-  {
-   "file": "data/learn-videos.json",
-   "name": "learn-videos.json",
-   "what": "**讲解视频索引**（按知识点挂载外部视频）",
-   "use_for": "学生自学时的讲解视频。键是概念 id 或概念名，值是 {yt}/{bv}/{url}",
-   "how_to_use": "改完不用重建数据层 —— 学习页运行时读这个文件",
-   "records": 4,
-   "unit": "条（顶层对象，主数据在 `_说明`）",
-   "bytes": 685,
-   "format": "json",
-   "fields": [
-    "_说明",
-    "_示例"
-   ],
-   "sample": {
-    "_说明": "讲解视频索引：按知识点挂载外部视频（YouTube / B站 / 网盘直链）。"
    },
    "in_git": true,
    "kind": "data",

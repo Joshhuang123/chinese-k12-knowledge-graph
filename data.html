@@ -103,7 +103,7 @@ footer a { color:var(--muted); }
 <div class="stats">
   <div class="stat"><b>43</b><span>数据集</span></div>
   <div class="stat"><b>143 MB</b><span>总体积</span></div>
-  <div class="stat"><b>109,548</b><span>总条数</span></div>
+  <div class="stat"><b>109,552</b><span>总条数</span></div>
   <div class="stat"><b>0</b><span>第三方依赖（主项目）</span></div>
 </div>
 
@@ -1183,7 +1183,7 @@ footer a { color:var(--muted); }
   <p class="use"><b>能回答什么</b>：页图是<strong>从本地教材 PDF 渲染</strong>的（WebP）。页码就是 PDF 的扫描页，与我们的数据源天然对齐</p>
   <p class="how"><b>怎么取</b>：按册次取：{[册次]: {扫描页: &#x27;data/pages/…/N.webp&#x27;}}；本体在 data/pages/（<strong>入库</strong>，82.1 MB）</p>
   
-  <details><summary>字段与样本</summary><div class="fields"><span class="chip">1</span><span class="chip">10</span><span class="chip">11</span><span class="chip">12</span><span class="chip">13</span><span class="chip">14</span><span class="chip">15</span><span class="chip">17</span><span class="chip">19</span><span class="chip">20</span><span class="chip">23</span><span class="chip">24</span><span class="chip">25</span><span class="chip">26</span><span class="chip">27</span><span class="chip">28</span><span class="chip">29</span><span class="chip">31</span><span class="chip">32</span><span class="chip">34</span><span class="chip">38</span><span class="chip">41</span><span class="chip">44</span><span class="chip">50</span><span class="chip">51</span><span class="chip">52</span><span class="chip">53</span><span class="chip">56</span><span class="chip">57</span><span class="chip">58</span><span class="chip">59</span><span class="chip">64</span><span class="chip">66</span><span class="chip">67</span><span class="chip">68</span><span class="chip">70</span><span class="chip">71</span><span class="chip">72</span><span class="chip">73</span><span class="chip">74</span><span class="chip more">还有 42 个</span></div><pre class="sample">{
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">1</span><span class="chip">10</span><span class="chip">11</span><span class="chip">13</span><span class="chip">14</span><span class="chip">17</span><span class="chip">19</span><span class="chip">20</span><span class="chip">23</span><span class="chip">24</span><span class="chip">25</span><span class="chip">26</span><span class="chip">27</span><span class="chip">28</span><span class="chip">29</span><span class="chip">32</span><span class="chip">34</span><span class="chip">38</span><span class="chip">41</span><span class="chip">44</span><span class="chip">50</span><span class="chip">51</span><span class="chip">52</span><span class="chip">53</span><span class="chip">54</span><span class="chip">56</span><span class="chip">57</span><span class="chip">58</span><span class="chip">59</span><span class="chip">64</span><span class="chip">66</span><span class="chip">67</span><span class="chip">68</span><span class="chip">70</span><span class="chip">71</span><span class="chip">72</span><span class="chip">73</span><span class="chip">74</span><span class="chip">75</span><span class="chip">76</span><span class="chip more">还有 40 个</span></div><pre class="sample">{
  <span class="k">&quot;biology-7a&quot;</span>: &quot;&lt;dict&gt;&quot;,
  <span class="k">&quot;biology-7b&quot;</span>: &quot;&lt;dict&gt;&quot;,
  <span class="k">&quot;biology-8a&quot;</span>: &quot;&lt;dict&gt;&quot;,
@@ -1519,12 +1519,30 @@ footer a { color:var(--muted); }
 </article>
 <article class="ds" data-kind="data">
   <header>
+    <h3><code>data/learn-videos.json</code></h3>
+    <div class="meta">
+      <span class="m rec">8 条</span>
+      <span class="m">1 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what"><strong>讲解视频索引</strong>（按知识点挂载外部视频）</p>
+  <p class="use"><b>能回答什么</b>：学生自学时的讲解视频。键是概念 id 或概念名，值是 {yt}/{bv}/{url}</p>
+  <p class="how"><b>怎么取</b>：改完不用重建数据层 —— 学习页运行时读这个文件</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_说明</span><span class="chip">_示例</span><span class="chip">rjb:physics_8b_rjb_cpt51</span></div><pre class="sample">{
+ <span class="k">&quot;_说明&quot;</span>: &quot;讲解视频索引：按知识点挂载视频。&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
     <h3><code>data/page-offsets-sh.json</code></h3>
     <div class="meta">
       <span class="m rec">44 个键</span>
       <span class="m">1 KB</span>
       <span class="m fmt">json</span>
-      <span class="chip nogit">不入库</span>
+      
     </div>
   </header>
   <p class="what">沪教版每册的<strong>印刷页码偏移</strong></p>
@@ -1546,24 +1564,6 @@ footer a { color:var(--muted); }
  <span class="k">&quot;sh-hj-数学-w-2b&quot;</span>: -7,
  <span class="k">&quot;sh-hj-数学-w-3a&quot;</span>: -7,
  <span class="k">&quot;sh-hj-数学-w-4a&quot;</span>: -7
-}</pre></details>
-</article>
-<article class="ds" data-kind="data">
-  <header>
-    <h3><code>data/learn-videos.json</code></h3>
-    <div class="meta">
-      <span class="m rec">4 条</span>
-      <span class="m">1 KB</span>
-      <span class="m fmt">json</span>
-      
-    </div>
-  </header>
-  <p class="what"><strong>讲解视频索引</strong>（按知识点挂载外部视频）</p>
-  <p class="use"><b>能回答什么</b>：学生自学时的讲解视频。键是概念 id 或概念名，值是 {yt}/{bv}/{url}</p>
-  <p class="how"><b>怎么取</b>：改完不用重建数据层 —— 学习页运行时读这个文件</p>
-  
-  <details><summary>字段与样本</summary><div class="fields"><span class="chip">_说明</span><span class="chip">_示例</span></div><pre class="sample">{
- <span class="k">&quot;_说明&quot;</span>: &quot;讲解视频索引：按知识点挂载外部视频（YouTube / B站 / 网盘直链）。&quot;
 }</pre></details>
 </article>
 <article class="ds" data-kind="data">

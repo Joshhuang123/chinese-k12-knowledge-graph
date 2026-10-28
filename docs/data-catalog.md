@@ -43,8 +43,8 @@
 | `data/shanghai-rjb-positions.json` | 人教版前置节点在沪教教材里的真实位置 | 34 | 9 KB | 按上游概念 id 取：给出沪教版别、册次、证据档 |
 | `data/kx-visual-books.json` | 小学科学视觉层用到的书 | 12 | 6 KB | 顶层是数组 |
 | `data/kx-textbooks.json` | 小学科学教材清单（12 本） | 12 | 6 KB | 顶层是数组 |
+| `data/learn-videos.json` | 讲解视频索引（按知识点挂载外部视频） | 8 | 1 KB | 改完不用重建数据层 —— 学习页运行时读这个文件 |
 | `data/page-offsets-sh.json` | 沪教版每册的印刷页码偏移 | 44 | 1 KB | 按沪教书号取：{sh-hj-数学-w-7b: -7}。从平台 OCR 的页脚行取… |
-| `data/learn-videos.json` | 讲解视频索引（按知识点挂载外部视频） | 4 | 1 KB | 改完不用重建数据层 —— 学习页运行时读这个文件 |
 | `data/page-offsets.json` | 人教版每册的印刷页码偏移 | 31 | 1 KB | 按册次取：{册次: 负数}。矢量册从 PDF 页脚取页码，扫描件走 OCR（脚本… |
 | `data/normalized/selfbuilt-edges.json` | 自建先修边（13,461 条，模型重建） | 13,461 | 4 MB | edges 数组；source 字段标来源（model / derived / … |
 | `data/normalized/confirmed-wrong.json` | 人工逐条裁决的账本 | 25 | 8 KB | 顶层数组，每条记了裁决理由 |
