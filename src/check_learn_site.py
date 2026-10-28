@@ -25,6 +25,7 @@ import sys
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE / "src"))
+from build_learn_site import site_payload   # noqa: E402
 
 DATA = BASE / "data"
 PAGE_IMG = json.loads((DATA / "page-images.json").read_text(encoding="utf-8"))
@@ -170,6 +171,49 @@ def main() -> int:
             ratio = notmentioned / len(withimg)
             check(ratio <= 0.6, f"{tag}: 显示页大多提到这个概念",
                   f"{notmentioned}/{len(withimg)} = {ratio:.0%} 的页正文里没有概念名")
+
+        # ⑤ **先修/后继必须跟站点 payload 对得上** ——
+        # 这条是**踩坑踩出来的**（ISSUE-53）：
+        #   build_learn_site.py 里教材原话那个内层循环
+        #   `for i in order[:6]` **覆盖了外层的节点下标 i**，
+        #   于是 `pre_of.get(i, [])` 查的是**引文序号**（0–5），不是节点下标。
+        #   结果：**每个有教材原话的概念**，先修和后继全是**别的概念**的 ——
+        #   而且「49% 的沪教概念前置完全相同」这种整齐数字，
+        #   一看就该怀疑是 bug 而不是数据特征（差点当成上游数据问题去过滤）。
+        #
+        # 判据：**独立地**读站点 payload，拿它算这个节点的前置，
+        # 再跟学习页数据里的对。两者必须一致。
+        # 判别力：把 build_learn_site.py 里的 `qi` 改回 `i` → 这条立刻红。
+        if tag == "rjb":
+            payload = site_payload(BASE / "index.html")
+        elif tag == "sh":
+            payload = site_payload(BASE / "shanghai.html")
+        else:
+            payload = site_payload(BASE / "kx.html")
+        if payload:
+            pnodes = payload["nodes"]
+            pre_of = collections.defaultdict(list)
+            for e in payload["edges"]:
+                pre_of[e[0]].append(e[1])
+            checked = mismatch = 0
+            bad = []
+            for n in nodes:
+                if not n.get("pre"):
+                    continue
+                checked += 1
+                if checked > 3000:
+                    break
+                i = n["i"]
+                if not (0 <= i < len(pnodes)) or pnodes[i][1] != n["n"]:
+                    continue
+                expect = [pnodes[p][1] for p in pre_of.get(i, [])][:12]
+                got = [nm for _, nm in n["pre"]]
+                if expect != got:
+                    mismatch += 1
+                    if len(bad) < 3:
+                        bad.append((n["n"], expect[:3], got[:3]))
+            check(mismatch == 0, f"{tag}: 先修跟站点 payload 对得上",
+                  f"{mismatch} 个概念对不上，例：{bad[:2]}")
 
         # ② 原话不串版
         if want_prefix:

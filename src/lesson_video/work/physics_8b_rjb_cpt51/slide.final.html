@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>讲解视频</title>
+<style>
+  /* ── 视觉规范（与 josh-media 一致）─────────────────────────
+     暗底 #08090C + 极淡网格 0.055 · 单一暖色 #FF9F45 ·
+     主视觉必须是**真东西** —— 这里是教材原页图，不是抽象图形。 */
+  html,body{margin:0;padding:0;background:#08090C;width:1920px;height:1080px;overflow:hidden}
+  body{font-family:'PingFang SC','Hiragino Sans GB','Heiti SC',sans-serif;color:#EDF0F5;
+       -webkit-font-smoothing:antialiased}
+  #stage{position:relative;width:1920px;height:1080px}
+  #grid{position:absolute;inset:0;opacity:.055;
+        background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);
+        background-size:60px 60px}
+  .scene{position:absolute;inset:0;opacity:0}
+  .kicker{position:absolute;left:96px;top:78px;font-size:26px;color:#8A92A6;letter-spacing:1px}
+  .rule{position:absolute;left:96px;top:130px;width:520px;height:3px;
+        background:linear-gradient(90deg,rgba(255,159,69,.85),rgba(255,159,69,.2),transparent)}
+  .sect{position:absolute;left:96px;top:186px;font-size:26px;color:#8A92A6;letter-spacing:2px}
+  .sub{position:absolute;left:96px;font-size:44px;line-height:1.6;color:#EDF0F5;max-width:1120px}
+  .quote{position:absolute;left:96px;font-size:29px;line-height:1.62;color:#C3CAD8;
+         border-left:4px solid rgba(255,159,69,.55);padding:8px 0 8px 28px;max-width:1000px}
+  .quote small{display:block;color:#8A92A6;font-size:21px;margin-top:12px}
+  .fml{position:absolute;right:96px;top:236px;width:600px;font-size:50px;line-height:1.5;
+       color:#FF9F45;font-weight:600;letter-spacing:.5px}
+  .fml .cap{display:block;font-size:21px;color:#8A92A6;font-weight:400;letter-spacing:2px;margin-bottom:22px}
+
+  /* 教材原页：flex 两栏，页图按自身比例，**不留死白** */
+  .pagerow{position:absolute;left:96px;right:96px;top:196px;bottom:170px;display:flex;gap:64px;align-items:flex-start}
+  .pagewrap{flex:none;height:100%;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:12px;
+             background:#0E1117;display:flex;align-items:center;justify-content:center}
+  .pagewrap img{max-height:100%;max-width:620px;display:block;border-radius:4px}
+  .pagenote{flex:1;padding-top:14px}
+  .pagenote h3{margin:0 0 22px;font-size:52px;font-weight:700;line-height:1.3}
+  .pagenote .where{font-size:27px;color:#FF9F45;margin-bottom:34px}
+  .pagenote p{font-size:29px;line-height:1.66;color:#C3CAD8;margin:0 0 24px}
+
+  /* 前置：**并列**，不是一条链 —— 图谱里 pre 是一组平行前置，
+     画成竖直链会谎报「重力→力→液体压强」的先后 */
+  .hub{position:absolute;left:96px;right:96px;top:236px;bottom:168px;display:flex;flex-direction:column;justify-content:center}
+  .hubnow{font-size:62px;font-weight:700;display:flex;align-items:center;gap:20px}
+  .hubnow .dot{width:22px;height:22px;border-radius:50%;background:#FF9F45;
+               box-shadow:0 0 0 9px rgba(255,159,69,.16);flex:none}
+  .hubnow small{font-size:23px;color:#8A92A6;font-weight:400;letter-spacing:1px}
+  .hubarrow{margin:24px 0 26px 10px;font-size:30px;color:#4C5466;display:flex;align-items:center;gap:18px}
+  .hubarrow span{font-size:24px;color:#8A92A6}
+  .hubrow{display:flex;gap:26px}
+  .hubitem{flex:1;min-width:0;padding:22px 24px;border:1px solid rgba(255,255,255,.11);border-radius:11px;
+           background:rgba(255,255,255,.028);font-size:34px;color:#EDF0F5;line-height:1.3}
+  .hubitem .dot{display:block;width:13px;height:13px;border-radius:50%;background:#4C5466;margin-bottom:14px}
+  .hubitem small{display:block;font-size:20px;color:#8A92A6;margin-top:8px}
+
+  .endwrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .endwrap .big{font-size:112px;font-weight:700;letter-spacing:2px}
+  .endwrap .mid{font-size:34px;color:#C3CAD8;margin-top:26px;text-align:center;max-width:1100px;line-height:1.6}
+  .endwrap .site{font-size:24px;color:#8A92A6;margin-top:58px;letter-spacing:3px}
+
+  #sub{position:absolute;left:0;right:0;bottom:0;height:150px;display:flex;align-items:center;
+       justify-content:center;padding:0 180px;background:linear-gradient(0deg,rgba(8,9,12,.94),rgba(8,9,12,0));
+       font-size:31px;line-height:1.5;color:#EDF0F5;text-align:center}
+  #sub span{background:rgba(8,9,12,.72);padding:6px 18px;border-radius:8px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="grid"></div>
+  <div id="scenes"></div>
+  <div id="sub"><span id="subtext"></span></div>
+</div>
+<script id="tl" type="application/json">{
+  "total": 59.631,
+  "meta": {
+    "title": "浮力",
+    "episode": "learn",
+    "orientation": "horizontal",
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "date": "2026-10-28"
+  },
+  "constants": {
+    "GAP": 0.3,
+    "SCENE_GAP": 0.75,
+    "TAIL": 2.751
+  },
+  "scenes": [
+    {
+      "idx": 0,
+      "id": "s0_cover",
+      "title": "封面",
+      "start": 0,
+      "end": 10.654,
+      "sentFrom": "s0_cover_0",
+      "sentTo": "s0_cover_1"
+    },
+    {
+      "idx": 1,
+      "id": "s1_what",
+      "title": "它是什么",
+      "start": 10.654,
+      "end": 24.944,
+      "sentFrom": "s1_what_0",
+      "sentTo": "s1_what_2"
+    },
+    {
+      "idx": 2,
+      "id": "s2_page",
+      "title": "教材原页",
+      "start": 24.944,
+      "end": 36.396,
+      "sentFrom": "s2_page_0",
+      "sentTo": "s2_page_1"
+    },
+    {
+      "idx": 3,
+      "id": "s3_chain",
+      "title": "卡在哪",
+      "start": 36.396,
+      "end": 47.884,
+      "sentFrom": "s3_chain_0",
+      "sentTo": "s3_chain_1"
+    },
+    {
+      "idx": 4,
+      "id": "s4_end",
+      "title": "结尾",
+      "start": 47.884,
+      "end": 57.63,
+      "sentFrom": "s4_end_0",
+      "sentTo": "s4_end_1"
+    }
+  ],
+  "sentences": [
+    {
+      "key": "s0_cover_0",
+      "scene": 0,
+      "text": "轮船是钢铁做的，螺母也是钢铁做的，一个浮在水上，一个沉到水底。",
+      "audio": "audio/s0_cover_0.mp3",
+      "start": 0,
+      "end": 6.304,
+      "est": false,
+      "dur": 6.304
+    },
+    {
+      "key": "s0_cover_1",
+      "scene": 0,
+      "text": "差别不在材料，在水往上托的那个力。",
+      "audio": "audio/s0_cover_1.mp3",
+      "start": 6.604,
+      "end": 9.904,
+      "est": false,
+      "dur": 3.3
+    },
+    {
+      "key": "s1_what_0",
+      "scene": 1,
+      "text": "浸在液体或者气体里的物体，会受到一个向上的力，这个力叫浮力。",
+      "audio": "audio/s1_what_0.mp3",
+      "start": 10.654,
+      "end": 17.214,
+      "est": false,
+      "dur": 6.56
+    },
+    {
+      "key": "s1_what_1",
+      "scene": 1,
+      "text": "浮力有多大，等于物体排开的那部分液体的重量。",
+      "audio": "audio/s1_what_1.mp3",
+      "start": 17.514,
+      "end": 21.694,
+      "est": false,
+      "dur": 4.18
+    },
+    {
+      "key": "s1_what_2",
+      "scene": 1,
+      "text": "教材原话就是这么写的。",
+      "audio": "audio/s1_what_2.mp3",
+      "start": 21.994,
+      "end": 24.194,
+      "est": false,
+      "dur": 2.2
+    },
+    {
+      "key": "s2_page_0",
+      "scene": 2,
+      "text": "这是教材原书上的那一页。",
+      "audio": "audio/s2_page_0.mp3",
+      "start": 24.944,
+      "end": 26.906,
+      "est": false,
+      "dur": 1.962
+    },
+    {
+      "key": "s2_page_1",
+      "scene": 2,
+      "text": "翻到人教版八年级下册第十章，第 49 页，这页开头就是浮力的定义，和那个冰山的例子。",
+      "audio": "audio/s2_page_1.mp3",
+      "start": 27.206,
+      "end": 35.646,
+      "est": false,
+      "dur": 8.44
+    },
+    {
+      "key": "s3_chain_0",
+      "scene": 3,
+      "text": "学浮力之前得先会三样，重力、力、还有液体压强。",
+      "audio": "audio/s3_chain_0.mp3",
+      "start": 36.396,
+      "end": 42.747,
+      "est": false,
+      "dur": 6.351
+    },
+    {
+      "key": "s3_chain_1",
+      "scene": 3,
+      "text": "因为浮力说到底，是上表面和下表面压力差出来的。",
+      "audio": "audio/s3_chain_1.mp3",
+      "start": 43.047,
+      "end": 47.134,
+      "est": false,
+      "dur": 4.087
+    },
+    {
+      "key": "s4_end_0",
+      "scene": 4,
+      "text": "浮力看明白了，再往下就是阿基米德原理和物体的浮沉条件。",
+      "audio": "audio/s4_end_0.mp3",
+      "start": 47.884,
+      "end": 52.911,
+      "est": false,
+      "dur": 5.027
+    },
+    {
+      "key": "s4_end_1",
+      "scene": 4,
+      "text": "学习页里还有教材例题和完整的前置链。",
+      "audio": "audio/s4_end_1.mp3",
+      "start": 53.211,
+      "end": 56.88,
+      "est": false,
+      "dur": 3.669
+    }
+  ],
+  "built": "rebuild-real",
+  "audioSummary": {
+    "speech": 52.079,
+    "silence": 5.55,
+    "tail": 2.751,
+    "rate": 1,
+    "chars": 254,
+    "pureSpeechRate": 4.877,
+    "endToEndRate": 4.26
+  }
+}</script>
+<script id="lesson" type="application/json">{"id": "physics_8b_rjb_cpt51", "version": "rjb", "name": "浮力", "kicker": "人教版 · 八年级下册 · 第十章 浮力", "hook": "轮船是钢铁做的，螺母也是钢铁做的，一个浮在水上，一个沉到水底。差别不在材料，在水往上托的那个力。", "definition": "浸在液体或气体中的物体受到向上的力。浮力大小等于物体排开液体或气体的重量。", "quote": {"text": "冰山、游船、鸭子都受到重力的作用，但却没有因此而沉入水底，这表明水对它们有一个向上托起的力。浸在液体中的物体受到向上的力，这个力叫做浮力。", "src": "人教版《物理》八年级下册 第十章 第 49 页（教材原话）"}, "formulas": ["F浮 = G排", "F浮 = ρ液 · g · V排"], "page": {"image": "/Users/huangjunhai/Documents/个人/项目/中文知识图谱/data/pages/physics-8b/53.webp", "where": "人教版八年级下册 第十章 · 印刷页 49", "lines": ["这一页是「第 1 节 浮力」的讲解页开头。", "右上是冰山浮在海面上的照片，左边就是浮力的定义和苹果入水的实验图。"]}, "chain": [{"name": "浮力", "tag": "现在学的"}, {"name": "重力", "tag": "力的一种"}, {"name": "力", "tag": "相互作用"}, {"name": "液体压强", "tag": "上下的压力差"}], "endText": "教材原页 · 教材原话 · 例题 · 完整前置链，都在学习页里。", "scenes": [{"id": "s0_cover", "title": "封面", "text": "轮船是钢铁做的，螺母也是钢铁做的，一个浮在水上，一个沉到水底。差别不在材料，在水往上托的那个力。"}, {"id": "s1_what", "title": "它是什么", "text": "浸在液体或者气体里的物体，会受到一个向上的力，这个力叫浮力。浮力有多大，等于物体排开的那部分液体的重量。教材原话就是这么写的。"}, {"id": "s2_page", "title": "教材原页", "text": "这是教材原书上的那一页。翻到人教版八年级下册第十章，第 49 页，这页开头就是浮力的定义，和那个冰山的例子。"}, {"id": "s3_chain", "title": "卡在哪", "text": "学浮力之前得先会三样，重力、力、还有液体压强。因为浮力说到底，是上表面和下表面压力差出来的。"}, {"id": "s4_end", "title": "结尾", "text": "浮力看明白了，再往下就是阿基米德原理和物体的浮沉条件。学习页里还有教材例题和完整的前置链。"}], "explain": {"lines": ["轮船是钢铁做的，螺母也是钢铁做的，一个浮在水上，一个沉到水底。差别不在材料，在水往上托的那个力。", "浸在液体或者气体里的物体，会受到一个向上的力，这个力叫浮力。浮力有多大，等于物体排开的那部分液体的重量。教材原话就是这么写的。", "这是教材原书上的那一页。翻到人教版八年级下册第十章，第 49 页，这页开头就是浮力的定义，和那个冰山的例子。", "学浮力之前得先会三样，重力、力、还有液体压强。因为浮力说到底，是上表面和下表面压力差出来的。", "浮力看明白了，再往下就是阿基米德原理和物体的浮沉条件。学习页里还有教材例题和完整的前置链。"], "from": "讲解稿 · 与视频同源（视频是这份稿子的配音版）"}}</script>
+<script>
+const TL = JSON.parse(document.getElementById('tl').textContent);
+const L  = JSON.parse(document.getElementById('lesson').textContent);
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+const wrap = document.getElementById('scenes');
+const html = [];
+
+html.push(`<div class="scene" data-i="0">
+  <div class="kicker">${esc(L.kicker||'')}</div>
+  <div class="rule"></div>
+  <div style="position:absolute;left:96px;top:200px;font-size:158px;font-weight:700;letter-spacing:4px">${esc(L.name)}</div>
+  <div class="sub" style="top:440px;max-width:1300px">${esc(L.hook||'')}</div>
+</div>`);
+
+html.push(`<div class="scene" data-i="1">
+  <div class="kicker">${esc(L.kicker||'')}</div>
+  <div class="rule"></div>
+  <div class="sect">它是什么</div>
+  <div class="sub" style="top:250px">${esc(L.definition||'')}</div>
+  ${(L.formulas&&L.formulas.length)?`<div class="fml"><span class="cap">教材上的公式</span>${L.formulas.slice(0,3).map(esc).join('<br>')}</div>`:''}
+  ${L.quote?`<div class="quote" style="top:640px">${esc(L.quote.text||'')}<small>${esc(L.quote.src||'')}</small></div>`:''}
+</div>`);
+
+html.push(`<div class="scene" data-i="2">
+  <div class="kicker">${esc(L.kicker||'')}</div>
+  <div class="rule"></div>
+  <div class="pagerow">
+    ${(L.page&&L.page.image)?`<div class="pagewrap"><img src="${esc(L.page.image)}" alt=""></div>`:''}
+    <div class="pagenote">
+      <h3>${esc(L.name)}</h3>
+      ${(L.page&&L.page.where)?`<div class="where">${esc(L.page.where)}</div>`:''}
+      ${((L.page&&L.page.lines)||[]).map(x=>`<p>${esc(x)}</p>`).join('')}
+    </div>
+  </div>
+</div>`);
+
+html.push(`<div class="scene" data-i="3">
+  <div class="kicker">${esc(L.kicker||'')}</div>
+  <div class="rule"></div>
+  <div class="sect">学它之前要先会</div>
+  <div class="hub">
+    <div class="hubnow"><span class="dot"></span>${esc(L.name)}<small>${esc((L.chain[0]||{}).tag||'现在学的')}</small></div>
+    <div class="hubarrow">↓<span>这几样要先会</span></div>
+    <div class="hubrow">
+      ${(L.chain||[]).slice(1).map(n=>`<div class="hubitem"><span class="dot"></span>${esc(n.name)}${n.tag?`<small>${esc(n.tag)}</small>`:''}</div>`).join('')}
+    </div>
+  </div>
+</div>`);
+
+html.push(`<div class="scene" data-i="4">
+  <div class="endwrap">
+    <div class="big">${esc(L.name)}</div>
+    <div class="mid">${esc(L.endText||'')}</div>
+    <div class="site">中文 K12 知识图谱 · 学习页</div>
+  </div>
+</div>`);
+
+wrap.innerHTML = html.join('');
+const SCENES = [...document.querySelectorAll('.scene')];
+const SUB = document.getElementById('subtext');
+const SUBBOX = document.getElementById('sub');
+
+function render(t){
+  let si = 0;
+  for (let i=0;i<TL.scenes.length;i++){ if (t >= TL.scenes[i].start) si = i; }
+  const sc = TL.scenes[si];
+
+  const IN = 0.35;
+  let op = 1;
+  if (t - sc.start < IN) op = (t - sc.start)/IN;
+  const untilNext = si+1 < TL.scenes.length ? TL.scenes[si+1].start : TL.total;
+  if (untilNext - t < IN) op = Math.min(op, Math.max(0,(untilNext-t)/IN));
+  op = Math.max(0, Math.min(1, op));
+
+  for (let i=0;i<SCENES.length;i++) SCENES[i].style.opacity = (i===si) ? op : 0;
+
+  // 字幕：当前场里正在说的那一句。
+  // ⚠️ **封面不显示字幕** —— 封面上钩子句已经是大字了，
+  // 再在底部重复一遍是又笨又吵。
+  let cur = null;
+  for (const s of TL.sentences){ if (t >= s.start && t < s.end) cur = s; }
+  const showSub = cur && si !== 0;
+  SUB.textContent = showSub ? cur.text : '';
+  SUBBOX.style.opacity = showSub ? 1 : 0;
+
+  document.body.dataset.t = t.toFixed(3);
+}
+window.render = render;
+render(0);
+</script>
+</body>
+</html>

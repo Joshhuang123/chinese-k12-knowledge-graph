@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>讲解视频</title>
+<style>
+  /* ── 视觉规范（与 josh-media 一致）─────────────────────────
+     暗底 #08090C + 极淡网格 0.055 · 单一暖色 #FF9F45 ·
+     主视觉必须是**真东西** —— 这里是教材原页图，不是抽象图形。 */
+  html,body{margin:0;padding:0;background:#08090C;width:1920px;height:1080px;overflow:hidden}
+  body{font-family:'PingFang SC','Hiragino Sans GB','Heiti SC',sans-serif;color:#EDF0F5;
+       -webkit-font-smoothing:antialiased}
+  #stage{position:relative;width:1920px;height:1080px}
+  #grid{position:absolute;inset:0;opacity:.055;
+        background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);
+        background-size:60px 60px}
+  .scene{position:absolute;inset:0;opacity:0}
+  .kicker{position:absolute;left:96px;top:78px;font-size:26px;color:#8A92A6;letter-spacing:1px}
+  .rule{position:absolute;left:96px;top:130px;width:520px;height:3px;
+        background:linear-gradient(90deg,rgba(255,159,69,.85),rgba(255,159,69,.2),transparent)}
+  .sect{position:absolute;left:96px;top:186px;font-size:26px;color:#8A92A6;letter-spacing:2px}
+  .sub{position:absolute;left:96px;font-size:44px;line-height:1.6;color:#EDF0F5;max-width:1120px}
+  .quote{position:absolute;left:96px;font-size:29px;line-height:1.62;color:#C3CAD8;
+         border-left:4px solid rgba(255,159,69,.55);padding:8px 0 8px 28px;max-width:1000px}
+  .quote small{display:block;color:#8A92A6;font-size:21px;margin-top:12px}
+  .fml{position:absolute;right:96px;top:236px;width:600px;font-size:50px;line-height:1.5;
+       color:#FF9F45;font-weight:600;letter-spacing:.5px}
+  .fml .cap{display:block;font-size:21px;color:#8A92A6;font-weight:400;letter-spacing:2px;margin-bottom:22px}
+
+  /* 教材原页：flex 两栏，页图按自身比例，**不留死白** */
+  .pagerow{position:absolute;left:96px;right:96px;top:196px;bottom:170px;display:flex;gap:64px;align-items:flex-start}
+  .pagewrap{flex:none;height:100%;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:12px;
+             background:#0E1117;display:flex;align-items:center;justify-content:center}
+  .pagewrap img{max-height:100%;max-width:620px;display:block;border-radius:4px}
+  .pagenote{flex:1;padding-top:14px}
+  .pagenote h3{margin:0 0 22px;font-size:52px;font-weight:700;line-height:1.3}
+  .pagenote .where{font-size:27px;color:#FF9F45;margin-bottom:34px}
+  .pagenote p{font-size:29px;line-height:1.66;color:#C3CAD8;margin:0 0 24px}
+
+  /* 前置：**并列**，不是一条链 —— 图谱里 pre 是一组平行前置，
+     画成竖直链会谎报「重力→力→液体压强」的先后 */
+  .hub{position:absolute;left:96px;right:96px;top:236px;bottom:168px;display:flex;flex-direction:column;justify-content:center}
+  .hubnow{font-size:62px;font-weight:700;display:flex;align-items:center;gap:20px}
+  .hubnow .dot{width:22px;height:22px;border-radius:50%;background:#FF9F45;
+               box-shadow:0 0 0 9px rgba(255,159,69,.16);flex:none}
+  .hubnow small{font-size:23px;color:#8A92A6;font-weight:400;letter-spacing:1px}
+  .hubarrow{margin:24px 0 26px 10px;font-size:30px;color:#4C5466;display:flex;align-items:center;gap:18px}
+  .hubarrow span{font-size:24px;color:#8A92A6}
+  .hubrow{display:flex;gap:26px}
+  .hubitem{flex:1;min-width:0;padding:22px 24px;border:1px solid rgba(255,255,255,.11);border-radius:11px;
+           background:rgba(255,255,255,.028);font-size:34px;color:#EDF0F5;line-height:1.3}
+  .hubitem .dot{display:block;width:13px;height:13px;border-radius:50%;background:#4C5466;margin-bottom:14px}
+  .hubitem small{display:block;font-size:20px;color:#8A92A6;margin-top:8px}
+
+  .endwrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .endwrap .big{font-size:112px;font-weight:700;letter-spacing:2px}
+  .endwrap .mid{font-size:34px;color:#C3CAD8;margin-top:26px;text-align:center;max-width:1100px;line-height:1.6}
+  .endwrap .site{font-size:24px;color:#8A92A6;margin-top:58px;letter-spacing:3px}
+
+  #sub{position:absolute;left:0;right:0;bottom:0;height:150px;display:flex;align-items:center;
+       justify-content:center;padding:0 180px;background:linear-gradient(0deg,rgba(8,9,12,.94),rgba(8,9,12,0));
+       font-size:31px;line-height:1.5;color:#EDF0F5;text-align:center}
+  #sub span{background:rgba(8,9,12,.72);padding:6px 18px;border-radius:8px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="grid"></div>
+  <div id="scenes"></div>
+  <div id="sub"><span id="subtext"></span></div>
+</div>
+<script id="tl" type="application/json">__TIMELINE__</script>
+<script id="lesson" type="application/json">__LESSON__</script>
+<script>
+const TL = JSON.parse(document.getElementById('tl').textContent);
+const L  = JSON.parse(document.getElementById('lesson').textContent);
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+const wrap = document.getElementById('scenes');
+const html = [];
+
+html.push(`<div class="scene" data-i="0">
+  <div class="kicker">${esc(L.kicker||'')}</div>
+  <div class="rule"></div>
+  <div style="position:absolute;left:96px;top:200px;font-size:158px;font-weight:700;letter-spacing:4px">${esc(L.name)}</div>
+  <div class="sub" style="top:440px;max-width:1300px">${esc(L.hook||'')}</div>
+</div>`);
+
+html.push(`<div class="scene" data-i="1">
+  <div class="kicker">${esc(L.kicker||'')}</div>
+  <div class="rule"></div>
+  <div class="sect">它是什么</div>
+  <div class="sub" style="top:250px">${esc(L.definition||'')}</div>
+  ${(L.formulas&&L.formulas.length)?`<div class="fml"><span class="cap">教材上的公式</span>${L.formulas.slice(0,3).map(esc).join('<br>')}</div>`:''}
+  ${L.quote?`<div class="quote" style="top:640px">${esc(L.quote.text||'')}<small>${esc(L.quote.src||'')}</small></div>`:''}
+</div>`);
+
+html.push(`<div class="scene" data-i="2">
+  <div class="kicker">${esc(L.kicker||'')}</div>
+  <div class="rule"></div>
+  <div class="pagerow">
+    ${(L.page&&L.page.image)?`<div class="pagewrap"><img src="${esc(L.page.image)}" alt=""></div>`:''}
+    <div class="pagenote">
+      <h3>${esc(L.name)}</h3>
+      ${(L.page&&L.page.where)?`<div class="where">${esc(L.page.where)}</div>`:''}
+      ${((L.page&&L.page.lines)||[]).map(x=>`<p>${esc(x)}</p>`).join('')}
+    </div>
+  </div>
+</div>`);
+
+html.push(`<div class="scene" data-i="3">
+  <div class="kicker">${esc(L.kicker||'')}</div>
+  <div class="rule"></div>
+  <div class="sect">${esc(L.chainTitle||'学它之前要先会')}</div>
+  <div class="hub">
+    <div class="hubnow"><span class="dot"></span>${esc(L.name)}<small>${esc((L.chain[0]||{}).tag||'现在学的')}</small></div>
+    <div class="hubarrow">↓<span>${esc(L.chainLabel||'这几样要先会')}</span></div>
+    <div class="hubrow">
+      ${(L.chain||[]).slice(1).map(n=>`<div class="hubitem"><span class="dot"></span>${esc(n.name)}${n.tag?`<small>${esc(n.tag)}</small>`:''}</div>`).join('')}
+    </div>
+  </div>
+</div>`);
+
+html.push(`<div class="scene" data-i="4">
+  <div class="endwrap">
+    <div class="big">${esc(L.name)}</div>
+    <div class="mid">${esc(L.endText||'')}</div>
+    <div class="site">中文 K12 知识图谱 · 学习页</div>
+  </div>
+</div>`);
+
+wrap.innerHTML = html.join('');
+const SCENES = [...document.querySelectorAll('.scene')];
+const SUB = document.getElementById('subtext');
+const SUBBOX = document.getElementById('sub');
+
+function render(t){
+  let si = 0;
+  for (let i=0;i<TL.scenes.length;i++){ if (t >= TL.scenes[i].start) si = i; }
+  const sc = TL.scenes[si];
+
+  const IN = 0.35;
+  let op = 1;
+  if (t - sc.start < IN) op = (t - sc.start)/IN;
+  const untilNext = si+1 < TL.scenes.length ? TL.scenes[si+1].start : TL.total;
+  if (untilNext - t < IN) op = Math.min(op, Math.max(0,(untilNext-t)/IN));
+  op = Math.max(0, Math.min(1, op));
+
+  for (let i=0;i<SCENES.length;i++) SCENES[i].style.opacity = (i===si) ? op : 0;
+
+  // 字幕：当前场里正在说的那一句。
+  // ⚠️ **封面不显示字幕** —— 封面上钩子句已经是大字了，
+  // 再在底部重复一遍是又笨又吵。
+  let cur = null;
+  for (const s of TL.sentences){ if (t >= s.start && t < s.end) cur = s; }
+  const showSub = cur && si !== 0;
+  SUB.textContent = showSub ? cur.text : '';
+  SUBBOX.style.opacity = showSub ? 1 : 0;
+
+  document.body.dataset.t = t.toFixed(3);
+}
+window.render = render;
+render(0);
+</script>
+</body>
+</html>

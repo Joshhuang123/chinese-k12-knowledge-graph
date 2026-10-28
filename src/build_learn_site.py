@@ -289,6 +289,7 @@ def main() -> int:
             pre_of[a].append(b)
             suc_of[b].append(a)
 
+
         # 节点 → 教材单元名（用来挑「真正讲它的那一页」）
         # cns[i] = [单元名, 册次, 学科槽位, 第一个可点概念下标]
         unit_of = {}
@@ -379,9 +380,9 @@ def main() -> int:
                                key=lambda i: 0 if (q.get("quoteKinds") or [None] * 99)[i] == "definition" else 1)
                 bks = q.get("books") or []
                 bk = bks[0] if bks else (q.get("book") or "")
-                for i in order[:6]:
-                    tx = (q.get("quotes") or [])[i]
-                    kind = (q.get("quoteKinds") or [""])[i]
+                for qi in order[:6]:
+                    tx = (q.get("quotes") or [])[qi]
+                    kind = (q.get("quoteKinds") or [""])[qi]
                     if not tx or len(tx.strip()) <= 3:
                         continue
                     # ⚠️ **剔掉目录行和标题行** ——

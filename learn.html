@@ -134,7 +134,12 @@ ul.plain .note{color:var(--dim);font-size:12.5px}
 
 .vid{background:#11151d;border:1px solid var(--line);border-radius:9px;padding:13px}
 .vid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:7px;background:#000}
+.vid video{width:100%;aspect-ratio:16/9;display:block;border-radius:7px;background:#000}
 .vid a{font-size:13.5px}
+/* 讲解稿的文字版 —— 视频是「看懂」最省事的形式，但不是唯一形式 */
+.expl{margin:0 0 12px;font-size:14.5px;line-height:1.78;color:#D7DCE6}
+.expl:last-of-type{margin-bottom:0}
+.expl:first-of-type{color:#EDF0F5;font-size:15.5px}
 .vidnone{color:var(--dim);font-size:13.5px;padding:16px;border:1px dashed var(--line);border-radius:9px;text-align:center}
 
 .empty{color:var(--dim);font-size:13.5px;padding:10px 0}
@@ -217,6 +222,7 @@ let PAGES = null;         // 教材页图基址（沪教版，平台外链）
 let PAGE_IMAGES_RJB = null;  // 人教版/小学科学页图（本地 PDF 渲染，入库）
 let PAGE_OFFSETS = {};     // 人教版：教材册次 → 印刷页码偏移（扫描页 + offset = 书上印的页码）
 let PAGE_OFFSETS_SH = {};  // 沪教版：沪教书号 → 印刷页码偏移
+let LEARN_EXPLAINS = {};  // 讲解稿文字版（概念 id → {lines, from}）
 let VIDEOS = null;        // 视频索引
 let QUESTIONS = [];       // 练习题
 const QUIZ_BY_IDX = {};    // 题（渲染期ID:题号 → 题），每次渲染用新的 RENDER_ID
@@ -400,6 +406,8 @@ async function render(){
   if (!PAGE_OFFSETS_SH || !Object.keys(PAGE_OFFSETS_SH).length){
     try{ await loadScript('data/page-offsets-sh.js'); PAGE_OFFSETS_SH = window.PAGE_OFFSETS_SH || {}; }
     catch(e){ PAGE_OFFSETS_SH = {}; }
+    try{ await loadScript('data/learn-explains.js'); LEARN_EXPLAINS = window.LEARN_EXPLAINS || {}; }
+    catch(e){ LEARN_EXPLAINS = {}; }
   }
   buildIndex();
   const main = $('#main');
@@ -649,10 +657,29 @@ function nodeHTML(n){
   // 这样用户加一个视频只要改 data/learn-videos.json，不用重建数据层。
   // 键可以是概念 id，也可以是概念名（两种都试）。
   let vidHTML = '';
+  // ⚠️ **必须按版本分键** ——
+  // 上游的 id 是**跨版本共享**的：沪教版 3,503 个 id 在人教版里**全部同名**，
+  // 但它们指向**不同的教材位置**（不同册次、不同页码、不同原话）。
+  //   math_9b_rjb_cpt1  →  人教版：九下·概念
+  //                       沪教版：沪科版·九上
+  // 所以按裸 id 挂视频，会让**人教版的视频挂在沪教版的概念上**，
+  // 而视频里念的是另一个版本的页码。
+  // 键的格式：'<版本>:<概念id>'，其次 '<版本>:<概念名>'；
+  // 最后才退回裸 id / 裸名（那是给用户自己挂的通用外链视频用的）。
   const vHit = VIDEOS && Object.keys(VIDEOS).filter(k=>!k.startsWith('_')).length
-    ? (VIDEOS[n.id] || VIDEOS[norm(n.n)]) : null;
+    ? (VIDEOS[CURRENT + ':' + n.id] || VIDEOS[CURRENT + ':' + norm(n.n)]
+       || VIDEOS[n.id] || VIDEOS[norm(n.n)]) : null;
   const vv = vHit || n.v;
-  if (vv && (vv.url || vv.bv || vv.yt || vv.id)){
+  if (vv && (vv.mp4 || vv.url || vv.bv || vv.yt || vv.id)){
+    if (vv.mp4){
+      // ⚠️ 本地 mp4 走 <video>，不走 <iframe> ——
+      // iframe 里放 mp4 会有浏览器的内嵌播放器边框，且没法调速。
+      vidHTML = `<div class="card"><h2>讲解视频<span class="n">${esc(vv.dur||'')}</span></h2>
+        <div class="vid"><video src="${esc(vv.mp4)}" controls preload="none" playsinline
+          poster="${esc(vv.poster||'')}"></video></div>
+        <p style="margin:10px 0 0"><a href="${esc(vv.mp4)}" target="_blank" rel="noopener">另开窗口看</a>
+        ${vv.title?` · ${esc(vv.title)}`:''}${vv.dur?` · ${esc(vv.dur)}`:''}</p></div>`;
+    } else {
     const src = vv.bv ? 'https://player.bilibili.com/player.html?bvid='+vv.bv+'&page=1'
              : vv.yt ? 'https://www.youtube.com/embed/'+vv.yt
              : vv.url;
@@ -660,9 +687,24 @@ function nodeHTML(n){
       <p style="margin:10px 0 0"><a href="${esc(vv.url || (vv.bv ? 'https://www.bilibili.com/video/'+vv.bv : vv.yt ? 'https://www.youtube.com/watch?v='+vv.yt : src))}"
          target="_blank" rel="noopener">在原平台打开</a>
          ${vv.title?` · ${esc(vv.title)}`:''}${vv.dur?` · ${esc(vv.dur)}`:''}</p></div></div>`;
+    }
   } else {
     vidHTML = `<div class="card"><h2>讲解视频</h2><div class="vidnone">这个知识点还没有讲解视频。<br>
       <span style="color:var(--dim)">视频按知识点挂载，索引在 <code>data/learn-videos.json</code>。</span></div></div>`;
+  }
+
+  // 讲解稿（**文字版**）——
+  // 视频是「看懂」最省事的形式，但**不是唯一的形式**：
+  // 视频要缓冲、不能跳着看、手机上流量费劲。
+  // 所以同一份讲解稿也以文字形式挂在页面上 —— 不看视频也能读懂。
+  let expHTML = '';
+  // 同上：讲解稿也是**按版本分**的（引用的教材原话和页码逐版不同）
+  const ex = LEARN_EXPLAINS[CURRENT + ':' + n.id] || LEARN_EXPLAINS[CURRENT + ':' + norm(n.n)]
+          || LEARN_EXPLAINS[n.id] || LEARN_EXPLAINS[norm(n.n)];
+  if (ex && ex.lines && ex.lines.length){
+    expHTML = `<div class="card"><h2>讲解<span class="n">${ex.lines.length} 段 · 文字版</span></h2>
+      ${ex.lines.map((t,i)=>`<p class="expl">${esc(t)}</p>`).join('')}
+      ${ex.from?`<div class="empty">${esc(ex.from)}</div>`:''}</div>`;
   }
 
   // 练习：① 自动判分的题 ② 教材例题原文
@@ -697,6 +739,7 @@ function nodeHTML(n){
     ${n.d?`<div class="def">${esc(n.d)}<span class="src">图谱定义</span></div>`:''}
   </div>
   ${vidHTML}
+  ${expHTML}
   ${imgHTML}
   ${readHTML}
   ${fmlHTML}
@@ -789,6 +832,8 @@ document.addEventListener('click', e=>{
   catch(e){ PAGE_OFFSETS = {}; }
   try{ await loadScript('data/page-offsets-sh.js'); PAGE_OFFSETS_SH = window.PAGE_OFFSETS_SH || {}; }
   catch(e){ PAGE_OFFSETS_SH = {}; }
+  try{ await loadScript('data/learn-explains.js'); LEARN_EXPLAINS = window.LEARN_EXPLAINS || {}; }
+  catch(e){ LEARN_EXPLAINS = {}; }
   try{ await loadScript('data/learn-videos.js'); VIDEOS = window.LEARN_VIDEOS || {}; }
   catch(e){ VIDEOS = {}; }
   try{ await loadScript('data/learn-questions.js'); QUESTIONS = window.LEARN_QUESTIONS || []; }
