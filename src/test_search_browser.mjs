@@ -143,10 +143,23 @@ console.log('\n[1c] 无外部资源请求（file:// 之外的引用一律不许�
      ext.slice(0, 3).join('\n      '));
 }
 
-console.log('\n[1d] 标题字形必须是无衬线（不能悄悄变成宋体）');
+console.log('\n[1d] 标题字形必须**显式声明**（不许悄悄回落成别的字）');
 {
   // 量字宽没用——CJK 全角，width 一律相同。改用像素指纹：
-  // 同一句话分别按 sans-serif 和 serif 渲染，比对灰度指纹。
+  // 同一句话分别按几种字体渲染，比对灰度指纹。
+  //
+  // ⚠️ **判据改过一次**（2026-10-28，视觉升级）：
+  // 原来判的是「必须是 sans-serif」，理由是模板曾经写
+  // `'DM Serif Display', Georgia, serif` —— **那个字体根本没有中文字形**，
+  // 中文一直在往 generic serif（宋体）回落，页面一离线或字体被墙，
+  // 标题就**悄悄**换了个字；而且西文 Didone + 中文宋体是**混排**，很难看。
+  //
+  // 现在标题用的是**显式声明的中文衬线**（Songti SC / 思源宋体 / Noto Serif CJK），
+  // 整个标题都是中文，不存在混排。所以判据要改成守住**真正的意图**：
+  //   ① 字体族是**显式**声明的，不能靠 generic fallback
+  //   ② 渲染结果必须等于**声明的那一款**字
+  //   ③ 声明栈的第一项**不能是西文字体**（那就是原来混排的坑）
+  // 而不是「必须无衬线」——那只是当时解法的一种，不是意图本身。
   const res = await page.evaluate(() => {
     const T = '中国的孩子在学什么。';
     const cv = document.createElement('canvas'); cv.width = 700; cv.height = 90;
@@ -161,10 +174,14 @@ console.log('\n[1d] 标题字形必须是无衬线（不能悄悄变成宋体）
       return h;
     };
     const h1 = getComputedStyle(document.querySelector('#head h1')).fontFamily;
-    return { sans: fp('sans-serif'), serif: fp('serif'), actual: fp(h1), h1 };
+    return { sans: fp('sans-serif'), song: fp('"Songti SC"'), actual: fp(h1), h1 };
   });
-  ok(res.sans !== res.serif, '基准成立：sans-serif 与 serif 在本页确实渲染成不同字形');
-  ok(res.actual === res.sans, 'h1 渲染结果与 sans-serif 一致（不是宋体）', res.h1);
+  ok(res.sans !== res.song, '基准成立：sans-serif 与中文衬线在本页确实渲染成不同字形');
+  ok(/^\s*["']Songti SC["']/.test(res.h1), 'h1 显式声明了中文字体（不是靠 generic serif 回落）', res.h1);
+  ok(res.actual === res.song, 'h1 渲染结果与声明的那款字一致', res.h1);
+  const first = res.h1.split(',')[0].trim();
+  ok(!/DM Serif|Georgia|Times/i.test(first),
+     '声明栈第一项不是西文字体（不会出现西文/中文混排）', first);
 }
 
 console.log('\n[2] 搜索框存在且可聚焦');
@@ -868,13 +885,13 @@ ok(errors.length === 0, '全程零 JS 错误', errors.slice(0, 5).join('\n      
 // 数源码里的 ok( 调用行数是不准的（这个文件就有跑不到的分支）。
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_search_browser.mjs` | 93 |';
+  const want = '| `src/test_search_browser.mjs` | 95 |';
   if (!rd.includes(want)) {
-    console.log(`  ✗ README 里的 浏览器 测试项数不是 93`);
+    console.log(`  ✗ README 里的 浏览器 测试项数不是 95`);
     console.log(`      README 里没找到「${want}」`);
     fail++;
   } else {
-    console.log(`  ✓ README 里的 浏览器 测试项数是 93（与本次实跑一致）`);
+    console.log(`  ✓ README 里的 浏览器 测试项数是 95（与本次实跑一致）`);
     pass++;
   }
 }

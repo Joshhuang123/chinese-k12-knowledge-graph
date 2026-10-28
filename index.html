@@ -52,20 +52,41 @@ body{
 }
 #head .eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--acc)}
 #head h1{
-  /* 必须是显式的无衬线。原来写的是 'DM Serif Display', Georgia, serif——
-     DM Serif Display 早就没有中文字形，中文其实一直在往 generic serif 回落，
-     页面一离线或字体被墙，标题就悄悄变成宋体。字形指纹实测：
-     sans-serif 与 Songti SC 渲染结果完全不同，所以这不是「差一点」，是换了个字。 */
-  font-family:var(--sans);font-weight:600;
-  font-size:clamp(34px,5.4vw,60px);line-height:1.06;letter-spacing:-.015em;margin:0 0 16px;
+  /* **显式的中文衬线**，不是 webfont 回落。
+     原来写的是 'DM Serif Display', Georgia, serif —— 那个字体**根本没有中文字形**，
+     中文一直在往 generic serif（也就是宋体）回落；页面一离线或字体被墙，
+     标题就悄悄换了个字（字形指纹实测：sans-serif 与 Songti SC 渲染完全不同，
+     所以这不是「差一点」，是换了个字）。
+     现在改成系统自带的中文衬线：Songti SC / 思源宋体 / Noto Serif CJK。
+     横细竖粗的对比是黑体给不了的 —— 海报式标题要的就是这种「印刷感」。 */
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(38px,5.6vw,80px);line-height:1.1;letter-spacing:.01em;margin:0 0 16px;
 }
 #head h1 em{font-style:normal;color:var(--acc)}
-#head p{color:var(--ink2);font-size:13.5px;margin:0 0 6px;max-width:34ch}
-#head .count{color:var(--muted);font-size:12px;margin-top:14px}
+#head p{color:var(--ink2);font-size:14px;line-height:1.75;margin:0 0 4px;max-width:33ch}
+#head .count{color:var(--muted);font-size:12px;margin-top:12px}
 #head .count b{color:var(--ink);font-weight:500}
 
 /* ---- legend ---- */
-#legend{bottom:34px;left:38px;pointer-events:auto}
+/* ---- 学科图例：浮起的玻璃面板 ----
+   原来是一列纯文字，贴在黑底上像调试信息。
+   做成带描边和背景的浮层，它就成了「面板」而不是「字」。
+   （配色和形制是学 Marble 的 SUBJECTS 面板：**玻璃 + 圆角 + 细描边 + 阴影**，
+     面板里仍然是我们自己的学科色和真实的节点数。） */
+#legend{
+  /* **放右下角**，不是左下角。
+     原来在 left:38px，而左栏（标题 + 说明 + 计数 + 搜索 + 导航 + 署名）是流式排的，
+     图例是 fixed 的浮层 —— 两者**必然重叠**（实测压住署名的第 2–4 行）。
+     挪到右边之后：左栏归左栏，浮层归浮层，谁也不碰谁。 */
+  bottom:34px;right:38px;pointer-events:auto;
+  background:rgba(20,20,26,.72);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:14px;
+  padding:14px 18px 12px;
+  backdrop-filter:blur(16px) saturate(1.08);
+  -webkit-backdrop-filter:blur(16px) saturate(1.08);
+  box-shadow:0 20px 52px rgba(0,0,0,.52);
+}
 #legend .t{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:11px}
 #legend .row{
   display:flex;align-items:center;gap:9px;padding:3.5px 0;cursor:pointer;
@@ -78,22 +99,35 @@ body{
 #legend .row .n{margin-left:auto;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* ---- toolbar ---- */
-#tools{top:34px;right:38px;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;max-width:300px;
-  /* **工具栏必须在详情卡片之上。**
+#tools{top:34px;right:38px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:420px;
+  /* **工具栏必须���详情卡片之上。**
      卡片是 top:50% + translateY(-50%) 垂直居中的，内容越长顶得越高。
      全量数据后卡片内容从「前置 4 条」变成「前置 5 条 + 后继 6 条」，
      卡片顶部伸到 y=49，正好压住 y=34-65 的工具栏 ——
      elementsFromPoint 的命中栈实测是
         eyebrow(卡片里的) → card → tReset → tools
      真机上「复位」「自动旋转」就点不到了。 */
-  z-index:20}
+  z-index:20;
+  /* 工具栏也做成**玻璃面板** —— 跟右下角的图例面板同一套语言。
+     原来按下状态是**纯白底黑字**（#f2f2f4），在黑底海报上像贴了两块 Excel 按钮。
+     换成品牌粉的低饱和版：开关开着照样一眼看得出来，但不再抢戏。 */
+  background:rgba(20,20,26,.72);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:13px;padding:7px 9px;
+  backdrop-filter:blur(16px) saturate(1.08);
+  -webkit-backdrop-filter:blur(16px) saturate(1.08);
+  box-shadow:0 18px 46px rgba(0,0,0,.5);
+}
 .btn{
   font-family:inherit;font-size:12.5px;padding:6px 12px;border-radius:8px;cursor:pointer;
-  background:var(--panel);border:1px solid var(--line);color:var(--ink2);
-  backdrop-filter:blur(8px);transition:all .16s;white-space:nowrap;
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);color:var(--ink2);
+  transition:all .16s;white-space:nowrap;
 }
 .btn:hover{border-color:rgba(255,255,255,.28);color:var(--ink)}
-.btn[aria-pressed="true"]{background:#f2f2f4;border-color:#f2f2f4;color:#14171e;font-weight:500}
+.btn[aria-pressed="true"]{
+  background:rgba(255,61,127,.17);border-color:rgba(255,61,127,.52);
+  color:#ff9ec4;font-weight:500;
+}
 
 /* ---- info card ---- */
 #card{
@@ -194,7 +228,10 @@ body{
 #card .chain .none2{font-size:11.5px;color:var(--muted);padding:2px 5px}
 
 /* ---- hint ---- */
-#hint{bottom:34px;right:38px;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7;
+/* 提示条并进右下角的浮层里 —— 原来它自己 fixed 在右下角，
+   图例挪过来之后两者会撞在一起。 */
+#hint{position:static;margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.09);
+  font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7;
   transition:opacity .2s}
 /* 卡片一打开就把操作提示收走。依赖从 2 栏加到 6 栏之后，卡片最高能到视口的九成，
    而提示条固定在右下角 —— 实测「惯性参考系」那张卡（教材前置 15 章）
@@ -410,10 +447,28 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 /* 署名：原始数据是 CC BY-NC-SA 4.0，署名是硬性要求。
    烧进页面里，才能保证这份 HTML 被转发、被下载、被存盘之后，
    署名跟着数据一起走 —— 而不是只留在仓库的 README 上。 */
-#attr{position:fixed;bottom:192px;left:38px;pointer-events:auto;font-size:10.5px;color:var(--muted);line-height:1.9;max-width:300px}
+/* ---- 署名与站内导航：跟着左栏文字流走 ----
+   ⚠️ 原来这里是 `position:fixed; bottom:192px; left:38px`，
+   而它的 HTML 后来被挪进了流式的 #head 里 ——
+   **两者叠在一起**，首页那几段说明文字完全读不了（浏览器实测：
+   署名块占 y=248~528，正好压住 #head 的两段说明、计数行和搜索框）。
+   窄屏的 media query 里本来就写的是 `#attr{position:static}` ——
+   **只有桌面规则漏改**。现在两边一致。 */
+#attr{
+  position:static;margin-top:14px;padding-top:11px;
+  border-top:1px solid var(--line);
+  pointer-events:auto;font-size:10.5px;color:var(--muted);line-height:1.85;max-width:430px;
+}
 #attr b{color:var(--ink2);font-weight:600}
 #attr a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
 #attr a:hover{color:var(--ink);border-bottom-color:var(--ink2)}
+/* 站内导航单独一行：这是全站**唯一**的导航入口，得显眼一点 */
+#nav{
+  margin-top:9px;pointer-events:auto;
+  font-size:11.5px;color:var(--muted);line-height:1.95;max-width:430px;
+}
+#nav a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
+#nav a:hover{color:var(--ink);border-bottom-color:var(--ink2)}
 #hint kbd{
   font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:1px 5px;border-radius:4px;
   background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink2);
@@ -465,7 +520,7 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   #res{max-height:46vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
   #res .r{padding:12px 10px;font-size:14px}       /* 14×1.55 行高 + 24 = 45.7px，过 Apple HIG 的 44pt 触控下限 */
   #tools{top:auto;bottom:20px;right:20px;max-width:180px}
-  #legend{bottom:20px;left:20px}
+  #legend{bottom:20px;right:20px;left:auto;padding:11px 14px 10px}
   #legend .row{font-size:11.5px;padding:2px 0}
   #attr{
     position:static;margin-top:14px;font-size:9.5px;line-height:1.65;max-width:none;
@@ -491,9 +546,8 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 
 <div class="ui" id="head">
   <div class="eyebrow"><span class="dot"></span>按人教版教材排序 · 8,590 个知识点 · 16,845 条前置关系</div>
-  <h1>中国的孩子<br>在<em>学什么</em>。</h1>
-  <p>每一个点是一个可以单独教的最小概念。颜色是学科，高度是年级，<b>一根根连线就是一个知识点必须先掌握什么</b>。</p>
-  <p>下面这根锥形从小学一年级长到高中——越往上，概念越大越抽象。</p>
+  <h1>中国的孩子<br>在<em>学什么。</em></h1>
+  <p>每一个点是一个可以单独教的最小概念。颜色是学科，高度是年级，<b>一根根连线就是一个知识点必须先掌握什么</b>。这根锥形从小学一年级长到高中——越往上，概念越大越抽象。</p>
   <div class="count">教材知识点 <b>8,590</b> 个，我们另外补了 <b>77</b> 个能力节点、教材节点与自建概念；其中 <b>2,937</b> 个是初中概念</div>
   <div id="find">
     <!-- combobox 按 ARIA 1.2 的写法：焦点始终留在输入框里，
@@ -514,21 +568,19 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
        bottom:162px 的署名（实测叠在卡片标题上）。跟着标题走就永远不冲突。
        #head 是 pointer-events:none，而 pointer-events 会继承，
        所以这里必须显式打开，否则「源码」链接点不动。 -->
-  <div id="attr">
-    <b>知识点数据</b> K12-KGraph · 北京大学 PKU-DCAI<br>
-    arXiv:2605.09635 · CC BY-NC-SA 4.0<br>
-    <b>本项目补的</b> 能力底座 · 自建概念 · 教材引入路径 · 模型重建的先修边<br>
-    <span class="attr2">边上的徽标分得出哪条来自数据集、哪条是我们补的。<br>
-    K12-KGraph 本身是跨国的知识点集，这里按<b>人教版</b>教材排序 —— 两套是分开的，留着做对照。</span><br>
-    <b>可视化与校验</b> 本项目自建 · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
-    · <a href="./learn.html" target="_blank" rel="noopener"><b>学习页</b></a>
+  <div id="nav">
+    <a href="./learn.html" target="_blank" rel="noopener">学习页</a>
     · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a>
     · <a href="./data.html" target="_blank" rel="noopener">数据一览</a>
     · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a>
-    · <a href="./kx.html" target="_blank" rel="noopener">小学科学版</a><br>
-    <span class="attr2"><b>学习页</b>是给学生用的：一个知识点一页，看不懂就翻教材原页、读教材原话、练一练。<br>
-    数据质量页把倒挂、覆盖缺口、可疑边、裁决账本全摊开 —— 有问题的边不藏。<br>
-    数据一览页是这个项目<b>全部 35 个数据集</b>的索引 —— 有什么、能回答什么、怎么取，一页看完。</span>
+    · <a href="./kx.html" target="_blank" rel="noopener">小学科学版</a>
+    · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
+  </div>
+  <div id="attr">
+    <b>知识点数据</b> K12-KGraph · 北京大学 PKU-DCAI · arXiv:2605.09635 · CC BY-NC-SA 4.0<br>
+    <b>本项目补的</b> 能力底座 · 自建概念 · 教材引入路径 · 模型重建的先修边<br>
+    <span class="attr2">边上的徽标分得出哪条来自数据集、哪条是我们补的。<br>
+    K12-KGraph 本身是跨国的知识点集，这里按<b>人教版</b>教材排序 —— 两套是分开的，留着做对照。</span>
   </div>
 </div>
 
@@ -561,6 +613,10 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 <div class="ui" id="legend">
   <div class="t">学科 · 点击开关</div>
   <div id="legendRows"></div>
+  <div id="hint">
+    拖拽旋转 · 滚轮缩放 · 悬停高亮<br>
+    <kbd>/</kbd> 搜知识点 · <kbd>↑↓</kbd> 选择 · <kbd>Esc</kbd> 取消
+  </div>
 </div>
 
 <div class="ui" id="card">
@@ -650,11 +706,6 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
     <div id="gapFoot"></div>
   </div>
   <div id="gapTip">点任意一条 → 跳到那个知识点 · Esc 关闭</div>
-</div>
-
-<div class="ui" id="hint">
-  拖拽旋转 · 滚轮缩放 · 悬停高亮<br>
-  <kbd>/</kbd> 搜知识点 · <kbd>↑↓</kbd> 选择 · <kbd>Esc</kbd> 取消
 </div>
 
 <div id="tip"><div class="t-zh"></div><div class="t-en mono"></div></div>
@@ -1037,6 +1088,19 @@ function drawNodes(m){
     }
     ctx.globalAlpha = alpha;
     ctx.fillStyle = fill;
+    // **光晕** —— 只给够大的点加（r≥2px 的那批，量级在几百个）。
+    // 用一层低透明度的大圆叠出来，**不用 shadowBlur** ——
+    // canvas 的阴影滤镜每帧几千次会把手机端拖垮
+    // （这个站有「静止 5 秒主线程占用 < 8%」的实测判据）。
+    // 效果上：点从「画上去的圆点」变成「发着光的点」，
+    // 整团锥形在黑底上就有了生气。
+    if(r >= 2 && alpha > 0.25){
+      ctx.globalAlpha = alpha * 0.16;
+      ctx.beginPath();
+      ctx.arc(projX[idx], projY[idx], r*2.3, 0, 6.2832);
+      ctx.fill();
+      ctx.globalAlpha = alpha;
+    }
     ctx.beginPath();
     ctx.arc(projX[idx], projY[idx], r, 0, 6.2832);
     ctx.fill();

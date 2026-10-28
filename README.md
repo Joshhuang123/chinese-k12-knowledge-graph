@@ -421,6 +421,28 @@ https://joshhuang123.github.io/chinese-k12-knowledge-graph/shanghai.html
 
 ---
 
+### 九点五、视觉：学 Marble 的海报感，但保留我们的语义
+
+2026-10-28 用户看了 Marble（withmarble.com/curriculum）的可视化，
+说「比咱们的好看」。逐条对比后改了四处：
+
+| | 原来 | 现在 |
+|---|---|---|
+| **标题** | 60px 无衬线粗体 | **80px 中文衬线**（Songti SC / 思源宋体 / Noto Serif CJK），粉色「学什么。」 |
+| **左栏** | 说明文字**互相叠在一起**（#attr 定位 bug） | 全部可读：衬线标题 → 说明 → 计数 → 搜索 → 导航 → 署名，一条线下来 |
+| **浮层** | 图例是纯文字行；工具栏按下态是**纯白底** | 左右各一块**玻璃面板**（圆角 + 描边 + 背景模糊 + 阴影）；按下态改品牌粉低饱和 |
+| **点** | 纯色圆点 | 大点加一层低透明度**光晕**（不用 shadowBlur，手机端扛不住） |
+
+**借的是表现层，不是内容。** Marble 的图是一团没有结构的「毛球」；
+我们的**锥形 = 教材年级分层**，这是他们没有的语义，没动。
+
+标题为什么敢用衬线：模板原来写的是 `'DM Serif Display', Georgia, serif` ——
+那个字体**根本没有中文字形**，中文一直在往 generic serif（宋体）**悄悄**回落，
+还跟西文 Didone 混排。现在是**显式声明**的中文衬线，标题全中文，不存在混排。
+`src/test_search_browser.mjs` 第 [1d] 组判据随之改写：
+从「必须无衬线」改成「**必须显式声明** + 渲染结果必须等于声明的那款字 +
+声明栈第一项不能是西文字体」—— 守住的是**意图**，不是当年的解法。
+
 ### 十、学习页站点：一个知识点一页
 
 https://joshhuang123.github.io/chinese-k12-knowledge-graph/learn.html
@@ -1259,7 +1281,7 @@ Milvus 官方 workshop 那份 `15-retrieval-tier-selection.md` 自己写着
 
 | 文件 | 项数 | 测什么 |
 |---|---|---|
-| `src/test_search_browser.mjs` | 93 | 搜索、移动端三尺寸、页面自洽 |
+| `src/test_search_browser.mjs` | 95 | 搜索、移动端三尺寸、页面自洽、**标题字形显式声明** |
 | `src/test_regressions.mjs` | 86 | 真 bug 的回归，每条都有「修之前实测复现」 |
 | `src/test_shanghai_site.mjs` | 45 | 上海版页面起得来、搜得到、教材位置对、「卡在哪」排得出候选、零 JS 错误 |
 
