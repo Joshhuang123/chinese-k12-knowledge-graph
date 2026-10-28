@@ -443,6 +443,30 @@ https://joshhuang123.github.io/chinese-k12-knowledge-graph/learn.html
 数据分三个文件按需加载，`file://` 下也能双击打开（用 `<script>` 而不是 `fetch` ——
 后者在 `file://` 下被 CORS 挡掉）。
 
+**能进得来，也能翻得动。**
+
+- **入口**：三个站首页都链到学习页，学习页顶部能链回主站。
+  （学习页原来是个**孤儿页** —— 站里没有一处链得过来，也没有一处链得回去。）
+- **按教材翻**：首页按**册次 → 章节 → 知识点**三层展开，按小学/初中/高中分组。
+  「能力底座 / 自建概念 / 教材缺口」这类**不是某一册教材**的东西另起一区，
+  不混在教材册次里让人误会。
+  （原来只有「按年级进」，点进去是几百个概念的平铺列表 —— 对学生等于没有导航。）
+
+**页码有两套，页面上写的是「书上印的那个」。**
+
+- **扫描序号**：PDF / 平台扫描本的第几页 —— 用来定位图片
+- **印刷页码**：书上印的那个 —— 用来让学生翻书
+
+两者差着封面、版权页、导引、目录的页数（实测 4–7 页）。
+写错的代价很具体：沪教版七下数学，面板写「第 16 页」，图上页脚印的是 **9** ——
+学生按 16 翻书，翻到的是下一节。
+
+- 人教版：`src/build_page_offsets.py` —— 从**本地 PDF 页脚**取页码（31/31 册）
+- 沪教版：`src/build_page_offsets_sh.py` —— 从**平台 OCR 的页脚行**取页码（44/67 册），
+  并用「印刷页码必须随扫描页单调递增」这道独立判据兜底
+
+**取不到偏移的册次不猜** —— 页面上老老实实写「电子教材扫描页 N」。
+
 **练习题是自己出的，不是抄来的。**
 上游 [cn-math-taxonomy](https://github.com/xiaoyang111222/cn-math-taxonomy) 有 9,399 道题
 （CC BY-NC），但它的概念名跟我们的**只重合 12.3%**，自动映射的召回只有 1.1%
@@ -720,7 +744,8 @@ OCR 只能救回汉字，**公式和图形会全丢**。视觉层换成让多模
 | `data/page-images.json` | 教材原页图直链基址 | 67 本沪教教材 |
 | `data/page-images-rjb.json` / `.js` | 人教版教材原页图索引（本地 PDF 渲染） | 31 册 / 1,128 页 |
 | `data/pages/<册次>/<页>.webp` | **人教版教材页图本体**（**入库**） | 1,128 页 / 82.1 MB |
-| `data/page-offsets.json` / `.js` | 每册的**印刷页码偏移**（扫描页 + offset = 书上印的页码） | 31 册 |
+| `data/page-offsets.json` / `.js` | 人教版每册的**印刷页码偏移**（扫描页 + offset = 书上印的页码） | 31 册 |
+| `data/page-offsets-sh.json` / `.js` | 沪教版每册的**印刷页码偏移** | 44 / 67 册 |
 | `data/learn-videos.json` | 讲解视频索引（按知识点挂载） | 运行时读 |
 
 **判据不靠「页面里出现过」** —— 概念名「小数」「分子」「等式」在 20 本书的题干里
@@ -816,7 +841,8 @@ src/shanghai_taught.py  判据：这个概念沪教教材教不教
 src/build_learn_site.py 学习页数据层（三版本各一份 .js）
 src/build_learn_questions.py  从教材原话 + 图谱定义反推练习题
 src/render_page_images.py   本地教材 PDF → WebP 页图（人教版 31 册 / 1,128 页）
-src/build_page_offsets.py   每册的印刷页码偏移（页脚取页码，扫描件走 OCR）
+src/build_page_offsets.py   人教版每册的印刷页码偏移（PDF 页脚取页码，扫描件走 OCR）
+src/build_page_offsets_sh.py 沪教版每册的印刷页码偏移（平台 OCR 的页脚行 + 单调性判据）
 src/check_publisher.py      教材原话出自哪个出版社（对照 9 个版本，命中率高 50–100 倍）
 src/fetch_page_images.py 抓教材原页图基址（67 本沪教教材）
 src/check_learn_site.py  学习页**数据层**校验（页图指向正文页 · 原话不串版 · 公式已转纯文本）
@@ -1199,7 +1225,7 @@ Milvus 官方 workshop 那份 `15-retrieval-tier-selection.md` 自己写着
 | `src/test_data_browser.mjs` | 数据一览页 10 项（真 Chrome：搜索过滤、样本展开、导航齐全） |
 | `src/check_edge_direction.py` | 先修边**方向自查**（三个站）—— 方向反了是最难发现的 bug，页面照常渲染但每句话都在说反 |
 | `src/check_learn_site.py` | 学习页**数据层**校验（23 项）—— 页图指向正文页（不是目录页）· 页图文件在磁盘上 · 教材原话不串版 · 公式已转纯文本 |
-| `src/test_learn_site.mjs` | 学习页**浏览器**测试（50 项）—— 三版本 · 搜索 · 做题判分 · 页图 URL · **人教版页图** · **印刷页码** · 站内跳转 |
+| `src/test_learn_site.mjs` | 学习页**浏览器**测试（67 项）—— 三版本 · 搜索 · 做题判分 · 页图 URL · **人教版页图** · **印刷页码** · **按教材翻** · **站点入口** · 站内跳转 |
 | `src/check_publisher.py` | 教材原话**出自哪个出版社** —— 拿原话撞 9 个版本的全文，命中率高 50–100 倍才算过 |
 | `src/check_layout_density.mjs` | 三站**视觉密度**自查 —— 布局参数写死时，节点少的站会「看着稀疏」但自动检查全绿 |
 | `src/shanghai_taught.py` | 判据：**这个概念沪教教材教不教**（上海站挡人教版节点用） |

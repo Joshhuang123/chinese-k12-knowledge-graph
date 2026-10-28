@@ -212,6 +212,7 @@ footer a {{ color:var(--muted); }}
 
 <div class="nav">
   <a href="./">← 回到图谱</a>
+  <a href="./learn.html">学习页</a>
   <a href="./shanghai.html">上海版</a>
   <a href="./kx.html">小学科学</a>
   <a href="./quality.html">数据质量</a>

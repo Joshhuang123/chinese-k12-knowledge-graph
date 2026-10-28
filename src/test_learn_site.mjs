@@ -257,6 +257,31 @@ console.log('\n[4c] 教材原页显示印刷页码');
   await page.close();
 }
 
+// ── [4d] 沪教版页码也显示**印刷页码** ────────────────────
+//
+// ⚠️ 沪教版的页图是**平台的扫描本**，面板原来写「第 16 页」，
+// 但图上页脚印的是 **9**（沪教版数学七下，实测）—— 学生按 16 翻书翻到的是下一节。
+// 偏移从平台 OCR 的页脚行算（src/build_page_offsets_sh.py）。
+console.log('\n[4d] 沪教版页码显示印刷页码');
+{
+  const { page } = await open('?v=sh');
+  const info = await page.evaluate(() => {
+    const n = window.LEARN_DATA.nodes.find(x => x.loc && x.loc.bk && x.loc.scan && x.loc.scan.length
+      && (window.PAGE_OFFSETS_SH || {})[x.loc.bk] !== undefined);
+    return n ? { i: n.i, bk: n.loc.bk, scan: n.loc.scan[0], off: window.PAGE_OFFSETS_SH[n.loc.bk] } : null;
+  });
+  ok(info !== null, '有节点的册次带沪教印刷页码偏移');
+  if (info) {
+    await page.goto(pathToFileURL(resolve(BASE, 'learn.html')).href + `?v=sh&c=${info.i}`, { waitUntil: 'load' });
+    await sleep(2000);
+    const cap = await page.evaluate(() => document.querySelector('.pageimg .cap')?.textContent || '');
+    const printed = info.scan + info.off;
+    ok(cap.includes(`第 ${printed} 页`), `图注写的是印刷页码（第 ${printed} 页）`, cap.slice(0, 70));
+    ok(!cap.includes(`第 ${info.scan} 页（`), '没有把扫描页当成书上页码', cap.slice(0, 70));
+  }
+  await page.close();
+}
+
 // ── [5] 站内跳转 ──────────────────────────────────────────
 console.log('\n[5] 前置/后继能跳');
 {
@@ -341,6 +366,77 @@ console.log('\n[7] 教材原页图在带 Referer 的环境下能加载（防盗�
       'img 标签带 referrerpolicy="no-referrer"（CDN 防盗链的解药）',
       '少了它，带 Referer 的请求会 403 + text/html，Chrome ORB 拦截 → 图空白');
   }
+  await page.close();
+}
+
+// ── [8] 学习页能**按教材翻**（不是只能搜） ────────────────
+//
+// ⚠️ 这一条是**产品缺口**，不是 bug：
+//   原来首页只有「按年级进」，点进去是几百个概念的平铺列表 ——
+//   对学生等于没有导航。而**学习页本来是个孤儿页**，站里没有一处链得过来。
+//
+//   判别力：把「按教材翻」那张卡删掉 → 这一条必红。
+console.log('\n[8] 按教材翻 + 站点入口');
+{
+  const { page, errs } = await open('?v=sh');
+  const has = await page.evaluate(() => {
+    const h2 = [...document.querySelectorAll('.card h2')].map(x => x.textContent);
+    return h2.some(t => t.includes('按教材翻'));
+  });
+  ok(has, '首页有「按教材翻」卡片');
+
+  const books = await page.evaluate(() => [...document.querySelectorAll('[data-bk]')].map(a => a.dataset.bk));
+  ok(books.length >= 5, `能列出多本教材（${books.length} 本）`, books.slice(0, 4).join(' / '));
+
+  // 切到第二本，章节应当跟着换
+  const chaptersBefore = await page.evaluate(() => document.querySelectorAll('.bchap h3').length);
+  ok(chaptersBefore > 0, '默认册次展开了章节', `${chaptersBefore} 章`);
+  if (books.length > 1) {
+    await page.click(`[data-bk="${books[1].replace(/"/g, '\\"')}"]`);
+    await sleep(1200);
+    const after = await page.evaluate(() => ({
+      on: document.querySelector('[data-bk].on')?.dataset.bk || '',
+      chapters: document.querySelectorAll('.bchap h3').length,
+    }));
+    ok(after.on === books[1], '点册次后选中态跟着换', `${after.on} vs ${books[1]}`);
+    ok(after.chapters > 0, '换册次后仍然有章节', `${after.chapters} 章`);
+  }
+
+  // 点章节里的知识点 → 进学习页
+  const ci = await page.evaluate(() => {
+    const a = document.querySelector('.bchap .toc a[data-c]');
+    return a ? a.dataset.c : null;
+  });
+  ok(ci !== null, '章节里有知识点链接');
+  if (ci !== null) {
+    await page.click('.bchap .toc a[data-c]');
+    await sleep(1800);
+    const onPage = await page.evaluate(() => ({
+      crumb: document.querySelector('.crumb b')?.textContent || '',
+      h1: document.querySelector('#main h1')?.textContent || '',
+    }));
+    ok(!!onPage.h1, '点进去进到了学习页', onPage.h1);
+  }
+  ok(errs.length === 0, '零 JS 错误', errs.slice(0, 2).join(' | '));
+  await page.close();
+}
+
+// ── [9] 站里能进到学习页（原来它是孤儿页） ────────────────
+//
+// 学习页做得再好，站里没有一处链得过来，就等于没有。
+// 判别力：把三个站首页里的「学习页」链接删掉 → 这一条必红。
+console.log('\n[9] 站点入口链得到学习页');
+{
+  for (const f of ['index.html', 'shanghai.html', 'kx.html']) {
+    const src = readFileSync(resolve(BASE, f), 'utf8');
+    ok(/href="\.\/learn\.html"/.test(src), `${f} 链得到学习页`);
+  }
+  const learnSrc = readFileSync(resolve(BASE, 'learn.html'), 'utf8');
+  ok(/href="\.\/"/.test(learnSrc), '学习页能链回主站');
+  const { page, errs } = await open('');
+  const back = await page.evaluate(() => !!document.querySelector('.brand a.back'));
+  ok(back, '学习页顶部有回主站的链接');
+  ok(errs.length === 0, '零 JS 错误', errs.slice(0, 2).join(' | '));
   await page.close();
 }
 

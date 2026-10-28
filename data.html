@@ -86,6 +86,7 @@ footer a { color:var(--muted); }
 
 <div class="nav">
   <a href="./">← 回到图谱</a>
+  <a href="./learn.html">学习页</a>
   <a href="./shanghai.html">上海版</a>
   <a href="./kx.html">小学科学</a>
   <a href="./quality.html">数据质量</a>
@@ -94,15 +95,15 @@ footer a { color:var(--muted); }
 
 <h1>这个项目有什么数据</h1>
 <p class="lede">
-39 个数据集，共 143 MB。
+43 个数据集，共 143 MB。
 每个都是<strong>结构化事实</strong>（不是教材原件 —— 教材 PDF 有版权，不随仓库分发）。
 不知道用哪个？先看下面的「按需求查」，或者直接搜。
 </p>
 
 <div class="stats">
-  <div class="stat"><b>39</b><span>数据集</span></div>
+  <div class="stat"><b>43</b><span>数据集</span></div>
   <div class="stat"><b>143 MB</b><span>总体积</span></div>
-  <div class="stat"><b>109,419</b><span>总条数</span></div>
+  <div class="stat"><b>109,548</b><span>总条数</span></div>
   <div class="stat"><b>0</b><span>第三方依赖（主项目）</span></div>
 </div>
 
@@ -113,7 +114,7 @@ footer a { color:var(--muted); }
 
 <h2>全部数据集</h2>
 <input id="q" type="search" placeholder="搜「浮力」「先修边」「公式」「沪教」…" autocomplete="off">
-<div id="cnt">39 个数据集</div>
+<div id="cnt">43 个数据集</div>
 <div id="list">
 
 <article class="ds" data-kind="data">
@@ -863,7 +864,7 @@ footer a { color:var(--muted); }
       <span class="m rec">397 行</span>
       <span class="m">275 KB</span>
       <span class="m fmt">jsonl（每行一条）</span>
-      <span class="chip nogit">不入库</span>
+      
     </div>
   </header>
   <p class="what"><strong>可自动判分的练习题</strong>（从教材原话 / 图谱定义反推）</p>
@@ -1073,6 +1074,37 @@ footer a { color:var(--muted); }
 </article>
 <article class="ds" data-kind="data">
   <header>
+    <h3><code>data/rjb-book-candidates.json</code></h3>
+    <div class="meta">
+      <span class="m rec">23 条</span>
+      <span class="m">86 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">平台上<strong>同名教材的候选清单</strong>（人教版 31 册）</p>
+  <p class="use"><b>能回答什么</b>：平台目录里同名书一堆（数学一上 9 个、必修 38 个，含盲校/聋校/培智/其他出版社）。这是「按标题匹配 = 按出版社赌运气」的证据</p>
+  <p class="how"><b>怎么取</b>：按册次取：{册次: {ours: 本地 PDF, candidates: 平台候选}}</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">ours</span><span class="chip">candidates</span></div><pre class="sample">{
+ <span class="k">&quot;math-1a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-1b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-2a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-2b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-3a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-3b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-4a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-4b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-5a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-5b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-6a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-6b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-7a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-7b&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
     <h3><code>data/shanghai-textbook-catalog.json</code></h3>
     <div class="meta">
       <span class="m rec">298 条</span>
@@ -1139,12 +1171,43 @@ footer a { color:var(--muted); }
 </article>
 <article class="ds" data-kind="data">
   <header>
+    <h3><code>data/page-images-rjb.json</code></h3>
+    <div class="meta">
+      <span class="m rec">31 条</span>
+      <span class="m">45 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what"><strong>人教版教材原页图索引</strong>（31 册 / 1,128 页）</p>
+  <p class="use"><b>能回答什么</b>：页图是<strong>从本地教材 PDF 渲染</strong>的（WebP）。页码就是 PDF 的扫描页，与我们的数据源天然对齐</p>
+  <p class="how"><b>怎么取</b>：按册次取：{[册次]: {扫描页: &#x27;data/pages/…/N.webp&#x27;}}；本体在 data/pages/（<strong>入库</strong>，82.1 MB）</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">1</span><span class="chip">10</span><span class="chip">11</span><span class="chip">12</span><span class="chip">13</span><span class="chip">14</span><span class="chip">15</span><span class="chip">17</span><span class="chip">19</span><span class="chip">20</span><span class="chip">23</span><span class="chip">24</span><span class="chip">25</span><span class="chip">26</span><span class="chip">27</span><span class="chip">28</span><span class="chip">29</span><span class="chip">31</span><span class="chip">32</span><span class="chip">34</span><span class="chip">38</span><span class="chip">41</span><span class="chip">44</span><span class="chip">50</span><span class="chip">51</span><span class="chip">52</span><span class="chip">53</span><span class="chip">56</span><span class="chip">57</span><span class="chip">58</span><span class="chip">59</span><span class="chip">64</span><span class="chip">66</span><span class="chip">67</span><span class="chip">68</span><span class="chip">70</span><span class="chip">71</span><span class="chip">72</span><span class="chip">73</span><span class="chip">74</span><span class="chip more">还有 42 个</span></div><pre class="sample">{
+ <span class="k">&quot;biology-7a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;biology-7b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;biology-8a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;biology-8b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;chemistry-9a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;chemistry-9b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-1a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-1b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-2a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-2b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-3a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-3b&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-4a&quot;</span>: &quot;&lt;dict&gt;&quot;,
+ <span class="k">&quot;math-4b&quot;</span>: &quot;&lt;dict&gt;&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
     <h3><code>data/page-images.json</code></h3>
     <div class="meta">
       <span class="m rec">67 条</span>
       <span class="m">33 KB</span>
       <span class="m fmt">json</span>
-      <span class="chip nogit">不入库</span>
+      
     </div>
   </header>
   <p class="what"><strong>教材原页图的直链基址</strong>（67 本沪教教材）</p>
@@ -1456,12 +1519,43 @@ footer a { color:var(--muted); }
 </article>
 <article class="ds" data-kind="data">
   <header>
+    <h3><code>data/page-offsets-sh.json</code></h3>
+    <div class="meta">
+      <span class="m rec">44 个键</span>
+      <span class="m">1 KB</span>
+      <span class="m fmt">json</span>
+      <span class="chip nogit">不入库</span>
+    </div>
+  </header>
+  <p class="what">沪教版每册的<strong>印刷页码偏移</strong></p>
+  <p class="use"><b>能回答什么</b>：同上。平台的扫描本扫描序号 ≠ 书上印的页码，差 4–7 页 —— 写错的话学生按页码翻书翻到的是下一节</p>
+  <p class="how"><b>怎么取</b>：按沪教书号取：{sh-hj-数学-w-7b: -7}。从平台 OCR 的页脚行取页码，并用「印刷页码随扫描页单调递增」兜底（src/build_page_offsets_sh.py）</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">sh-hj-化学-s-9a</span><span class="chip">sh-hj-化学-s-9b</span><span class="chip">sh-hj-数学-s-bx1</span><span class="chip">sh-hj-数学-s-bx2</span><span class="chip">sh-hj-数学-s-bx3</span><span class="chip">sh-hj-数学-s-xzxbx1</span><span class="chip">sh-hj-数学-s-xzxbx2</span><span class="chip">sh-hj-数学-s-xzxbx3</span><span class="chip">sh-hj-数学-w-1a</span><span class="chip">sh-hj-数学-w-1b</span><span class="chip">sh-hj-数学-w-2a</span><span class="chip">sh-hj-数学-w-2b</span><span class="chip">sh-hj-数学-w-3a</span><span class="chip">sh-hj-数学-w-4a</span><span class="chip">sh-hj-数学-w-5a</span><span class="chip">sh-hj-数学-w-6a</span><span class="chip">sh-hj-数学-w-6b</span><span class="chip">sh-hj-数学-w-7a</span><span class="chip">sh-hj-数学-w-7b</span><span class="chip">sh-hj-数学-w-8a</span><span class="chip">sh-hj-数学-w-9a</span><span class="chip">sh-hj-生物-w-7a</span><span class="chip">sh-hj-生物-w-7b</span><span class="chip">sh-hj-生物-w-8a</span><span class="chip">sh-hj-生物-w-8b</span><span class="chip">sh-hk-化学-s-bx1</span><span class="chip">sh-hk-化学-s-bx2</span><span class="chip">sh-hk-化学-s-xzxbx1</span><span class="chip">sh-hk-化学-s-xzxbx2</span><span class="chip">sh-hk-化学-s-xzxbx3</span><span class="chip">sh-hk-化学-w-8</span><span class="chip">sh-hk-化学-w-9</span><span class="chip">sh-hk-数学-s-7a</span><span class="chip">sh-hk-数学-s-7b</span><span class="chip">sh-hk-数学-s-8a</span><span class="chip">sh-hk-数学-s-8b</span><span class="chip">sh-hk-数学-s-9b</span><span class="chip">sh-hk-生物-s-bx1</span><span class="chip">sh-hk-生物-s-bx2</span><span class="chip">sh-hk-生物-s-xzxbx1</span><span class="chip more">还有 4 个</span></div><pre class="sample">{
+ <span class="k">&quot;sh-hj-化学-s-9a&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-化学-s-9b&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-s-bx1&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-s-bx2&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-s-bx3&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-s-xzxbx1&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-s-xzxbx2&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-s-xzxbx3&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-w-1a&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-w-1b&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-w-2a&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-w-2b&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-w-3a&quot;</span>: -7,
+ <span class="k">&quot;sh-hj-数学-w-4a&quot;</span>: -7
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
     <h3><code>data/learn-videos.json</code></h3>
     <div class="meta">
       <span class="m rec">4 条</span>
       <span class="m">1 KB</span>
       <span class="m fmt">json</span>
-      <span class="chip nogit">不入库</span>
+      
     </div>
   </header>
   <p class="what"><strong>讲解视频索引</strong>（按知识点挂载外部视频）</p>
@@ -1470,6 +1564,37 @@ footer a { color:var(--muted); }
   
   <details><summary>字段与样本</summary><div class="fields"><span class="chip">_说明</span><span class="chip">_示例</span></div><pre class="sample">{
  <span class="k">&quot;_说明&quot;</span>: &quot;讲解视频索引：按知识点挂载外部视频（YouTube / B站 / 网盘直链）。&quot;
+}</pre></details>
+</article>
+<article class="ds" data-kind="data">
+  <header>
+    <h3><code>data/page-offsets.json</code></h3>
+    <div class="meta">
+      <span class="m rec">31 个键</span>
+      <span class="m">1 KB</span>
+      <span class="m fmt">json</span>
+      
+    </div>
+  </header>
+  <p class="what">人教版每册的<strong>印刷页码偏移</strong></p>
+  <p class="use"><b>能回答什么</b>：书上印的页码 = PDF 扫描页 + offset。学生手里是纸书，面板必须写纸上那个页号才翻得到</p>
+  <p class="how"><b>怎么取</b>：按册次取：{册次: 负数}。矢量册从 PDF 页脚取页码，扫描件走 OCR（脚本 src/build_page_offsets.py）</p>
+  
+  <details><summary>字段与样本</summary><div class="fields"><span class="chip">biology-7a</span><span class="chip">biology-7b</span><span class="chip">biology-8a</span><span class="chip">biology-8b</span><span class="chip">chemistry-9a</span><span class="chip">chemistry-9b</span><span class="chip">math-1a</span><span class="chip">math-1b</span><span class="chip">math-2a</span><span class="chip">math-2b</span><span class="chip">math-3a</span><span class="chip">math-3b</span><span class="chip">math-4a</span><span class="chip">math-4b</span><span class="chip">math-5a</span><span class="chip">math-5b</span><span class="chip">math-6a</span><span class="chip">math-6b</span><span class="chip">math-7a</span><span class="chip">math-7b</span><span class="chip">math-8a</span><span class="chip">math-8b</span><span class="chip">math-9a</span><span class="chip">math-9b</span><span class="chip">math-bx1</span><span class="chip">math-bx2</span><span class="chip">math-xzxbx1</span><span class="chip">math-xzxbx2</span><span class="chip">math-xzxbx3</span><span class="chip">physics-8a</span><span class="chip">physics-8b</span></div><pre class="sample">{
+ <span class="k">&quot;biology-7a&quot;</span>: -7,
+ <span class="k">&quot;biology-7b&quot;</span>: -4,
+ <span class="k">&quot;biology-8a&quot;</span>: -5,
+ <span class="k">&quot;biology-8b&quot;</span>: -4,
+ <span class="k">&quot;chemistry-9a&quot;</span>: -5,
+ <span class="k">&quot;chemistry-9b&quot;</span>: -4,
+ <span class="k">&quot;math-1a&quot;</span>: -5,
+ <span class="k">&quot;math-1b&quot;</span>: -5,
+ <span class="k">&quot;math-2a&quot;</span>: -5,
+ <span class="k">&quot;math-2b&quot;</span>: -5,
+ <span class="k">&quot;math-3a&quot;</span>: -5,
+ <span class="k">&quot;math-3b&quot;</span>: -5,
+ <span class="k">&quot;math-4a&quot;</span>: -5,
+ <span class="k">&quot;math-4b&quot;</span>: -5
 }</pre></details>
 </article>
 <article class="ds" data-kind="不可再生（gitignore 白名单）">

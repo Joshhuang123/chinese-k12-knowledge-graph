@@ -43,6 +43,37 @@ KX_GRAPH = BASE / "data" / "kx-graph.json"
 CV_RJB = BASE / "data" / "concept-vision.jsonl"
 CV_SH = BASE / "data" / "concept-vision-sh.jsonl"
 CV_KX = BASE / "data" / "concept-vision-kx.jsonl"
+
+# 公式里的**占位符**（教材练习题的空框）。它们不是公式，是填空的壳。
+_PLACEHOLDER = re.compile(r"[⊙□]")
+# 数字之间的空格 = OCR 把千分位逗号认成了空格（「30x > 1 200」应为「30x > 1200」）
+_DIGIT_SPACE = re.compile(r"(?<=\d)\s+(?=\d)")
+
+
+def clean_formulas(forms):
+    """清洗视觉层转写出来的公式。
+
+    视觉层是**模型读教材页面转写**的，会有三类残骸：
+      ① 占位符（□ / ⊙）—— 那是练习题的空框，不是公式
+      ② 孤零零的一个字母（「n」）—— 数学记号，不是公式
+      ③ 数字间的空格（OCR 把「,」认成「空格」）
+
+    只修**确定是错**的，不猜。剩下的照原样给，页面上会标明来源是「视觉层转写」。
+    """
+    out = []
+    for f in forms:
+        s = (f or "").strip()
+        if not s:
+            continue
+        if _PLACEHOLDER.search(s):
+            continue
+        if re.fullmatch(r"[A-Za-z]", s):
+            continue
+        s = _DIGIT_SPACE.sub("", s)
+        if len(s) < 2:
+            continue
+        out.append(s)
+    return out
 PAGE_IMG = BASE / "data" / "page-images.json"
 VIDEOS = BASE / "data" / "learn-videos.json"
 OUTDIR = BASE / "data"
@@ -335,7 +366,7 @@ def main() -> int:
                         figs.append({"c": to_plain(g.get("caption") or "")[:60],
                                      "t": to_plain(g.get("text") or "")[:160]})
             if forms:
-                rec["f"] = forms[:6]
+                rec["f"] = clean_formulas(forms)[:6]
             if figs:
                 rec["fg"] = figs[:4]
 
@@ -348,12 +379,30 @@ def main() -> int:
                                key=lambda i: 0 if (q.get("quoteKinds") or [None] * 99)[i] == "definition" else 1)
                 bks = q.get("books") or []
                 bk = bks[0] if bks else (q.get("book") or "")
-                for i in order[:3]:
+                for i in order[:6]:
                     tx = (q.get("quotes") or [])[i]
-                    if tx and len(tx.strip()) > 3:
-                        reads.append({"t": tx[:220], "b": bk,
-                                      "p": (q.get("pages") or [None])[0],
-                                      "def": (q.get("quoteKinds") or [""])[i] == "definition"})
+                    kind = (q.get("quoteKinds") or [""])[i]
+                    if not tx or len(tx.strip()) <= 3:
+                        continue
+                    # ⚠️ **剔掉目录行和标题行** ——
+                    # 教材的目录页上每个节名都出现，摘录时会被当成「教材提到这个概念」。
+                    # 实测：沪教「一元一次不等式」的原话里混着「第7章"一元一次不等式与不等式组"」，
+                    # 小学科学还有 268 条整条就是节名（「三倍体无籽西瓜」「两点之间的距离公式」）。
+                    # 判据三条（都是硬信号，不是猜）：
+                    #   ① quoteKinds == 'title'   —— 数据层已经标明了是标题
+                    #   ② 含「……第 N 页」点线      —— 目录条目的样子
+                    #   ③ 整条就是一个节名（≤12 字且没有句读）
+                    if kind == "title":
+                        continue
+                    if re.search(r"\.{3,}\s*\d+", tx):
+                        continue
+                    if len(tx.strip()) <= 12 and not re.search(r"[。；，：？！]", tx):
+                        continue
+                    reads.append({"t": tx[:220], "b": bk, "k": kind,
+                                  "p": (q.get("pages") or [None])[0],
+                                  "def": kind == "definition"})
+                    if len(reads) >= 3:
+                        break
             if reads:
                 rec["rd"] = reads
 

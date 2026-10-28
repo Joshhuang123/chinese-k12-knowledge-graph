@@ -32,6 +32,10 @@ header{
 .hwrap{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .brand{font-weight:700;font-size:16px;letter-spacing:.3px;white-space:nowrap}
 .brand span{color:var(--acc)}
+/* 「学习页」三个字本身是回主站的链接 —— 学习页原来是个孤儿页，
+   站里没有一处链得过来，也没有一处链得回去。 */
+.brand a.back{color:inherit;text-decoration:none;border-bottom:1px dashed var(--line)}
+.brand a.back:hover{color:var(--acc);border-bottom-color:var(--acc)}
 .vtabs{display:flex;gap:6px;background:#11151d;border:1px solid var(--line);border-radius:9px;padding:3px}
 .vtab{border:0;background:transparent;color:var(--muted);padding:5px 11px;border-radius:6px;font-size:13px;white-space:nowrap}
 .vtab.on{background:var(--acc);color:#fff;font-weight:600}
@@ -137,6 +141,18 @@ ul.plain .note{color:var(--dim);font-size:12.5px}
 .toc{display:flex;flex-wrap:wrap;gap:7px}
 .toc a{font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 9px}
 .toc a:hover{color:var(--fg);border-color:#3a4150;text-decoration:none}
+/* 「按教材翻」：册次选中态 + 章节分组 */
+.toc a.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.bstage{margin:10px 0 0}
+.bstage b{display:block;font-size:12px;color:var(--dim);font-weight:600;margin-bottom:6px}
+.bstage.other{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.bstage.other b{display:inline;margin-right:8px}
+.bstage.other span{font-size:11.5px;color:var(--dim)}
+.bchapwrap{margin-top:16px}
+.bchap{margin:0 0 14px;padding:0 0 12px;border-bottom:1px dashed var(--line)}
+.bchap:last-child{border-bottom:0}
+.bchap h3{margin:0 0 8px;font-size:13.5px;color:var(--fg);font-weight:600;display:flex;align-items:baseline;gap:8px}
+.bchap h3 span{font-size:11.5px;color:var(--dim);font-weight:400}
 
 footer{max-width:1180px;margin:0 auto;padding:0 20px 50px;color:var(--dim);font-size:12.5px;line-height:1.9}
 footer a{color:var(--muted)}
@@ -153,7 +169,7 @@ footer a{color:var(--muted)}
 
 <header>
   <div class="hwrap">
-    <div class="brand">学习页<span>·</span>知识图谱</div>
+    <div class="brand"><a href="./" class="back" title="回到图谱">学习页</a><span>·</span>知识图谱</div>
     <div class="vtabs" id="vtabs"></div>
     <div class="hsearch">
       <input id="q" type="search" placeholder="搜知识点（支持拼音首字母、别称）" autocomplete="off">
@@ -199,7 +215,8 @@ const VERSIONS = [
 let DATA = null;          // 当前版本的数据
 let PAGES = null;         // 教材页图基址（沪教版，平台外链）
 let PAGE_IMAGES_RJB = null;  // 人教版/小学科学页图（本地 PDF 渲染，入库）
-let PAGE_OFFSETS = {};     // 教材册次 → 印刷页码偏移（扫描页 + offset = 书上印的页码）
+let PAGE_OFFSETS = {};     // 人教版：教材册次 → 印刷页码偏移（扫描页 + offset = 书上印的页码）
+let PAGE_OFFSETS_SH = {};  // 沪教版：沪教书号 → 印刷页码偏移
 let VIDEOS = null;        // 视频索引
 let QUESTIONS = [];       // 练习题
 const QUIZ_BY_IDX = {};    // 题（渲染期ID:题号 → 题），每次渲染用新的 RENDER_ID
@@ -369,15 +386,28 @@ async function render(){
     try{ await loadScript('data/page-images.js'); PAGES = window.PAGE_IMAGES || {}; }
     catch(e){ PAGES = {}; }
   }
+  // ⚠️ 三份索引**各自独立**加载 ——
+  // 原来全塞在 `if (!PAGE_IMAGES_RJB)` 里，结果只要页图索引先加载了，
+  // 偏移量就永远加载不上（首页和第一次进页面时顺序不保证）。
   if (!PAGE_IMAGES_RJB){
     try{ await loadScript('data/page-images-rjb.js'); PAGE_IMAGES_RJB = window.PAGE_IMAGES_RJB || {}; }
     catch(e){ PAGE_IMAGES_RJB = {}; }
+  }
+  if (!PAGE_OFFSETS || !Object.keys(PAGE_OFFSETS).length){
     try{ await loadScript('data/page-offsets.js'); PAGE_OFFSETS = window.PAGE_OFFSETS || {}; }
     catch(e){ PAGE_OFFSETS = {}; }
   }
+  if (!PAGE_OFFSETS_SH || !Object.keys(PAGE_OFFSETS_SH).length){
+    try{ await loadScript('data/page-offsets-sh.js'); PAGE_OFFSETS_SH = window.PAGE_OFFSETS_SH || {}; }
+    catch(e){ PAGE_OFFSETS_SH = {}; }
+  }
   buildIndex();
   const main = $('#main');
-  if (p.c == null){ main.innerHTML = homeHTML(); return; }
+  if (p.c == null){
+    main.innerHTML = homeHTML();
+    $('#foot').innerHTML = footHTML();
+    return;
+  }
   const n = DATA.nodes.find(x=>String(x.i)===String(p.c));
   if (!n){ main.innerHTML = '<div class="card"><div class="empty">找不到这个知识点。</div></div>'; return; }
   main.innerHTML = nodeHTML(n);
@@ -409,13 +439,126 @@ function homeHTML(){
       <span class="chip">${withFormula.toLocaleString()} 个有公式</span>
       <span class="chip">${withPr.toLocaleString()} 个有前置</span>
     </div>
-    <div class="empty" style="margin-top:12px">在上面的搜索框里搜一个知识点，或者从下面按年级进。</div>
+    <div class="empty" style="margin-top:12px">在上面的搜索框里搜一个知识点，或者从下面按教材翻、按年级进。</div>
   </div>
+  ${browseHTML()}
   <div class="card">
     <h2>按年级进<span class="n">${gs.length} 个年级层</span></h2>
     <div class="toc">
       ${gs.map(g=>`<a href="#" data-g="${g}">${g===0?'基础':g+' 年级'}（${byG.get(g).length}）</a>`).join('')}
     </div>
+  </div>`;
+}
+
+/* ── 按教材浏览 ─────────────────────────────────────────────
+ *
+ * 为什么要有这个：原来首页只有「按年级进」，点进去是几百个概念的平铺列表 ——
+ * 对学生等于没有导航。而**学习页本来是孤儿页**，站里没有一处链得过来。
+ *
+ * 三个版本的「册次 / 章节」口径完全不一样，得各自归一：
+ *   沪教版    b = "沪教版·七下"           章 = loc.sec[0].cn（教材目录的章名）
+ *   人教版    b = "七下·概念" / "七下·技能" 章 = loc.unit（教材的单元名）
+ *   小学科学  b = "一上·我们的感觉器官 › 我们怎样知道" → 用 › 拆成册次 + 章
+ *
+ * ⚠️ **册次里混着「不是教材的东西」** —— 能力底座、自建概念、教材缺口。
+ * 它们也是图谱里的节点，但**不是教材的某一册**，混在教材册次里会让人以为
+ * 「能力底座」是一本教材。所以按名字分成两堆，非教材的另起一个区块。
+ */
+function bookOf(n){
+  const b = String(n.b||'');
+  if (DATA.version==='kx'){
+    const p = b.split('›');
+    return {book:(p[0]||'').trim(), chap:(p[1]||'').trim()};
+  }
+  if (DATA.version==='rjb'){
+    const m = b.match(/^(.+?)·(概念|技能|习题|练习|实验)?$/);
+    return {book: m ? m[1] : b, chap:''};
+  }
+  return {book:b, chap:''};
+}
+
+/** 这个「册次」是不是真的教材册次？ */
+function isRealBook(name, g){
+  if (DATA.version==='rjb')
+    return /^([一二三四五六七八九]上|[一二三四五六七八九]下|必修[一二三]|选必[一二三])$/.test(name);
+  if (DATA.version==='kx')
+    return /^([一二三四五六]上|[一二三四五六]下)$/.test(name);
+  return /^(沪教版|沪科版)·/.test(name);
+}
+
+/** 学段分组：小学 / 初中 / 高中 */
+function stageOf(g){
+  if (!g) return '其他';
+  if (g<=6) return '小学';
+  if (g<=9) return '初中';
+  return '高中';
+}
+
+function chapterOf(n){
+  const loc = n.loc||{};
+  if (DATA.version==='rjb') return loc.unit||'';
+  if (DATA.version==='kx') return bookOf(n).chap;
+  const secs = loc.sec||[];
+  return (secs[0] && secs[0].cn) || '';
+}
+
+let BROWSE_BOOK = null;      // 当前展开的册次
+
+function browseHTML(){
+  const books = new Map();      // 册次 → {g, chapters: Map(章 → 节点[]), n}
+  for (const n of DATA.nodes){
+    const {book} = bookOf(n);
+    if (!book) continue;
+    if (!books.has(book)) books.set(book, {g:n.g||0, chapters:new Map(), n:0});
+    const B = books.get(book);
+    const ch = chapterOf(n) || '其他';
+    if (!B.chapters.has(ch)) B.chapters.set(ch, []);
+    B.chapters.get(ch).push(n);
+    B.n++;
+  }
+  // 真教材 / 非教材分开
+  const real = [], other = [];
+  for (const [bk,B] of books) (isRealBook(bk,B.g) ? real : other).push([bk,B]);
+  const byStage = (a,b)=> (a[1].g-b[1].g) || a[0].localeCompare(b[0],'zh');
+  real.sort(byStage); other.sort((a,b)=> b[1].n-a[1].n);
+
+  // 默认展开：**第一本真教材**（原来默认选中的是「能力底座」或「教材缺口」——
+  // 一进来看到的是数据的边角料，不是教材）
+  if (!BROWSE_BOOK || !books.has(BROWSE_BOOK))
+    BROWSE_BOOK = real.length ? real[0][0] : (other.length ? other[0][0] : null);
+
+  const chip = ([bk,B])=>`<a href="#" data-bk="${esc(bk)}" class="${bk===BROWSE_BOOK?'on':''}">${esc(bk)}（${B.n}）</a>`;
+
+  // 真教材按学段分组显示
+  let toc = '';
+  const stages = ['小学','初中','高中','其他'];
+  for (const st of stages){
+    const rows = real.filter(([bk,B])=>stageOf(B.g)===st);
+    if (!rows.length) continue;
+    toc += `<div class="bstage"><b>${st}</b><div class="toc">${rows.map(chip).join('')}</div></div>`;
+  }
+  if (other.length){
+    toc += `<div class="bstage other"><b>不是教材册次</b><span>图谱层面的东西（能力底座 / 自建概念 / 教材缺口），不是某一本书的一册</span>`
+        + `<div class="toc">${other.map(chip).join('')}</div></div>`;
+  }
+
+  let detail = '';
+  if (BROWSE_BOOK && books.has(BROWSE_BOOK)){
+    const B = books.get(BROWSE_BOOK);
+    // 「其他」放最后 —— 它是没归到章里的节点，不是一章
+    const chs = [...B.chapters.entries()].sort((a,b)=>
+      (a[0]==='其他')-(b[0]==='其他') || b[1].length-a[1].length);
+    detail = chs.map(([ch,nodes])=>{
+      const sorted = [...nodes].sort((a,b)=>(b.c||0)-(a.c||0));   // 依赖度高的排前面
+      return `<div class="bchap"><h3>${esc(ch)}<span>${nodes.length}</span></h3>
+        <div class="toc">${sorted.map(x=>`<a href="#" data-c="${x.i}">${esc(x.n)}</a>`).join('')}</div></div>`;
+    }).join('');
+  }
+
+  return `<div class="card">
+    <h2>按教材翻<span class="n">${real.length} 册教材${other.length?` · ${other.length} 个非册次`:''}</span></h2>
+    ${toc}
+    <div class="bchapwrap">${detail}</div>
   </div>`;
 }
 
@@ -448,10 +591,20 @@ function nodeHTML(n){
     const u = pageImgUrl(loc.bk, scan[0], loc.pdfBook);
     if (u){
       // 印刷页码 = 扫描页 + 每册偏移（封面/目录页数不同）
-      const off = (loc.pdfBook && PAGE_OFFSETS[loc.pdfBook]) || 0;
+      //
+      // ⚠️ **三套页码来源**，别混：
+      //   人教版  loc.pdfBook → PAGE_OFFSETS（本地 PDF 页脚取页码，31/31 册）
+      //   沪教版  loc.bk      → PAGE_OFFSETS_SH（平台 OCR 页脚行，44/67 册）
+      //   没有偏移的册次 → **不猜**，老老实实写「电子教材扫描页 N」
+      //
+      // 写错的后果很具体：沪教版七下数学，面板写「第 16 页」，
+      // 图上页脚印的是 **9** —— 学生按 16 翻书翻到的是下一节。
+      const off = loc.pdfBook ? (PAGE_OFFSETS[loc.pdfBook] || 0)
+                 : (PAGE_OFFSETS_SH[loc.bk] || 0);
       const printed = off ? scan[0] + off : null;
-      const pageLabel = printed ? `第 ${printed} 页` : `第 ${scan[0]} 页`;
-      const extra = printed ? `（PDF 第 ${scan[0]} 页）` : '';
+      const pageLabel = printed ? `第 ${printed} 页`
+                    : `电子教材扫描页 ${scan[0]}`;
+      const extra = printed ? `（${loc.pdfBook ? 'PDF' : '电子教材'} 第 ${scan[0]} 页）` : '';
       imgHTML = `<div class="card"><h2>教材原页<span class="n">${esc(loc.ed||'')}·${esc(loc.vol||'')} ${pageLabel}</span></h2>
         <div class="pageimg">
           <!-- ⚠️ **referrerpolicy="no-referrer" 是必须的** ——
@@ -612,6 +765,13 @@ document.addEventListener('click', e=>{
     if (list.length) go({v:CURRENT, c:list[0].i});
     return;
   }
+  const bk = e.target.closest('[data-bk]');
+  if (bk){
+    e.preventDefault();
+    BROWSE_BOOK = bk.dataset.bk;
+    render();
+    return;
+  }
   if (e.target.closest('[data-home]')){ e.preventDefault(); go({v:CURRENT, c:null}); }
 });
 
@@ -627,6 +787,8 @@ document.addEventListener('click', e=>{
   catch(e){ PAGE_IMAGES_RJB = {}; }
   try{ await loadScript('data/page-offsets.js'); PAGE_OFFSETS = window.PAGE_OFFSETS || {}; }
   catch(e){ PAGE_OFFSETS = {}; }
+  try{ await loadScript('data/page-offsets-sh.js'); PAGE_OFFSETS_SH = window.PAGE_OFFSETS_SH || {}; }
+  catch(e){ PAGE_OFFSETS_SH = {}; }
   try{ await loadScript('data/learn-videos.js'); VIDEOS = window.LEARN_VIDEOS || {}; }
   catch(e){ VIDEOS = {}; }
   try{ await loadScript('data/learn-questions.js'); QUESTIONS = window.LEARN_QUESTIONS || []; }
