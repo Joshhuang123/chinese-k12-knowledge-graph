@@ -25,5 +25,23 @@
     "title": "浮力",
     "dur": "0:55",
     "poster": "video/rjb_physics_8b_rjb_cpt51.jpg"
+  },
+  "sh:math_9b_rjb_cpt37": {
+    "mp4": "video/sh_math_9b_rjb_cpt37.mp4",
+    "title": "视图",
+    "dur": "1:09",
+    "poster": "video/sh_math_9b_rjb_cpt37.jpg"
+  },
+  "sh:math_8b_rjb_cpt43": {
+    "mp4": "video/sh_math_8b_rjb_cpt43.mp4",
+    "title": "函数",
+    "dur": "1:05",
+    "poster": "video/sh_math_8b_rjb_cpt43.jpg"
+  },
+  "rjb:math_7b_rjb_cpt4": {
+    "mp4": "video/rjb_math_7b_rjb_cpt4.mp4",
+    "title": "同位角",
+    "dur": "1:07",
+    "poster": "video/rjb_math_7b_rjb_cpt4.jpg"
   }
 }

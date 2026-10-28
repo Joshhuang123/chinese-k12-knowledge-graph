@@ -447,9 +447,40 @@ def main() -> int:
                     # 再挑「正文里真的出现这个概念」的那一页
                     nm = name or ""
                     pgs = ocr.get(mb, {})
+                    # ⚠️ **去掉括号再匹配** ——
+                    # 概念名带说明性括号时（「健康（世界卫生组织定义）」），
+                    # 教材正文里写的是「健康」，带括号的全名**一页都命中不了**。
+                    nm_core = re.sub(r"[（(][^）)]*[）)]", "", nm).strip() or nm
                     hit = [p for p in scan if nm and nm in (pgs.get(p) or "")]
-                    # 有正文命中的，取最早那页（概念通常在首次出现处讲）
-                    pick = hit[0] if hit else (scan[0] if scan else None)
+                    hit_core = [p for p in scan if nm_core and nm_core in (pgs.get(p) or "")]
+                    # ⚠️ **页首优先** ——
+                    # 原来直接取 `hit[0]`（最早出现的那页），但「最早出现」常常是
+                    # **顺带提到**的地方：复习题、习题答案、目录旁白。
+                    # 实测「健康（世界卫生组织定义）」选到了第八册的**复习题页** ——
+                    # 那一页提到「健康」，但不是讲健康的那一页。
+                    #
+                    # 判据（跟人教版 pick_rjb_page 同一套）：
+                    #   ① 概念名出现在**页首窗口** → 那是「这一节在讲它」
+                    #   ② 概念名出现在正文里 → 至少提到过
+                    #   ③ 兜底：第一页
+                    HEAD = 80
+                    pick = None
+                    for pool, key in ((hit, nm), (hit_core, nm_core)):
+                        if not pool or not key:
+                            continue
+                        for p in pool:
+                            tx = pgs.get(p) or ""
+                            if tx.strip() and key in tx[:HEAD]:
+                                pick = p
+                                break
+                        if pick is not None:
+                            break
+                    if pick is None and hit:
+                        pick = hit[0]
+                    if pick is None and hit_core:
+                        pick = hit_core[0]
+                    if pick is None:
+                        pick = scan[0] if scan else None
                     loc = {"bk": mb, "vol": b.get("volName"),
                            "ed": b.get("edition"), "sec": secs,
                            "scan": [p for p in ([pick] if pick else []) ],
