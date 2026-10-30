@@ -477,7 +477,13 @@ async function render(){
     $('#foot').innerHTML = footHTML();
     return;
   }
-  const n = DATA.nodes.find(x=>String(x.i)===String(p.c));
+  /* `?c=` 有两种写法，**都要认**：
+     · 数字下标（`i`）—— 站内跳转用的就是它（`data-c="123"`）
+     · **上游概念 id**（`id`）—— 图谱站跳过来时用的是它
+       （人教 math_1a_rjb_cpt1 / 沪教 biology_7a_rjb_cpt109 / 小学 kx:s6-3a:认识液体）
+       画布下标三个版本各不相同，学习页只能靠 id 认。
+     先按 id 找（id 一定是字符串，不会跟数字下标撞），找不到再按 i 找。 */
+  const n = DATA.nodes.find(x=>x.id===p.c) || DATA.nodes.find(x=>String(x.i)===String(p.c));
   if (!n){ main.innerHTML = '<div class="card"><div class="empty">找不到这个知识点。</div></div>'; return; }
   main.innerHTML = nodeHTML(n);
   window.scrollTo(0,0);

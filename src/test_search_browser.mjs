@@ -184,6 +184,61 @@ console.log('\n[1d] 标题字形必须**显式声明**（不许悄悄回落成�
      '声明栈第一项不是西文字体（不会出现西文/中文混排）', first);
 }
 
+// ── [1e] 点能跳到学习页 ─────────────────────────────────────
+//
+// 图谱站回答「这个知识点在哪本书哪一节」，学习页回答「我到底会不会、卡在哪」。
+// 两者必须能互相到达 —— 之前只有站首页那个「学习页」导航链接，
+// 从一个具体的知识点跳不过去。
+//
+// 两条路：
+//  · 卡片里的「去学习页」按钮（单击点 → 弹卡片 → 点按钮）
+//  · **双击点**直接跳（给「我只想看这个怎么讲」的人）
+//
+// ⚠️ 单击**仍然是弹卡片** —— 卡片里是前置链和「卡在哪」，
+//    那是图谱站真正的价值，不能为了跳走把它换掉。
+//
+// 链接带的是**上游概念 id**（payload 的 de 字段），不是画布下标 ——
+// 画布下标三个版本各不相同（人教 8667 / 沪教 3503 / 小学 67）。
+//
+// 判别力：把模板里的 __LEARN_BASE__ 换成写死的 "./learn.html"
+// → viz 那份指到 viz/learn.html（404）→ 本组报红。
+console.log('\n[1e] 点能跳到学习页');
+{
+  const r = await page.evaluate(() => {
+    const KG = window.__kg;
+    const id = KG.NODES.findIndex(n => n.de);
+    KG.showCard(id);
+    const a = document.getElementById('cLearn');
+    const pos = KG.nodePos(id);
+    const rect = document.querySelector('#c').getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    return {
+      de: KG.NODES[id].de,
+      href: a ? a.getAttribute('href') : null,
+      hidden: a ? a.hidden : true,
+      visible: a ? !!(a.offsetWidth || a.offsetHeight) : false,
+      cx: rect.left + pos.x / dpr, cy: rect.top + pos.y / dpr,
+    };
+  });
+  ok(!!r.href, '卡片里有「去学习页」链接', r.href || '（没有）');
+  ok(!r.hidden && r.visible, '按钮是显示的（不是 hidden 占位）');
+  ok(r.href && /learn\.html\?v=rjb&c=/.test(r.href),
+     '链接指向人教版学习页，且带 c 参数', r.href || '');
+  ok(r.href && r.href.endsWith(encodeURIComponent(r.de)),
+     'c 参数就是这个点的上游概念 id', r.de);
+  ok(r.href && r.href !== '#' && /[?&]c=[^&]+/.test(r.href),
+     '链接不是模板里的占位「#」，c 参数有值', r.href || '');
+
+  // 双击这个点 → 应该真的跳到学习页
+  await page.mouse.click(r.cx, r.cy, { clickCount: 2 });
+  await sleep(2000);
+  const url = page.url();
+  ok(/learn\.html\?v=rjb&c=/.test(url) && url.endsWith(encodeURIComponent(r.de)),
+     '双击点直接跳到学习页（带正确的版本和概念）', url.replace(/^file:\/\/.*中文知识图谱/, ''));
+  await page.goto(PAGE, { waitUntil: 'load' });
+  await sleep(1500);
+}
+
 console.log('\n[2] 搜索框存在且可聚焦');
 await page.click('#q');
 ok(await page.evaluate(() => document.activeElement.id === 'q'), '点击后焦点在输入框');

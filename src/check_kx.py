@@ -66,9 +66,23 @@ def main() -> int:
     print("\n── 2. 页码基准（印刷页码 ↔ 扫描序号）──")
     # 目录里的节起始页 + 偏移 必须 ≤ 该书页数
     bad_off = []
+    # ⚠️ **页数从「已入库的」data/kx-textbooks.json 取，不要数本地缓存里的图片** ——
+    #   data/pdf-cache/ 是**不入库**的下载缓存（iCloud 随时可能把它清掉，
+    #   实测就被清空过一次），数那里的文件等于把判据绑在一个随时会消失的输入上：
+    #   缓存一没，每册页数变成 0，于是 12 册全部报「越界」——
+    #   **那是输入缺失，不是页码越界**（跟 ISSUE-56 同一个病）。
+    #   页数本来就在入库数据里（平台的教材元数据），直接用。
+    kx_pages = {}
+    _tb = BASE / "data" / "kx-textbooks.json"
+    if _tb.exists():
+        for b in json.loads(_tb.read_text(encoding="utf-8")):
+            kx_pages[f"s6-{b['book']}"] = b.get("pages")
     for bk in toc:
         off = toc[bk].get("_offset", 0)
-        npages = len([f for f in (BASE / "data" / "pdf-cache" / "kx" / bk).glob("p*.jpg")])
+        npages = kx_pages.get(bk)
+        if not npages:
+            # 入库数据里没有这一册的页数 → 无从判断，跳过（别当成越界）
+            continue
         last = max((s.get("startPage") or 0)
                    for u in toc[bk]["units"] for s in u["sections"])
         if last + off > npages:

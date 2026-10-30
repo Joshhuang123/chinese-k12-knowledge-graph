@@ -188,6 +188,28 @@ console.log('\n[1c] 首屏不等数据');
   await page.close();
 }
 
+// ── [1d] `?c=` 认**上游概念 id**（图谱站跳过来用的就是它） ──
+//
+// 图谱站 → 学习页的链接带的是上游概念 id（人教 math_1a_rjb_cpt1 /
+// 沪教 biology_7a_rjb_cpt109 / 小学 kx:s6-3a:认识液体），
+// **不是**画布下标 —— 画布下标三个版本各不相同，学习页认不得。
+//
+// 判别力：把 learn.html 里「先按 id 找」那句去掉 → 本组报红。
+console.log('\n[1d] ?c= 认上游概念 id');
+{
+  for (const [ver, cid, want] of [
+    ['sh', 'biology_7a_rjb_cpt109', '发芽率'],
+    ['rjb', 'math_9a_rjb_cpt1', '一元二次方程'],
+    ['kx', 'kx:s6-3a:认识液体', '液体'],
+  ]) {
+    const { page, errs } = await open(`?v=${ver}&c=${encodeURIComponent(cid)}`);
+    const h1 = await page.evaluate(() => document.querySelector('h1.ctitle')?.textContent || '');
+    ok(h1 === want, `${ver} · ${cid} → 打开的是「${want}」`, h1);
+    ok(errs.length === 0, `${ver} 零 JS 错误`, errs.slice(0, 2).join(' | '));
+    await page.close();
+  }
+}
+
 // ── [2] 搜索 → 学习页 ────────────────────────────────────
 console.log('\n[2] 搜索能到学习页');
 {

@@ -124,6 +124,19 @@ body{
   transition:all .16s;white-space:nowrap;
 }
 .btn:hover{border-color:rgba(255,255,255,.28);color:var(--ink)}
+/* 「去学习页」是图谱站通往学习页的**主出口** ——
+   图谱回答「这个知识点在哪本书哪一节」，学习页回答「我到底会不会、卡在哪」，
+   两者必须能互相到达。
+   卡片里另外三个按钮（知识脉络 / 卡在哪 / 学习路径）都是**在这个页里展开**，
+   只有这一个会**离开这个页** —— 所以给它品牌粉的实心样式，分得出主次。
+   （`<a>` 标签要自己处理下划线和基线对齐，button 默认样式不适用。） */
+.btn.primary{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:rgba(255,61,127,.16);border-color:rgba(255,61,127,.46);
+  color:#ff9ec4;text-decoration:none;font-weight:500;
+}
+.btn.primary:hover{background:rgba(255,61,127,.26);border-color:rgba(255,61,127,.72);color:#ffb9d4}
+.btn.primary:focus-visible{outline:2px solid rgba(255,61,127,.6);outline-offset:2px}
 .btn[aria-pressed="true"]{
   background:rgba(255,61,127,.17);border-color:rgba(255,61,127,.52);
   color:#ff9ec4;font-weight:500;
@@ -142,8 +155,13 @@ body{
   max-height:calc(100vh - 140px);overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 #card.on{opacity:1;pointer-events:auto}
-.cardacts{display:flex;align-items:center;gap:9px;margin:10px 0 4px}
-.cardact-hint{font-size:10.5px;color:var(--muted);line-height:1.4}
+/* ⚠️ **必须允许换行**，提示文字也要独占一行 ——
+   卡片只有 296px 宽，三个按钮（知识脉络/卡在哪/学习路径）加上间隙就占掉 ~243px，
+   提示文字只剩十几像素 → **被挤成竖排**（每行一个字），
+   那一列还把整行撑到 200px 高，卡片中间空出一大块。
+   flex-basis:100% 让提示文字自己换到下一行，竖排和空洞一起消失。 */
+.cardacts{display:flex;align-items:center;gap:9px;margin:10px 0 4px;flex-wrap:wrap}
+.cardact-hint{font-size:10.5px;color:var(--muted);line-height:1.4;flex-basis:100%}
 #card .eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;
   display:flex;align-items:center;gap:7px}
 #card .eyebrow .sw{width:7px;height:7px;border-radius:50%;flex:none}
@@ -569,6 +587,9 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
        #head 是 pointer-events:none，而 pointer-events 会继承，
        所以这里必须显式打开，否则「源码」链接点不动。 -->
   <div id="nav">
+    <!-- ⚠️ 相对路径**按产物所在深度**给（build 时替换 ./learn.html）——
+         同一份模板产出 index.html（根）和 viz/知识图谱3D.html（子目录），
+         写死 "./learn.html" 在后者会指到 viz/learn.html → 404。 -->
     <a href="./learn.html" target="_blank" rel="noopener">学习页</a>
     · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a>
     · <a href="./data.html" target="_blank" rel="noopener">数据一览</a>
@@ -632,8 +653,13 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
     <button class="btn" id="cMap">知识脉络</button>
     <button class="btn" id="cGap">卡在哪</button>
     <button class="btn" id="cPath">学习路径</button>
-    <span class="cardact-hint">展开它的先修链与后继链</span>
+    <span class="cardact-hint">展开它的先修链与后继链 · 双击点直接进学习页</span>
   </div>
+  <!-- 主出口：去学习页。单独一行 —— 上面三个按钮是「在页里展开」，
+       这一行是「离开这个页」，混在一排里分不出主次。
+       放在依赖列表**上面**：后继最多 14 条，列表很长，
+       按钮夹在下面要滚很久才看得到。 -->
+  <a class="btn primary" id="cLearn" href="#" style="width:100%;margin-top:10px">去学习页 →</a>
   <!-- 前后依赖直接列出来并且可点。只给数量（「要先掌握 4 个」）等于
        还得回去猜是哪 4 个 —— 查完了还是不知道。点一下就跳过去，
        于是这一页从「查一个点」变成「顺着链条走」。
@@ -849,8 +875,12 @@ const R_MIN = (() => {
  *   小学站 平均 R=14  → 间隔 8（绝对下限，不然层会粘在一起）
  *
  * 顺带的好处：锥形变紧凑 → **凸包面积变小** → 每点占的画布面积下降，
- * 密度判据的余量变大（实测上海站 33.5 → 约 24 px²/点，
- * 上限 40，跨站比 1.87 → 约 1.35）。
+ * 密度判据的余量变大。
+ * **实测**（node src/check_layout_density.mjs index.html shanghai.html kx.html）：
+ *   上海站 每点面积 33.5 → **28.3**（上限 40）
+ *   跨站比   1.87 → **1.58**（上限 2.0）· 主站 17.9 不变
+ * 判据是**放宽**的 —— 说明上海站原来「看着稀疏」，
+ * 一半是间距写死造成的，不是数据本来就稀。
  */
 const LAYER_MIN_GAP = (() => {
   const rs = AGES.map(age => Math.max(R_MIN, R_PER_SQRT * Math.sqrt(Math.max(byAge.get(age).length, 1))));
@@ -1552,6 +1582,19 @@ function showCard(id){
   enEl.textContent = n.en || '';
   enEl.style.display = n.en ? '' : 'none';
   document.getElementById('cDesc').textContent = n.desc || '（该条目没有描述文本）';
+  /* 「去学习页」—— 图谱站回答「这个知识点在哪本书哪一节」，
+     学习页回答「我到底会不会、卡在哪」。两者要能互相到达。
+     ⚠️ 链接用的是**上游概念 id**（payload 里的 de 字段），**不是画布下标** ——
+     画布下标三个版本各不相同（人教 8667 / 沪教 3503 / 小学 67），
+     学习页也认不得一个裸下标。
+     实测对应关系是 1:1 的：人教 8667/8667 · 沪教 3503/3503 · 小学 67/67。 */
+  const le = document.getElementById('cLearn');
+  if(n.de){
+    le.href = './learn.html?v=kx&c=' + encodeURIComponent(n.de);
+    le.hidden = false;
+  } else {
+    le.hidden = true;
+  }
   document.getElementById('cMeta').innerHTML =
     (n.core ? '<span class="hi">小学特有</span>' : '<span>对齐上游</span>') +
     '<span>课程要求：' + n.evn + '</span><span>被依赖度 ' + n.cen.toFixed(3) + '</span>';
@@ -1723,6 +1766,17 @@ cv.addEventListener('pointerup', e=>{
 });
 // 手势被系统打断（通知横幅、来电、浏览器接管滚动）时必须收尾，
 // 否则 dragging 永远为真：光标卡在抓取态，自动旋转也永久停住。
+/* 双击点 → 直接去学习页。
+   单击**仍然是弹卡片** —— 卡片里是前置链/后继链和「卡在哪」，
+   那是图谱站真正的价值，不能为了跳走把它换掉。
+   双击是给「我只想看这个知识点怎么讲」的人用的快捷路径。 */
+cv.addEventListener('dblclick', e=>{
+  const id = pick(e.clientX, e.clientY);
+  if(id < 0) return;
+  const n = NODES[id];
+  if(!n || !n.de) return;
+  location.href = './learn.html?v=kx&c=' + encodeURIComponent(n.de);
+});
 cv.addEventListener('pointercancel', endDrag);
 cv.addEventListener('lostpointercapture', endDrag);
 cv.addEventListener('pointerleave', ()=>{ tip.classList.remove('on'); });
@@ -1753,6 +1807,12 @@ window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
               // 实测：点「卡在哪」列表里的任何一条都不跳，而且抛
               // `ReferenceError: showCard is not defined`。
               showCard: (id) => showCard(id),
+              // **点在屏幕上的位置** —— 双击跳学习页要靠它命中，
+              // 而命中测试（pick）在 IIFE 外面够不着。
+              // 自动化测试要验证「双击某个点真的会跳」，
+              // 就得先知道那个点画在哪。projX/projY 是**画布像素**，
+              // 不是 CSS 像素 —— 设备像素比不为 1 时要换算。
+              nodePos: (id) => ({x: projX[id], y: projY[id], k: projK[id]}),
               // **视觉层**：概念在教材原书上的公式和图。
               // 「卡在哪」面板和选题卡都要用 —— 面板那段代码在 IIFE 外面。
               vision: D.vision || {},

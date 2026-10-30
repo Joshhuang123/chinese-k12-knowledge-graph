@@ -798,6 +798,10 @@ def main():
                  # **挂到 window** —— 学习路径面板在 IIFE 外面，够不着 IIFE 里的常量。
                  "window.GRADE_ZH=GRADE_ZH;\n")
     COPY = [
+        # 「去学习页」链接指向哪个版本的学习页 ——
+        # 人教版主站 → rjb · 上海站 → sh · 小学站 → kx。
+        # 模板里写 __LEARN_VER__，这里替换掉（失配即中止，这道守卫仍然有效）。
+        ("__LEARN_VER__", "rjb"),
         # 模板原文是美英小学口径（4–15 岁 / 9–10 岁核心），直接用会跟国内数据对不上。
         # 这一行不只是「哪套标准」，说的是**按哪套教材排的序** ——
         # 「人教版教材 · 8,590 个知识点」读起来像这些知识点来自人教版教材，
@@ -864,8 +868,15 @@ def main():
                 .replace("__N_EDGE__", f"{len(payload_edges):,}")
                 .replace("__N_CORE__", f"{payload['core']:,}"))
 
-    OUT.write_text(html, encoding="utf-8")
-    INDEX.write_text(html, encoding="utf-8")
+    # ⚠️ **学习页的相对路径按产物所在深度给** ——
+    # 同一份模板产出两个深度的页面：viz/知识图谱3D.html（子目录）和
+    # index.html（站点根，GitHub Pages 的首页）。写死 "./learn.html" 的话，
+    # 前者会指到 viz/learn.html → **404**（线上实测就是这个坏链）。
+    if "__LEARN_BASE__" not in html:
+        raise SystemExit("构建中止：模板里没有 __LEARN_BASE__ 占位符，"
+                         "学习页链接会指错")
+    OUT.write_text(html.replace("__LEARN_BASE__", "../learn.html"), encoding="utf-8")
+    INDEX.write_text(html.replace("__LEARN_BASE__", "./learn.html"), encoding="utf-8")
 
     print(f"节点 {len(payload_nodes):,} | 边 {len(payload_edges):,} | 剪掉的环边 {dropped}")
     print(f"is_a 上下位 {len(isa_pairs):,} 对 | leads_to 章表 {len(chs)} 章 | "

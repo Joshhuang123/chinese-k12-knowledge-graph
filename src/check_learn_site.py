@@ -135,6 +135,7 @@ def main() -> int:
         bad_page = 0
         dirish = 0
         notmentioned = 0
+        judged = 0              # 真正读到过页正文的节点数（没有 PDF 时是 0）
         missing_file = 0
         for n in withimg:
             loc = n["loc"]
@@ -157,8 +158,12 @@ def main() -> int:
             # 目录页特征：正文里出现「……第 N 页」这种目录条目串
             if len(re.findall(r"\.{3,}\s*\d+", txt)) >= 3:
                 dirish += 1
-            if n["n"] not in txt:
-                notmentioned += 1
+            # 只有**真读到正文**才能判断「这一页有没有提到这个概念」。
+            # 空串 = 没读到（PDF 不在 / 那一页没文本层），不是「没提到」。
+            if txt:
+                judged += 1
+                if n["n"] not in txt:
+                    notmentioned += 1
         check(bad_page == 0, f"{tag}: 页码都在该书总页数内",
               f"{bad_page} 个越界")
         check(dirish == 0, f"{tag}: 显示页不是目录页",
@@ -168,10 +173,22 @@ def main() -> int:
                   f"{missing_file} 个索引指向的文件不存在")
         # 「正文里提到概念」不是硬性要求（有些概念的页图是插图页），
         # 但不能太多 —— 超过 60% 说明页码挑错了
+        #
+        # ⚠️ **先分清「页正文里没有概念名」和「压根没读到正文」** ——
+        # 本地教材 PDF（data/pdf-cache/）是**不入库**的（版权），随时可能不在。
+        # 没有 PDF 时 rjb_text() 返回空串，于是每个节点都算「没提到」→
+        # 报出「100% 的页正文里没有概念名」这种**整齐得可疑**的数字。
+        # 那是**输入缺失**，不是「页码全挑错了」—— 两回事，必须分开，
+        # 否则一个可选输入没了，整个判据就变成一句假警报。
+        # （判据守的是意图：页码挑对没有，不是「必须能读到 PDF」。）
         if withimg:
-            ratio = notmentioned / len(withimg)
-            check(ratio <= 0.6, f"{tag}: 显示页大多提到这个概念",
-                  f"{notmentioned}/{len(withimg)} = {ratio:.0%} 的页正文里没有概念名")
+            if judged > 0:
+                ratio = notmentioned / judged
+                check(ratio <= 0.6, f"{tag}: 显示页大多提到这个概念",
+                      f"{notmentioned}/{judged} = {ratio:.0%} 的页正文里没有概念名")
+            else:
+                print(f"  · {tag}: 本地没有教材 PDF（data/pdf-cache/ 不入库），"
+                      f"跳过「页正文是否提到概念」这条（{len(withimg)} 个节点无从判断）")
 
         # ⑤ **先修/后继必须跟站点 payload 对得上** ——
         # 这条是**踩坑踩出来的**（ISSUE-53）：
@@ -307,6 +324,24 @@ def main() -> int:
         check(not ghost, "索引里没有指向不存在文件的条目", " | ".join(ghost[:3]))
     else:
         print("  · 没有成片，跳过解码检查")
+
+    # ⑧ 三个成品的「去学习页」链接：版本要对、相对路径要对
+    #    同一份模板产出两个深度（index.html 在根、viz/知识图谱3D.html 在子目录），
+    #    相对路径写死的话 viz 那份会指到 viz/learn.html → **404**（线上实测过）。
+    for f, ver, base in (("index.html", "rjb", "./learn.html"),
+                         ("viz/知识图谱3D.html", "rjb", "../learn.html"),
+                         ("shanghai.html", "sh", "./learn.html"),
+                         ("kx.html", "kx", "./learn.html")):
+        p = BASE / f
+        if not p.exists():
+            check(False, f"{f} 存在")
+            continue
+        src = p.read_text(encoding="utf-8")
+        want = f'{base}?v={ver}'
+        check(want in src, f"{f}: 去学习页链接指向 {want}", "" if want in src else
+              "（版本或深度不对）")
+        check("__LEARN_BASE__" not in src and "__LEARN_VER__" not in src,
+              f"{f}: 没有漏掉的占位符")
 
     print(f"\n{'=' * 46}\n通过 {ok} · 失败 {fail}")
     return 1 if fail else 0

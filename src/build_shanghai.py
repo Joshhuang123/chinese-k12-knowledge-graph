@@ -414,6 +414,10 @@ def main() -> int:
                  # **挂到 window** —— 学习路径面板在 IIFE 外面，够不着 IIFE 里的常量。
                  "window.GRADE_ZH=GRADE_ZH;\n")
     COPY = [
+        # 「去学习页」链接指向哪个版本的学习页 ——
+        # 人教版主站 → rjb · 上海站 → sh · 小学站 → kx。
+        # 模板里写 __LEARN_VER__，这里替换掉（失配即中止，这道守卫仍然有效）。
+        ("__LEARN_VER__", "sh"),
         ("美英课程标准 · ", "按上海教材排序 · "),
         # **GRADE_ZH 要在全局** —— 卡片眉标和轴标签两处都要用它，
         # 塞进画轴的函数里的话卡片那边就 ReferenceError。
@@ -475,7 +479,10 @@ def main() -> int:
                 .replace("__N_EDGE__", f"{len(edges):,}")
                 .replace("__N_CORE__", f"{payload['core']:,}"))
 
-    OUT.write_text(html, encoding="utf-8")
+    # 学习页在站点根目录（这两个产物也在根目录）→ "./learn.html"
+    if "__LEARN_BASE__" not in html:
+        raise SystemExit("构建中止：模板里没有 __LEARN_BASE__ 占位符")
+    OUT.write_text(html.replace("__LEARN_BASE__", "./learn.html"), encoding="utf-8")
     print(f"\n{payload['total']} 沪教知识点 + {n_self} 前置补充 = {len(payload_nodes)} 节点 · "
           f"{len(edges)} 边 · {len(cns)} 单元 · {len(chs)} 章")
     print(f"→ {OUT}  ({OUT.stat().st_size//1024} KB)")

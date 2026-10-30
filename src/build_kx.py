@@ -377,6 +377,10 @@ def main() -> int:
     GRADE_MAP = ("const GRADE_ZH=" + json.dumps(GRADE_ZH, ensure_ascii=False) + ";\n"
                  "window.GRADE_ZH=GRADE_ZH;\n")
     COPY = [
+        # 「去学习页」链接指向哪个版本的学习页 ——
+        # 人教版主站 → rjb · 上海站 → sh · 小学站 → kx。
+        # 模板里写 __LEARN_VER__，这里替换掉（失配即中止，这道守卫仍然有效）。
+        ("__LEARN_VER__", "kx"),
         # eyebrow：**整行替换，必须排在片段替换之前** ——
         # 下面那条 COPY 会先把「美英课程标准 · 」改成「按人教版小学科学排序 · 」，
         # 顺序反了的话整行就匹配不上了（失配即中止，这是对的）。
@@ -456,7 +460,10 @@ def main() -> int:
                 .replace("__N_ORDER__", f"{n_order:,}")
                 .replace("__N_PRE__", f"{n_pre:,}")
                 .replace("__N_CORE__", f"{n_kx:,}"))
-    OUT.write_text(html, encoding="utf-8")
+    # 学习页在站点根目录（这两个产物也在根目录）→ "./learn.html"
+    if "__LEARN_BASE__" not in html:
+        raise SystemExit("构建中止：模板里没有 __LEARN_BASE__ 占位符")
+    OUT.write_text(html.replace("__LEARN_BASE__", "./learn.html"), encoding="utf-8")
     print(f"\n{payload['total']} 小学科学知识点 · {len(edges)} 边 · {len(cns)} 节")
     print(f"→ {OUT}（{len(html)//1024} KB）")
     return 0
