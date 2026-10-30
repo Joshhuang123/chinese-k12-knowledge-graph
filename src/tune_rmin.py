@@ -44,6 +44,14 @@ def main() -> int:
             payload = m.group(1)
             out = OUTDIR / f"{site.replace('.html','')}_rmin{rmin}.html"
             out.write_text(v.replace("__DATA__", payload), encoding="utf-8")
+            # ⚠️ 导航链接的占位符也要替换（同 ablate_density.py）
+            for ph, page in (("__LEARN_BASE__", "learn.html"),
+                             ("__LEARN_BASE_QUALITY__", "quality.html"),
+                             ("__LEARN_BASE_DATA__", "data.html"),
+                             ("__LEARN_BASE_SH__", "shanghai.html"),
+                             ("__LEARN_BASE_KX__", "kx.html")):
+                out.write_text(out.read_text(encoding="utf-8").replace(ph, "./" + page),
+                               encoding="utf-8")
             files.append(str(out))
     print(f"生成 {len(files)} 个变体\n")
 

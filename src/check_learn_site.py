@@ -59,9 +59,24 @@ def main() -> int:
     # 沪教用 OCR 文本层（lessons-sh.jsonl），人教没有那套，
     # 但我们有 PDF —— 而且**页码就是 PDF 的扫描页**，天然对齐。
     rjb_index = {}
-    idx_f = DATA / "page-images-rjb.json"
+    # ⚠️ **读页面真正加载的那个文件** ——
+    #   页面 loadScript('data/page-images-rjb.js')，这里原来读的是 .json。
+    #   两份索引曾经对不上（1,018 条重合，各有 100 多条独有；.js 里还有 37 条
+    #   指向不存在的文件），于是门禁校验的东西和线上跑的东西不是一份 ——
+    #   真坏了看不见，假坏了报警。
+    #   现在两个文件由 src/render_page_images.py 从同一份索引生成，
+    #   这里读 .js，并**额外断言 .js 与 .json 一致**。
+    idx_f = DATA / "page-images-rjb.js"
     if idx_f.exists():
-        rjb_index = json.loads(idx_f.read_text(encoding="utf-8"))
+        rjb_index = json.loads(
+            idx_f.read_text(encoding="utf-8").split("=", 1)[1].rstrip().rstrip(";"))
+    idx_j = DATA / "page-images-rjb.json"
+    if idx_f.exists() and idx_j.exists():
+        a = set(rjb_index), {k for k in rjb_index}
+        b = {k for k in json.loads(idx_j.read_text(encoding="utf-8"))}
+        check(rjb_index == json.loads(idx_j.read_text(encoding="utf-8")),
+              "page-images 的 .js（页面加载的）和 .json 是同一份",
+              f"差异 {len(a[1] ^ b)} 册")
     PDFC = DATA / "pdf-cache"
     SUBJ_ABBR = {"biology": "bio", "chemistry": "chem", "physics": "phys", "math": "math"}
     HIGH_VOL = {"bx1": "m1", "bx2": "m2", "bx3": "m3",
@@ -293,8 +308,13 @@ def main() -> int:
                 errs = sum(1 for ln in r.stderr.splitlines()
                            if "Invalid NAL" in ln or "missing picture" in ln
                            or "Error splitting" in ln)
-                if errs:
-                    broken.append(f"{v.name}({errs})")
+                # ⚠️ **必须看退出码** ——
+                #   只数那三句错误串，**「mdat 被清零」「上传截断」「零字节」全都判绿**
+                #   （verifier 实测：截断一半的坏文件 ffmpeg rc=183，但三句错误串一条都没有，
+                #    stderr 里写的是「moov atom not found」/「Invalid data found…」）。
+                #   退出码才是「这个文件到底能不能解码」的权威。
+                if errs or r.returncode != 0:
+                    broken.append(f"{v.name}({errs or 'rc=' + str(r.returncode)})")
             except Exception as e:
                 broken.append(f"{v.name}({e})")
         check(not broken, f"{len(vids)} 条成片都能整解码（不是只有文件在）",

@@ -90,6 +90,18 @@ def main() -> int:
                 raise SystemExit(f"{vname}: 模板里没有 __DATA__ 占位")
             out = OUTDIR / f"{vname}.html"
             out.write_text(tpl.replace("__DATA__", pl), encoding="utf-8")
+            # ⚠️ **导航链接的占位符也要替换** ——
+            #   模板里的 5 条导航链接用的是 __LEARN_BASE__ 系列占位符
+            #   （按产物所在深度给相对路径）。
+            #   这些分析页输出到 /tmp，不上线，但占位符留着的话
+            #   那个页子里的学习页链接是坏的（点进去是个不存在的路径）。
+            for ph, page in (("__LEARN_BASE__", "learn.html"),
+                             ("__LEARN_BASE_QUALITY__", "quality.html"),
+                             ("__LEARN_BASE_DATA__", "data.html"),
+                             ("__LEARN_BASE_SH__", "shanghai.html"),
+                             ("__LEARN_BASE_KX__", "kx.html")):
+                out.write_text(out.read_text(encoding="utf-8").replace(ph, "./" + page),
+                               encoding="utf-8")
             files.append(str(out))
 
     print(f"实测中…（{len(files)} 个变体）\n")

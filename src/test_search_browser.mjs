@@ -211,13 +211,16 @@ console.log('\n[1e] 点能跳到学习页');
     const a = document.getElementById('cLearn');
     const pos = KG.nodePos(id);
     const rect = document.querySelector('#c').getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
+    // ⚠️ **projX/projY 就是 CSS 像素**（resize 里 setTransform(DPR,...) 之后
+    //    绘图坐标才落设备像素，所以 projX/projY 本身是 CSS 像素）——
+    //    产品的 pick(e.clientX, e.clientY) 也是拿 CSS 像素比。
+    //    原来这里又除了一遍 dpr，在 deviceScaleFactor=2 的屏幕上点空、必挂。
     return {
       de: KG.NODES[id].de,
       href: a ? a.getAttribute('href') : null,
       hidden: a ? a.hidden : true,
       visible: a ? !!(a.offsetWidth || a.offsetHeight) : false,
-      cx: rect.left + pos.x / dpr, cy: rect.top + pos.y / dpr,
+      cx: rect.left + pos.x, cy: rect.top + pos.y,
     };
   });
   ok(!!r.href, '卡片里有「去学习页」链接', r.href || '（没有）');
@@ -237,6 +240,32 @@ console.log('\n[1e] 点能跳到学习页');
      '双击点直接跳到学习页（带正确的版本和概念）', url.replace(/^file:\/\/.*中文知识图谱/, ''));
   await page.goto(PAGE, { waitUntil: 'load' });
   await sleep(1500);
+
+  // ── 深链 ?f=<上游概念 id> ──
+  // 学习页上那个「在图谱里看这个点 ↗」的链接用它。
+  // 回图谱应该**回到那个点面前**（镜头转过去 + 卡片打开），
+  // 而不是回到一张几千个点的图让人自己找。
+  {
+    const id = await page.evaluate(() => {
+      const KG = window.__kg;
+      const k = KG.NODES.findIndex(n => n.de && n.zh && n.zh.includes('浮力'));
+      return k >= 0 ? KG.NODES[k].de : KG.NODES.find(n => n.de).de;
+    });
+    await page.goto(PAGE + '?f=' + encodeURIComponent(id), { waitUntil: 'load' });
+    await sleep(2500);
+    const st = await page.evaluate(() => ({
+      cardOn: document.querySelector('#card')?.classList.contains('on'),
+      cardZh: document.querySelector('#cZh')?.textContent || '',
+      focus: window.__kg.cardId(),
+      learnHref: document.getElementById('cLearn')?.getAttribute('href') || '',
+    }));
+    ok(st.cardOn, '深链后卡片是打开的');
+    ok(st.focus >= 0, '深链后焦点落在那个点上', String(st.focus));
+    ok(st.learnHref.includes(encodeURIComponent(id)),
+       '深链后卡片里的「去学习页」指着同一个概念', st.learnHref);
+    await page.goto(PAGE, { waitUntil: 'load' });
+    await sleep(1200);
+  }
 }
 
 console.log('\n[2] 搜索框存在且可聚焦');
@@ -906,6 +935,34 @@ console.log('\n[10] 窄屏必须保留搜索，且不能被底部抽屉压住署
   const fs = await page.evaluate(() => parseFloat(getComputedStyle(document.getElementById('q')).fontSize));
   ok(fs >= 16, `输入框字号 ${fs}px ≥ 16px（iOS 更小会强制放大整页）`);
 
+  // ⚠️ **头部的容器不吃触摸事件**（ISSUE-58）——
+  //   pointer-events 是**继承**的：#head 整体是 none，
+  //   但里面为了让链接/搜索框可点而显式打开 auto 的容器，
+  //   **整块矩形都吃触摸事件**，把底下的知识点全挡了。
+  //   实测窄屏 375×667 时视口内 31% 的点被 #attr 挡住，
+  //   而手机上**没有双击** —— 点不出卡片，「去学习页」那个按钮自然也够不着。
+  //   现在：容器 none，只把 <a> 和输入框打开。
+  const blockedBy = await page.evaluate(() => {
+    const KG = window.__kg;
+    const N = KG.NODES.length;
+    let total = 0, byContainer = 0, byLink = 0;
+    for (let i = 0; i < N; i++) {
+      const p = KG.nodePos(i);
+      if (!p || p.k < -1e8) continue;
+      if (p.x < 0 || p.y < 0 || p.x > innerWidth || p.y > innerHeight) continue;
+      total++;
+      const el = document.elementFromPoint(p.x, p.y);
+      if (!el || el.id === 'c') continue;
+      // 容器级挡住（署名/导航的**文字块**）vs 只有链接挡
+      if (el.id === 'attr' || el.id === 'nav') byContainer++;
+      else if (el.tagName === 'A') byLink++;
+    }
+    return { total, byContainer, byLink };
+  });
+  ok(blockedBy.byContainer === 0,
+     '头部的容器不挡知识点（只有链接和搜索框可点）',
+     `视口内 ${blockedBy.total} 个点 · 容器挡 ${blockedBy.byContainer} · 链接挡 ${blockedBy.byLink}`);
+
   await page.tap('#q');
   await page.type('#q', '元素周期律', { delay: 15 });
   await sleep(350);
@@ -940,7 +997,7 @@ ok(errors.length === 0, '全程零 JS 错误', errors.slice(0, 5).join('\n      
 // 数源码里的 ok( 调用行数是不准的（这个文件就有跑不到的分支）。
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_search_browser.mjs` | 95 |';
+  const want = '| `src/test_search_browser.mjs` | 105 |';
   if (!rd.includes(want)) {
     console.log(`  ✗ README 里的 浏览器 测试项数不是 95`);
     console.log(`      README 里没找到「${want}」`);

@@ -697,9 +697,9 @@
    "what": "概念的**教材原话**，**一个概念一条**（沪教版）",
    "use_for": "同上，沪教那套",
    "how_to_use": "按 id 取；这层用 books + pages 记位置（**印刷页码**，不是扫描页码）",
-   "records": 2114,
+   "records": 2432,
    "unit": "行（jsonl，一行一条）",
-   "bytes": 1565170,
+   "bytes": 2869943,
    "format": "jsonl（每行一条）",
    "fields": [
     "id",
@@ -714,22 +714,27 @@
     "source"
    ],
    "sample": {
-    "id": "math_2a_rjb_cpt23",
-    "name": "7的乘法口诀",
-    "subject": "math",
+    "id": "biology_bx1_rjb_cpt164",
+    "name": "ADP（腺苷二磷酸）",
+    "subject": "biology",
     "books": [
-     "sh-hj-数学-w-2a"
+     "sh-hk-生物-s-bx1"
     ],
     "pages": [
-     59
+     91,
+     109
     ],
     "quotes": [
-     "编7的乘法口诀。"
+     "A国+四图4-19ATP与ADP相互转换示意图有机物氧化分解一AIE形提供能量ATP水解用于细胞〈释能)”生命活动2有和氧呼吸产生大量ATP细胞通过氧化分解有机物，将有机物中的能量转换成可供生命活动直接使用的ATP，这个过程称为细胞呼吸(cellularrespiration)。",
+     "ATP与ADP的相互转换，可源源不断地为生命活动提供直接能源。",
+     "(3)NADPH携带的高能电子是在光下活化并释放的。"
     ],
     "quoteKinds": [
+     "definition",
+     "text",
      "text"
     ],
-    "hasDefinition": false,
+    "hasDefinition": true,
     "match": "exact",
     "source": "国家中小学智慧教育平台（页图 OCR）"
    },
@@ -1288,7 +1293,7 @@
    "how_to_use": "按册次取：{[册次]: {扫描页: 'data/pages/…/N.webp'}}；本体在 data/pages/（**入库**，82.1 MB）",
    "records": 31,
    "unit": "条（顶层对象：键 → 对象）",
-   "bytes": 46129,
+   "bytes": 49039,
    "format": "json",
    "fields": [
     "1",
@@ -1721,6 +1726,42 @@
    "critical_note": ""
   },
   {
+   "file": "data/learn-videos.json",
+   "name": "learn-videos.json",
+   "what": "**讲解视频索引**（按知识点挂载外部视频）",
+   "use_for": "学生自学时的讲解视频。键是概念 id 或概念名，值是 {yt}/{bv}/{url}",
+   "how_to_use": "改完不用重建数据层 —— 学习页运行时读这个文件",
+   "records": 43,
+   "unit": "条（顶层对象：键 → 对象）",
+   "bytes": 7659,
+   "format": "json",
+   "fields": [
+    "mp4",
+    "title",
+    "dur",
+    "poster"
+   ],
+   "sample": {
+    "rjb:math_9b_rjb_cpt1": "<dict>",
+    "rjb:math_7a_rjb_cpt58": "<dict>",
+    "sh:biology_7b_rjb_cpt80": "<dict>",
+    "sh:math_7a_rjb_cpt58": "<dict>",
+    "rjb:math_9a_rjb_cpt16": "<dict>",
+    "sh:math_9a_rjb_cpt41": "<dict>",
+    "sh:math_9b_rjb_cpt37": "<dict>",
+    "sh:math_9a_rjb_cpt16": "<dict>",
+    "rjb:math_9a_rjb_cpt1": "<dict>",
+    "sh:math_8b_rjb_cpt43": "<dict>",
+    "rjb:math_7b_rjb_cpt4": "<dict>",
+    "sh:math_7b_rjb_cpt4": "<dict>",
+    "rjb:biology_7a_rjb_cpt101": "<dict>",
+    "rjb:biology_7a_rjb_cpt109": "<dict>"
+   },
+   "in_git": true,
+   "kind": "data",
+   "critical_note": ""
+  },
+  {
    "file": "data/kx-visual-books.json",
    "name": "kx-visual-books.json",
    "what": "小学科学**视觉层用到的书**",
@@ -1787,28 +1828,6 @@
     "pages": 71,
     "imgBase": "https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/64e96b25-9c23-498a-91da-c63e1ef531c7.t/zh-CN/1787020650456/transcode/image",
     "system": "六年制"
-   },
-   "in_git": true,
-   "kind": "data",
-   "critical_note": ""
-  },
-  {
-   "file": "data/learn-videos.json",
-   "name": "learn-videos.json",
-   "what": "**讲解视频索引**（按知识点挂载外部视频）",
-   "use_for": "学生自学时的讲解视频。键是概念 id 或概念名，值是 {yt}/{bv}/{url}",
-   "how_to_use": "改完不用重建数据层 —— 学习页运行时读这个文件",
-   "records": 8,
-   "unit": "条（顶层对象，主数据在 `_说明`）",
-   "bytes": 1348,
-   "format": "json",
-   "fields": [
-    "_说明",
-    "_示例",
-    "rjb:physics_8b_rjb_cpt51"
-   ],
-   "sample": {
-    "_说明": "讲解视频索引：按知识点挂载视频。"
    },
    "in_git": true,
    "kind": "data",

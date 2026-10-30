@@ -136,6 +136,11 @@ body{
   color:#ff9ec4;text-decoration:none;font-weight:500;
 }
 .btn.primary:hover{background:rgba(255,61,127,.26);border-color:rgba(255,61,127,.72);color:#ffb9d4}
+/* ⚠️ 作者样式的 display 会**压过** UA 的 `[hidden]{display:none}` ——
+   display:inline-flex 优先级更高，于是 el.hidden = true 是**空操作**，
+   按钮藏不住。现在三个站的节点 de 全非空，暂时不发作，
+   但那是一段永远不会生效的隐藏逻辑。 */
+.btn.primary[hidden]{display:none}
 .btn.primary:focus-visible{outline:2px solid rgba(255,61,127,.6);outline-offset:2px}
 .btn[aria-pressed="true"]{
   background:rgba(255,61,127,.17);border-color:rgba(255,61,127,.52);
@@ -475,17 +480,24 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
 #attr{
   position:static;margin-top:14px;padding-top:11px;
   border-top:1px solid var(--line);
-  pointer-events:auto;font-size:10.5px;color:var(--muted);line-height:1.85;max-width:430px;
+  /* ⚠️ **容器不挡画布，只有里面的链接可点** ——
+     pointer-events 是**继承**的：容器开着 auto，它整块矩形都吃触摸事件，
+     底下那些知识点就点不动了。
+     窄屏实测（375×667）：视口内 8,485 个点里 **2,620 个（31%）被头部盖住**，
+     其中 954 个是 #attr 吃掉的 —— 而手机上**没有双击**，
+     点不出卡片，「去学习页」那个按钮自然也够不着。
+     改成：容器 pointer-events:none，只把 <a> 打开 → 文字不再挡，链接照常可点。 */
+  pointer-events:none;font-size:10.5px;color:var(--muted);line-height:1.85;max-width:430px;
 }
 #attr b{color:var(--ink2);font-weight:600}
-#attr a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
+#attr a{pointer-events:auto;color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
 #attr a:hover{color:var(--ink);border-bottom-color:var(--ink2)}
 /* 站内导航单独一行：这是全站**唯一**的导航入口，得显眼一点 */
 #nav{
-  margin-top:9px;pointer-events:auto;
+  margin-top:9px;pointer-events:none;
   font-size:11.5px;color:var(--muted);line-height:1.95;max-width:430px;
 }
-#nav a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
+#nav a{pointer-events:auto;color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
 #nav a:hover{color:var(--ink);border-bottom-color:var(--ink2)}
 #hint kbd{
   font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:1px 5px;border-radius:4px;
@@ -589,12 +601,16 @@ body:has(#card.on) #hint{opacity:0;pointer-events:none}
   <div id="nav">
     <!-- ⚠️ 相对路径**按产物所在深度**给（build 时替换 ../learn.html）——
          同一份模板产出 index.html（根）和 viz/知识图谱3D.html（子目录），
-         写死 "./learn.html" 在后者会指到 viz/learn.html → 404。 -->
+         写死 "./xxx.html" 在后者会指到 viz/xxx.html → 404。
+         ⚠️ **这里 5 条全是同一种坑** —— 原来只给「学习页」一条换了占位符，
+         另外 4 条（数据质量/数据一览/上海版/小学科学版）还是写死的 "./"，
+         线上实测 viz 那份的 data.html / kx.html / quality.html / shanghai.html
+         **全是 404**（verifier 实测）。 -->
     <a href="../learn.html" target="_blank" rel="noopener">学习页</a>
-    · <a href="./quality.html" target="_blank" rel="noopener">数据质量</a>
-    · <a href="./data.html" target="_blank" rel="noopener">数据一览</a>
-    · <a href="./shanghai.html" target="_blank" rel="noopener">上海版</a>
-    · <a href="./kx.html" target="_blank" rel="noopener">小学科学版</a>
+    · <a href="../quality.html" target="_blank" rel="noopener">数据质量</a>
+    · <a href="../data.html" target="_blank" rel="noopener">数据一览</a>
+    · <a href="../shanghai.html" target="_blank" rel="noopener">上海版</a>
+    · <a href="../kx.html" target="_blank" rel="noopener">小学科学版</a>
     · <a href="https://github.com/Joshhuang123/chinese-k12-knowledge-graph" target="_blank" rel="noopener">源码</a>
   </div>
   <div id="attr">
@@ -1231,6 +1247,36 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
+/* ── 深链：?f=<上游概念 id> → 定位到那个点 ──────────────────
+ * 学习页上那个「在图谱里看这个点 ↗」的链接会用它。
+ * 从学习页回图谱，应该**回到那个点面前**（镜头转过去 + 高亮 + 弹卡片），
+ * 而不是回到一张几千个点的图让人自己找。
+ *
+ * ⚠️ 用**上游概念 id**（payload 的 de 字段），不用画布下标 ——
+ *    下标三个版本各不相同（人教 8667 · 沪教 3503 · 小学 67），
+ *    而 id 是跨版本唯一的那一个，跟「去学习页」那头用的是同一个键。
+ */
+function focusById(id){
+  if(id < 0 || id >= NODES.length) return false;
+  pinned = id;
+  setFocus(id);
+  flyTo(id);          // 镜头转到那个点面前（顺带把自转停下）
+  showCard(id);       // 卡片打开，让人一眼知道是哪个点
+  return true;
+}
+/* 页面加载时读一次 ?f= */
+(function deepLink(){
+  let f = '';
+  try{ f = new URLSearchParams(location.search).get('f') || ''; }
+  catch(e){ return; }
+  if(!f) return;
+  const id = NODES.findIndex(n => n.de === f);
+  if(id < 0) return;
+  // 等一帧再定位：布局（节点坐标）在模块加载时算好，
+  // 但首帧渲染前调用 flyTo 更稳（否则镜头参数还没被首帧采纳）。
+  requestAnimationFrame(()=>focusById(id));
+})();
+
 /* ================= 配色 ================= */
 /* 点的颜色有四种维度可选，线的颜色有三种。
    存 localStorage —— 配色是个人偏好，刷新不该丢。 */
@@ -1809,8 +1855,13 @@ window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
               // **点在屏幕上的位置** —— 双击跳学习页要靠它命中，
               // 而命中测试（pick）在 IIFE 外面够不着。
               // 自动化测试要验证「双击某个点真的会跳」，
-              // 就得先知道那个点画在哪。projX/projY 是**画布像素**，
-              // 不是 CSS 像素 —— 设备像素比不为 1 时要换算。
+              // 就得先知道那个点画在哪。
+              // ⚠️ **projX/projY 就是 CSS 像素**（不是设备像素）——
+              //   resize() 里 ctx.setTransform(DPR,0,0,DPR,0,0)，
+              //   绘图坐标经变换后才落设备像素，所以 projX/projY 本身是 CSS 像素。
+              //   产品的 pick(e.clientX, e.clientY) 也是拿 CSS 像素比，两边自洽。
+              //   （原先这里写着「是画布像素，要除以 dpr」——**那是错的**，
+              //     按它写的测试在 Retina 上点空打不中，deviceScaleFactor=2 必挂。）
               nodePos: (id) => ({x: projX[id], y: projY[id], k: projK[id]}),
               // **视觉层**：概念在教材原书上的公式和图。
               // 「卡在哪」面板和选题卡都要用 —— 面板那段代码在 IIFE 外面。
@@ -1836,6 +1887,8 @@ window.__kg = {D, NODES, SUBJ, pre, unlocks, label, cardId: ()=>cardId,
               // 少了这些，脉络视图里 `PAL.lc` 直接 ReferenceError，
               // 线的来源图例永远不显示，控制台一片红。
               PAL, MAP_SRC_COLOR, TIER_ZH,
+              // 深链定位用：学习页「在图谱里看这个点」带过来的
+              focusById: (id) => focusById(id),
               // 「卡在哪」面板在 IIFE 外面，要跳回某个知识点 / 弹提示
               showCard, say,
               // **真实投影坐标 + 实际画出来的半径** ——

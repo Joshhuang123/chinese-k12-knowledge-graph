@@ -479,10 +479,19 @@ def main() -> int:
                 .replace("__N_EDGE__", f"{len(edges):,}")
                 .replace("__N_CORE__", f"{payload['core']:,}"))
 
-    # 学习页在站点根目录（这两个产物也在根目录）→ "./learn.html"
-    if "__LEARN_BASE__" not in html:
-        raise SystemExit("构建中止：模板里没有 __LEARN_BASE__ 占位符")
-    OUT.write_text(html.replace("__LEARN_BASE__", "./learn.html"), encoding="utf-8")
+    # 这 5 条导航链接都在站点根目录（这两个产物也在根目录）→ "./xxx.html"
+    for ph in ("__LEARN_BASE__", "__LEARN_BASE_QUALITY__", "__LEARN_BASE_DATA__",
+               "__LEARN_BASE_SH__", "__LEARN_BASE_KX__"):
+        if ph not in html:
+            raise SystemExit(f"构建中止：模板里没有 {ph} 占位符")
+    out = html
+    for ph, page in (("__LEARN_BASE__", "learn.html"),
+                     ("__LEARN_BASE_QUALITY__", "quality.html"),
+                     ("__LEARN_BASE_DATA__", "data.html"),
+                     ("__LEARN_BASE_SH__", "shanghai.html"),
+                     ("__LEARN_BASE_KX__", "kx.html")):
+        out = out.replace(ph, "./" + page)
+    OUT.write_text(out, encoding="utf-8")
     print(f"\n{payload['total']} 沪教知识点 + {n_self} 前置补充 = {len(payload_nodes)} 节点 · "
           f"{len(edges)} 边 · {len(cns)} 单元 · {len(chs)} 章")
     print(f"→ {OUT}  ({OUT.stat().st_size//1024} KB)")

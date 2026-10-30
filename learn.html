@@ -689,6 +689,8 @@ function browseHTML(){
 }
 
 function nodeHTML(n){
+  // 「在图谱里看这个点」要用本版本对应的图谱站文件名
+  const v = VERSIONS.find(x=>x.id===CURRENT) || VERSIONS[0];
   const loc = n.loc || {};
   const chips = [];
   if (n.b) chips.push(`<span class="chip">${esc(n.b)}</span>`);
@@ -850,7 +852,8 @@ function nodeHTML(n){
   };
 
   return `
-  <div class="crumb"><a href="#" data-home="1">${esc(DATA.label)}</a> · <b>${esc(n.n)}</b></div>
+  <div class="crumb"><a href="#" data-home="1">${esc(DATA.label)}</a> · <b>${esc(n.n)}</b> ·
+    <a href="${v.site}?f=${encodeURIComponent(n.id)}" target="_blank" rel="noopener">在图谱里看这个点 ↗</a></div>
   <div class="card">
     <h1 class="ctitle">${esc(n.n)}</h1>
     <div class="chips">${chips.join('')}</div>

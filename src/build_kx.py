@@ -460,10 +460,19 @@ def main() -> int:
                 .replace("__N_ORDER__", f"{n_order:,}")
                 .replace("__N_PRE__", f"{n_pre:,}")
                 .replace("__N_CORE__", f"{n_kx:,}"))
-    # 学习页在站点根目录（这两个产物也在根目录）→ "./learn.html"
-    if "__LEARN_BASE__" not in html:
-        raise SystemExit("构建中止：模板里没有 __LEARN_BASE__ 占位符")
-    OUT.write_text(html.replace("__LEARN_BASE__", "./learn.html"), encoding="utf-8")
+    # 这 5 条导航链接都在站点根目录（这两个产物也在根目录）→ "./xxx.html"
+    for ph in ("__LEARN_BASE__", "__LEARN_BASE_QUALITY__", "__LEARN_BASE_DATA__",
+               "__LEARN_BASE_SH__", "__LEARN_BASE_KX__"):
+        if ph not in html:
+            raise SystemExit(f"构建中止：模板里没有 {ph} 占位符")
+    out = html
+    for ph, page in (("__LEARN_BASE__", "learn.html"),
+                     ("__LEARN_BASE_QUALITY__", "quality.html"),
+                     ("__LEARN_BASE_DATA__", "data.html"),
+                     ("__LEARN_BASE_SH__", "shanghai.html"),
+                     ("__LEARN_BASE_KX__", "kx.html")):
+        out = out.replace(ph, "./" + page)
+    OUT.write_text(out, encoding="utf-8")
     print(f"\n{payload['total']} 小学科学知识点 · {len(edges)} 边 · {len(cns)} 节")
     print(f"→ {OUT}（{len(html)//1024} KB）")
     return 0

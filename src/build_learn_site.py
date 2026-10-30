@@ -34,6 +34,7 @@ import sys
 
 BASE = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE / "src"))
+from quote_quality import quote_ok  # noqa: E402
 
 from latex_plain import to_plain        # noqa: E402  公式转纯文本（不引 KaTeX）
 
@@ -187,6 +188,10 @@ def pick_rjb_page(texts, pages, name, unit=""):
         if tx.strip() and not re.search(r"目\s*录|\bContents\b", tx):
             return p
     return pages[0]
+
+
+# 各版本被质量门剔掉的原话条数（构建完打印，让这件事**看得见**）
+DROPPED_QUOTES = {}
 
 
 def main() -> int:
@@ -396,6 +401,7 @@ def main() -> int:
 
             # 教材原话（**按版本取**，不串版）
             reads = []
+            n_quotes_dropped = 0
             q = quotes.get(vtag, {}).get(nid)
             if q:
                 # 定义句排前面
@@ -418,9 +424,25 @@ def main() -> int:
                     #   ③ 整条就是一个节名（≤12 字且没有句读）
                     if kind == "title":
                         continue
+                    # ⚠️ **思考题不是「教材原话」** ——
+                    #   「什么是有机高分子化合物?」「你是怎样得到三角形中位线定理的?」
+                    #   是教材的**讨论题**，不是这个概念的定义句。
+                    #   学习页另有一块「练一练」放题，这里再放一份只会混淆。
+                    if kind == "question":
+                        continue
                     if re.search(r"\.{3,}\s*\d+", tx):
                         continue
                     if len(tx.strip()) <= 12 and not re.search(r"[。；，：？！]", tx):
+                        continue
+                    # ⚠️ **教材原话要过质量门**（src/quote_quality.py）——
+                    #   OCR 会把句子**截断**（「…把它当做监测空气」后面还有半句），
+                    #   而学习页把它当「教材原话」原样展示 —— 学生看到的是半句话。
+                    #   项目在别处早就有同样的判断（讲解稿协议：残骸就别引用；
+                    #   学习卡：汉字密度不合格就丢掉），学习页以前**漏了这道门**。
+                    #   少一块，比引用错话好。
+                    ok, _why = quote_ok(tx)
+                    if not ok:
+                        n_quotes_dropped += 1
                         continue
                     reads.append({"t": tx[:220], "b": bk, "k": kind,
                                   "p": (q.get("pages") or [None])[0],
@@ -429,6 +451,7 @@ def main() -> int:
                         break
             if reads:
                 rec["rd"] = reads
+            DROPPED_QUOTES[tag] = DROPPED_QUOTES.get(tag, 0) + n_quotes_dropped
 
             # 教材位置
             loc = None
@@ -556,6 +579,10 @@ def main() -> int:
         outp = OUTDIR / f"learn-{tag}.js"
         outp.write_text(js, encoding="utf-8")
         print(f"  {outp.name:16s} {len(out):6d} 节点  {len(js)/1024/1024:.2f} MB")
+        dr = DROPPED_QUOTES.get(tag, 0)
+        if dr:
+            print(f"  {'':16s} 教材原话质量门剔掉 {dr} 条（OCR 截断/残骸）——"
+                  f"宁可少一块，不给半句话")
     return 0
 
 

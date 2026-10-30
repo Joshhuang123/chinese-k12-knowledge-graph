@@ -205,6 +205,15 @@ console.log('\n[1d] ?c= 认上游概念 id');
     const { page, errs } = await open(`?v=${ver}&c=${encodeURIComponent(cid)}`);
     const h1 = await page.evaluate(() => document.querySelector('h1.ctitle')?.textContent || '');
     ok(h1 === want, `${ver} · ${cid} → 打开的是「${want}」`, h1);
+    // 回程：概念页上要有一条「在图谱里看这个点」，带的是这个概念的 id
+    const back = await page.evaluate(() => {
+      const a = [...document.querySelectorAll('.crumb a')]
+        .find(x => x.textContent.includes('图谱里看'));
+      return a ? a.getAttribute('href') : null;
+    });
+    ok(!!back, `${ver} 概念页有「在图谱里看这个点」`, back || '（无）');
+    ok(back && back.includes(`f=${encodeURIComponent(cid)}`),
+       `${ver} 回程链接带的是这个概念的 id`, back || '');
     ok(errs.length === 0, `${ver} 零 JS 错误`, errs.slice(0, 2).join(' | '));
     await page.close();
   }
@@ -228,10 +237,47 @@ console.log('\n[2] 搜索能到学习页');
   }));
   ok(pg.h1 === '一元一次不等式', `进到了「${pg.h1}」的学习页`);
   ok(pg.secs.some(s => s.includes('教材原页')), '有「教材原页」板块');
-  ok(pg.secs.some(s => s.includes('教材原话')), '有「教材原话」板块');
   ok(pg.secs.some(s => s.includes('前置')), '有「前置」板块');
+  // ⚠️ **「教材原话」按数据来**：教材原话过了质量门（src/quote_quality.py），
+  //   全是截断半截句的会被剔掉 —— 这个概念的引文正好全不合格，
+  //   所以**它就不该有这一块**。断言要跟着数据走，
+  //   不然就是「为了过测试而留着半截话」。
+  const hasQuotes = await page.evaluate(() => {
+    const n = (window.LEARN_DATA?.nodes || []).find(x => x.n === '一元一次不等式');
+    return !!(n && n.rd && n.rd.length);
+  });
+  ok(pg.secs.some(s => s.includes('教材原话')) === hasQuotes,
+     '「教材原话」板块按数据来（有干净引文才有）',
+     `数据里 ${hasQuotes ? '有' : '没有'}引文`);
   ok(errs.length === 0, '零 JS 错误', errs.slice(0, 2).join(' | '));
   await page.close();
+
+  // 反过来也要验：**有干净引文的概念，那一块必须显示**
+  {
+    const { page, errs } = await open('?v=sh');
+    const pick = await page.evaluate(() => {
+      const n = (window.LEARN_DATA?.nodes || []).find(x => x.rd && x.rd.length);
+      return n ? { i: n.i, q: n.rd.length } : null;
+    });
+    ok(!!pick, '沪教版有概念的教材原话过了质量门');
+    if (pick) {
+      const pg2 = await page.evaluate((i) => {
+        location.hash = '';
+        history.replaceState(null, '', `?v=sh&c=${i}`);
+        // ⚠️ replaceState **不会**触发 popstate —— 页面自己的 render() 不会被调用，
+        //    于是还停在首页，断言当然失败。要手动派发一个。
+        window.dispatchEvent(new PopStateEvent('popstate'));
+        return new Promise(res => setTimeout(() => res({
+          h1: document.querySelector('h1.ctitle')?.textContent || '',
+          secs: [...document.querySelectorAll('.card h2')].map(h => h.textContent.trim()),
+        }), 2500));
+      }, pick.i);
+      ok(pg2.secs.some(s => s.includes('教材原话')),
+         `有引文的概念（${pick.q} 条）显示了「教材原话」板块`, pg2.h1);
+      ok(errs.length === 0, '零 JS 错误', errs.slice(0, 2).join(' | '));
+    }
+    await page.close();
+  }
 }
 
 // ── [3] 做题能判分 ────────────────────────────────────────
@@ -642,7 +688,7 @@ console.log('\n[10] 讲解视频 + 文字讲解');
 // 跟另外三个套件一样：**这条断言只能放在这里** —— 只有跑完的人知道真实通过数。
 {
   const rd = readFileSync(resolve(BASE, 'README.md'), 'utf8');
-  const want = '| `src/test_learn_site.mjs` | 96 |';
+  const want = '| `src/test_learn_site.mjs` | 111 |';
   if (!rd.includes(want)) {
     console.log(`  \u2717 README 里的 学习页 测试项数不是 96`);
     console.log(`      README 里没找到「${want}」`);

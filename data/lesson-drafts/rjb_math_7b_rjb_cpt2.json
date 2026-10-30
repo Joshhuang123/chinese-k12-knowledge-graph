@@ -26,17 +26,7 @@
  ],
  "quotes": [
   {
-   "text": "角,互为邻补角(adjacentanglesonastraightline).",
-   "def": false,
-   "page": 8
-  },
-  {
-   "text": "是邻补角”“如果一个数能被2整除,那么它也能被4整除”等,这些命题中,",
-   "def": false,
-   "page": 8
-  },
-  {
-   "text": "了两条直线相交所形成的邻补角和对顶角的位置和数量关系,这也是相交线的",
+   "text": "对顶角、邻补角、垂直、平行、同位角、内错角、同旁内角、平移.",
    "def": false,
    "page": 8
   }

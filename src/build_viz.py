@@ -872,11 +872,24 @@ def main():
     # 同一份模板产出两个深度的页面：viz/知识图谱3D.html（子目录）和
     # index.html（站点根，GitHub Pages 的首页）。写死 "./learn.html" 的话，
     # 前者会指到 viz/learn.html → **404**（线上实测就是这个坏链）。
-    if "__LEARN_BASE__" not in html:
-        raise SystemExit("构建中止：模板里没有 __LEARN_BASE__ 占位符，"
-                         "学习页链接会指错")
-    OUT.write_text(html.replace("__LEARN_BASE__", "../learn.html"), encoding="utf-8")
-    INDEX.write_text(html.replace("__LEARN_BASE__", "./learn.html"), encoding="utf-8")
+    # ⚠️ **这 5 条导航链接是同一种坑**（viz 那份全指到 viz/ 子目录 → 线上 404）：
+    #   学习页 / 数据质量 / 数据一览 / 上海版 / 小学科学版
+    # 全部按产物所在深度替换。
+    for ph in ("__LEARN_BASE__", "__LEARN_BASE_QUALITY__", "__LEARN_BASE_DATA__",
+               "__LEARN_BASE_SH__", "__LEARN_BASE_KX__"):
+        if ph not in html:
+            raise SystemExit(f"构建中止：模板里没有 {ph} 占位符，导航链接会指错")
+    def with_base(prefix):
+        out = html
+        for ph, page in (("__LEARN_BASE__", "learn.html"),
+                         ("__LEARN_BASE_QUALITY__", "quality.html"),
+                         ("__LEARN_BASE_DATA__", "data.html"),
+                         ("__LEARN_BASE_SH__", "shanghai.html"),
+                         ("__LEARN_BASE_KX__", "kx.html")):
+            out = out.replace(ph, prefix + page)
+        return out
+    OUT.write_text(with_base("../"), encoding="utf-8")
+    INDEX.write_text(with_base("./"), encoding="utf-8")
 
     print(f"节点 {len(payload_nodes):,} | 边 {len(payload_edges):,} | 剪掉的环边 {dropped}")
     print(f"is_a 上下位 {len(isa_pairs):,} 对 | leads_to 章表 {len(chs)} 章 | "

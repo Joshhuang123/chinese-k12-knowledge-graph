@@ -37,6 +37,15 @@ BASE = pathlib.Path(__file__).resolve().parent.parent
 PDFC = BASE / "data" / "pdf-cache"
 PAGES_DIR = BASE / "data" / "pages"
 OUT_JSON = BASE / "data" / "page-images-rjb.json"
+# ⚠️ **页面加载的是 .js，不是 .json** ——
+#   learn.html 里 `loadScript('data/page-images-rjb.js')` → window.PAGE_IMAGES_RJB。
+#   而体检（src/check_learn_site.py）读的是 .json。
+#   以前**只有 .json 有脚本生成**，.js 是手工产物，
+#   两份内容对不上（实测 1,018 条重合，各有 100 多条独有），
+#   于是「门禁校验的文件」和「页面真正加载的文件」是两份不同的东西
+#   —— 真坏了看不见，假坏了报警。
+#   现在**两个文件都由这个脚本写**，同一份索引，不会再分叉。
+OUT_JS = BASE / "data" / "page-images-rjb.js"
 
 SUBJ_ABBR = {"biology": "bio", "chemistry": "chem", "physics": "phys", "math": "math"}
 
@@ -159,10 +168,33 @@ def main() -> int:
         index[f"kx/{bk}"] = entry
         print(f"  kx {bk}: {len(entry)} 页")
 
+    # ⚠️ **索引以磁盘上的实际文件为准**，不只收「这一轮渲染的」——
+    #   有些册次的 PDF 拿不到（镜像里缺那一版），但**页图早就在磁盘上**：
+    #   math-bx1（人教 A 版必修第一册，镜像里没有，56 张页图是之前渲染的）
+    #   就是这样漏掉的 —— 索引少一册 → 学习页上 92 个节点没有「教材原页」。
+    #   索引的职责是「这个文件在哪」，那**文件系统就是真相**。
+    on_disk = 0
+    for d in sorted(PAGES_DIR.rglob("*")):
+        if not d.is_dir():
+            continue
+        bk = d.relative_to(PAGES_DIR).as_posix()
+        entry = index.setdefault(bk, {})
+        for f in sorted(d.glob("*.webp")):
+            key = f.stem
+            if key not in entry:
+                entry[key] = f.relative_to(BASE).as_posix()
+                on_disk += 1
+    if on_disk:
+        print(f"  补索引：磁盘上有但这轮没渲染的 {on_disk} 页")
+
     OUT_JSON.write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8")
+    # 页面加载的 .js —— 同一份索引，只是包成 window 赋值
+    OUT_JS.write_text("window.PAGE_IMAGES_RJB=" +
+                      json.dumps(index, ensure_ascii=False, separators=(",", ":")) + ";\n",
+                      encoding="utf-8")
     total_bytes = sum(f.stat().st_size for f in PAGES_DIR.rglob("*.webp"))
     print(f"\n渲染 {done} 页 · {total_bytes/1024/1024:.1f} MB → {PAGES_DIR.relative_to(BASE)}")
-    print(f"索引 → {OUT_JSON.relative_to(BASE)}")
+    print(f"索引 → {OUT_JSON.relative_to(BASE)} · {OUT_JS.relative_to(BASE)}")
     return 0
 
 

@@ -15,7 +15,7 @@
 | `data/vision-pages.jsonl` | 页面的视觉层（人教版）—— 一页一条 | 4,390 | 8 MB | 按 id 取 |
 | `data/shanghai-graph.json` | 上海版图谱（节点 / 单元链 / 先修边） | 5,552 | 8 MB | nodes / edges / units 三段 |
 | `data/page-index.json` | 概念 → 教材页反查表 | 11,052 | 7 MB | _byConcept[概念id] → [{book,page,pageId,te… |
-| `data/concept-text-sh.jsonl` | 概念的教材原话，一个概念一条（沪教版） | 2,114 | 1 MB | 按 id 取；这层用 books + pages 记位置（印刷页码，不是扫描页码… |
+| `data/concept-text-sh.jsonl` | 概念的教材原话，一个概念一条（沪教版） | 2,432 | 3 MB | 按 id 取；这层用 books + pages 记位置（印刷页码，不是扫描页码… |
 | `data/vision-pages-kx.jsonl` | 页面的视觉层（小学科学） | 1,036 | 1 MB | 按 id 取 |
 | `data/quote-repairs.json` | 引文的最终判定缓存 | 15,282 | 1 MB | 顶层是 {缓存键: {q, kind, ev}}；缓存键 = “版本#概念id#… |
 | `data/concept-text.jsonl` | 概念的教材原话，一个概念一条（人教版） | 1,361 | 1 MB | 按 id 或 name 取；quotes 里有原话，quoteKinds 标了哪… |
@@ -30,7 +30,7 @@
 | `data/shanghai-textbook-catalog.json` | 上海教材清单 | 298 | 85 KB | 顶层是数组 |
 | `data/vision-cover.json` | 教材封面图（人教版） | 4 | 57 KB | 顶层是数组 |
 | `data/kx-graph.json` | 小学科学独立图谱（67 节点 / 25 边） | 67 | 48 KB | nodes / edges |
-| `data/page-images-rjb.json` | 人教版教材原页图索引（31 册 / 1,128 页） | 31 | 45 KB | 按册次取：{[册次]: {扫描页: 'data/pages/…/N.webp'}… |
+| `data/page-images-rjb.json` | 人教版教材原页图索引（31 册 / 1,128 页） | 31 | 48 KB | 按册次取：{[册次]: {扫描页: 'data/pages/…/N.webp'}… |
 | `data/page-images.json` | 教材原页图的直链基址（67 本沪教教材） | 67 | 33 KB | 按 bookId 取；拼图地址 = base + '/' + 扫描页码 + '.… |
 | `data/shanghai-textbooks.json` | 上海教材的元信息 | 67 | 33 KB | 顶层是数组 |
 | `data/kx-sections.json` | 小学科学的节判定（105 节） | 105 | 31 KB | 顶层是数组 |
@@ -41,9 +41,9 @@
 | `data/intro-links.json` | 教材的引入路径（概念 → 首次出现的那一课） | 25 | 11 KB | 顶层是数组 |
 | `data/cover-gaps.json` | 封面缺口清单 | 17 | 10 KB | 顶层是数组 |
 | `data/shanghai-rjb-positions.json` | 人教版前置节点在沪教教材里的真实位置 | 34 | 9 KB | 按上游概念 id 取：给出沪教版别、册次、证据档 |
+| `data/learn-videos.json` | 讲解视频索引（按知识点挂载外部视频） | 43 | 7 KB | 改完不用重建数据层 —— 学习页运行时读这个文件 |
 | `data/kx-visual-books.json` | 小学科学视觉层用到的书 | 12 | 6 KB | 顶层是数组 |
 | `data/kx-textbooks.json` | 小学科学教材清单（12 本） | 12 | 6 KB | 顶层是数组 |
-| `data/learn-videos.json` | 讲解视频索引（按知识点挂载外部视频） | 8 | 1 KB | 改完不用重建数据层 —— 学习页运行时读这个文件 |
 | `data/page-offsets-sh.json` | 沪教版每册的印刷页码偏移 | 44 | 1 KB | 按沪教书号取：{sh-hj-数学-w-7b: -7}。从平台 OCR 的页脚行取… |
 | `data/page-offsets.json` | 人教版每册的印刷页码偏移 | 31 | 1 KB | 按册次取：{册次: 负数}。矢量册从 PDF 页脚取页码，扫描件走 OCR（脚本… |
 | `data/normalized/selfbuilt-edges.json` | 自建先修边（13,461 条，模型重建） | 13,461 | 4 MB | edges 数组；source 字段标来源（model / derived / … |

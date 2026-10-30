@@ -5,7 +5,7 @@
 判定语义对齐 `docs/lesson-script-protocol.md`：
   · **照抄**（必须逐字相同）：id / version / name / formulas / page.image / page.where
   · **自己写但不许编造**：kicker / hook / definition / quote / page.lines / chain / scenes / explain.lines
-      · definition  → 必须与素材包的 definition **有 ≥8 字的公共子串**（不是逐字，是不许凭空另编）
+      · definition  → 与素材包的 definition **相似度 ≥0.60**（不是逐字，是不许凭空另编）
       · quote.text  → 必须**逐字**出现在素材包的 quotes[] 里（残骸可以不写这个字段）
       · chain       → 除「现在学的」自己以外，每个名字都必须在素材包 prereq 里
       · explain.lines → 必须与 scenes[].text **逐字一致**（页面文字版 = 视频配音版）
@@ -15,6 +15,7 @@
 用法：python3 src/check_lesson_scripts.py [id ...]
 不带参数就检查全部。
 """
+import difflib
 import io, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -127,61 +128,88 @@ def main():
                'where 里的页码 == 素材包印刷页码', str(dpg['printed']))
 
         # ── definition：自己写，但不许凭空另编 ──
+        # ⚠️ 判据是**相似度**，不是「有几个字一样」——
+        #   「≥6 字公共子串」一句话就能绕过：
+        #   在一段完全跑偏的定义里嵌 8 个来自素材包的字，判据照样绿
+        #   （verifier 实测：讲压强/密度的定义 + 「受到向上的力，」→ 31/31 全绿）。
+        #   相似度看的是「整体说的是不是同一件事」。
+        #   真实数据分布：43 份稿子的相似度**最低 0.90**（中位数 1.00），
+        #   绕过样本 0.12 —— 阈值 0.60 两侧都很宽裕。
         dd = dr.get('definition') or ''
         sd = d.get('definition') or ''
-        pool = [dd] + [q.get('text', '') for q in (dr.get('quotes') or [])]
-        lcs = max((longest_common_substring(sd, p) for p in pool if p), key=len, default='')
-        # 阈值 6：允许「同一句教材原话的不同措辞」，但不许凭空另编一句。
-        # （老稿子里「…使胚根、胚芽开始发育，最后长成幼苗的过程」与
-        #   素材包的「…使胚根、胚芽等开始发育，最终长成幼苗的过程」
-        #   是同一句话的两种措辞，公共子串「长成幼苗的过程」7 字。）
-        ok(len(lcs) >= 6, 'definition 跟素材包的定义有 ≥6 字公共子串（不是另编的）',
-           f'「{lcs}」')
+        sim = difflib.SequenceMatcher(None, sd, dd).ratio() if (sd and dd) else 0.0
+        ok(sim >= 0.60, 'definition 与素材包的定义相似度 ≥0.60（不是另编的）',
+           f'{sim:.2f}')
 
         # ── quote（如果有）：逐字来自教材原话 ──
+        # ⚠️ **「不在素材包 quotes 里」不等于「错」** ——
+        #   有些概念（教材原话层根本没抽到句子）的原话是**照着教材原页图**抄的。
+        #   verifier 实测：浮力那条被当成「无源引文」删掉的句子，
+        #   逐字印在 data/pages/physics-8b/53.webp 上：
+        #     「冰山、游船、鸭子都受到重力的作用，但却没有因此而沉入水底，
+        #       这表明水对它们有一个向上托起的力。浸在液体中的物体受到向上的力，
+        #       这个力叫做浮力。」
+        #   它是**真教材原话**，只是不在 concept-text 层里。
+        #   所以：不在素材包里时，必须显式标 `from_page: true`（来自原页图），
+        #   让人知道「这句要人工核对」；既不逐字存在、又没标 → 判红。
         q = d.get('quote')
         if q:
             qt = q.get('text', '')
             srcs = [x.get('text', '') for x in (dr.get('quotes') or [])]
-            ok(qt in srcs, 'quote.text 在素材包的 quotes 里逐字存在', qt[:28])
+            # ⚠️ **子串也算** ——
+            #   写稿的人常常只取长句里**干净的那一段**
+            #   （例：「计算公式如下:发首率二萌发种子数_全部被测种子数一般种子的发芽率
+            #     在90%以上才适合用于播种。」→ 稿子引的是后面那句干净的话）。
+            #   那是**逐字**，不是改写 —— 只是没引整句。
+            if any(qt in x for x in srcs):
+                ok(True, 'quote.text 在素材包的某条原话里逐字出现', qt[:28])
+            else:
+                ok(bool(q.get('from_page')),
+                   'quote 不在素材包里 → 必须标 from_page（来自教材原页图，待人工核对）',
+                   f"from_page={q.get('from_page')}")
             ok('扫描页' not in json.dumps(q, ensure_ascii=False), 'quote.src 用的是印刷页码')
         else:
             ok(True, '没写 quote 字段（教材原话是残骸时可以省）')
 
         # ── 前置链：只能用真前置 / 真后继 ──
-        # ⚠️ chain 里的 tag 决定这个名字是**前置**还是**后继** ——
-        # 「先会它」是前置，「接着学」是后继。两种都得在素材包里，
-        # 但不能混：把后继当前置画成线性链，就是谎报先后。
+        # ── 前置链：方向不能谎报 ──
+        # ⚠️ **方向不由 tag 决定** ——
+        #   tag 是**自由表述**（「式子的底子」「怎么查」「更基础的那种」），
+        #   不是「先会它/接着学」这种固定词表。原来拿 tag 判方向，
+        #   判据既漏又误：verifier 实测把真前置换成真后继、tag 不动 → 31/31 全绿；
+        #   而实际数据里 tag="怎么查"/"怎么理" 的两条**本来就是真后继**，
+        #   被判成「把后继说成前置」→ 假警报。
+        #
+        #   方向真正由**素材包的 chain_title** 决定（视频和页面画的就是它）：
+        #     「学它之前要先会」→ 这些是真前置
+        #     「接下来会学」    → 这些是真后继
+        #   而学生看到的是**第四场的台词**，所以还要看台词说不说同一件事。
         pre = {x.get('name') for x in (dr.get('prereq') or []) if isinstance(x, dict)}
         suc = {x.get('name') for x in (dr.get('successor') or []) if isinstance(x, dict)}
-        chain = d.get('chain') or []
-        as_pre, as_suc, bad_t = set(), set(), []
-        for x in chain:
-            if not isinstance(x, dict): continue
-            nm, tag = x.get('name'), str(x.get('tag') or '')
-            if nm == d.get('name'): continue
-            if any(k in tag for k in ('接着', '后继', '之后', '往下', '然后学')):
-                as_suc.add(nm)
-            elif tag:
-                as_pre.add(nm)          # 自由表述的前置理由
-            else:
-                bad_t.append(f'{nm}(tag={tag})')
-        # tag 是**自由表述**（「式子的底子」「更基础的那种」「低一级的」），
-        # 不是固定词表 —— 所以判据看的是**名字在不在素材包**，
-        # 再用 tag 里的方向词（接着/之后/后继/往下）判断它被当成了前置还是后继。
-        # 真正的错只有一个：**把后继说成前置**（画成线性链 = 谎报先后）。
-        ok(not bad_t, '每个 chain 成员都标了方向（前置理由 或 接着学）',
-           ' | '.join(bad_t[:3]))
-        allnames = set()
-        for x in chain:
-            if isinstance(x, dict) and x.get('name') != d.get('name'):
-                allnames.add(x.get('name'))
-        missing = allnames - pre - suc
+        chain = [x for x in (d.get('chain') or []) if isinstance(x, dict)]
+        names = {x.get('name') for x in chain
+                 if x.get('name') and x.get('name') != d.get('name')}
+        missing = names - pre - suc
         ok(not missing, 'chain 里的名字都在素材包的前置/后继里',
            str(sorted(missing)[:3]))
-        reversed_ = {n for n in as_suc if n in pre}
-        ok(not reversed_, '没有把前置说成「接着学」（那会谎报先后）',
-           str(sorted(reversed_)[:3]))
+        no_tag = [x.get('name') for x in chain if x.get('name') != d.get('name')
+                  and not str(x.get('tag') or '').strip()]
+        ok(not no_tag, '每个 chain 成员都标了说明', ' | '.join(map(str, no_tag[:3])))
+        # 方向：素材包的 chain_title 说是前置还是后继
+        title = dr.get('chain_title') or ''
+        is_fwd = '接下来' in title          # 往后学
+        wrong = ({n for n in names if n in pre} if is_fwd
+                 else {n for n in names if n in suc and n not in pre})
+        ok(not wrong, '链的方向跟素材包一致（不谎报先后）',
+           str(sorted(wrong)[:3]))
+        # 台词说的方向也要跟链一致 —— 那才是学生真正读到的那句话
+        s3 = next((sc.get('text', '') for sc in scenes if sc.get('id') == 's3_chain'), '')
+        if is_fwd:
+            ok(any(k in s3 for k in ('往下', '接下来', '再学', '之后', '接着')),
+               '第四场台词说的是「往后学」，跟链一致', s3[:26])
+        else:
+            ok(any(k in s3 for k in ('之前', '先会', '先要', '得先', '要先')),
+               '第四场台词说的是「先会」，跟链一致', s3[:26])
         if not pre:
             s3 = next((s.get('text', '') for s in scenes if s.get('id') == 's3_chain'), '')
             ok(('没有' in s3 and '前置' in s3) or ('接下来' in s3) or ('可以直接' in s3)

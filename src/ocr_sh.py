@@ -55,7 +55,13 @@ OUT_LESSONS = BASE / "data" / "lessons-sh.jsonl"
 OUT_TEXT = BASE / "data" / "concept-text-sh.jsonl"
 
 # 跟人教版一套判据 —— 两边的「定义句」得是同一种东西
-RE_SENT = re.compile(r"[^。！？；!?;\n]+[。！？；!?;]?")
+# ⚠️ **不要把换行当句末标点** ——
+#   tesseract 的中文输出是按**排版行**硬断的（每行 20–40 字），
+#   那是排版换行，不是句子边界。原来 RE_SENT 里带 \n，
+#   于是**每一行都成了「一句」** → 学习页上的教材原话
+#   一大半是半截句（「…把它当做监测空气」后面还有半句）。
+#   现在只按真正的句末标点（。！？；）断句。
+RE_SENT = re.compile(r"[^。！？；!?;]+[。！？；!?;]?")
 RE_DEF = re.compile(r"(叫做|称为|是指|指的是|定义为|就是|即为|全称是|通常指)")
 RE_THM = re.compile(r"(定理|性质|公式|定律|公理|推论|法则|原理|结论)")
 RE_EX = re.compile(r"^(例[0-9０-９一二三四五六七八九十]*[：:.、]|例题|如图|下图|上图中)")
@@ -69,10 +75,15 @@ def strip_paren(nm: str) -> str:
 
 
 def sentences(text):
+    """断句 —— 去掉所有空白后按句末标点断。
+
+    ⚠️ 换行**不是**句末标点（tesseract 按排版行硬断），
+    所以先把空白全去掉再断，否则每行都成了「一句」。
+    """
+    t = re.sub(r"\s+", "", text)
     out = []
-    for s in RE_SENT.findall(text):
-        s = re.sub(r"\s+", "", s)
-        s = re.sub(r"^[0-9．.、]+\s*", "", s)
+    for s in RE_SENT.findall(t):
+        s = re.sub(r"^[0-9．.、]+", "", s)
         if len(s) >= 6:
             out.append(s)
     return out
